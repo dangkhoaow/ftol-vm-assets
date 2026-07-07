@@ -30,6 +30,7 @@ RUN rc-update add devfs sysinit \
  && rc-update add udev-trigger sysinit \
  && rc-update add udev-settle sysinit \
  && rc-update add hostname boot \
+ && rc-update add localmount boot \
  && rc-update add swclock boot \
  && rc-update add sysctl boot \
  && rc-update add bootmisc boot \

@@ -19,7 +19,7 @@ const v86BuildDir = path.dirname(url.fileURLToPath(import.meta.resolve("v86")));
 
 const PROFILES = {
   // marker: what the serial console prints when the machine is ready.
-  terminal: { memory_mb: 128, marker: /linux-online:~# $/, settle_ms: 5000, timeout_min: 40 },
+  terminal: { memory_mb: 128, marker: /:~# $/, settle_ms: 5000, timeout_min: 40 },
   desktop: { memory_mb: 512, marker: /FTOL_READY_DESKTOP/, settle_ms: 30000, timeout_min: 200 },
 };
 const prof = PROFILES[KIND];
@@ -56,11 +56,15 @@ const send = (em, text) => {
 };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// Serial output carries ANSI/VT escapes (e.g. the \x1b[6n cursor-position
+// query right after the login prompt) - strip them before marker matching.
+const stripEscapes = (s) => s.replace(/\x1b\[[0-9;?]*[a-zA-Z]/g, "");
+
 async function waitFor(sinkArr, test, timeoutMs, label) {
   const t0 = Date.now();
   let lastLog = 0;
   for (;;) {
-    const s = sinkArr.join("");
+    const s = stripEscapes(sinkArr.join(""));
     if (test(s)) return s;
     if (Date.now() - t0 > timeoutMs) {
       console.error(`[snapshot] TIMEOUT waiting for ${label}. serial tail:`);

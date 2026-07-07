@@ -18,6 +18,7 @@ RUN rc-update add devfs sysinit \
  && rc-update add dmesg sysinit \
  && rc-update add mdev sysinit \
  && rc-update add hostname boot \
+ && rc-update add localmount boot \
  && rc-update add swclock boot \
  && rc-update add sysctl boot \
  && rc-update add bootmisc boot \

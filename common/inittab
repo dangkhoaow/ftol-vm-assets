@@ -3,6 +3,7 @@
 # and on the serial console (used by the CI snapshot harness).
 ::sysinit:/sbin/openrc sysinit
 ::sysinit:/sbin/openrc boot
+::sysinit:/bin/hostname -F /etc/hostname
 ::wait:/sbin/openrc default
 tty1::respawn:/sbin/agetty --autologin root --noclear tty1 38400 linux
 ttyS0::respawn:/sbin/agetty --autologin root --noclear ttyS0 115200 vt100
