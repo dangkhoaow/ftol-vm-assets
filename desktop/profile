@@ -3,5 +3,8 @@
 # there. The serial console stays a plain shell for the CI harness.
 if [ "$(tty)" = "/dev/tty1" ] && [ -z "$DISPLAY" ]; then
     echo FTOL_TTY1_STARTX >/dev/ttyS0
-    exec startx >/dev/ttyS0 2>&1
+    startx >/dev/ttyS0 2>&1
+    echo FTOL_XORG_LOG_START >/dev/ttyS0
+    cat /root/.local/share/xorg/Xorg.0.log /var/log/Xorg.0.log >/dev/ttyS0 2>/dev/ttyS0
+    echo FTOL_XORG_LOG_END >/dev/ttyS0
 fi

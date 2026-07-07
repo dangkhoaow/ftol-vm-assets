@@ -73,7 +73,7 @@ async function waitFor(sinkArr, test, timeoutMs, label) {
     }
     if (Date.now() - lastLog > 30000) {
       lastLog = Date.now();
-      console.log(`[snapshot] waiting for ${label} (${((Date.now() - t0) / 1000) | 0}s) tail: ${JSON.stringify(s.slice(-120))}`);
+      console.log(`[snapshot] waiting for ${label} (${((Date.now() - t0) / 1000) | 0}s) tail: ${JSON.stringify(s.slice(-1400))}`);
     }
     await sleep(500);
   }
