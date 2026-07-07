@@ -29,6 +29,7 @@ RUN rc-update add devfs sysinit \
  && rc-update add udev sysinit \
  && rc-update add udev-trigger sysinit \
  && rc-update add udev-settle sysinit \
+ && rc-update add loopback boot \
  && rc-update add hostname boot \
  && rc-update add localmount boot \
  && rc-update add swclock boot \
