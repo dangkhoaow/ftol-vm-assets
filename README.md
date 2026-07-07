@@ -1,9 +1,14 @@
-# ftol-vm-assets - Linux Online VM images
+# ftol-vm-assets - in-browser asset CDN for freetoolonline.com
 
-Build pipeline for the disk images behind freetoolonline.com's **Linux Online**
-tool page (`/utility-tools/linux-online.html`), which runs real 32-bit Alpine
-Linux in the reader's browser via the site's vendored
-[v86](https://github.com/copy/v86) emulator.
+Build pipelines for two freetoolonline.com tool pages:
+
+- **Linux Online** (`/utility-tools/linux-online.html`) - disk images + boot
+  snapshots for real 32-bit Alpine Linux running in the reader's browser via
+  the site's vendored [v86](https://github.com/copy/v86) emulator.
+- **Retro FPS Online** (`/games/retro-fps-online.html`) - the Dwasm
+  (PrBoom+/PrBoomX family, GPL-2.0) engine compiled to WebAssembly with the
+  free [Freedoom](https://freedoom.github.io/) game data baked in. See
+  "Retro FPS Online assets" below.
 
 The built assets are published to this repository's **GitHub Pages site**
 (deploy-from-artifact - they never enter git):
@@ -58,6 +63,31 @@ compatibility key; Pages always serves the latest build.
   sha256-verified in the workflow.
 - No proprietary software, no distro trademarks or artwork are included in the
   images; the hostname and MOTD are house copy.
+
+## Retro FPS Online assets
+
+`retro-fps/build-retro-fps.sh` builds two self-contained Emscripten bundles
+of the **Dwasm** engine (pinned commit of
+[GMH-Code/Dwasm](https://github.com/GMH-Code/Dwasm), GPL-2.0 - the PrBoom+/
+PrBoomX engine family): `phase1/` bakes the Freedoom Phase 1 IWAD into its
+preload package, `phase2/` bakes Freedoom Phase 2. Each bundle is
+`index.js.gz` + `index.wasm.gz` + `index.data.gz`; `retro-fps/manifest.json`
+carries sizes and sha256s. The engine's internal `prboomx.wad` is generated
+by the pinned commit's native `rdatawad` tool and sha256-verified against the
+value documented upstream.
+
+- Everything published is freely redistributable: the engine under GPL-2.0
+  (complete corresponding source = the pinned commit + the build script in
+  this public repo, see `retro-fps/licenses/SOURCES.txt`), the game data under
+  Freedoom's free license (`licenses/FREEDOOM-COPYING.txt` + credits).
+- **No commercial game content is ever hosted here.** Only Freedoom's free
+  IWADs are accepted as game data.
+- In-game saves/config live in the reader's browser (the engine mounts
+  `/dwasm` as an Emscripten IDBFS); the tool page exports/imports that store
+  as a session file. `retro-fps/VERSION` is the compatibility key, same rule
+  as the VM images.
+- The VM image build (~1h) is cached in CI on the hash of its inputs, so
+  retro-fps pushes republish the combined Pages site in minutes.
 
 ## Iterating
 
