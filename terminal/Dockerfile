@@ -6,7 +6,7 @@ FROM --platform=linux/386 public.ecr.aws/docker/library/alpine:3.24
 # PIIX disk needs - write the config BEFORE linux-virt so its post-install
 # mkinitfs hook picks it up.
 RUN apk add --no-cache mkinitfs \
- && echo 'features="base ata ext4 virtio"' > /etc/mkinitfs/mkinitfs.conf \
+ && echo 'features="base ata scsi ext4 virtio"' > /etc/mkinitfs/mkinitfs.conf \
  && apk add --no-cache linux-virt \
  && apk add --no-cache openrc busybox-mdev-openrc agetty vim nano htop \
  && test -x /sbin/agetty \
