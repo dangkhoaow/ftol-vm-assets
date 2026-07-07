@@ -20,7 +20,7 @@ const v86BuildDir = path.dirname(url.fileURLToPath(import.meta.resolve("v86")));
 const PROFILES = {
   // marker: what the serial console prints when the machine is ready.
   terminal: { memory_mb: 128, marker: /:~# $/, settle_ms: 5000, timeout_min: 40 },
-  desktop: { memory_mb: 512, marker: /FTOL_READY_DESKTOP/, settle_ms: 30000, timeout_min: 200 },
+  desktop: { memory_mb: 512, marker: /FTOL_READY_DESKTOP/, settle_ms: 30000, timeout_min: 60 },
 };
 const prof = PROFILES[KIND];
 if (!prof) {
