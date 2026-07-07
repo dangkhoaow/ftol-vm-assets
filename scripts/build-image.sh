@@ -17,6 +17,10 @@ mkdir -p "$WORK/rootfs"
 docker export "$CID" | tar -C "$WORK/rootfs" --numeric-owner -xf -
 docker rm "$CID" >/dev/null
 rm -f "$WORK/rootfs/.dockerenv"
+# docker bind-mounts /etc/hostname|hosts|resolv.conf - docker export drops
+# their contents, so the Dockerfile echo never lands. Write them here.
+echo linux-online >"$WORK/rootfs/etc/hostname"
+printf '127.0.0.1\tlocalhost linux-online\n' >"$WORK/rootfs/etc/hosts"
 
 # v86 boots the kernel directly (bzimage + initrd config keys) - no bootloader.
 cp "$WORK/rootfs/boot/vmlinuz-virt" "$OUT/vmlinuz"
