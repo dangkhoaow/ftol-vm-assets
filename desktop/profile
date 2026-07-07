@@ -2,5 +2,6 @@
 # The VGA console auto-logs-in root (see /etc/inittab); start the desktop
 # there. The serial console stays a plain shell for the CI harness.
 if [ "$(tty)" = "/dev/tty1" ] && [ -z "$DISPLAY" ]; then
-    exec startx
+    echo FTOL_TTY1_STARTX >/dev/ttyS0
+    exec startx >/dev/ttyS0 2>&1
 fi
