@@ -1,0 +1,6 @@
+# /root/.profile - Linux Online desktop image.
+# The VGA console auto-logs-in root (see /etc/inittab); start the desktop
+# there. The serial console stays a plain shell for the CI harness.
+if [ "$(tty)" = "/dev/tty1" ] && [ -z "$DISPLAY" ]; then
+    exec startx
+fi

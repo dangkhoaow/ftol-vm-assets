@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Session ready marker
+Comment=Tells the CI snapshot harness the desktop finished starting.
+Exec=sh -c 'echo FTOL_READY_DESKTOP > /dev/ttyS0'
+OnlyShowIn=XFCE;

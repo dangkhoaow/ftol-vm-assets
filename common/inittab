@@ -1,0 +1,10 @@
+# /etc/inittab - Linux Online VM images (terminal + desktop)
+# Auto-login root on the VGA console (what the reader sees in the browser)
+# and on the serial console (used by the CI snapshot harness).
+::sysinit:/sbin/openrc sysinit
+::sysinit:/sbin/openrc boot
+::wait:/sbin/openrc default
+tty1::respawn:/sbin/agetty --autologin root --noclear tty1 38400 linux
+ttyS0::respawn:/sbin/agetty --autologin root --noclear ttyS0 115200 vt100
+::ctrlaltdel:/sbin/reboot
+::shutdown:/sbin/openrc shutdown

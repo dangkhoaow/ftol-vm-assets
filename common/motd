@@ -1,0 +1,11 @@
+
+Linux Online - real Alpine Linux running in your browser (v86 emulator).
+
+  * This machine has no network access, by design: nothing you do here
+    leaves the page.
+  * Changes live in this session only. Use the page buttons to save the
+    session in this browser, or export it as a file and import it later
+    on any machine to continue exactly where you stopped.
+
+Try: ls /   vi hello.txt   htop   uname -a
+
