@@ -95,3 +95,17 @@ Push a change (or trigger `build-and-publish` via workflow_dispatch). Debug
 levers: kernel `cmdline` + ready markers/timeouts in `scripts/snapshot.mjs`
 (PROFILES table), package set in the Dockerfiles. Failed runs upload their
 step logs to the `vm-assets-debug` prerelease for unauthenticated reading.
+
+## Vendored browser libraries (`vendor/`)
+
+Version-pinned third-party libraries served to freetoolonline.com pages
+cross-origin (classic `<script src>` - no CORS requirement), so the site
+repos do not have to commit the bytes:
+
+- `vendor/3d-force-graph/1.80.0/3d-force-graph.min.js` (MIT, license
+  alongside) - UMD bundle (ThreeJS included) powering the homepage
+  knowledge-graph explorer. sha256
+  `d96e738edcca580edd524730c1c6b05ed2efce028c23ca95db1bf43033a72e42`.
+
+Add new libraries under `vendor/<name>/<version>/...` - the version-pinned
+path makes each URL immutable, so consumers never need cache-busting.

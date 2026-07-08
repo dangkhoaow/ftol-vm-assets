@@ -105,6 +105,11 @@ jobs:
           cp -a out/vm-release/. out/site/
           mkdir -p out/site/retro-fps
           cp -a out/retro-fps/. out/site/retro-fps/
+          # vendor/ ships as-is: version-pinned third-party browser libraries
+          # (small enough to live in git - only the VM/engine binaries stay
+          # out). Consumed cross-origin by freetoolonline.com via <script src>
+          # so the site repos never carry the bytes.
+          cp -a vendor out/site/vendor
           bash scripts/make-index.sh out/site
       - name: Upload step logs on failure (public debug channel)
         if: failure()
