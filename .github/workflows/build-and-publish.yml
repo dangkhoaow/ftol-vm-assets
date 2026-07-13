@@ -97,6 +97,32 @@ jobs:
           set -o pipefail
           bash retro-fps/build-retro-fps.sh 2>&1 | tee build-retro-fps.log
 
+      # ---------- Space-3D visualizer assets (real datasets; procedural-first) ----------
+      # Most /space-3d pages render 100% procedurally and need nothing here.
+      # This builds the minority that use a large real dataset (seed: the Mars
+      # MOLA elevation heightmap). Cached on space-3d/** so it only rebuilds when
+      # the pipeline changes - the ~2.1 GB MOLA source is re-fetched only then.
+      - name: Restore space-3d cache
+        id: s3d-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: out/space-3d
+          key: space-3d-${{ hashFiles('space-3d/**') }}
+      - name: Install GDAL (space-3d raster processing)
+        if: steps.s3d-cache.outputs.cache-hit != 'true'
+        run: sudo apt-get update -q && sudo apt-get install -y -q gdal-bin
+      - name: Build space-3d assets
+        if: steps.s3d-cache.outputs.cache-hit != 'true'
+        run: |
+          set -o pipefail
+          bash space-3d/build-space-3d.sh mars-terrain 2>&1 | tee build-space-3d.log
+      - name: Save space-3d cache
+        if: steps.s3d-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: out/space-3d
+          key: space-3d-${{ hashFiles('space-3d/**') }}
+
       # ---------- Assemble + publish the combined Pages site ----------
       - name: Assemble site
         run: |
@@ -105,6 +131,8 @@ jobs:
           cp -a out/vm-release/. out/site/
           mkdir -p out/site/retro-fps
           cp -a out/retro-fps/. out/site/retro-fps/
+          mkdir -p out/site/space-3d
+          cp -a out/space-3d/. out/site/space-3d/
           # vendor/ ships as-is: version-pinned third-party browser libraries
           # (small enough to live in git - only the VM/engine binaries stay
           # out). Consumed cross-origin by freetoolonline.com via <script src>
@@ -119,7 +147,7 @@ jobs:
           gh release view vm-assets-debug --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create vm-assets-debug --repo "$GITHUB_REPOSITORY" --prerelease \
               --title "vm-images debug logs" --notes "Step logs from failed runs. Safe to delete."
-          for f in build-terminal.log build-desktop.log snapshot-terminal.log snapshot-desktop.log package.log build-retro-fps.log; do
+          for f in build-terminal.log build-desktop.log snapshot-terminal.log snapshot-desktop.log package.log build-retro-fps.log build-space-3d.log; do
             [ -s "$f" ] && gh release upload vm-assets-debug "$f" --repo "$GITHUB_REPOSITORY" --clobber || true
           done
           for f in out/retro-fps-work/dwasm/build_native/cmake-native.log \

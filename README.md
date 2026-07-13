@@ -1,6 +1,6 @@
 # ftol-vm-assets - in-browser asset CDN for freetoolonline.com
 
-Build pipelines for two freetoolonline.com tool pages:
+Build pipelines for the large browser assets used by freetoolonline.com:
 
 - **Linux Online** (`/utility-tools/linux-online.html`) - disk images + boot
   snapshots for real 32-bit Alpine Linux running in the reader's browser via
@@ -9,6 +9,12 @@ Build pipelines for two freetoolonline.com tool pages:
   (PrBoom+/PrBoomX family, GPL-2.0) engine compiled to WebAssembly with the
   free [Freedoom](https://freedoom.github.io/) game data baked in. See
   "Retro FPS Online assets" below.
+- **Space-3D visualizers** (`/space-3d/*.html`) - large REAL astronomical
+  datasets/textures for the procedural three.js visualizer cluster. Most
+  `/space-3d` pages render fully procedurally and use nothing here; this hosts
+  only the minority whose value is a real published dataset too big to commit
+  into the site repo (seed: the Mars MOLA elevation heightmap). See "Space-3D
+  visualizer assets" below.
 
 The built assets are published to this repository's **GitHub Pages site**
 (deploy-from-artifact - they never enter git):
@@ -88,6 +94,44 @@ value documented upstream.
   as the VM images.
 - The VM image build (~1h) is cached in CI on the hash of its inputs, so
   retro-fps pushes republish the combined Pages site in minutes.
+
+## Space-3D visualizer assets
+
+`space-3d/build-space-3d.sh <asset-id>` builds large REAL data assets for the
+freetoolonline.com `/space-3d` cluster (procedural three.js astronomy
+visualizers - see `prompts/space-3d-discovery-loop-runbook.md` in the site
+repo). The cluster is **procedural-first**: the scene geometry is generated in
+code and most pages need nothing from this repo. This pipeline exists only for
+the minority whose whole value is a real published dataset/texture too large to
+commit into the site repo.
+
+Seeded with **`mars-terrain`**: the Mars MGS MOLA global elevation DEM (463 m/px,
+~2.1 GB GeoTIFF, elevations referenced to the areoid) is fetched from USGS
+Astrogeology (PDS), downsampled with GDAL to a `2048x1024` 16-bit grayscale
+equirectangular heightmap PNG, and published with a decode formula so the scene
+recovers true meters (Olympus Mons summit ~21 km above the areoid; Hellas basin
+floor ~-8 km). NASA/USGS MOLA data are a U.S. Government work = **public domain**.
+
+- Layout: `space-3d/build-space-3d.sh` (one asset per invocation; add a
+  `build_<slug>` function + a `case` arm for each new asset),
+  `space-3d/make-space-3d-manifest.mjs` (scans `out/space-3d/<slug>/descriptor.json`,
+  hashes the published files, writes `space-3d/manifest.json`), `space-3d/VERSION`.
+- `space-3d/manifest.json` (schema `ftol-space-3d/1`) carries, per asset, the
+  published files with `bytes` + `sha256` + the scientific metadata (elevation
+  extent, decode formula, source, license). The tool page fetches
+  `https://dangkhoaow.github.io/ftol-vm-assets/space-3d/manifest.json` first,
+  then downloads each asset once and caches it in IndexedDB (same pattern as
+  retro-fps). Unlike retro-fps the files are **not gzipped** - images load in the
+  browser directly (TextureLoader / fetch->blob) and JSON is gzipped on the wire
+  by Pages automatically.
+- **License gate:** every asset must be freely redistributable, verified
+  per-file, with a `LICENSE`/`CREDITS.txt` under `space-3d/.../licenses/` and the
+  source + license recorded in the asset's `descriptor.json`. Public-domain
+  NASA/USGS data and CC-BY textures (attributed) are in; copyrighted, NC, or
+  unlicensed assets are out.
+
+The space-3d build is cached in CI on the hash of `space-3d/**`, so the ~2.1 GB
+MOLA source is re-fetched only when the pipeline actually changes.
 
 ## Iterating
 

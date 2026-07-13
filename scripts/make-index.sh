@@ -7,7 +7,7 @@ REL="${1:?usage: make-index.sh <release-dir>}"
 {
   echo '<!doctype html><meta charset="utf-8"><title>ftol-vm-assets</title>'
   echo '<h1>freetoolonline.com in-browser asset CDN</h1>'
-  echo '<p>Linux Online VM images (v86 boot-state snapshots) and Retro FPS Online engine/game data. Built by CI from the ftol-vm-assets repository; see its README and the licenses/ folders for provenance and licenses.</p><ul>'
+  echo '<p>Linux Online VM images (v86 boot-state snapshots), Retro FPS Online engine/game data, and Space-3D visualizer datasets (e.g. Mars MOLA elevation). Built by CI from the ftol-vm-assets repository; see its README and the licenses/ folders for provenance and licenses.</p><ul>'
   for f in "$REL"/*; do
     b="$(basename "$f")"
     [ "$b" = "index.html" ] && continue
