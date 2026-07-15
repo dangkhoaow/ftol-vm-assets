@@ -23,6 +23,38 @@ velociraptor.glb
   Via:      Poly Pizza - https://poly.pizza/m/cnlGH2UcDd
   Origin:   https://static.poly.pizza/c1f0c4cb-c84f-415c-8323-d8cb871a2126.glb
   Note:     Stylised low-poly reconstruction. Credit is given voluntarily.
+
+triceratops.glb
+  Title:    Triceratops
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/IGvrUqGrRM
+  Origin:   https://static.poly.pizza/6aa1f3ff-b9b3-4bb5-9d85-b2ffa514f0cc.glb
+  Note:     Stylised low-poly reconstruction (Animated Dinosaur Bundle). Credit voluntary.
+
+stegosaurus.glb
+  Title:    Stegosaurus
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/eFcNbOlpvl
+  Origin:   https://static.poly.pizza/6f8f4ac6-f9e8-488d-97a8-220b9b2fd02a.glb
+  Note:     Stylised low-poly reconstruction (Animated Dinosaur Bundle). Credit voluntary.
+
+apatosaurus.glb
+  Title:    Apatosaurus
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/fvo0x8Zk3z
+  Origin:   https://static.poly.pizza/7b873860-f23f-4266-b341-5c5e6770cfa0.glb
+  Note:     Stylised low-poly reconstruction (Animated Dinosaur Bundle). Credit voluntary.
+
+parasaurolophus.glb
+  Title:    Parasaurolophus
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/KeeQrrouRK
+  Origin:   https://static.poly.pizza/47b9d0bd-cddb-49be-b072-12201def24a9.glb
+  Note:     Stylised low-poly reconstruction (Animated Dinosaur Bundle). Credit voluntary.
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode

@@ -19,6 +19,42 @@
       "credit": "Velociraptor model by Quaternius (CC0, via Poly Pizza)",
       "source_url": "https://poly.pizza/m/cnlGH2UcDd",
       "origin_download": "https://static.poly.pizza/c1f0c4cb-c84f-415c-8323-d8cb871a2126.glb"
+    },
+    "triceratops": {
+      "file": "triceratops.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Triceratops model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/IGvrUqGrRM",
+      "origin_download": "https://static.poly.pizza/6aa1f3ff-b9b3-4bb5-9d85-b2ffa514f0cc.glb"
+    },
+    "stegosaurus": {
+      "file": "stegosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Stegosaurus model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/eFcNbOlpvl",
+      "origin_download": "https://static.poly.pizza/6f8f4ac6-f9e8-488d-97a8-220b9b2fd02a.glb"
+    },
+    "apatosaurus": {
+      "file": "apatosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Apatosaurus model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/fvo0x8Zk3z",
+      "origin_download": "https://static.poly.pizza/7b873860-f23f-4266-b341-5c5e6770cfa0.glb"
+    },
+    "parasaurolophus": {
+      "file": "parasaurolophus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Parasaurolophus model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/KeeQrrouRK",
+      "origin_download": "https://static.poly.pizza/47b9d0bd-cddb-49be-b072-12201def24a9.glb"
     }
   }
 }
