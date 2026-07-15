@@ -1,0 +1,28 @@
+dinosaur-3d asset credits + per-file license record
+=====================================================
+
+Every file below was verified to be freely redistributable PER FILE before being
+re-hosted here. Franchise/game-derived models (e.g. "Jurassic World/Park") and
+NonCommercial (CC-BY-NC) models were REJECTED regardless of any CC label an
+uploader applied, because the underlying studio copyright is not the uploader's
+to relicense.
+
+-----------------------------------------------------------------------------
+tyrannosaurus-rex.glb
+  Title:    T-Rex
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/UYtneO5FpF
+  Origin:   https://static.poly.pizza/34eed102-48f0-43dd-bc6f-ef7a6dfddfbb.glb
+  Note:     Stylised low-poly reconstruction. Credit is given voluntarily.
+
+velociraptor.glb
+  Title:    Velociraptor
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/cnlGH2UcDd
+  Origin:   https://static.poly.pizza/c1f0c4cb-c84f-415c-8323-d8cb871a2126.glb
+  Note:     Stylised low-poly reconstruction. Credit is given voluntarily.
+-----------------------------------------------------------------------------
+
+CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode

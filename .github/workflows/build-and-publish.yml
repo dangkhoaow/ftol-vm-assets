@@ -133,6 +133,10 @@ jobs:
           cp -a out/retro-fps/. out/site/retro-fps/
           mkdir -p out/site/space-3d
           cp -a out/space-3d/. out/site/space-3d/
+          # dinosaur-3d/ ships as-is: tiny CC0 glTF models committed to git
+          # (same rationale as vendor/ - ~0.3 MB each, license-clean), served
+          # with CORS for the /dinosaur-3d viewer pages' optional photoreal layer.
+          cp -a dinosaur-3d out/site/dinosaur-3d
           # vendor/ ships as-is: version-pinned third-party browser libraries
           # (small enough to live in git - only the VM/engine binaries stay
           # out). Consumed cross-origin by freetoolonline.com via <script src>

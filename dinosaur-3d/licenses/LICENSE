@@ -1,0 +1,10 @@
+The 3D model files in this directory are third-party assets, each dedicated to
+the public domain under CC0 1.0 Universal (see licenses/CREDITS.txt for the
+per-file record). CC0 places no restriction on use or redistribution and requires
+no attribution; credit is nonetheless given in CREDITS.txt and in the viewer's
+info panel.
+
+CC0 1.0 Universal: https://creativecommons.org/publicdomain/zero/1.0/
+
+The scaffolding in this directory (sources.json, make-dinosaur-3d-manifest.mjs,
+build-dinosaur-3d.sh, README.md) is part of the ftol-vm-assets project.

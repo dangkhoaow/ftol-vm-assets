@@ -1,0 +1,28 @@
+{
+  "schema": "ftol-dinosaur-3d/1",
+  "version": "1.0.0",
+  "category": "dinosaur-3d",
+  "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
+  "models": {
+    "tyrannosaurus-rex": {
+      "file": "tyrannosaurus-rex.glb",
+      "bytes": 336568,
+      "sha256": "e1c9862deef89f096c7d85dacf62aa9ce48089e5867d2bf632ed1e1733013349",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "T. rex model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/UYtneO5FpF"
+    },
+    "velociraptor": {
+      "file": "velociraptor.glb",
+      "bytes": 285828,
+      "sha256": "1d9ecad0a65c0c858a216ff25f224d02b18ce86fa0ed4df8f9ecece43f3a745c",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Velociraptor model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/cnlGH2UcDd"
+    }
+  }
+}

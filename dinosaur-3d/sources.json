@@ -1,0 +1,24 @@
+{
+  "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / public-domain), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
+  "version": "1.0.0",
+  "models": {
+    "tyrannosaurus-rex": {
+      "file": "tyrannosaurus-rex.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "T. rex model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/UYtneO5FpF",
+      "origin_download": "https://static.poly.pizza/34eed102-48f0-43dd-bc6f-ef7a6dfddfbb.glb"
+    },
+    "velociraptor": {
+      "file": "velociraptor.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Velociraptor model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/cnlGH2UcDd",
+      "origin_download": "https://static.poly.pizza/c1f0c4cb-c84f-415c-8323-d8cb871a2126.glb"
+    }
+  }
+}
