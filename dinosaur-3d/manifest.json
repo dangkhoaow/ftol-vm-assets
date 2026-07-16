@@ -63,6 +63,16 @@
       "license": "CC0 1.0",
       "credit": "Parasaurolophus model by Quaternius (CC0, via Poly Pizza)",
       "source_url": "https://poly.pizza/m/KeeQrrouRK"
+    },
+    "diplodocus": {
+      "file": "diplodocus.glb",
+      "bytes": 48440,
+      "sha256": "0a7788471ba64f1a2d7d0c0c73d8808422e3249386ce7ea2dde6e94a9688b641",
+      "kind": "fleshed",
+      "targetLenUnits": 17,
+      "license": "CC-BY 3.0",
+      "credit": "Diplodocus model by Poly by Google (CC-BY 3.0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/12n6ICAVpYB"
     }
   }
 }
