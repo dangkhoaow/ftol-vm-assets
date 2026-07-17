@@ -275,6 +275,21 @@ pachycephalosaurus.glb
             ornamentation, bipedal stance, long tail. Under ShareAlike this GLB is
             CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
 
+brachiosaurus.glb
+  Title:    Brachiosaurus dinosaur
+  Author:   gabi123
+  License:  CC0 1.0 Universal (Public Domain dedication) - no attribution required
+  Via:      Printables - https://www.printables.com/model/1553840-brachiosaurus-dinosaur
+  Origin:   https://files.printables.com/media/prints/c01e58a2-d7a4-401b-b5b2-03e8b78fd884/stls/.../brachiosaurus-dinosaur.stl (Printables GraphQL API)
+  Note:     DERIVATIVE: print STL (geometry only, no color). Fetched anonymously via
+            the Printables GraphQL API. Converted headlessly (bpy 5.0.1): decimated
+            1,499,548 -> 25,000 tris + vertex-color countershading (dark dorsal ->
+            light ventral), ~600 KB, COLOR_0. Render-proven: quadrupedal sauropod with
+            a raised long neck, small head, sturdy legs, tail - reads as a long-necked
+            sauropod (brachiosaurus; proportions are somewhat generic but a genuine,
+            non-fantasy sauropod - a real-mesh upgrade over the crude procedural body).
+            CC0 - credit given voluntarily.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
