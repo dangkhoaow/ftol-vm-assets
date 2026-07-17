@@ -263,6 +263,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Protoceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 218k->16k tris)",
       "source_url": "https://www.printables.com/model/752983-protoceratops"
+    },
+    "ceratosaurus": {
+      "file": "ceratosaurus.glb",
+      "bytes": 390936,
+      "sha256": "fdd2d0966bb7eed50be61a47da4c53cebca2e74b8ac6adb87bf5bae613c69ec0",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ceratosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 79k->16k tris)",
+      "source_url": "https://www.printables.com/model/757229-ceratosaurus"
     }
   }
 }

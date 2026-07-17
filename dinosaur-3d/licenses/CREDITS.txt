@@ -386,3 +386,19 @@ protoceratops.glb
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
 CC-BY 3.0 full text: https://creativecommons.org/licenses/by/3.0/legalcode
 CC-BY-SA 3.0 full text: https://creativecommons.org/licenses/by-sa/3.0/legalcode
+
+ceratosaurus.glb
+  Title:    ceratosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757229-ceratosaurus
+  Origin:   https://files.printables.com/media/prints/757229/stls/5906938_948097ea-ae56-4ead-b4f4-4fb3c81437fa_bbca66c4-0546-4524-95a1-611037bf1805/cero.obj
+  Notes:    Original Sculptris sculpt (header: "OBJ Exported from DrPetter's Sculptris");
+            filename cero.obj carries no daz_originals/commercial-content naming red flag.
+            Printables license id "2" = Creative Commons Attribution Share Alike
+            (cross-checked against already-shipped edmontosaurus/ichthyosaurus/protoceratops).
+            Fetched anonymously via Printables GraphQL getDownloadLink (source: model_detail)
+            + direct static URL from filePreviewPath folder. Converted headlessly via
+            trimesh + Open3D decimation (79,306 -> 16,000 tris) with vertex-color
+            countershading (olive dorsal / sandy ventral). ShareAlike: re-hosted
+            derivative remains under CC-BY-SA 4.0.
