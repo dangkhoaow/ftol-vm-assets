@@ -253,6 +253,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Edmontosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/747427-edmontosaurus"
+    },
+    "protoceratops": {
+      "file": "protoceratops.glb",
+      "bytes": 327404,
+      "sha256": "65e28d950327f7a52f8f2ddb9e45830e46832a659624acde639335fce466027e",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Protoceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 218k->16k tris)",
+      "source_url": "https://www.printables.com/model/752983-protoceratops"
     }
   }
 }

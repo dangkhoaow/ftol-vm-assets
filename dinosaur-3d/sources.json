@@ -226,6 +226,15 @@
       "credit": "Edmontosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/747427-edmontosaurus",
       "origin_download": "https://files.printables.com/media/prints/747427/stls/5835712_7efe0a51-8ee3-4075-8399-ac493068f25a_d874f889-d9c0-4307-9beb-f64b8c64d9d3/edmontosaurus.stl"
+    },
+    "protoceratops": {
+      "file": "protoceratops.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Protoceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 218k->16k tris)",
+      "source_url": "https://www.printables.com/model/752983-protoceratops",
+      "origin_download": "https://files.printables.com/media/prints/752983/stls/5875710_cbaa598f-87a4-4fc8-8178-4248e42034a1_ce624f75-af45-4294-a084-8b139e6674bd/18592_protoceratops_v1.obj"
     }
   }
 }

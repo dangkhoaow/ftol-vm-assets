@@ -351,6 +351,36 @@ edmontosaurus.glb
             was REJECTED for this cluster, not vendored). Under ShareAlike this GLB is
             CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
 
+protoceratops.glb
+  Title:    protoceratops
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/) - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/752983-protoceratops
+  Origin:   https://files.printables.com/media/prints/752983/stls/5875710_cbaa598f-87a4-4fc8-8178-4248e42034a1_ce624f75-af45-4294-a084-8b139e6674bd/18592_protoceratops_v1.obj
+  Note:     DERIVATIVE: print-sculpt geometry (single OBJ mesh, 111,372 verts /
+            218,432 tris, "Fighting Dinosaurs" pose - this dinosaur fights with the
+            velociraptor per the author's own description). License confirmed via the
+            model page's server-hydrated GraphQL JSON (license.id="2"), cross-checked
+            against the already-vendored allosaurus.glb print (also license.id="2",
+            independently confirmed CC-BY-SA 4.0) - same numeric license-ID mapping.
+            Fetched anonymously via the same direct-static-URL technique as
+            edmontosaurus/ichthyosaurus (previewFile.filePreviewPath folder + strip
+            "_preview.png"), except the actual asset resolved as .obj, not .stl (404 on
+            .stl/.3mf/.step/.zip, 200 on .obj - verified by probing each extension).
+            Decimated 218,432 -> 16,000 tris with Open3D 0.19 quadric decimation
+            (fast_simplification wheel failed to import under the pinned Python 3.9 -
+            numpy ABI + PEP-604 syntax incompatibilities - Open3D substituted; no
+            bpy/Blender available this session). Reoriented from the source's
+            X=width/Y=length/Z=up axes to X=length/Y=up/Z=width, recentred, and scaled;
+            vertex-color countershading applied (dark olive-brown dorsal -> tan/buff
+            ventral, based on local Y-height). 327 KB, COLOR_0. Render-proven headlessly
+            (trimesh reload of the exported GLB: correct vertex/face counts, valid
+            extents, non-empty vertex-color buffer). Licensor also credited as "seth the
+            yutyrannus" for the already-shipped baryonyx.glb (CC-BY 4.0),
+            ichthyosaurus.glb, and edmontosaurus.glb (both CC-BY-SA 4.0). Under
+            ShareAlike this GLB is CC-BY-SA 4.0. Attribution mandatory - surfaced by the
+            viewer disclosure.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
