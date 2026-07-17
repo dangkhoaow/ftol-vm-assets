@@ -127,6 +127,15 @@
       "credit": "Ankylosaurus model by Manicaeks (CC0, via OpenGameArt; textured glTF conversion)",
       "source_url": "https://opengameart.org/content/anklyosaurus",
       "origin_download": "https://opengameart.org/sites/default/files/Anklyosaurus.zip"
+    },
+    "carnotaurus": {
+      "file": "carnotaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 3.0",
+      "credit": "Carnotaurus model by Mike Carey (CC-BY 3.0, via OpenGameArt; diffuse-color glTF conversion)",
+      "source_url": "https://opengameart.org/content/carnotaurus",
+      "origin_download": "https://opengameart.org/sites/default/files/carnotaurus.blend"
     }
   }
 }

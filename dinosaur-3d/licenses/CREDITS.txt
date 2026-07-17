@@ -155,6 +155,20 @@ ankylosaurus.glb
             body, osteoderm plate rows, tail club, visible eye. Part 4 of the
             author's CC0 dinosaurs pack. Credit given voluntarily (CC0).
 
+carnotaurus.glb
+  Title:    Carnotaurus
+  Author:   Mike Carey (unklemikey)
+  License:  CC-BY 3.0 (https://creativecommons.org/licenses/by/3.0/) - ATTRIBUTION REQUIRED
+  Via:      OpenGameArt - https://opengameart.org/content/carnotaurus
+  Origin:   https://opengameart.org/sites/default/files/carnotaurus.blend
+  Note:     DERIVATIVE: converted from the source .blend headlessly (bpy 5.0.1).
+            Blender-2.70 model with per-part diffuse-color materials (carskin1/2
+            brown+tan, carstripes dark-red, carteeth grey, carmouth, carnails);
+            each rebuilt as a Principled BSDF from its diffuse color (no image
+            texture in source), 4606 tris ~110KB. Render-proven species-accurate:
+            the diagnostic paired brow horns, deep skull, striped body. Attribution
+            mandatory - surfaced by the viewer disclosure. Do NOT strip the credit.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
