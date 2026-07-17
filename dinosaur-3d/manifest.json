@@ -113,6 +113,16 @@
       "license": "CC-BY 4.0",
       "credit": "Pachyrhinosaurus model by SUMO STUDIOS (CC-BY 4.0, via OpenGameArt; decimated glTF conversion)",
       "source_url": "https://opengameart.org/content/low-poly-pachy-dinosaur"
+    },
+    "deinonychus": {
+      "file": "deinonychus.glb",
+      "bytes": 1158864,
+      "sha256": "7ca5a26419e036dfe515e075233076fb93bf27a684d37f9fb6e1f5b1193d4a2f",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Deinonychus model by Animaniac888 (CC0, via OpenGameArt 'Dromaeosaur'; textured glTF conversion)",
+      "source_url": "https://opengameart.org/content/dromaeosaur-dinosaur"
     }
   }
 }

@@ -114,6 +114,19 @@ pachyrhinosaurus.glb
             ceratopsian, orange body + white horns/frill spikes). Attribution
             mandatory - surfaced by the viewer disclosure.
 
+deinonychus.glb
+  Title:    Dromaeosaur (used for Deinonychus - the archetypal dromaeosaurid)
+  Author:   Animaniac888 (uploaded to OpenGameArt by josepharaoh99; orig. BlendSwap)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      OpenGameArt - https://opengameart.org/content/dromaeosaur-dinosaur
+  Origin:   https://opengameart.org/sites/default/files/Dromaeosaur.blend
+  Note:     DERIVATIVE: converted from the source .blend headlessly (bpy 5.0.1) -
+            dropped the ground plane, rebuilt legacy 2.77 materials as Principled
+            (body 2048->1024 Diffuse on the 'Diffuse' UV set; Raptor Eye tex;
+            white teeth; dark claws), decimated to ~22k tris, JPEG textures.
+            Deinonychus is the type dromaeosaur, so this rigged raptor body is a
+            faithful match. Credit given voluntarily.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
