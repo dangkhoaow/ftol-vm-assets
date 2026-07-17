@@ -183,6 +183,16 @@
       "license": "CC-BY 4.0",
       "credit": "Baryonyx model by seth the yutyrannus (CC-BY 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/747399-baryonyx"
+    },
+    "plesiosaurus": {
+      "file": "plesiosaurus.glb",
+      "bytes": 556268,
+      "sha256": "7e11982a0e6d9030bc382a8a94f8ec1e1c73acc822b8404a275b7588a2b0afc4",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Plesiosaurus model by MZ4250 (CC-BY 4.0, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/39379-plesiosaurus-updated"
     }
   }
 }

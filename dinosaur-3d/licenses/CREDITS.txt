@@ -218,6 +218,22 @@ baryonyx.glb
             - a generic paleoart Baryonyx, NOT a franchise depiction. Attribution
             mandatory - surfaced by the viewer disclosure.
 
+plesiosaurus.glb
+  Title:    Plesiosaurus Updated
+  Author:   MZ4250
+  License:  CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - ATTRIBUTION REQUIRED
+  Via:      Printables - https://www.printables.com/model/39379-plesiosaurus-updated
+  Origin:   https://files.printables.com/media/prints/39379/stls/389324_23868709-fbf9-4d26-8530-e92338c2d199/plesiosaurus-updated.stl
+  Note:     DERIVATIVE: print STL (geometry only, no color), plain full-body variant
+            (NOT the in-water diorama variant). Fetched anonymously via the Printables
+            GraphQL API. Converted headlessly (bpy 5.0.1): decimated 563,686 -> 25,000
+            tris + biologically-plausible vertex-color countershading (dark dorsal ->
+            light ventral, as in real marine reptiles). ~560 KB, COLOR_0. Render-proven
+            in plan view: diagnostic plesiosaur body plan - long neck + small head, broad
+            teardrop body, two pairs of large paddle flippers, short tail. This clears
+            the last staging render-gate finding. Attribution mandatory - surfaced by
+            the viewer disclosure.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
