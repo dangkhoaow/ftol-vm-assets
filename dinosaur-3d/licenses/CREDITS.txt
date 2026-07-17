@@ -313,6 +313,44 @@ ichthyosaurus.glb
             ShareAlike this GLB is CC-BY-SA 4.0. Attribution mandatory - surfaced by
             the viewer disclosure.
 
+edmontosaurus.glb
+  Title:    edmontosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/) - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/747427-edmontosaurus
+  Origin:   https://files.printables.com/media/prints/747427/stls/5835712_7efe0a51-8ee3-4075-8399-ac493068f25a_d874f889-d9c0-4307-9beb-f64b8c64d9d3/edmontosaurus.stl
+  Note:     DERIVATIVE: print-sculpt geometry (single mesh, 9,207 verts / 17,982 tris,
+            no color). Fetched anonymously via a direct static-asset URL derived from
+            the model's own filePreviewPath (Printables' GraphQL schema exposes no
+            downloadLink/url field anonymously - the working technique is to take the
+            known STL filename + the preview image's folder path from the `stls[]`
+            list and request it from files.printables.com/media/prints/<id>/stls/<same
+            folder>/<filename> directly; verified by exact byte-count match against the
+            API-reported fileSize). Converted headlessly (trimesh 4.12.2 + numpy,
+            Python - no bpy/Blender available this session; no decimation needed,
+            already low-poly) with vertex-color countershading (dark olive-brown dorsal
+            -> light tan ventral, based on local Y-height). 356 KB, COLOR_0.
+            Orientation-verified before conversion via numpy+PIL orthographic point
+            rasters (no matplotlib available): side view shows a clear standing
+            hadrosaur silhouette (duck-billed head, sweeping tail, legs at the
+            Y-near-zero base) - the raw STL is already Y-up with feet at y~=0, so zero
+            rotation was applied. Render-proven headlessly (Playwright, channel:'chrome'
+            against system Chrome since the pinned Playwright browser build is retired
+            upstream - same fix fire70/fire73 documented) + the actual vendored
+            GLTFLoader: 1 mesh, 17,982 tris, 0 NaN vertices, 0 WebGL errors; screenshot
+            confirms a recognizable duck-billed hadrosaur silhouette standing on 4 legs
+            with a long tail and no head crest (correct for Edmontosaurus, distinct
+            from the crested Parasaurolophus already shipped). Licensor also credited
+            as "seth the yutyrannus" for the already-shipped baryonyx.glb (CC-BY 4.0)
+            and ichthyosaurus.glb (CC-BY-SA 4.0) - this file's plain filename
+            ("edmontosaurus.stl") carries none of the "daz_originals"/commercial-content
+            naming red flag found on a DIFFERENT same-creator Printables upload
+            (euoplocephalus, print id 1023372, filename
+            "daz_originals__dinorauls_euoplocephalus.obj" - traced via WebSearch to a
+            paid Daz3D marketplace product, "EuoplocephalusDR" by Dinoraul's; that lead
+            was REJECTED for this cluster, not vendored). Under ShareAlike this GLB is
+            CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode

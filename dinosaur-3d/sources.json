@@ -217,6 +217,15 @@
       "credit": "Ichthyosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/757285-ichthyosaurus",
       "origin_download": "https://files.printables.com/media/prints/757285/stls/5907332_157ebf9f-26da-4e99-9a41-c9682745c755_616d5a65-46fe-48ff-8240-5daed4ea74dc/miconvcom__icthyosaurus.obj"
+    },
+    "edmontosaurus": {
+      "file": "edmontosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Edmontosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/747427-edmontosaurus",
+      "origin_download": "https://files.printables.com/media/prints/747427/stls/5835712_7efe0a51-8ee3-4075-8399-ac493068f25a_d874f889-d9c0-4307-9beb-f64b8c64d9d3/edmontosaurus.stl"
     }
   }
 }
