@@ -93,6 +93,27 @@ spinosaurus.glb
             Under ShareAlike this converted GLB is itself licensed CC-BY-SA 3.0.
             Attribution is mandatory: the manifest 'credit' field is surfaced by
             the viewer's assetInfo disclosure. Do NOT strip the credit.
+ground-sloth.glb
+  Title:    Ground sloth (Megatherium)
+  Author:   Poly by Google (the archived Google Poly asset library)
+  License:  CC-BY 3.0 (https://creativecommons.org/licenses/by/3.0/) - ATTRIBUTION REQUIRED
+  Via:      Poly Pizza - https://poly.pizza/m/34WS63awSqJ
+  Origin:   https://static.poly.pizza/eb938e39-4d71-4505-b478-4cfb62588143.glb
+  Note:     Extinct giant ground sloth (Pleistocene megafauna). Prehistoric-animal
+            cluster member. Attribution mandatory - surfaced by the viewer disclosure.
+
+pachyrhinosaurus.glb
+  Title:    Low Poly Pachy (Pachyrhinosaurus)
+  Author:   SUMO STUDIOS
+  License:  CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - ATTRIBUTION REQUIRED
+            (source dual-licensed CC-BY 4.0 / CC0; we record the stricter CC-BY)
+  Via:      OpenGameArt - https://opengameart.org/content/low-poly-pachy-dinosaur
+  Origin:   https://opengameart.org/sites/default/files/Pachy.blend
+  Note:     DERIVATIVE: converted from the source .blend headlessly (bpy 5.0.1),
+            legacy materials rebuilt as Principled from diffuse colors (nasal-boss
+            ceratopsian, orange body + white horns/frill spikes). Attribution
+            mandatory - surfaced by the viewer disclosure.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode

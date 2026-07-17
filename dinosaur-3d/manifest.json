@@ -93,6 +93,26 @@
       "license": "CC0 1.0",
       "credit": "Pterosaur model by pistachio (CC0, via OpenGameArt; glide-pose glTF conversion)",
       "source_url": "https://opengameart.org/content/low-spec-pterosaur"
+    },
+    "ground-sloth": {
+      "file": "ground-sloth.glb",
+      "bytes": 1831568,
+      "sha256": "9d1cc4c285041cfd0403e69a974d31754049a1bcfc1de173443de8737472b9b6",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 3.0",
+      "credit": "Ground Sloth (Megatherium) model by Poly by Google (CC-BY 3.0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/34WS63awSqJ"
+    },
+    "pachyrhinosaurus": {
+      "file": "pachyrhinosaurus.glb",
+      "bytes": 66420,
+      "sha256": "4ba3dd4539c68435c012e903c4454f129bf330371d483b34eb7596c32567a415",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Pachyrhinosaurus model by SUMO STUDIOS (CC-BY 4.0, via OpenGameArt; decimated glTF conversion)",
+      "source_url": "https://opengameart.org/content/low-poly-pachy-dinosaur"
     }
   }
 }
