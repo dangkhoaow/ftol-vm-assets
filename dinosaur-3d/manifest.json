@@ -174,6 +174,16 @@
       "credit": "Dilophosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate posed sculpt with scale + feather detail, decimated STL->glTF with applied countershading, same ShareAlike license)",
       "source_url": "https://www.printables.com/model/413711-scientifically-accurate-dilophosaurus-statue"
     },
+    "baryonyx": {
+      "file": "baryonyx.glb",
+      "bytes": 506656,
+      "sha256": "b0979de4d7b152ba962f5f6b9ca565f476bb3b77d2b763195a9ddb9965d3a663",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Baryonyx model by seth the yutyrannus (CC-BY 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/747399-baryonyx"
+    },
     "plesiosaurus": {
       "file": "plesiosaurus.glb",
       "bytes": 556268,
@@ -213,6 +223,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Pachycephalosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate posed sculpt with scale + skin detail, decimated STL->glTF with applied countershading, same ShareAlike license)",
       "source_url": "https://www.printables.com/model/400375-pachycephalosaurus-figurine"
+    },
+    "brachiosaurus": {
+      "file": "brachiosaurus.glb",
+      "bytes": 601376,
+      "sha256": "d0c1c51ec0c0cd28c25eb40694c0bd595f697493530e9c7f9a6d8d4d099ebf96",
+      "kind": "fleshed",
+      "targetLenUnits": 16,
+      "license": "CC0 1.0",
+      "credit": "Brachiosaurus model by gabi123 (CC0, via Printables; decimated STL->glTF with applied countershading)",
+      "source_url": "https://www.printables.com/model/1553840-brachiosaurus-dinosaur"
     }
   }
 }
