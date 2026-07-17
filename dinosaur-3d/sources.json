@@ -1,5 +1,5 @@
 {
-  "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / public-domain), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
+  "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
   "version": "1.0.0",
   "models": {
     "tyrannosaurus-rex": {
@@ -64,6 +64,15 @@
       "credit": "Diplodocus model by Poly by Google (CC-BY 3.0, via Poly Pizza)",
       "source_url": "https://poly.pizza/m/12n6ICAVpYB",
       "origin_download": "https://static.poly.pizza/e60784f1-7b8c-4239-8354-c5d575a864a0.glb"
+    },
+    "spinosaurus": {
+      "file": "spinosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC-BY-SA 3.0",
+      "credit": "Spinosaurus model by Tuomo Untinen (CC-BY-SA 3.0, via OpenGameArt; decimated glTF conversion, same license)",
+      "source_url": "https://opengameart.org/content/spinosaurus",
+      "origin_download": "https://opengameart.org/sites/default/files/spinosaurus.zip"
     }
   }
 }

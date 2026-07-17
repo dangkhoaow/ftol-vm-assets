@@ -73,6 +73,16 @@
       "license": "CC-BY 3.0",
       "credit": "Diplodocus model by Poly by Google (CC-BY 3.0, via Poly Pizza)",
       "source_url": "https://poly.pizza/m/12n6ICAVpYB"
+    },
+    "spinosaurus": {
+      "file": "spinosaurus.glb",
+      "bytes": 1973968,
+      "sha256": "7ad8c7a6708e027e3c2c3832f32d5f832d0db2741e43c851f27c5b20653ab90d",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC-BY-SA 3.0",
+      "credit": "Spinosaurus model by Tuomo Untinen (CC-BY-SA 3.0, via OpenGameArt; decimated glTF conversion, same license)",
+      "source_url": "https://opengameart.org/content/spinosaurus"
     }
   }
 }

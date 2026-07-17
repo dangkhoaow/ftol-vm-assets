@@ -65,7 +65,25 @@ diplodocus.glb
   Note:     Stylised low-poly reconstruction, 664 tris. Attribution is mandatory under
             CC-BY: the manifest 'credit' field is surfaced by the viewer's assetInfo
             disclosure on the page. Do NOT strip the credit when updating the manifest.
+
+spinosaurus.glb
+  Title:    Spinosaurus
+  Author:   Tuomo Untinen
+  License:  CC-BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      OpenGameArt - https://opengameart.org/content/spinosaurus
+  Origin:   https://opengameart.org/sites/default/files/spinosaurus.zip
+            (per-file license.txt inside the zip: "Spinosaurus by Tuomo Untinen
+            Licensed Under CC-BY-SA 3.0")
+  Note:     DERIVATIVE: converted from the source .blend headlessly (Blender/bpy
+            5.0.1) - decimated 722,781 -> ~20k tris; legacy Cycles mix-shader
+            materials rebuilt as single Principled BSDFs using each material's
+            original BSDF_DIFFUSE color (BaseSkin/DarkSkin/Claw/MouthRed/eyes).
+            Under ShareAlike this converted GLB is itself licensed CC-BY-SA 3.0.
+            Attribution is mandatory: the manifest 'credit' field is surfaced by
+            the viewer's assetInfo disclosure. Do NOT strip the credit.
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
 CC-BY 3.0 full text: https://creativecommons.org/licenses/by/3.0/legalcode
+CC-BY-SA 3.0 full text: https://creativecommons.org/licenses/by-sa/3.0/legalcode
