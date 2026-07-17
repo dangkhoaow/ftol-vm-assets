@@ -66,6 +66,17 @@ diplodocus.glb
             CC-BY: the manifest 'credit' field is surfaced by the viewer's assetInfo
             disclosure on the page. Do NOT strip the credit when updating the manifest.
 
+pteranodon.glb
+  Title:    Low Spec Pterosaur
+  Author:   pistachio
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      OpenGameArt - https://opengameart.org/content/low-spec-pterosaur
+  Origin:   https://opengameart.org/sites/default/files/low_spec_pterosaur_oga.zip
+  Note:     DERIVATIVE: converted from the source .blend headlessly (bpy 5.0.1) -
+            posed at fly_glide frame 14, blue skin texture rebuilt as a lit
+            Principled material (source used emission/unlit), 592 tris. Tagged
+            pteranodon by the author. Credit is given voluntarily.
+
 spinosaurus.glb
   Title:    Spinosaurus
   Author:   Tuomo Untinen

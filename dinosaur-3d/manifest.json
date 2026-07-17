@@ -83,6 +83,16 @@
       "license": "CC-BY-SA 3.0",
       "credit": "Spinosaurus model by Tuomo Untinen (CC-BY-SA 3.0, via OpenGameArt; decimated glTF conversion, same license)",
       "source_url": "https://opengameart.org/content/spinosaurus"
+    },
+    "pteranodon": {
+      "file": "pteranodon.glb",
+      "bytes": 94452,
+      "sha256": "603f0e6510f54ca50ede9c8d51c7c0a374d59342c47d182db0a0e43dc8fc2c8c",
+      "kind": "fleshed",
+      "targetLenUnits": 10,
+      "license": "CC0 1.0",
+      "credit": "Pterosaur model by pistachio (CC0, via OpenGameArt; glide-pose glTF conversion)",
+      "source_url": "https://opengameart.org/content/low-spec-pterosaur"
     }
   }
 }
