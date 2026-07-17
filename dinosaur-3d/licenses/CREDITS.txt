@@ -188,6 +188,36 @@ allosaurus.glb
             ShareAlike this converted GLB is itself CC-BY-SA 4.0. Attribution
             mandatory - surfaced by the viewer disclosure. Do NOT strip the credit.
 
+dilophosaurus.glb
+  Title:    Scientifically Accurate Dilophosaurus Statue (Posed variant)
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/413711-scientifically-accurate-dilophosaurus-statue
+  Origin:   https://files.printables.com/media/prints/413711/stls/3432390_2b6b7452-595b-46eb-867a-81fded8d1e89/dilophosaurusfigposed.stl
+  Note:     DERIVATIVE: scientifically-accurate Zbrush sculpt (scale + feather
+            texturing), posed variant. Fetched anonymously via the Printables
+            GraphQL getDownloadLink API. Source STL is geometry only (no color);
+            converted headlessly (bpy 5.0.1): decimated 6,736,974 -> 25,000 tris,
+            vertex-color countershading (dark olive dorsal -> tan ventral). ~600 KB,
+            COLOR_0. Render-proven: dual head crest, slender build, feathered neck.
+            Same creator + treatment as allosaurus.glb. Under ShareAlike this GLB is
+            CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
+
+baryonyx.glb
+  Title:    Baryonyx
+  Author:   seth the yutyrannus
+  License:  CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - ATTRIBUTION REQUIRED
+  Via:      Printables - https://www.printables.com/model/747399-baryonyx
+  Origin:   https://files.printables.com/media/prints/747399/stls/5835606_357c2c76-bad1-4e3c-9c88-81519486748f_c15946f4-fe2c-4f0a-a4ce-0b03e5cac650/baryonyx.obj
+  Note:     DERIVATIVE: OBJ sculpt (14,975 tris, no decimation needed). Fetched
+            anonymously via the Printables GraphQL API. OBJ carries no usable color;
+            converted headlessly (bpy 5.0.1) with vertex-color countershading. ~500 KB,
+            COLOR_0. Render-proven species-accurate: long crocodile-like spinosaurid
+            snout, robust clawed arms (large thumb claw), bipedal fish-hunting posture
+            - a generic paleoart Baryonyx, NOT a franchise depiction. Attribution
+            mandatory - surfaced by the viewer disclosure.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
