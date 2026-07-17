@@ -133,6 +133,16 @@
       "license": "CC0 1.0",
       "credit": "Dromaeosaurid model by Animaniac888 (CC0, via OpenGameArt 'Dromaeosaur'; shown for Utahraptor, the largest known dromaeosaurid, at species scale)",
       "source_url": "https://opengameart.org/content/dromaeosaur-dinosaur"
+    },
+    "ankylosaurus": {
+      "file": "ankylosaurus.glb",
+      "bytes": 101940,
+      "sha256": "d87ae3c930d96d8c23390ad19bc061ef1ce7a73e758f889209d71b5fad8c4611",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Ankylosaurus model by Manicaeks (CC0, via OpenGameArt; textured glTF conversion)",
+      "source_url": "https://opengameart.org/content/anklyosaurus"
     }
   }
 }
