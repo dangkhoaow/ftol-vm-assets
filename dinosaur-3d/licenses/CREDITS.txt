@@ -127,6 +127,19 @@ deinonychus.glb
             Deinonychus is the type dromaeosaur, so this rigged raptor body is a
             faithful match. Credit given voluntarily.
 
+utahraptor.glb
+  Title:    Dromaeosaur (family-level model, shown for Utahraptor)
+  Author:   Animaniac888 (via OpenGameArt; orig. BlendSwap)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      OpenGameArt - https://opengameart.org/content/dromaeosaur-dinosaur
+  Origin:   https://opengameart.org/sites/default/files/Dromaeosaur.blend
+  Note:     Same generic-dromaeosaurid GLB as deinonychus.glb, scaled up
+            (targetLenUnits 16) for Utahraptor, the largest known dromaeosaurid.
+            The source is titled "Dromaeosaur" (family), not a species-specific
+            model, so it is a legitimate within-family body; the two pages differ
+            in scale, size-vs-human, and facts. Prefer a dedicated Utahraptor
+            model if a license-clean one appears (render-fix loop backlog).
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
