@@ -290,6 +290,29 @@ brachiosaurus.glb
             non-fantasy sauropod - a real-mesh upgrade over the crude procedural body).
             CC0 - credit given voluntarily.
 
+ichthyosaurus.glb
+  Title:    ichthyosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/) - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/757285-ichthyosaurus
+  Origin:   https://files.printables.com/media/prints/757285/stls/5907332_157ebf9f-26da-4e99-9a41-c9682745c755_616d5a65-46fe-48ff-8240-5daed4ea74dc/miconvcom__icthyosaurus.obj (Printables GraphQL API)
+  Note:     DERIVATIVE: print-sculpt geometry (single mesh, 10,730 verts / 18,624 tris,
+            no color; listed by the API as an .obj export of the original STL sculpt).
+            Fetched anonymously via the Printables GraphQL API. Converted headlessly
+            (trimesh 4.12.2 + Pillow, Python - no bpy/Blender available this session;
+            no decimation needed, already low-poly) with biologically-plausible
+            vertex-color countershading (dark slate-blue dorsal -> pale cream ventral,
+            as in convergent marine predators). 396 KB, COLOR_0. Axis-verified against
+            the raw mesh cross-sections (thin-but-tall profile at one Z-extreme = the
+            vertical tail fluke; long narrow taper at the other = the snout) - matches
+            the site's marine-archetype convention (head at +Z) with zero rotation
+            needed. Render-proven headlessly (Playwright + the vendored GLTFLoader):
+            1 mesh, 18,624 tris, 0 NaN vertices, 0 WebGL errors; screenshot confirms a
+            recognizable dolphin-shaped ichthyosaur silhouette (long toothed snout,
+            dorsal fin, 2 pairs of paddle flippers, vertical tail fluke). Under
+            ShareAlike this GLB is CC-BY-SA 4.0. Attribution mandatory - surfaced by
+            the viewer disclosure.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode

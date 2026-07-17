@@ -208,6 +208,15 @@
       "credit": "Brachiosaurus model by gabi123 (CC0, via Printables; decimated STL->glTF with applied countershading)",
       "source_url": "https://www.printables.com/model/1553840-brachiosaurus-dinosaur",
       "origin_download": "https://files.printables.com/media/prints/c01e58a2-d7a4-401b-b5b2-03e8b78fd884/stls/11713810_4ca123d6-bb97-4b67-9d72-4a07896ac174_faf6de2d-a1ba-4a46-8594-6e9896717cdf/brachiosaurus-dinosaur.stl"
+    },
+    "ichthyosaurus": {
+      "file": "ichthyosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ichthyosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757285-ichthyosaurus",
+      "origin_download": "https://files.printables.com/media/prints/757285/stls/5907332_157ebf9f-26da-4e99-9a41-c9682745c755_616d5a65-46fe-48ff-8240-5daed4ea74dc/miconvcom__icthyosaurus.obj"
     }
   }
 }
