@@ -402,3 +402,48 @@ ceratosaurus.glb
             trimesh + Open3D decimation (79,306 -> 16,000 tris) with vertex-color
             countershading (olive dorsal / sandy ventral). ShareAlike: re-hosted
             derivative remains under CC-BY-SA 4.0.
+
+therizinosaurus.glb
+  Title:    Dinosaur Art - Therizinosaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1750761-dinosaur-art-therizinosaurus
+  Origin:   https://files.printables.com/media/prints/f0b05ffd-6edb-4b54-81fb-51e3a364937d/stls/13119381_f19a54de-2376-4514-868e-7301a27ed495_8f96b797-6f09-4c38-b861-6ade3849fd79/dinosaur-art-therizinosaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series. Flat display-base component (35,764 tris, 2.75-unit thick) filtered
+            out before export. Converted headlessly (trimesh 4.12.2 + Open3D 0.19
+            quadric decimation): 949,630 -> 15,995 tris + vertex-color countershading
+            (dark olive dorsal -> tan ventral). ~321 KB, COLOR_0. Render-proven via
+            silhouette projection (diagnostic long manus claws visible). REJECTED
+            alternatives this fire: seth the yutyrannus Printables #757277
+            (ark_therizinosaurus.obj = ARK: Survival Evolved game-rip filename red
+            flag); DragonArtist15 #759718 (CC-BY-NC-SA). Credit voluntary under CC0.
+
+giganotosaurus.glb
+  Title:    Dinosaur Art - Giganotosaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1763153-dinosaur-art-giganotosaurus
+  Origin:   https://files.printables.com/media/prints/7fcaeb3b-eff3-47bf-8322-2c9b0938034e/stls/13207272_17144606-d87c-419b-b5eb-268d5ef6d328_3f421b02-aedf-4b52-a403-2e496848962e/dinosaur-art-giganotosaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series. Flat display-base filtered out. Converted headlessly (trimesh +
+            Open3D): 948,262 -> 16,000 tris + vertex-color countershading. ~321 KB.
+            Render-proven (large theropod silhouette, open jaws). REJECTED alternatives
+            this fire: seth #747407 (explicit "Jurassic World Dominion" description);
+            pavel benes #750914 (JW Dominion film figurine); DragonArtist15 /
+            NC-licensed card kits; skull/jaw-only prints. Credit voluntary under CC0.
+
+iguanodon.glb
+  Title:    Dinosaur Art - Iguanodon
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1761369-dinosaur-art-iguanodon
+  Origin:   https://files.printables.com/media/prints/a96af494-20d8-41d7-899b-87c3764d4daa/stls/13194762_cc6e1a64-cb1c-4a7e-94b5-9c3c421735e3_d43a5256-3043-4bac-86ba-e03c1d15f679/dinosaur-art-iguanodon.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series. Flat display-base filtered out. Converted headlessly (trimesh +
+            Open3D): 991,748 -> 16,000 tris + vertex-color countershading. ~321 KB.
+            Render-proven (quadrupedal ornithopod silhouette, rounded snout). REJECTED
+            alternatives this fire: Leander #1057998 (CC-BY-NC); Pan Wołodyjowski
+            #1171881 (CC-BY-NC-ND); Rudolphodon Christmas mashup; Pokemon/SDFL toys.
+            Credit voluntary under CC0.
+
