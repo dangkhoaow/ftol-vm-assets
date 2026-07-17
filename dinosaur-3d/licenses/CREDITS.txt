@@ -169,6 +169,25 @@ carnotaurus.glb
             the diagnostic paired brow horns, deep skull, striped body. Attribution
             mandatory - surfaced by the viewer disclosure. Do NOT strip the credit.
 
+allosaurus.glb
+  Title:    Allosaurus Figurine (Posed variant)
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/345833-allosaurus-figurine
+  Origin:   https://files.printables.com/media/prints/345833/stls/2944495_8eae12c0-7944-4c2d-8c4f-f2ebae0c9b3e/allosaurusfigposed.stl
+            (fetched anonymously via the Printables GraphQL getDownloadLink API;
+            the web UI is login-gated but the API is not for CC-licensed models)
+  Note:     DERIVATIVE: scientifically-accurate Zbrush sculpt (author's description),
+            posed/standing variant. Source is a print STL (geometry only, NO color).
+            Converted headlessly (bpy 5.0.1): decimated 1,330,240 -> 25,000 tris,
+            shade-smooth, and given biologically-plausible COUNTERSHADING via vertex
+            colors (dark olive-brown dorsal -> lighter tan ventral) since the STL
+            carries no color - a neutral treatment, NOT a fabricated species pattern.
+            601 KB, COLOR_0 vertex colors (renders in three.js/model-viewer). Under
+            ShareAlike this converted GLB is itself CC-BY-SA 4.0. Attribution
+            mandatory - surfaced by the viewer disclosure. Do NOT strip the credit.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode

@@ -153,6 +153,16 @@
       "license": "CC-BY 3.0",
       "credit": "Carnotaurus model by Mike Carey (CC-BY 3.0, via OpenGameArt; diffuse-color glTF conversion)",
       "source_url": "https://opengameart.org/content/carnotaurus"
+    },
+    "allosaurus": {
+      "file": "allosaurus.glb",
+      "bytes": 601800,
+      "sha256": "4c8befbbf817a3a1ba8b40a0e372d68474efc9bece7a12860fc1ee869d3d162a",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Allosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate posed sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/345833-allosaurus-figurine"
     }
   }
 }
