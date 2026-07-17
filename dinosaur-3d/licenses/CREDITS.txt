@@ -261,6 +261,20 @@ mosasaurus.glb
             marine reptile). ~595 KB, COLOR_0. Render-proven: elongated marine reptile
             with large jaws, paddle flippers, finned tail. Attribution mandatory.
 
+pachycephalosaurus.glb
+  Title:    Pachycephalosaurus Figurine (Posed variant)
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/400375-pachycephalosaurus-figurine
+  Origin:   https://files.printables.com/media/prints/400375/stls/3336580_2658569b-d54d-413c-b52f-6640d8ced270/pachycephalosaurusfigposed.stl
+  Note:     DERIVATIVE: scientifically-accurate Zbrush sculpt (scale + skin detail).
+            Fetched anonymously via the Printables GraphQL API. Print STL geometry-only
+            -> decimated 5,250,790 -> 25,000 tris + vertex-color countershading. ~600 KB,
+            COLOR_0. Render-proven: diagnostic thick bony dome skull with knobby
+            ornamentation, bipedal stance, long tail. Under ShareAlike this GLB is
+            CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode

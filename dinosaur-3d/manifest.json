@@ -213,6 +213,16 @@
       "license": "CC-BY 4.0",
       "credit": "Mosasaurus model by MZ4250 (CC-BY 4.0, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1534756-mosasaur"
+    },
+    "pachycephalosaurus": {
+      "file": "pachycephalosaurus.glb",
+      "bytes": 602884,
+      "sha256": "741916053bc9a9021509818bca42567701dbbf80dca33b009d0df952a5c2b6d2",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Pachycephalosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate posed sculpt with scale + skin detail, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/400375-pachycephalosaurus-figurine"
     }
   }
 }
