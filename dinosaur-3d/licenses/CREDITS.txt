@@ -204,20 +204,6 @@ dilophosaurus.glb
             Same creator + treatment as allosaurus.glb. Under ShareAlike this GLB is
             CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
 
-baryonyx.glb
-  Title:    Baryonyx
-  Author:   seth the yutyrannus
-  License:  CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - ATTRIBUTION REQUIRED
-  Via:      Printables - https://www.printables.com/model/747399-baryonyx
-  Origin:   https://files.printables.com/media/prints/747399/stls/5835606_357c2c76-bad1-4e3c-9c88-81519486748f_c15946f4-fe2c-4f0a-a4ce-0b03e5cac650/baryonyx.obj
-  Note:     DERIVATIVE: OBJ sculpt (14,975 tris, no decimation needed). Fetched
-            anonymously via the Printables GraphQL API. OBJ carries no usable color;
-            converted headlessly (bpy 5.0.1) with vertex-color countershading. ~500 KB,
-            COLOR_0. Render-proven species-accurate: long crocodile-like spinosaurid
-            snout, robust clawed arms (large thumb claw), bipedal fish-hunting posture
-            - a generic paleoart Baryonyx, NOT a franchise depiction. Attribution
-            mandatory - surfaced by the viewer disclosure.
-
 plesiosaurus.glb
   Title:    Plesiosaurus Updated
   Author:   MZ4250
@@ -274,21 +260,6 @@ pachycephalosaurus.glb
             COLOR_0. Render-proven: diagnostic thick bony dome skull with knobby
             ornamentation, bipedal stance, long tail. Under ShareAlike this GLB is
             CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
-
-brachiosaurus.glb
-  Title:    Brachiosaurus dinosaur
-  Author:   gabi123
-  License:  CC0 1.0 Universal (Public Domain dedication) - no attribution required
-  Via:      Printables - https://www.printables.com/model/1553840-brachiosaurus-dinosaur
-  Origin:   https://files.printables.com/media/prints/c01e58a2-d7a4-401b-b5b2-03e8b78fd884/stls/.../brachiosaurus-dinosaur.stl (Printables GraphQL API)
-  Note:     DERIVATIVE: print STL (geometry only, no color). Fetched anonymously via
-            the Printables GraphQL API. Converted headlessly (bpy 5.0.1): decimated
-            1,499,548 -> 25,000 tris + vertex-color countershading (dark dorsal ->
-            light ventral), ~600 KB, COLOR_0. Render-proven: quadrupedal sauropod with
-            a raised long neck, small head, sturdy legs, tail - reads as a long-necked
-            sauropod (brachiosaurus; proportions are somewhat generic but a genuine,
-            non-fantasy sauropod - a real-mesh upgrade over the crude procedural body).
-            CC0 - credit given voluntarily.
 
 -----------------------------------------------------------------------------
 
