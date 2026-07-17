@@ -244,6 +244,33 @@
       "credit": "Ceratosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 79k->16k tris)",
       "source_url": "https://www.printables.com/model/757229-ceratosaurus",
       "origin_download": "https://files.printables.com/media/prints/757229/stls/5906938_948097ea-ae56-4ead-b4f4-4fb3c81437fa_bbca66c4-0546-4524-95a1-611037bf1805/cero.obj"
+    },
+    "therizinosaurus": {
+      "file": "therizinosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Therizinosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Therizinosaurus'; STL->glTF with applied countershading, decimated ~950k->16k tris)",
+      "source_url": "https://www.printables.com/model/1750761-dinosaur-art-therizinosaurus",
+      "origin_download": "https://files.printables.com/media/prints/f0b05ffd-6edb-4b54-81fb-51e3a364937d/stls/13119381_f19a54de-2376-4514-868e-7301a27ed495_8f96b797-6f09-4c38-b861-6ade3849fd79/dinosaur-art-therizinosaurus.stl"
+    },
+    "giganotosaurus": {
+      "file": "giganotosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC0 1.0",
+      "credit": "Giganotosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Giganotosaurus'; STL->glTF with applied countershading, decimated ~948k->16k tris)",
+      "source_url": "https://www.printables.com/model/1763153-dinosaur-art-giganotosaurus",
+      "origin_download": "https://files.printables.com/media/prints/7fcaeb3b-eff3-47bf-8322-2c9b0938034e/stls/13207272_17144606-d87c-419b-b5eb-268d5ef6d328_3f421b02-aedf-4b52-a403-2e496848962e/dinosaur-art-giganotosaurus.stl"
+    },
+    "iguanodon": {
+      "file": "iguanodon.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Iguanodon model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Iguanodon'; STL->glTF with applied countershading, decimated ~992k->16k tris)",
+      "source_url": "https://www.printables.com/model/1761369-dinosaur-art-iguanodon",
+      "origin_download": "https://files.printables.com/media/prints/a96af494-20d8-41d7-899b-87c3764d4daa/stls/13194762_cc6e1a64-cb1c-4a7e-94b5-9c3c421735e3_d43a5256-3043-4bac-86ba-e03c1d15f679/dinosaur-art-iguanodon.stl"
     }
   }
 }

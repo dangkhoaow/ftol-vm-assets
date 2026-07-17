@@ -273,6 +273,36 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Ceratosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 79k->16k tris)",
       "source_url": "https://www.printables.com/model/757229-ceratosaurus"
+    },
+    "therizinosaurus": {
+      "file": "therizinosaurus.glb",
+      "bytes": 320568,
+      "sha256": "7c751d1657e2ad8fa566def3b4e469b34a0df189cf081b089487b2ecd78b724c",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Therizinosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Therizinosaurus'; STL->glTF with applied countershading, decimated ~950k->16k tris)",
+      "source_url": "https://www.printables.com/model/1750761-dinosaur-art-therizinosaurus"
+    },
+    "giganotosaurus": {
+      "file": "giganotosaurus.glb",
+      "bytes": 321028,
+      "sha256": "81adb8bdf4b8b3a35d48cc6e6fbe3ae7e8d54b747c7b8b92a814fdfc18124ebb",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC0 1.0",
+      "credit": "Giganotosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Giganotosaurus'; STL->glTF with applied countershading, decimated ~948k->16k tris)",
+      "source_url": "https://www.printables.com/model/1763153-dinosaur-art-giganotosaurus"
+    },
+    "iguanodon": {
+      "file": "iguanodon.glb",
+      "bytes": 321028,
+      "sha256": "01f5ee04914c666445861473e78a1672ed25644d170a26632ef3d7ddf208c2c8",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Iguanodon model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Iguanodon'; STL->glTF with applied countershading, decimated ~992k->16k tris)",
+      "source_url": "https://www.printables.com/model/1761369-dinosaur-art-iguanodon"
     }
   }
 }
