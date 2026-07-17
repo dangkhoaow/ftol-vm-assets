@@ -234,6 +234,33 @@ plesiosaurus.glb
             the last staging render-gate finding. Attribution mandatory - surfaced by
             the viewer disclosure.
 
+gallimimus.glb
+  Title:    Galimimus figurine
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/343962-galimimus-figurine
+  Origin:   https://files.printables.com/media/prints/343962/stls/2931606_4913731e-3f7f-4635-a65f-a40506c17e92/galimimusfig.stl
+  Note:     DERIVATIVE: scientifically-accurate Zbrush sculpt (feather + skin detail).
+            Fetched anonymously via the Printables GraphQL API. Print STL is geometry
+            only (no color); converted headlessly (bpy 5.0.1): decimated 7,668,106 ->
+            25,000 tris + vertex-color countershading. ~600 KB, COLOR_0. Render-proven:
+            ostrich-like ornithomimid - long neck, small head, long legs, feathered
+            arms/tail. Under ShareAlike this GLB is CC-BY-SA 4.0. Attribution mandatory.
+
+mosasaurus.glb
+  Title:    Mosasaur
+  Author:   MZ4250
+  License:  CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - ATTRIBUTION REQUIRED
+  Via:      Printables - https://www.printables.com/model/1534756-mosasaur
+  Origin:   https://files.printables.com/media/prints/.../mosasaurus.stl (Printables GraphQL API)
+  Note:     DERIVATIVE: print STL (geometry only), plain full-body variant (NOT the
+            coming-out-of-water diorama variant). Fetched anonymously via the Printables
+            GraphQL API. Converted headlessly (bpy 5.0.1): decimated 1,767,570 -> 25,000
+            tris + vertex-color countershading (dark dorsal -> light ventral, apt for a
+            marine reptile). ~595 KB, COLOR_0. Render-proven: elongated marine reptile
+            with large jaws, paddle flippers, finned tail. Attribution mandatory.
+
 -----------------------------------------------------------------------------
 
 CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode

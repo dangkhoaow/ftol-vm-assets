@@ -172,6 +172,24 @@
       "credit": "Plesiosaurus model by MZ4250 (CC-BY 4.0, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/39379-plesiosaurus-updated",
       "origin_download": "https://files.printables.com/media/prints/39379/stls/389324_23868709-fbf9-4d26-8530-e92338c2d199/plesiosaurus-updated.stl"
+    },
+    "gallimimus": {
+      "file": "gallimimus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Gallimimus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate feathered sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/343962-galimimus-figurine",
+      "origin_download": "https://files.printables.com/media/prints/343962/stls/2931606_4913731e-3f7f-4635-a65f-a40506c17e92/galimimusfig.stl"
+    },
+    "mosasaurus": {
+      "file": "mosasaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 15,
+      "license": "CC-BY 4.0",
+      "credit": "Mosasaurus model by MZ4250 (CC-BY 4.0, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/1534756-mosasaur",
+      "origin_download": "https://files.printables.com/media/prints/8b736556-a34a-48b1-bae3-14521fd55656/stls/11562326_970270a2-7395-4150-bb7e-c5b622226c67_abfaf119-21b4-461d-8dd0-62be4dcfa91c/mosasaurus.stl"
     }
   }
 }
