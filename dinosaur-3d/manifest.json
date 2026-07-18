@@ -542,6 +542,15 @@
       "targetLenUnits": 12,
       "license": "CC-BY-SA 4.0",
       "source_url": "https://www.printables.com/model/757201-titanosaurus"
+    },
+    "dracovenator": {
+      "file": "dracovenator.glb",
+      "bytes": 417240,
+      "sha256": "337ed4faf61148b9e7e7669f3377b96279e51ed36b8593a825eee1e644883e7d",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "source_url": "https://www.printables.com/model/757212-dracovenator"
     }
   }
 }

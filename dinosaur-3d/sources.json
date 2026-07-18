@@ -489,6 +489,17 @@
       "printables_id": 757201,
       "kind": "fleshed",
       "notes": "Seth Printables CC-BY-SA; clean OBJ groups; ~20k tris trimesh+Open3D"
+    },
+    "dracovenator": {
+      "slug": "dracovenator",
+      "file": "dracovenator.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757212-dracovenator",
+      "origin_download": "https://files.printables.com/media/prints/757212/stls/5906849_84209958-405c-4979-b39c-d6f8db575bc6_62c336df-aa01-4287-b789-23744b5afa7e/21538_dracovenator_v1.obj",
+      "printables_id": 757212,
+      "kind": "fleshed",
+      "notes": "Seth Printables CC-BY-SA; clean 3ds Max OBJ group 21538_Dracovenator_v00211 (no Daz/Dinoraul); ~20k tris trimesh+Open3D; length-X feet Y=0"
     }
   }
 }
