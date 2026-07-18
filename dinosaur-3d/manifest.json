@@ -413,6 +413,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Gorgosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/1023407-gorgosaurus"
+    },
+    "dimetrodon": {
+      "file": "dimetrodon.glb",
+      "bytes": 725612,
+      "sha256": "95eabd5480f4ba3115dc604c705962d7b28098ec6b7347c0712fa90b71305fd8",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Dimetrodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/939330-dimetrodon"
     }
   }
 }

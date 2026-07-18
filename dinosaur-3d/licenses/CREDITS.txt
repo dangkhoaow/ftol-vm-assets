@@ -553,3 +553,13 @@ gorgosaurus.glb
   Origin:   gorgosaurus.obj via GraphQL getDownloadLink (source:model_detail)
   Notes:    Clean filename; Alberta albertosaurine tyrannosaurid - differentiate from shipped Tyrannosaurus rex (smaller, slenderer, earlier Dinosaur Park).
             OBJ->glTF with vertex-color countershading; reoriented length-along-X.
+
+
+dimetrodon.glb
+  Title:    dimetrodon
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/939330-dimetrodon
+  Origin:   dimetrodon.obj via GraphQL getDownloadLink (source:model_detail)
+  Notes:    Clean filename. Early Permian sail-backed synapsid - NOT a dinosaur (more closely related to mammals). Predates dinosaurs by tens of millions of years.
+            OBJ->glTF with vertex-color countershading; reoriented length-along-X.
