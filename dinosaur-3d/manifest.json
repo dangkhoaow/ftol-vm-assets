@@ -443,6 +443,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Ampelosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/1023457-ampelosaurus"
+    },
+    "seismosaurus": {
+      "file": "seismosaurus.glb",
+      "bytes": 402848,
+      "sha256": "6ac9eb71c76a440101d64f577f549a2743a894a0115b064959c8cea88fbc47ff",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Seismosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/936475-seismosaurus"
     }
   }
 }
