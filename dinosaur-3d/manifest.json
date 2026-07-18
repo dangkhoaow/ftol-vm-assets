@@ -551,6 +551,15 @@
       "targetLenUnits": 12,
       "license": "CC-BY-SA 4.0",
       "source_url": "https://www.printables.com/model/757212-dracovenator"
+    },
+    "sauropelta": {
+      "file": "sauropelta.glb",
+      "bytes": 364748,
+      "sha256": "0d09b7ed5f8165a3996fe7d3ddf58af056a961e368397179400b91f601e27caa",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "source_url": "https://www.printables.com/model/757224-sauropelta"
     }
   }
 }

@@ -500,6 +500,17 @@
       "printables_id": 757212,
       "kind": "fleshed",
       "notes": "Seth Printables CC-BY-SA; clean 3ds Max OBJ group 21538_Dracovenator_v00211 (no Daz/Dinoraul); ~20k tris trimesh+Open3D; length-X feet Y=0"
+    },
+    "sauropelta": {
+      "slug": "sauropelta",
+      "file": "sauropelta.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757224-sauropelta",
+      "origin_download": "https://files.printables.com/media/prints/757224/stls/5906906_017aff56-a1aa-4dc4-9967-dad6e5b9143d_b271aa72-28cf-4428-8175-85a87a055ac0/uploads_files_3549524_sauropelta.obj",
+      "printables_id": 757224,
+      "kind": "fleshed",
+      "notes": "Seth Printables CC-BY-SA (license id 2); OBJ object sauropelta_22 (header cites Jean_of_arc_plate.blend tooling); no Daz/Dinoraul/franchise strings; ~18k tris trimesh+Open3D vertex-cluster+quadric; length-X feet Y=0"
     }
   }
 }

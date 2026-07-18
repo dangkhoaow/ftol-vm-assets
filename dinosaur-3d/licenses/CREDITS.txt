@@ -624,3 +624,14 @@ dracovenator.glb
             basal neotheropod from South Africa (Yates 2005). OBJ->glTF (~20k tris) with
             vertex-color countershading; reoriented length-along-X, feet Y=0 (np.ptp).
 
+sauropelta.glb
+  Title:    sauropelta
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757224-sauropelta
+  Origin:   https://files.printables.com/media/prints/757224/stls/5906906_017aff56-a1aa-4dc4-9967-dad6e5b9143d_b271aa72-28cf-4428-8175-85a87a055ac0/uploads_files_3549524_sauropelta.obj
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike.
+            Object name sauropelta_22; Blender export header cites Jean_of_arc_plate.blend
+            as the tooling source file name - not a franchise/Daz rip (no daz_originals /
+            Genesis / Jurassic strings in the OBJ). Decimated ~18k tris via
+            trimesh+Open3D (vertex clustering then quadric), Y-up, feet on y=0.
