@@ -496,3 +496,12 @@ cryolophosaurus.glb
   Origin:   cryolophosaurus.obj via files.printables.com preview-folder direct path
   Notes:    Aspose.3D OBJ; no daz_originals naming. Distinctive transverse forehead crest (Elvisaurus).
             Decimated OBJ->glTF (~16k tris) with vertex-color countershading; reoriented length-along-X.
+
+concavenator.glb
+  Title:    concavenator
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/916830-concavenator
+  Origin:   concavenator.obj via GraphQL getDownloadLink (output.link)
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Hip-hump carcharodontosaur silhouette verified vs Printables preview.
+            Decimated OBJ->glTF (~1.1M->15k tris) with vertex-color countershading; reoriented length-along-X.

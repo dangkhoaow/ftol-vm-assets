@@ -353,6 +353,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Cryolophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~22k->16k tris)",
       "source_url": "https://www.printables.com/model/764466-cryolophosaurus"
+    },
+    "concavenator": {
+      "file": "concavenator.glb",
+      "bytes": 316292,
+      "sha256": "4c0452424301a20add7ea4646aae98c51383a885727fd1d9f574985a7710b2d3",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Concavenator model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~1.1M->15k tris)",
+      "source_url": "https://www.printables.com/model/916830-concavenator"
     }
   }
 }
