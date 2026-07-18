@@ -542,6 +542,15 @@
       "author": "seth the yutyrannus",
       "source_url": "https://www.printables.com/model/757267-quetzalcoatlus",
       "tris": 1638
+    },
+    "gigantoraptor": {
+      "file": "gigantoraptor.glb",
+      "sha256": "775d326551564728585f67e16af3f58f5e38c36b6c17f8a4c6072cbfc9df1a7f",
+      "bytes": 415952,
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757269-gigantoraptor",
+      "tris": 19984
     }
   }
 }
