@@ -583,3 +583,13 @@ brontotherium.glb
   Origin:   brontotherium.obj via GraphQL getDownloadLink (source:model_detail)
   Notes:    Clean filename (no Daz/Dinoraul). Late Eocene North American brontothere mammal - NOT a dinosaur (historically Brontotherium; often synonymized with Megacerops).
             OBJ->glTF (~20k tris) with vertex-color countershading; reoriented length-along-X.
+
+
+hybodus.glb
+  Title:    hybodus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/1494021-hybodus
+  Origin:   shark.obj via GraphQL getDownloadLink (source:model_detail)
+  Notes:    Clean Meshpart1 filename (no Daz/Dinoraul). Mesozoic hybodont shark - NOT a dinosaur.
+            OBJ->glTF (~2k tris) with vertex-color countershading; reoriented length-along-X.
