@@ -280,6 +280,69 @@
       "credit": "Brontosaurus model by WeaponGuy (CC0, via OpenGameArt; .blend->glTF conversion with applied countershading)",
       "source_url": "https://opengameart.org/content/brontosaurus",
       "origin_download": "https://opengameart.org/sites/default/files/brontosaurus.blend"
+    },
+    "megalosaurus": {
+      "file": "megalosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0 (Public Domain dedication via Printables)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus",
+      "origin_download": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
+    },
+    "microraptor": {
+      "file": "microraptor.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Microraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/757274-microraptor",
+      "origin_download": "https://www.printables.com/model/757274-microraptor"
+    },
+    "majungasaurus": {
+      "file": "majungasaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Majungasaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/757208-majungasaurus",
+      "origin_download": "https://www.printables.com/model/757208-majungasaurus"
+    },
+    "cryolophosaurus": {
+      "file": "cryolophosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Cryolophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~22k->16k tris)",
+      "source_url": "https://www.printables.com/model/764466-cryolophosaurus",
+      "origin_download": "https://www.printables.com/model/764466-cryolophosaurus"
+    },
+    "concavenator": {
+      "file": "concavenator.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Concavenator model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~1.1M->15k tris)",
+      "source_url": "https://www.printables.com/model/916830-concavenator",
+      "origin_download": "https://www.printables.com/model/916830-concavenator"
+    },
+    "albertaceratops": {
+      "file": "albertaceratops.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Albertaceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~115k->16k tris)",
+      "source_url": "https://www.printables.com/model/757230-albertaceratops",
+      "origin_download": "https://www.printables.com/model/757230-albertaceratops"
+    },
+    "tsintaosaurus": {
+      "file": "tsintaosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Tsintaosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~18k->16k tris; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/939323-tsintaosaurus",
+      "origin_download": "https://files.printables.com/media/prints/939323/stls/7178568_f81b238b-307b-4884-83a8-fbfb0a391b2d_fb7057f8-ea4a-4659-a0a2-1bc8b602edb9/tsintaosaurus.obj"
     }
   }
 }
