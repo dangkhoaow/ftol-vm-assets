@@ -406,6 +406,15 @@
       "credit": "Seismosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/936475-seismosaurus",
       "origin_download": "https://files.printables.com/media/prints/936475/stls/7157705_c26bf952-5cf9-4fb1-8f90-a2a0ce5d22e0_bcef6f46-1534-4056-b590-2571465866c2/18580_seismosaurus_v1.obj"
+    },
+    "stygimoloch": {
+      "file": "stygimoloch.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Stygimoloch model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1001311-stygimoloch",
+      "origin_download": "https://files.printables.com/media/prints/1001311/stls/7617972_2f69bdee-f689-48e2-9834-1eacb4b063ee_eaf2e62a-d68d-415a-80f1-e6a29d3c497b/stygimoloch.obj"
     }
   }
 }
