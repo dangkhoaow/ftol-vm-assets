@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.5",
+  "version": "1.48.6",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -591,6 +591,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Gigantoraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/757269-gigantoraptor"
+    },
+    "brachylophosaurus": {
+      "file": "brachylophosaurus.glb",
+      "bytes": 398708,
+      "sha256": "2feddbe6d1ad603364a50ba0942fd450b348dcf39de1935e9ed8aa3820be75a7",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Brachylophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757228-brachylophosaurus"
     }
   }
 }
