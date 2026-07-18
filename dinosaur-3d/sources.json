@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.0.0",
+  "version": "1.48.0",
   "models": {
     "tyrannosaurus-rex": {
       "file": "tyrannosaurus-rex.glb",
@@ -424,6 +424,15 @@
       "credit": "Avaceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/1058140-avaceratops",
       "origin_download": "https://files.printables.com/media/prints/1058140/stls/8013076_caf0e36a-a2a0-475b-978b-56577fec4b79_db135cc4-7ecf-472f-9cf6-ee93ca50d754/21533_avaceratops_v1.obj"
+    },
+    "titanoboa": {
+      "file": "titanoboa.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Titanoboa model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/940459-titanoboa",
+      "origin_download": "https://files.printables.com/media/prints/940459/stls/7186491_4d5687ac-d96c-443f-a6e5-dc08fddd9136_d95e4016-5aa0-4897-a107-509480db0d38/titanoboa.obj"
     }
   }
 }
