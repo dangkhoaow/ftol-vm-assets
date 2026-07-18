@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.4",
+  "version": "1.48.5",
   "models": {
     "tyrannosaurus-rex": {
       "file": "tyrannosaurus-rex.glb",
@@ -469,6 +469,15 @@
       "credit": "Hybodus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/1494021-hybodus",
       "origin_download": "https://files.printables.com/media/prints/d69af5ba-cb57-4a55-8ca4-3bd94a829025/stls/11258029_5e3e0eb8-089a-405c-a212-9d6b54efa085_7f77ed0a-d1d0-4785-8ab9-1684dc493fa6/shark.obj"
+    },
+    "coelophysis": {
+      "file": "coelophysis.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Coelophysis model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/757231-coelophysis",
+      "origin_download": "https://files.printables.com/media/prints/757231/stls/5907002_b4c8c7ca-d01a-4af8-a9af-88c9fb22de9d_1a63f46f-1659-468d-926b-f64e77e51f35/coelophysis.obj"
     }
   }
 }

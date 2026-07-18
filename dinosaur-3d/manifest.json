@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.4",
+  "version": "1.48.5",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -523,6 +523,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Hybodus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/1494021-hybodus"
+    },
+    "coelophysis": {
+      "file": "coelophysis.glb",
+      "bytes": 933908,
+      "sha256": "74cc14484c3d66f7361c19398f575e307afabdf468e529d8618328fa6e5a5ab9",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Coelophysis model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/757231-coelophysis"
     }
   }
 }
