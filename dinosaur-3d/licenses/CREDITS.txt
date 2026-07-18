@@ -447,3 +447,14 @@ iguanodon.glb
             #1171881 (CC-BY-NC-ND); Rudolphodon Christmas mashup; Pokemon/SDFL toys.
             Credit voluntary under CC0.
 
+brontosaurus.glb
+  Title:    Brontosaurus
+  Author:   WeaponGuy
+  License:  CC0 1.0 (Public Domain)
+  Via:      OpenGameArt - https://opengameart.org/content/brontosaurus
+  Origin:   https://opengameart.org/sites/default/files/brontosaurus.blend
+  Notes:    Listed in OGA "Truly Truly Public Domain" / CC0 Animals collections.
+            Converted headlessly with Blender 4.2.9 LTS via blend2glb.py (decimation
+            not needed - source already 6.4k tris). Vertex-color countershading
+            applied (olive dorsal / sandy ventral) because the blend materials did
+            not carry useful baked color after glTF export.

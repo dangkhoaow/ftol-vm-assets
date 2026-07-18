@@ -271,6 +271,15 @@
       "credit": "Iguanodon model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Iguanodon'; STL->glTF with applied countershading, decimated ~992k->16k tris)",
       "source_url": "https://www.printables.com/model/1761369-dinosaur-art-iguanodon",
       "origin_download": "https://files.printables.com/media/prints/a96af494-20d8-41d7-899b-87c3764d4daa/stls/13194762_cc6e1a64-cb1c-4a7e-94b5-9c3c421735e3_d43a5256-3043-4bac-86ba-e03c1d15f679/dinosaur-art-iguanodon.stl"
+    },
+    "brontosaurus": {
+      "file": "brontosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 17,
+      "license": "CC0 1.0",
+      "credit": "Brontosaurus model by WeaponGuy (CC0, via OpenGameArt; .blend->glTF conversion with applied countershading)",
+      "source_url": "https://opengameart.org/content/brontosaurus",
+      "origin_download": "https://opengameart.org/sites/default/files/brontosaurus.blend"
     }
   }
 }
