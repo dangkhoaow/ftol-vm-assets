@@ -551,6 +551,15 @@
       "author": "seth the yutyrannus",
       "source_url": "https://www.printables.com/model/757269-gigantoraptor",
       "tris": 19984
+    },
+    "tarbosaurus": {
+      "file": "tarbosaurus.glb",
+      "sha256": "273d73b6ce22f8b3ed107c0eab4fef6c780840685b47c17bba5414041270087f",
+      "bytes": 411088,
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757281-tarbosaurus",
+      "tris": 19999
     }
   }
 }
