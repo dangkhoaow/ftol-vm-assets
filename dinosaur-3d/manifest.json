@@ -336,8 +336,8 @@
     },
     "majungasaurus": {
       "file": "majungasaurus.glb",
-      "bytes": 344272,
-      "sha256": "7306dedd78a624818746395960ba180f4375f6d1ec8f4b0a881817d955c3edcb",
+      "bytes": 344284,
+      "sha256": "4895c2f3c090e6aca51f99479241dcd30c0f38ac4ea71253f15b5d40325e4663",
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC-BY-SA 4.0",
