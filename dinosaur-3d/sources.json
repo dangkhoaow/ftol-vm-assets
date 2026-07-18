@@ -361,6 +361,15 @@
       "credit": "Tylosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/1494027-tylosaurus",
       "origin_download": "https://files.printables.com/media/prints/1bc41d0f-ae68-45ba-8b70-c96a8d7748bc/stls/11258073_26b0fd42-9a8e-4b1c-8cf6-0c81f3d9a3a6_2dcfdb98-c5a6-4ac5-8103-6ab504127fb7/untitled.obj"
+    },
+    "gorgosaurus": {
+      "file": "gorgosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Gorgosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1023407-gorgosaurus",
+      "origin_download": "https://files.printables.com/media/prints/1023407/stls/7772691_62f63d37-6371-4fba-828e-82fe078f2cff_e888b345-5377-4771-9f51-ffaa2582a139/gorgosaurus.obj"
     }
   }
 }
