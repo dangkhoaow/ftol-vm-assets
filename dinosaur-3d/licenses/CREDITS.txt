@@ -524,3 +524,12 @@ tsintaosaurus.glb
   Origin:   tsintaosaurus.obj via GraphQL getDownloadLink (output.link)
   Notes:    Aspose.3D OBJ; no daz_originals naming. Lambeosaurine with upright nasal crest (classic unicorn-spike silhouette in this sculpt).
             Decimated OBJ->glTF (~18k->16k tris) with vertex-color countershading; reoriented length-along-X (Z was longest).
+
+ornithomimus.glb
+  Title:    ornithomimus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/939337-ornithomimus
+  Origin:   ornithomimus.obj via GraphQL getDownloadLink (output.link)
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Ostrich-mimic silhouette; differentiate from shipped Gallimimus (Alberta vs Mongolia, smaller).
+            OBJ->glTF (~13k tris) with vertex-color countershading; reoriented length-along-X (Z was longest).

@@ -383,6 +383,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Tsintaosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~18k->16k tris; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/939323-tsintaosaurus"
+    },
+    "ornithomimus": {
+      "file": "ornithomimus.glb",
+      "bytes": 591668,
+      "sha256": "f4ab0d711bc44f48b0442670dad4f1fc3b958259b404423fb1de68c0c7da5ca2",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ornithomimus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/939337-ornithomimus"
     }
   }
 }
