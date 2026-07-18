@@ -415,6 +415,15 @@
       "credit": "Stygimoloch model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/1001311-stygimoloch",
       "origin_download": "https://files.printables.com/media/prints/1001311/stls/7617972_2f69bdee-f689-48e2-9834-1eacb4b063ee_eaf2e62a-d68d-415a-80f1-e6a29d3c497b/stygimoloch.obj"
+    },
+    "avaceratops": {
+      "file": "avaceratops.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Avaceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1058140-avaceratops",
+      "origin_download": "https://files.printables.com/media/prints/1058140/stls/8013076_caf0e36a-a2a0-475b-978b-56577fec4b79_db135cc4-7ecf-472f-9cf6-ee93ca50d754/21533_avaceratops_v1.obj"
     }
   }
 }
