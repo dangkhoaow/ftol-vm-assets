@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.0",
+  "version": "1.48.1",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -483,6 +483,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Titanoboa model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/940459-titanoboa"
+    },
+    "moropus": {
+      "file": "moropus.glb",
+      "bytes": 660476,
+      "sha256": "3c9c274cb468bbe4953e057840ca779bfb65b5d332aa029af751a1ba46202380",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Moropus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1023454-moropus"
     }
   }
 }
