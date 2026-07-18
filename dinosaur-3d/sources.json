@@ -388,6 +388,15 @@
       "credit": "Ichthyovenator model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/1053711-ichthyovenator",
       "origin_download": "https://files.printables.com/media/prints/1053711/stls/7983395_71b4357f-c6fe-4e0f-8594-17f7534f3d66_6288036d-8eec-41b6-8632-fe3df6b2c69f/ichthyovenator.obj"
+    },
+    "ampelosaurus": {
+      "file": "ampelosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ampelosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1023457-ampelosaurus",
+      "origin_download": "https://files.printables.com/media/prints/1023457/stls/7772978_4eedd700-98cc-4d60-9798-79586df53bce_8063608b-8e5d-41f6-8e00-af474d1d56b3/ampelosaurus.obj"
     }
   }
 }
