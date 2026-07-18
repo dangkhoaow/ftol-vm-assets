@@ -478,3 +478,12 @@ microraptor.glb
   Notes:    Original Aspose.3D OBJ export; filename carries no daz_originals/commercial red flag.
             Preview confirms four-winged feathered silhouette (fore + hind wing feathers + tail fan).
             Decimated OBJ->glTF with vertex-color countershading.
+
+majungasaurus.glb
+  Title:    majungasaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/757208-majungasaurus
+  Origin:   majungasaurus_blue.obj via GraphQL getDownloadLink
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Preview confirms short-snouted abelisaurid with skull roof horn.
+            Decimated OBJ->glTF with vertex-color countershading.

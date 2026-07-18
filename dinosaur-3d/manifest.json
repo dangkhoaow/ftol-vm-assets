@@ -333,6 +333,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Microraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, same ShareAlike license)",
       "source_url": "https://www.printables.com/model/757274-microraptor"
+    },
+    "majungasaurus": {
+      "file": "majungasaurus.glb",
+      "bytes": 344272,
+      "sha256": "7306dedd78a624818746395960ba180f4375f6d1ec8f4b0a881817d955c3edcb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Majungasaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/757208-majungasaurus"
     }
   }
 }
