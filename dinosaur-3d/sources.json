@@ -379,6 +379,15 @@
       "credit": "Dimetrodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/939330-dimetrodon",
       "origin_download": "https://files.printables.com/media/prints/939330/stls/7178596_ad1b9e07-1854-496c-8dd9-f93a9b729c1a_fccd8f7d-d1d4-422e-bf44-37e3ecea21f6/dimetrodon.obj"
+    },
+    "ichthyovenator": {
+      "file": "ichthyovenator.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ichthyovenator model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1053711-ichthyovenator",
+      "origin_download": "https://files.printables.com/media/prints/1053711/stls/7983395_71b4357f-c6fe-4e0f-8594-17f7534f3d66_6288036d-8eec-41b6-8632-fe3df6b2c69f/ichthyovenator.obj"
     }
   }
 }
