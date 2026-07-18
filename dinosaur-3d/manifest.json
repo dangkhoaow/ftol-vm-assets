@@ -321,7 +321,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
     "microraptor": {
@@ -533,6 +533,15 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Coelophysis model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/757231-coelophysis"
+    },
+    "quetzalcoatlus": {
+      "file": "quetzalcoatlus.glb",
+      "sha256": "4bcac41dec3ea4ae76749e43c2c2f44f2802062ff4090e6ca4aa3ccfa1cf1b2b",
+      "bytes": 33768,
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757267-quetzalcoatlus",
+      "tris": 1638
     }
   }
 }
