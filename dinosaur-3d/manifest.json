@@ -496,8 +496,8 @@
     },
     "gryponyx": {
       "file": "gryponyx.glb",
-      "bytes": 10604,
-      "sha256": "95249d7af3d5bf9c1eaefbddeee686780aeb4ada393d21d82501bf49cdb0eae4",
+      "bytes": 714264,
+      "sha256": "92e67db306ed211fa66a755cc847695d9c45c5a7a9f5495718cb040b51f3abdc",
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC-BY-SA 4.0",
