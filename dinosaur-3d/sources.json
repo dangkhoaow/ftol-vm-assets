@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.6",
+  "version": "1.48.7",
   "models": {
     "tyrannosaurus-rex": {
       "file": "tyrannosaurus-rex.glb",
@@ -561,6 +561,19 @@
       "targetLenUnits": 12,
       "credit": "Brachylophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "notes": "Seth Printables CC-BY-SA (license id 2); 3ds Max OBJ group Brachylophosaurus_100k (no Daz/Dinoraul/franchise); ~20k tris trimesh+Open3D vertex-cluster+quadric; length-X feet Y=0"
+    },
+    "shuangmiaosaurus": {
+      "slug": "shuangmiaosaurus",
+      "file": "shuangmiaosaurus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757287-shuangmiaosaurus",
+      "origin_download": "https://files.printables.com/media/prints/757287/stls/5907345_a8e4a723-273a-4cc9-b15a-feee5d061453_a768ba29-9673-4380-bcfd-ecbaec56030f/shuangmiaosaurus.obj",
+      "printables_id": 757287,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Shuangmiaosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "notes": "Seth Printables CC-BY-SA (license id 2); Aspose.3D OBJ object Object_5 (no Daz/Dinoraul/franchise); kept body+limb components (~20k tris) trimesh+Open3D quadric; length-X feet Y=0"
     }
   }
 }
