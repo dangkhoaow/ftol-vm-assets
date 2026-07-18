@@ -487,3 +487,12 @@ majungasaurus.glb
   Origin:   majungasaurus_blue.obj via GraphQL getDownloadLink
   Notes:    Aspose.3D OBJ; no daz_originals naming. Preview confirms short-snouted abelisaurid with skull roof horn.
             Decimated OBJ->glTF with vertex-color countershading.
+
+cryolophosaurus.glb
+  Title:    cryolophosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/764466-cryolophosaurus
+  Origin:   cryolophosaurus.obj via files.printables.com preview-folder direct path
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Distinctive transverse forehead crest (Elvisaurus).
+            Decimated OBJ->glTF (~16k tris) with vertex-color countershading; reoriented length-along-X.

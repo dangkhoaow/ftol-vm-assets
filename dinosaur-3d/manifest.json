@@ -343,6 +343,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Majungasaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, same ShareAlike license)",
       "source_url": "https://www.printables.com/model/757208-majungasaurus"
+    },
+    "cryolophosaurus": {
+      "file": "cryolophosaurus.glb",
+      "bytes": 333656,
+      "sha256": "197e0b57231622b7cead7051f0fb6a7a31d00fcd207182030ae6b8170da5ea8a",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Cryolophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~22k->16k tris)",
+      "source_url": "https://www.printables.com/model/764466-cryolophosaurus"
     }
   }
 }
