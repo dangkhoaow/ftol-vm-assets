@@ -635,3 +635,24 @@ sauropelta.glb
             as the tooling source file name - not a franchise/Daz rip (no daz_originals /
             Genesis / Jurassic strings in the OBJ). Decimated ~18k tris via
             trimesh+Open3D (vertex clustering then quadric), Y-up, feet on y=0.
+
+tarbosaurus.glb
+  Title:    tarbosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/757281-tarbosaurus
+  Notes:    Restored into sources.json during fire106 remanifest repair.
+
+quetzalcoatlus.glb
+  Title:    quetzalcoatlus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/757267-quetzalcoatlus
+  Notes:    Restored into sources.json during fire106 remanifest repair.
+
+gigantoraptor.glb
+  Title:    gigantoraptor
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/757269-gigantoraptor
+  Notes:    Restored into sources.json during fire106 remanifest repair.
