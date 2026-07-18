@@ -468,3 +468,13 @@ megalosaurus.glb
   Notes:    Full-body theropod silhouette verified against Printables preview (bipedal large-headed carnivore).
             Decimated STL->glTF with vertex-color countershading (same Model Magic PD path as prior ships).
             Corythosaurus Model Magic 1777347 was REJECTED this fire: preview shows tube crest = Parasaurolophus mislabel.
+
+microraptor.glb
+  Title:    microraptor
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/757274-microraptor
+  Origin:   microraptor.obj via GraphQL getDownloadLink (source: model_detail)
+  Notes:    Original Aspose.3D OBJ export; filename carries no daz_originals/commercial red flag.
+            Preview confirms four-winged feathered silhouette (fore + hind wing feathers + tail fan).
+            Decimated OBJ->glTF with vertex-color countershading.
