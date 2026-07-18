@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.2",
+  "version": "1.48.3",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -503,6 +503,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Gryponyx model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/994967-gryponyx"
+    },
+    "brontotherium": {
+      "file": "brontotherium.glb",
+      "bytes": 712008,
+      "sha256": "afc28703f61230d370189409d011c3e720a57cf4a6443d43fa3ba94f37367164",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Brontotherium model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/995855-brontotherium"
     }
   }
 }

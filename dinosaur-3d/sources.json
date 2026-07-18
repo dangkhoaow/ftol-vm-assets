@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.2",
+  "version": "1.48.3",
   "models": {
     "tyrannosaurus-rex": {
       "file": "tyrannosaurus-rex.glb",
@@ -451,6 +451,15 @@
       "credit": "Gryponyx model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/994967-gryponyx",
       "origin_download": "https://files.printables.com/media/prints/994967/stls/7574014_5a2fb4a4-9902-4254-ba22-9211e76cf978_1594bc98-708e-4b71-840b-6441c6aecbb2/21540_gryponyx_v2.obj"
+    },
+    "brontotherium": {
+      "file": "brontotherium.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Brontotherium model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/995855-brontotherium",
+      "origin_download": "https://files.printables.com/media/prints/995855/stls/7579951_310bad22-ba93-43b9-9423-9d0a48c52a37_b89f3cc7-e176-471b-b7b1-3eb52fa64d4d/brontotherium.obj"
     }
   }
 }

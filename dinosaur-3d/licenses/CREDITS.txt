@@ -573,3 +573,13 @@ ichthyovenator.glb
   Origin:   Ichthyovenator.obj via GraphQL getDownloadLink (source:model_detail)
   Notes:    Clean filename. Asian Early Cretaceous spinosaurid from Laos with a sinusoidal (wave-like) sail - differentiate from shipped Spinosaurus (North African, continuous sail).
             OBJ->glTF (~31k tris) with vertex-color countershading; reoriented length-along-X.
+
+
+brontotherium.glb
+  Title:    brontotherium
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/995855-brontotherium
+  Origin:   brontotherium.obj via GraphQL getDownloadLink (source:model_detail)
+  Notes:    Clean filename (no Daz/Dinoraul). Late Eocene North American brontothere mammal - NOT a dinosaur (historically Brontotherium; often synonymized with Megacerops).
+            OBJ->glTF (~20k tris) with vertex-color countershading; reoriented length-along-X.
