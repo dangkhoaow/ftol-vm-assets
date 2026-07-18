@@ -561,6 +561,36 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Sauropelta model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/757224-sauropelta"
+    },
+    "tarbosaurus": {
+      "file": "tarbosaurus.glb",
+      "bytes": 411088,
+      "sha256": "273d73b6ce22f8b3ed107c0eab4fef6c780840685b47c17bba5414041270087f",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Tarbosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757281-tarbosaurus"
+    },
+    "quetzalcoatlus": {
+      "file": "quetzalcoatlus.glb",
+      "bytes": 33768,
+      "sha256": "4bcac41dec3ea4ae76749e43c2c2f44f2802062ff4090e6ca4aa3ccfa1cf1b2b",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Quetzalcoatlus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757267-quetzalcoatlus"
+    },
+    "gigantoraptor": {
+      "file": "gigantoraptor.glb",
+      "bytes": 415952,
+      "sha256": "775d326551564728585f67e16af3f58f5e38c36b6c17f8a4c6072cbfc9df1a7f",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Gigantoraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757269-gigantoraptor"
     }
   }
 }

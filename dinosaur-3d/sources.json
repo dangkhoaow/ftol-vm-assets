@@ -512,6 +512,42 @@
       "kind": "fleshed",
       "notes": "Seth Printables CC-BY-SA (license id 2); OBJ object sauropelta_22 (header cites Jean_of_arc_plate.blend tooling); no Daz/Dinoraul/franchise strings; ~18k tris trimesh+Open3D vertex-cluster+quadric; length-X feet Y=0",
       "credit": "Sauropelta model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)"
+    },
+    "tarbosaurus": {
+      "slug": "tarbosaurus",
+      "file": "tarbosaurus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "credit": "Tarbosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757281-tarbosaurus",
+      "printables_id": 757281,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "notes": "Restored to sources.json fire106 after remanifest wiped orphaned manifest-only entries"
+    },
+    "quetzalcoatlus": {
+      "slug": "quetzalcoatlus",
+      "file": "quetzalcoatlus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "credit": "Quetzalcoatlus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757267-quetzalcoatlus",
+      "printables_id": 757267,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "notes": "Restored to sources.json fire106 after remanifest wiped orphaned manifest-only entries"
+    },
+    "gigantoraptor": {
+      "slug": "gigantoraptor",
+      "file": "gigantoraptor.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "credit": "Gigantoraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757269-gigantoraptor",
+      "printables_id": 757269,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "notes": "Restored to sources.json fire106 after remanifest wiped orphaned manifest-only entries"
     }
   }
 }
