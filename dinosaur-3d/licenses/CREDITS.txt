@@ -458,3 +458,13 @@ brontosaurus.glb
             not needed - source already 6.4k tris). Vertex-color countershading
             applied (olive dorsal / sandy ventral) because the blend materials did
             not carry useful baked color after glTF export.
+
+megalosaurus.glb
+  Title:    megalosaurus
+  Author:   Model Magic
+  License:  Creative Commons — Public Domain (Printables license id "7")
+  Via:      Printables - https://www.printables.com/model/1758607-dinosaur-art-megalosaurus
+  Origin:   STL downloaded via Printables GraphQL getDownloadLink (source: model_detail)
+  Notes:    Full-body theropod silhouette verified against Printables preview (bipedal large-headed carnivore).
+            Decimated STL->glTF with vertex-color countershading (same Model Magic PD path as prior ships).
+            Corythosaurus Model Magic 1777347 was REJECTED this fire: preview shows tube crest = Parasaurolophus mislabel.

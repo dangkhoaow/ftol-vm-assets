@@ -313,6 +313,16 @@
       "license": "CC0 1.0",
       "credit": "Brontosaurus model by WeaponGuy (CC0, via OpenGameArt; .blend->glTF conversion with applied countershading)",
       "source_url": "https://opengameart.org/content/brontosaurus"
+    },
+    "megalosaurus": {
+      "file": "megalosaurus.glb",
+      "bytes": 320860,
+      "sha256": "906e32cabc166d7279d414ce348c7790795f1e78d874730f05dbe832fa751649",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0 (Public Domain dedication via Printables)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     }
   }
 }
