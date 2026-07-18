@@ -321,7 +321,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
     "microraptor": {
@@ -534,32 +534,14 @@
       "credit": "Coelophysis model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/757231-coelophysis"
     },
-    "quetzalcoatlus": {
-      "file": "quetzalcoatlus.glb",
-      "sha256": "4bcac41dec3ea4ae76749e43c2c2f44f2802062ff4090e6ca4aa3ccfa1cf1b2b",
-      "bytes": 33768,
+    "titanosaurus": {
+      "file": "titanosaurus.glb",
+      "bytes": 408872,
+      "sha256": "cf0d7c05863ddb4c37cb53647cd9573136d7507f8139b0480e87363a7d966d87",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
       "license": "CC-BY-SA 4.0",
-      "author": "seth the yutyrannus",
-      "source_url": "https://www.printables.com/model/757267-quetzalcoatlus",
-      "tris": 1638
-    },
-    "gigantoraptor": {
-      "file": "gigantoraptor.glb",
-      "sha256": "775d326551564728585f67e16af3f58f5e38c36b6c17f8a4c6072cbfc9df1a7f",
-      "bytes": 415952,
-      "license": "CC-BY-SA 4.0",
-      "author": "seth the yutyrannus",
-      "source_url": "https://www.printables.com/model/757269-gigantoraptor",
-      "tris": 19984
-    },
-    "tarbosaurus": {
-      "file": "tarbosaurus.glb",
-      "sha256": "273d73b6ce22f8b3ed107c0eab4fef6c780840685b47c17bba5414041270087f",
-      "bytes": 411088,
-      "license": "CC-BY-SA 4.0",
-      "author": "seth the yutyrannus",
-      "source_url": "https://www.printables.com/model/757281-tarbosaurus",
-      "tris": 19999
+      "source_url": "https://www.printables.com/model/757201-titanosaurus"
     }
   }
 }

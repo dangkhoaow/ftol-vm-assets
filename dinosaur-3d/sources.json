@@ -478,6 +478,17 @@
       "credit": "Coelophysis model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
       "source_url": "https://www.printables.com/model/757231-coelophysis",
       "origin_download": "https://files.printables.com/media/prints/757231/stls/5907002_b4c8c7ca-d01a-4af8-a9af-88c9fb22de9d_1a63f46f-1659-468d-926b-f64e77e51f35/coelophysis.obj"
+    },
+    "titanosaurus": {
+      "slug": "titanosaurus",
+      "file": "titanosaurus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757201-titanosaurus",
+      "origin_download": "https://files.printables.com/media/prints/757201/stls/5906792_4446fdfc-f3d3-4b23-b2a7-d65cffc8174a_904a56cd-f564-4c73-9585-16b46999da49/titanosaurus.obj",
+      "printables_id": 757201,
+      "kind": "fleshed",
+      "notes": "Seth Printables CC-BY-SA; clean OBJ groups; ~20k tris trimesh+Open3D"
     }
   }
 }
