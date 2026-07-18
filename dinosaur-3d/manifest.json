@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.7",
+  "version": "1.48.8",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -611,6 +611,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Shuangmiaosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/757287-shuangmiaosaurus"
+    },
+    "alioramus": {
+      "file": "alioramus.glb",
+      "bytes": 403108,
+      "sha256": "47a4707aa1fead1b8c395868ec6d625ff6e970492424e3d272233cdc34410598",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Alioramus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757289-alioramus"
     }
   }
 }

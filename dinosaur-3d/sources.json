@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.7",
+  "version": "1.48.8",
   "models": {
     "tyrannosaurus-rex": {
       "file": "tyrannosaurus-rex.glb",
@@ -573,6 +573,19 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "credit": "Shuangmiaosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "notes": "Seth Printables CC-BY-SA (license id 2); Aspose.3D OBJ object Object_5 (no Daz/Dinoraul/franchise); kept body+limb components (~20k tris) trimesh+Open3D quadric; length-X feet Y=0"
+    },
+    "alioramus": {
+      "slug": "alioramus",
+      "file": "alioramus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757289-alioramus",
+      "origin_download": "https://files.printables.com/media/prints/757289/stls/5907350_7679a329-227f-44b5-a024-d0ed2f0a60e3_0f28d4e6-7779-42ed-b111-bc287af6a327/alioramus.obj",
+      "printables_id": 757289,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Alioramus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "notes": "Seth Printables CC-BY-SA (license id 2); Aspose.3D OBJ object Object_5 (no Daz/Dinoraul/franchise); kept body+limb components (~20k tris) trimesh+Open3D quadric; length-X feet Y=0"
     }
   }

@@ -678,3 +678,14 @@ shuangmiaosaurus.glb
             Aspose.3D Wavefront OBJ (object Object_5); no Daz/Dinoraul/Jurassic/
             franchise strings. Body + limb mesh islands kept; decimated ~20k tris
             via trimesh+Open3D quadric, Y-up, feet on y=0, length along X.
+
+alioramus.glb
+  Title:    alioramus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757289-alioramus
+  Origin:   https://files.printables.com/media/prints/757289/stls/5907350_7679a329-227f-44b5-a024-d0ed2f0a60e3_0f28d4e6-7779-42ed-b111-bc287af6a327/alioramus.obj
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike.
+            Aspose.3D Wavefront OBJ (object Object_5); no Daz/Dinoraul/Jurassic/
+            franchise strings. Body + limb mesh islands kept; decimated ~20k tris
+            via trimesh+Open3D quadric, Y-up, feet on y=0, length along X.
