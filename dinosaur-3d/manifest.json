@@ -363,6 +363,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Concavenator model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~1.1M->15k tris)",
       "source_url": "https://www.printables.com/model/916830-concavenator"
+    },
+    "albertaceratops": {
+      "file": "albertaceratops.glb",
+      "bytes": 340952,
+      "sha256": "a63d9167db9a221ce1a69a9e4c12644ebdca3148769a58c55f1501f1ad1675ad",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Albertaceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~115k->16k tris)",
+      "source_url": "https://www.printables.com/model/757230-albertaceratops"
     }
   }
 }
