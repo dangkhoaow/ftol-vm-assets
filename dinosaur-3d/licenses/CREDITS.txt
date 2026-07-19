@@ -727,3 +727,25 @@ compsognathus.glb
             feet Y=0, neutral countershading vertex color. ShareAlike: re-hosted
             derivative remains under CC-BY-SA 4.0.
 
+troodon.glb
+  Title:    troodon
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/747521-troodon
+  Origin:   https://files.printables.com/media/prints/747521/stls/5836229_b0f7cb0b-11c1-4b26-8d11-f2b3c9567f9b_af19c0b3-1b0b-41f2-bf00-8a978f636e00/troodon.obj
+  Notes:    License + author confirmed via the anonymous Printables GraphQL query
+            (license.name="Creative Commons — Attribution — Share Alike",
+            user.publicUsername="seth the yutyrannus"); description "the troodon has
+            a very large brain because it is the smartest dinosaur" - no Daz/Dinoraul/
+            Jurassic/franchise strings. Downloaded via the filePreviewPath-derived
+            folder path; byte-count-verified (content-length 10,087,805 matches the
+            GraphQL-reported fileSize exactly). Aspose.3D-style OBJ (single mesh);
+            decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, rotated 90deg
+            about Y to reorient length-along-X (native export was length-along-Z),
+            feet Y=0, neutral olive-brown dorsal / cream ventral countershading vertex
+            color applied (no known skin/feather color). Render-verified via matplotlib
+            triangulated side+front silhouette projection: unmistakable small bipedal
+            feathered theropod (head with eyes/jaw, feathered forearms, raised
+            counterbalancing tail). ShareAlike: re-hosted derivative remains under
+            CC-BY-SA 4.0.
+

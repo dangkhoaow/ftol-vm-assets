@@ -623,6 +623,19 @@
       "credit": "Compsognathus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
       "source_url": "https://www.printables.com/model/747520-compsognathus",
       "origin_download": "https://files.printables.com/media/prints/747520/stls/5836226_0929ee69-29e5-4da6-97b8-7c44fefdfed3_417a96e1-4d21-44ed-b9b0-7f4ce88b945c/compsognathus.obj"
+    },
+    "troodon": {
+      "slug": "troodon",
+      "file": "troodon.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/747521-troodon",
+      "origin_download": "https://files.printables.com/media/prints/747521/stls/5836229_b0f7cb0b-11c1-4b26-8d11-f2b3c9567f9b_af19c0b3-1b0b-41f2-bf00-8a978f636e00/troodon.obj",
+      "printables_id": 747521,
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "credit": "Troodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
+      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons \u2014 Attribution \u2014 Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
     }
   }
 }

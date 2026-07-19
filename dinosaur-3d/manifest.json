@@ -652,6 +652,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Compsognathus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
       "source_url": "https://www.printables.com/model/747520-compsognathus"
+    },
+    "troodon": {
+      "file": "troodon.glb",
+      "bytes": 388128,
+      "sha256": "32100bab2e9acda19d5371ec8617e8151d967b3f40f01e0e66ec3cff8152f6ba",
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Troodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
+      "source_url": "https://www.printables.com/model/747521-troodon"
     }
   }
 }
