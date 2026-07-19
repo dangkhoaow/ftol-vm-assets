@@ -1,7 +1,19 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.10",
+  "version": "1.48.11",
   "models": {
+    "albertosaurus": {
+      "slug": "albertosaurus",
+      "file": "albertosaurus.glb",
+      "license": "CC0 1.0",
+      "author": "Manicaeks",
+      "source_url": "https://opengameart.org/content/albertosaurus",
+      "origin_download": "https://opengameart.org/sites/default/files/Albertosaurus.zip",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Albertosaurus model by Manicaeks (CC0, via OpenGameArt)",
+      "notes": "OpenGameArt submission licensed CC0 (Public Domain), part 3 of the author's 'dinosaurs pack' (siblings ankylosaurus/pentaceratops/apatosaurus already covered by other creators on this manifest). Zip contained only .blend (Blender 2.69) + .fbx (ASCII FBX 6.1.0, too old for assimp) - converted headlessly via Blender 4.5 bpy (--background --python), object named 'Cube' 343 polys/1364 tris. Legacy material had use_nodes=False (Blender-Internal era) with no node-graph diffuse color, so a Principled BSDF was rebuilt from scratch wired to the model's own painted UV texture (albertosaurustexture.png, 1024x1024, via a UVMap node) rather than the flat gray diffuse_color fallback. Render-verified via a Blender headless snapshot (Eevee, sun lighting): clear bipedal tyrannosaurid silhouette - horizontal back, raised tail counterweight, big head with visible eye+jaw, small tucked arms, digitigrade legs. No Daz/Dinoraul/franchise/toy-scan markers (independent hand-modeled asset, 2014)."
+    },
     "tyrannosaurus-rex": {
       "file": "tyrannosaurus-rex.glb",
       "kind": "fleshed",

@@ -1,9 +1,19 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.10",
+  "version": "1.48.11",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
+    "albertosaurus": {
+      "file": "albertosaurus.glb",
+      "bytes": 297232,
+      "sha256": "842904741889befabe1f7a92aac05d5f851148553982473e89a429a6ce8c35bf",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Albertosaurus model by Manicaeks (CC0, via OpenGameArt)",
+      "source_url": "https://opengameart.org/content/albertosaurus"
+    },
     "tyrannosaurus-rex": {
       "file": "tyrannosaurus-rex.glb",
       "bytes": 336568,

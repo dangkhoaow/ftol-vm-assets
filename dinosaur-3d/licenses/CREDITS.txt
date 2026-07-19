@@ -749,3 +749,25 @@ troodon.glb
             counterbalancing tail). ShareAlike: re-hosted derivative remains under
             CC-BY-SA 4.0.
 
+
+albertosaurus.glb
+  Title:    albertosaurus
+  Author:   Manicaeks
+  License:  CC0 1.0 (Public Domain)
+  Via:      OpenGameArt - https://opengameart.org/content/albertosaurus
+  Origin:   https://opengameart.org/sites/default/files/Albertosaurus.zip
+  Notes:    Part 3 of the author's "dinosaurs pack" personal-project series
+            (siblings ankylosaurus/pentaceratops/apatosaurus already on this
+            manifest from other creators). Zip held only .blend (Blender 2.69)
+            + .fbx (ASCII FBX 6.1.0, too old for assimp's FBX importer);
+            converted headlessly via Blender 4.5 bpy (--background --python).
+            Object "Cube", 343 polys/1364 tris. Legacy Blender-Internal
+            material (use_nodes=False, no diffuse node) was rebuilt as a
+            Principled BSDF wired to the model's own painted UV texture
+            (albertosaurustexture.png, 1024x1024) via a UVMap node, instead of
+            falling back to a flat gray default. Render-verified via a Blender
+            headless Eevee snapshot: clear bipedal tyrannosaurid silhouette
+            (horizontal back, raised tail counterweight, big head with
+            visible eye+jaw, small tucked arms, digitigrade legs). No
+            Daz/Dinoraul/franchise/toy-scan markers - independent hand-modeled
+            2014 asset.
