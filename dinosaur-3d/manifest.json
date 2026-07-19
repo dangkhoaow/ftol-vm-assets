@@ -672,6 +672,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Troodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
       "source_url": "https://www.printables.com/model/747521-troodon"
+    },
+    "deinocheirus": {
+      "file": "deinocheirus.glb",
+      "bytes": 447224,
+      "sha256": "60a6a9856e7855d05a45bee94355a309b0b8794ccb5fda4ff08d8d1f7ca6c7b8",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Deinocheirus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/774263-deinocheirus"
     }
   }
 }

@@ -771,3 +771,21 @@ albertosaurus.glb
             visible eye+jaw, small tucked arms, digitigrade legs). No
             Daz/Dinoraul/franchise/toy-scan markers - independent hand-modeled
             2014 asset.
+
+deinocheirus.glb
+  Title:    deinocheirus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/774263-deinocheirus
+  Origin:   https://files.printables.com/media/prints/774263/stls/6018201_963c0933-b797-4da8-a2b9-07460b0b7b78_b9a0a742-35ce-423e-ae91-ba200ab89109/deinocheirus.obj
+  Notes:    Printables license id 2 confirmed via anonymous GraphQL
+            (license.name="Creative Commons — Attribution — Share Alike",
+            user.publicUsername="seth the yutyrannus"). OBJ header Aspose.3D
+            Wavefront exporter; components Object_7/9/11; grepped clean of
+            Daz/Dinoraul/Jurassic/franchise/copyright/trademark. Downloaded
+            via filePreviewPath-derived folder (byte-count-verified 4078017).
+            Decimated 35,074 -> 19,999 tris via trimesh + Open3D quadric;
+            rotated 90deg about Y (native length-along-Z -> length-along-X);
+            feet Y=0; olive-brown/cream countershading vertex color.
+            ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+            Fire114 (deinocheirus lead recorded fire112).
