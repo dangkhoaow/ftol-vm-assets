@@ -811,3 +811,32 @@ pentaceratops.glb
             Daz/Dinoraul/franchise/toy-scan markers - independent
             hand-modeled 2014 asset. Ready-queue entry (dino3d-discovery-loop
             fire123) - vendored ahead of need; no page authored this fire.
+
+barosaurus.glb
+  Title:    barosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/885614-barosaurus
+  Origin:   https://files.printables.com/media/prints/885614/stls/6784845_ec0836c3-2b99-47a1-ac33-246610fe56f9_a461115d-aac9-4e4b-93dc-855d5e4da4dd/21534_barosaurus_v1.obj
+  Notes:    Model origin marked "their own original creation" on the live
+            page - not a franchise/toy-scan rip. Single OBJ (3ds Max
+            Wavefront exporter, 47386 verts, no MTL/texture). Direct file
+            URL resolved via Playwright page.waitForEvent("download") while
+            clicking the row-level Download control on the model's Files
+            tab - the real browser download event, not the GraphQL API
+            (which stayed introspection-disabled for this same creator's
+            tyrannotitan/euoplocephalus leads in fires 129/132). Converted
+            headlessly via trimesh: remapped source Z-up (3ds Max) axes to
+            glTF Y-up (newX=oldX, newY=oldZ, newZ=-oldY - confirmed
+            necessary by a before/after Playwright swiftshader render that
+            showed the pre-fix export standing on its tail end); applied a
+            vertex-color countershading gradient (light tan belly, dark
+            olive-brown back) since the source carried no baked
+            material/texture; re-centered X/Z, feet at Y=0. 49856 verts /
+            94768 faces post-export, 1.9MB. targetLenUnits 25 (matches the
+            mamenchisaurus longNeck-sauropod camera framing precedent, not
+            the 12-unit default). Render-verified via the site's own
+            vendored three.module.min.js/gltf-loader.module.js: clear
+            quadruped sauropod - raised neck, barrel body, four legs, long
+            tapering tail. ShareAlike: re-hosted derivative remains under
+            CC-BY-SA 4.0. Fire134 (dino3d-discovery-loop-runbook).

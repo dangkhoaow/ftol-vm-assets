@@ -692,6 +692,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Deinocheirus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/774263-deinocheirus"
+    },
+    "barosaurus": {
+      "file": "barosaurus.glb",
+      "bytes": 1935976,
+      "sha256": "59525e176cf2742719341e28ed37f0d67efd5321230babc043feb480baf6b825",
+      "kind": "fleshed",
+      "targetLenUnits": 25,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Barosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, Z-up to Y-up axis correction applied, neutral olive-tan countershading applied)",
+      "source_url": "https://www.printables.com/model/885614-barosaurus"
     }
   }
 }
