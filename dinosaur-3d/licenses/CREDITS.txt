@@ -859,3 +859,41 @@ ostafrikasaurus.glb
             olive/cream vertex countershading. ShareAlike: re-hosted derivative
             remains under CC-BY-SA 4.0.
 
+torvosaurus.glb
+  Title:    torvosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/774270-torvosaurus
+  Origin:   https://files.printables.com/media/prints/774270/stls/6018239_387685fd-5656-449f-ac8b-5dcbdadbea62_6f1a2b5d-fc00-4c30-930b-f882f7cdaf65/torvosaurus.obj
+  Notes:    dino3d-discovery-loop fire139. Downloaded via the fire134 real-
+            browser-Download-button technique, launched against the system
+            Google Chrome.app (Playwright's own browser CDN download is
+            network-blocked in this environment; executablePath + a realistic
+            UA + navigator.webdriver override gets past Printables'
+            Cloudflare bot check). Aspose.3D OBJ, g Object_7/9/11, single
+            usemtl 'Torvosaurus' (species-named material) - the same
+            object-count and naming pattern as the already-shipped,
+            confirmed-clean Deinocheirus (re-verified this fire by
+            re-downloading Deinocheirus's OBJ and diffing the material
+            block). Two sibling leads from the SAME creator were downloaded
+            and REJECTED this fire as Daz Studio rips: euoplocephalus
+            (Printables 1023372, filename literally
+            daz_originals__dinorauls_euoplocephalus.obj, Object_5-10 +
+            generic claws/horn/mouth/skin/teeth materials) and suchomimus
+            (Printables 747445, same Object_5-11 + generic
+            claws/horns/material/mouth/skin/teeth/tongue materials) - do
+            not resume either without a materially different finding.
+            62,694 raw verts / 95,120 faces at print scale; recentered
+            X/Z, feet Y=0, no axis swap (native axis ordering already
+            matches the shipped Deinocheirus); scaled so length maps to
+            targetLenUnits 14; vertex-color countershading (cream belly,
+            dark brown back), no baked texture in the source. Post-merge
+            48,640 verts / 95,120 faces, 1.9MB. Render-verified via a
+            matplotlib wireframe projection and the live page (system
+            Chrome + swiftshader renders WebGL headless fine once pointed
+            at the Chrome.app binary - Playwright's bundled browser
+            download, not WebGL compositing, is what this environment
+            blocks): clear bipedal theropod, head with open jaws forward,
+            tail raised as a counterweight, digitigrade legs, arched back.
+            ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+

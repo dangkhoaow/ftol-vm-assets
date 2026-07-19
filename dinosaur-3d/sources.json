@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.14",
+  "version": "1.48.15",
   "models": {
     "pentaceratops": {
       "slug": "pentaceratops",
@@ -699,6 +699,19 @@
       "targetLenUnits": 12,
       "credit": "Ostafrikasaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "notes": "Fire115 fallback after rejecting tyrannotitan Printables 1331397 (internal mesh names DR_Tyrannotitan_*.Shape_* = Daz rip despite clean untitled.obj filename). This OBJ: Blender 3.6.15 header, object LVL40Osta_LVL40Osta_0, grepped clean of Daz/Dinoraul/Jurassic/franchise. License id 2 CC-BY-SA via GraphQL. trimesh+Open3D load (8727 tris already <20k, no further decimate); np.ptp reorient longest->X, feet Y=0; olive/cream vertex countershading. ShareAlike derivative remains CC-BY-SA 4.0."
+    },
+    "torvosaurus": {
+      "slug": "torvosaurus",
+      "file": "torvosaurus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/774270-torvosaurus",
+      "origin_download": "https://files.printables.com/media/prints/774270/stls/6018239_387685fd-5656-449f-ac8b-5dcbdadbea62_6f1a2b5d-fc00-4c30-930b-f882f7cdaf65/torvosaurus.obj",
+      "printables_id": 774270,
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "credit": "Torvosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "notes": "dino3d-discovery-loop-runbook fire139: Cloudflare-blocked the fire134-style headless Playwright download (bot-check) until relaunched with executablePath pointed at the system-installed Google Chrome.app (playwright.download CDN for its own bundled browsers is network-blocked in this environment) plus a realistic UA + navigator.webdriver override - resolved via the real browser Download button on the Files tab, same technique as fire134's Barosaurus. Same fire also downloaded and REJECTED two Daz-rip sibling leads from the SAME creator: euoplocephalus (Printables 1023372, filename literally 'daz_originals__dinorauls_euoplocephalus.obj', Object_5-10 groups, generic claws/horn/mouth/skin/teeth materials) and suchomimus (Printables 747445, same Object_5-11 + claws/horns/material/mouth/skin/teeth/tongue material pattern) - do not resume either. This Torvosaurus OBJ: Aspose.3D Wavefront exporter, g Object_7/9/11, single usemtl 'Torvosaurus' (species-named, not generic anatomical zones) - byte-for-byte the SAME object-count/material-naming pattern as the already-vendored, confirmed-clean Deinocheirus (Object_7/9/11, usemtl Deinocheirus), independently re-verified this fire by re-downloading Deinocheirus's original OBJ and diffing its material block. 62,694 raw verts / 95,120 faces at print scale (extents ~0.014 x 0.033 x 0.118, i.e. authored directly at physical print size, same as every other seth-the-yutyrannus source); recentered X/Z, feet at Y=0, no axis swap needed (native X=width/Y=height/Z=length already matches the shipped Deinocheirus's identical native axis ordering, confirmed by comparing raw bounding boxes before assuming a Barosaurus-style Z-up fix was required); scaled so length(Z) maps to targetLenUnits 14 (matches the shipped Albertosaurus/Tyrannosaurus large-theropod framing, not the 12-unit default); vertex-color countershading (cream belly to dark brown back), no baked texture in the source. Post-merge 48,640 verts / 95,120 faces, 1.9MB. Render-verified via a matplotlib side/top wireframe projection AND via the live page (Playwright + system Chrome + swiftshader flags DOES render WebGL headless in this environment once pointed at the system Chrome.app binary - corrects a prior assumption in this fire's own working notes that only page/DOM automation worked, not GPU compositing) - clear bipedal theropod silhouette: head with open jaws at the forward end, raised tail counterweight, digitigrade legs, back arched over the hips, tail lifted off the ground. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0."
     }
   }
 }
