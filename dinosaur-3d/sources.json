@@ -587,6 +587,19 @@
       "targetLenUnits": 12,
       "credit": "Alioramus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "notes": "Seth Printables CC-BY-SA (license id 2); Aspose.3D OBJ object Object_5 (no Daz/Dinoraul/franchise); kept body+limb components (~20k tris) trimesh+Open3D quadric; length-X feet Y=0"
+    },
+    "doliosauriscus": {
+      "slug": "doliosauriscus",
+      "file": "doliosauriscus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757291-doliosauriscus",
+      "origin_download": "https://files.printables.com/media/prints/757291/stls/5907358_70996f41-cb1e-4381-a24a-2f867469d4fd_0ae13378-7c48-4052-bc9f-fd172df8f596/doliosauriscus.obj",
+      "printables_id": 757291,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Doliosauriscus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "notes": "Seth Printables CC-BY-SA (license id 2); Aspose.3D OBJ object Object_5 (no Daz/Dinoraul/franchise); ~20k tris trimesh+Open3D quadric; length-X feet Y=0. Middle Permian anteosaurid synapsid (not a dinosaur); historically Doliosauriscus, often synonymized with Titanophoneus."
     }
   }
 }

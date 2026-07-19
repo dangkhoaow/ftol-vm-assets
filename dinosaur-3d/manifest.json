@@ -621,6 +621,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Alioramus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/757289-alioramus"
+    },
+    "doliosauriscus": {
+      "file": "doliosauriscus.glb",
+      "bytes": 403960,
+      "sha256": "01e0faf5fe9903d4e217435baab0b802e36cee90afc0d0627201fd8f79b8ca25",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Doliosauriscus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757291-doliosauriscus"
     }
   }
 }

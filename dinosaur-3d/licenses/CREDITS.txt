@@ -689,3 +689,15 @@ alioramus.glb
             Aspose.3D Wavefront OBJ (object Object_5); no Daz/Dinoraul/Jurassic/
             franchise strings. Body + limb mesh islands kept; decimated ~20k tris
             via trimesh+Open3D quadric, Y-up, feet on y=0, length along X.
+
+doliosauriscus.glb
+  Title:    doliosauriscus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757291-doliosauriscus
+  Origin:   https://files.printables.com/media/prints/757291/stls/5907358_70996f41-cb1e-4381-a24a-2f867469d4fd_0ae13378-7c48-4052-bc9f-fd172df8f596/doliosauriscus.obj
+  Notes:    Aspose.3D Wavefront OBJ exporter (object Object_5); no Daz/Dinoraul/franchise
+            markers. Printables license id "2" = Creative Commons Attribution Share Alike.
+            Converted headlessly via trimesh + Open3D (~20k tris), reoriented length-along-X,
+            feet Y=0. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
