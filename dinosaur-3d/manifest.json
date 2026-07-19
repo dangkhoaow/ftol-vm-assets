@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.13",
+  "version": "1.48.14",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -702,6 +702,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Barosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, Z-up to Y-up axis correction applied, neutral olive-tan countershading applied)",
       "source_url": "https://www.printables.com/model/885614-barosaurus"
+    },
+    "ostafrikasaurus": {
+      "file": "ostafrikasaurus.glb",
+      "bytes": 180652,
+      "sha256": "57b92ae8db7766e2cd4416b44796e9fefde670054d3998b7394f3a7ceeed349d",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ostafrikasaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/1023409-ostafrikasaurus"
     }
   }
 }

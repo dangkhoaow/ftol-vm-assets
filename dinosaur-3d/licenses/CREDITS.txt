@@ -840,3 +840,22 @@ barosaurus.glb
             quadruped sauropod - raised neck, barrel body, four legs, long
             tapering tail. ShareAlike: re-hosted derivative remains under
             CC-BY-SA 4.0. Fire134 (dino3d-discovery-loop-runbook).
+
+ostafrikasaurus.glb
+  Title:    ostafrikasaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/1023409-ostafrikasaurus
+  Origin:   https://files.printables.com/media/prints/1023409/stls/7772716_6769957a-dd54-4586-aad1-2cc0c9a319b9_f4d2647f-a2b6-4ac5-bc38-78aeed4810fe/ostafrikasaurus.obj
+  Notes:    Fire115 fallback after REJECTING tyrannotitan Printables 1331397
+            (filename untitled.obj looked clean, but mesh names
+            Object_*_DR_Tyrannotitan_56888.Shape_skin/eyeball/mouth/... are
+            classic Daz Studio markers - rejected per Daz/NC/franchise gate).
+            This Ostafrikasaurus OBJ: Blender 3.6.15 header; object
+            LVL40Osta_LVL40Osta_0; grepped clean of Daz/Dinoraul/Jurassic/
+            franchise strings. Printables license id 2 (CC-BY-SA) via GraphQL.
+            trimesh + Open3D load (8,727 tris already under ~20k target; no
+            further decimation); np.ptp reorient longest axis -> X; feet Y=0;
+            olive/cream vertex countershading. ShareAlike: re-hosted derivative
+            remains under CC-BY-SA 4.0.
+

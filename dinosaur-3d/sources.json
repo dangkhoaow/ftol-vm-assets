@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.13",
+  "version": "1.48.14",
   "models": {
     "pentaceratops": {
       "slug": "pentaceratops",
@@ -310,7 +310,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus",
       "origin_download": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
@@ -659,7 +659,7 @@
       "kind": "fleshed",
       "targetLenUnits": 8,
       "credit": "Troodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
-      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons — Attribution — Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
+      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons \u2014 Attribution \u2014 Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
     },
     "deinocheirus": {
       "slug": "deinocheirus",
@@ -686,6 +686,19 @@
       "targetLenUnits": 25,
       "credit": "Barosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, Z-up to Y-up axis correction applied, neutral olive-tan countershading applied)",
       "notes": "Printables model 885614, license CC-BY-SA 4.0 (Attribution-ShareAlike) confirmed on the live model page (Creative Commons 4.0 International License badge, Commercial Use/Remix Culture/Free Cultural Works all green); Model origin states \"The author marked this model as their own original creation\" - no franchise/toy-scan markers, not a game-asset rip. Single OBJ file (21534_Barosaurus_v1, 47386 verts, 3ds Max Wavefront exporter, no accompanying MTL/texture downloaded) resolved via the real browser Download button on the page Files tab (Playwright page.waitForEvent(\"download\") while clicking the row-level Download control - NOT the GraphQL API, which stayed introspection-disabled and unresolvable for this creators tyrannotitan/euoplocephalus leads in fires 129/132; this technique is the fire134 breakthrough and should be reused directly for those two backlog leads next). Converted headlessly via trimesh: loaded OBJ, remapped the source Z-up (3ds Max) axes to glTF Y-up (newX=oldX, newY=oldZ, newZ=-oldY - confirmed necessary by a before/after Playwright swiftshader render showing the pre-fix export standing on its tail end), applied a vertex-color countershading gradient (light tan belly to dark olive-brown back) since the source OBJ carried no baked texture/material, re-centered on X/Z with feet at Y=0, exported as GLB (49856 verts post-trimesh dedup, 94768 faces, 1.9MB). targetLenUnits set to 25 to match the mamenchisaurus longNeck-sauropod camera/ground framing precedent (feats.longNeck:true uses the same procedural camera radius/ground-disk tuned for a ~25-unit tail-to-head span, not the 12-unit default used by compact archetypes). Render-verified via Playwright + the sites own vendored three.module.min.js/gltf-loader.module.js: clear quadruped sauropod silhouette - long neck raised, barrel body, four legs, long tapering tail."
+    },
+    "ostafrikasaurus": {
+      "slug": "ostafrikasaurus",
+      "file": "ostafrikasaurus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/1023409-ostafrikasaurus",
+      "origin_download": "https://files.printables.com/media/prints/1023409/stls/7772716_6769957a-dd54-4586-aad1-2cc0c9a319b9_f4d2647f-a2b6-4ac5-bc38-78aeed4810fe/ostafrikasaurus.obj",
+      "printables_id": 1023409,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Ostafrikasaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "notes": "Fire115 fallback after rejecting tyrannotitan Printables 1331397 (internal mesh names DR_Tyrannotitan_*.Shape_* = Daz rip despite clean untitled.obj filename). This OBJ: Blender 3.6.15 header, object LVL40Osta_LVL40Osta_0, grepped clean of Daz/Dinoraul/Jurassic/franchise. License id 2 CC-BY-SA via GraphQL. trimesh+Open3D load (8727 tris already <20k, no further decimate); np.ptp reorient longest->X, feet Y=0; olive/cream vertex countershading. ShareAlike derivative remains CC-BY-SA 4.0."
     }
   }
 }
