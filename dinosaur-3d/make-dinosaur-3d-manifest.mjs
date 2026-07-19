@@ -26,6 +26,14 @@ for (const [slug, m] of Object.entries(sources.models)) {
     credit: m.credit,
     source_url: m.source_url,
   };
+  // Optional per-model orientation correction (radians) - the page's
+  // d3dInstallModel applies these to the loaded root when present. Most
+  // sourced models already align with the scene's Z-forward convention and
+  // omit both fields; set when a source's native length/up axis differs
+  // (e.g. a 3D-print-oriented STL export) and the swapped-in model reads as
+  // foreshortened/end-on instead of in profile.
+  if (typeof m.yaw === 'number') models[slug].yaw = m.yaw;
+  if (typeof m.pitch === 'number') models[slug].pitch = m.pitch;
   console.log(`${slug}: ${m.file} ${buf.length}B sha256=${models[slug].sha256.slice(0, 12)}...`);
 }
 const manifest = {

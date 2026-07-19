@@ -637,10 +637,11 @@
       "bytes": 422820,
       "sha256": "218de13c8d2d239782fbaf4f8d991f2f7fa3969b52be497274c55c0767a1b25a",
       "kind": "fleshed",
-      "targetLenUnits": 12,
+      "targetLenUnits": 25,
       "license": "CC-BY-SA 4.0",
       "credit": "Mamenchisaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion, neutral countershading applied)",
-      "source_url": "https://www.printables.com/model/747424-mamenchisaurus"
+      "source_url": "https://www.printables.com/model/747424-mamenchisaurus",
+      "yaw": 1.5707963267948966
     }
   }
 }

@@ -610,9 +610,10 @@
       "origin_download": "https://files.printables.com/media/prints/747424/stls/5835707_d64997ab-9c7f-4681-a4fa-f4dde69a60dc_243cca81-87e5-4791-8709-b1aa15e1cf8c/mamenchisaurus_h.stl",
       "printables_id": 747424,
       "kind": "fleshed",
-      "targetLenUnits": 12,
+      "targetLenUnits": 25,
+      "yaw": 1.5707963267948966,
       "credit": "Mamenchisaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion, neutral countershading applied)",
-      "notes": "Seth Printables CC-BY-SA (license id 2, disallowRemixing:false); STLEXP Object01 header, no Daz/Dinoraul/Jurassic/franchise strings; decimated 161168->20000 tris via trimesh+Open3D quadric; length-X feet Y=0"
+      "notes": "Seth Printables CC-BY-SA (license id 2, disallowRemixing:false); STLEXP Object01 header, no Daz/Dinoraul/Jurassic/franchise strings; decimated 161168->20000 tris via trimesh+Open3D quadric; length-X feet Y=0. targetLenUnits raised 12->25 (dino3d-discovery-loop-runbook fire113 PROVE fix): the page's file-local longNeck camera/ground framing (radius 38, ground disk 60) was tuned for the procedural body's real ~25-unit tail-to-head span; the default 12 normalized the swapped glTF to roughly half that, rendering as a near-invisible sliver at default zoom."
     }
   }
 }
