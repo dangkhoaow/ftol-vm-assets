@@ -701,3 +701,16 @@ doliosauriscus.glb
             Converted headlessly via trimesh + Open3D (~20k tris), reoriented length-along-X,
             feet Y=0. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
 
+
+mamenchisaurus.glb
+  Title:    mamenchisaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/747424-mamenchisaurus
+  Origin:   https://files.printables.com/media/prints/747424/stls/5835707_d64997ab-9c7f-4681-a4fa-f4dde69a60dc_243cca81-87e5-4791-8709-b1aa15e1cf8c/mamenchisaurus_h.stl
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike;
+            disallowRemixing:false. STL header "STLEXP Object01" (generic exporter);
+            no Daz/Dinoraul/Jurassic/franchise strings found. Decimated 161,168 -> 20,000
+            tris via trimesh + Open3D quadric, reoriented length-along-X, feet Y=0,
+            neutral countershading vertex color applied (no known skin color).
+            ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.

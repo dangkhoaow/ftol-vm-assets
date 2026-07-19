@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.8",
+  "version": "1.48.9",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -631,6 +631,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Doliosauriscus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/757291-doliosauriscus"
+    },
+    "mamenchisaurus": {
+      "file": "mamenchisaurus.glb",
+      "bytes": 422820,
+      "sha256": "218de13c8d2d239782fbaf4f8d991f2f7fa3969b52be497274c55c0767a1b25a",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Mamenchisaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion, neutral countershading applied)",
+      "source_url": "https://www.printables.com/model/747424-mamenchisaurus"
     }
   }
 }

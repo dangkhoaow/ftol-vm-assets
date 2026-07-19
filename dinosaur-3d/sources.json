@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.8",
+  "version": "1.48.9",
   "models": {
     "tyrannosaurus-rex": {
       "file": "tyrannosaurus-rex.glb",
@@ -286,7 +286,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus",
       "origin_download": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
@@ -600,6 +600,19 @@
       "targetLenUnits": 12,
       "credit": "Doliosauriscus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "notes": "Seth Printables CC-BY-SA (license id 2); Aspose.3D OBJ object Object_5 (no Daz/Dinoraul/franchise); ~20k tris trimesh+Open3D quadric; length-X feet Y=0. Middle Permian anteosaurid synapsid (not a dinosaur); historically Doliosauriscus, often synonymized with Titanophoneus."
+    },
+    "mamenchisaurus": {
+      "slug": "mamenchisaurus",
+      "file": "mamenchisaurus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/747424-mamenchisaurus",
+      "origin_download": "https://files.printables.com/media/prints/747424/stls/5835707_d64997ab-9c7f-4681-a4fa-f4dde69a60dc_243cca81-87e5-4791-8709-b1aa15e1cf8c/mamenchisaurus_h.stl",
+      "printables_id": 747424,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Mamenchisaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion, neutral countershading applied)",
+      "notes": "Seth Printables CC-BY-SA (license id 2, disallowRemixing:false); STLEXP Object01 header, no Daz/Dinoraul/Jurassic/franchise strings; decimated 161168->20000 tris via trimesh+Open3D quadric; length-X feet Y=0"
     }
   }
 }
