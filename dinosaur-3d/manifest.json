@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.9",
+  "version": "1.48.10",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -642,6 +642,16 @@
       "credit": "Mamenchisaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion, neutral countershading applied)",
       "source_url": "https://www.printables.com/model/747424-mamenchisaurus",
       "yaw": 1.5707963267948966
+    },
+    "compsognathus": {
+      "file": "compsognathus.glb",
+      "bytes": 48392,
+      "sha256": "5e1b4b5da367a4f384a96c5aa8d7503331ce147ae92384aab639dfdf070017c9",
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Compsognathus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
+      "source_url": "https://www.printables.com/model/747520-compsognathus"
     }
   }
 }

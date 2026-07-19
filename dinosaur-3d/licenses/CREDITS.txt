@@ -714,3 +714,16 @@ mamenchisaurus.glb
             tris via trimesh + Open3D quadric, reoriented length-along-X, feet Y=0,
             neutral countershading vertex color applied (no known skin color).
             ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+compsognathus.glb
+  Title:    compsognathus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/747520-compsognathus
+  Origin:   https://files.printables.com/media/prints/747520/stls/5836226_0929ee69-29e5-4da6-97b8-7c44fefdfed3_417a96e1-4d21-44ed-b9b0-7f4ce88b945c/compsognathus.obj
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike.
+            Aspose.3D Wavefront OBJ (object Object_5); no Daz/Dinoraul/Jurassic/
+            franchise strings. Already low-poly (~1.8k tris); reoriented length-along-X,
+            feet Y=0, neutral countershading vertex color. ShareAlike: re-hosted
+            derivative remains under CC-BY-SA 4.0.
+
