@@ -1,9 +1,19 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.11",
+  "version": "1.48.13",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
+    "pentaceratops": {
+      "file": "pentaceratops.glb",
+      "bytes": 123224,
+      "sha256": "944e1d35ebd4546dc4a297b5c8335a69d56dedd35285198e4c9fe8d4a8bc12e9",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Pentaceratops model by Manicaeks (CC0, via OpenGameArt)",
+      "source_url": "https://opengameart.org/content/pentaceratops"
+    },
     "albertosaurus": {
       "file": "albertosaurus.glb",
       "bytes": 297232,

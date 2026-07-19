@@ -789,3 +789,25 @@ deinocheirus.glb
             feet Y=0; olive-brown/cream countershading vertex color.
             ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
             Fire114 (deinocheirus lead recorded fire112).
+
+pentaceratops.glb
+  Title:    pentaceratops
+  Author:   Manicaeks
+  License:  CC0 1.0 (Public Domain)
+  Via:      OpenGameArt - https://opengameart.org/content/pentaceratops
+  Origin:   https://opengameart.org/sites/default/files/Pentaceratops.zip
+  Notes:    By the same author as the already-vendored albertosaurus and
+            ankylosaurus models. Zip held only .blend (Blender 2.69) + .fbx
+            (too old for assimp) + a full-res 1024x1024 painted color
+            texture + a UV-layout reference image. Converted headlessly via
+            Blender 4.5 bpy: legacy use_nodes=False material rebuilt as a
+            Principled BSDF wired to the real painted texture via a UVMap
+            node (same technique as albertosaurus); texture re-encoded to
+            JPEG q82 on glTF export, shrinking the asset from 3.2MB to
+            ~120KB with no visible quality loss. Render-verified via a
+            Blender headless Eevee snapshot: clear quadruped ceratopsian -
+            frill with epoccipital spikes, nose horn + 2 brow horns, painted
+            striped purple skin, digitigrade legs with claws. No
+            Daz/Dinoraul/franchise/toy-scan markers - independent
+            hand-modeled 2014 asset. Ready-queue entry (dino3d-discovery-loop
+            fire123) - vendored ahead of need; no page authored this fire.
