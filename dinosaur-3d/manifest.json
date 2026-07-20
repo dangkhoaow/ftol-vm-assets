@@ -1,9 +1,19 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.21",
+  "version": "1.48.22",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
+    "becklespinax": {
+      "file": "becklespinax.glb",
+      "bytes": 208456,
+      "sha256": "60a183a0a03b21b71f8b1f59cc11f3eabb0169a5a18462d685bcdb53a7c71d50",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Becklespinax model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/1051754-becklespinax"
+    },
     "kentrosaurus": {
       "file": "kentrosaurus.glb",
       "bytes": 1200904,
@@ -792,6 +802,16 @@
       "license": "CC0 1.0",
       "credit": "Abelisaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Abelisaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
       "source_url": "https://www.printables.com/model/1767713-dinosaur-art-abelisaurus"
+    },
+    "psittacosaurus": {
+      "file": "psittacosaurus.glb",
+      "bytes": 320436,
+      "sha256": "30eb7e66da70deb50dbe3a1760b4ec6513d99c26402ce89a9b9be6ed90bd3b12",
+      "kind": "fleshed",
+      "targetLenUnits": 7,
+      "license": "CC0 1.0",
+      "credit": "Psittacosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Psittacosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1753562-dinosaur-art-psittacosaurus"
     }
   }
 }

@@ -1021,3 +1021,25 @@ abelisaurus.glb
             series (fire150). Flat display-base stripped. Converted headlessly (trimesh +
             Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 tris + vertex-color
             countershading. ~321 KB GLB. Credit voluntary under CC0.
+
+becklespinax.glb
+  Title:    Becklespinax
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/1051754-becklespinax
+  Origin:   https://files.printables.com/media/prints/1051754/stls/7967803_80f28108-bbdd-43d4-ab30-ced0282e9f78_32b89520-5187-4d9d-8483-341c79c5f266/becklespinax.obj
+  Note:     dino3d-discovery-loop-runbook fire225. Downloaded via the getDownloadLink
+            GraphQL mutation (anonymous, TTL-bound signed URL - the production download
+            mechanism, replacing the filePreviewPath folder-hash heuristic). Rip-checked
+            clean (no Daz/Dinoraul/franchise strings). Converted via trimesh: -90deg Y
+            rotation to align long axis to X, centered X/Z, feet at Y=0, neutral vertex
+            countershading (no skin/color evidence survives the fossil record). ~208 KB
+            GLB. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+psittacosaurus.glb
+  License:  CC0 1.0 (Public Domain)
+  Author:   Model Magic (Printables user)
+  Source:   https://www.printables.com/model/1753562-dinosaur-art-psittacosaurus
+  Origin:   https://files.printables.com/media/prints/37347a1a-0faf-4db2-b076-c1861784ec30/stls/13139415_6f794ff7-49d4-47e1-98b4-4bf6e658e913_aa825d66-4d13-4921-b493-ff8d59a2b36e/dinosaur-art-psittacosaurus.stl
+  Note:     DERIVATIVE: fire151 fallback after Oviraptor STL morphology REJECT. Flat display-base
+            stripped. Z-up to Y-up, quadric decimation to 16,000 tris + vertex-color countershading.

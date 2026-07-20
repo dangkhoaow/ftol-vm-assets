@@ -1,7 +1,20 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.21",
+  "version": "1.48.22",
   "models": {
+    "becklespinax": {
+      "slug": "becklespinax",
+      "file": "becklespinax.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/1051754-becklespinax",
+      "origin_download": "https://files.printables.com/media/prints/1051754/stls/7967803_80f28108-bbdd-43d4-ab30-ced0282e9f78_32b89520-5187-4d9d-8483-341c79c5f266/becklespinax.obj",
+      "printables_id": 1051754,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Becklespinax model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "notes": "dino3d-discovery-loop-runbook fire225 (2026-07-20). Model-download-byte resolution BREAKTHROUGH this fire: the long-standing filePreviewPath-folder-hash heuristic (blocking becklespinax/agujaceratops/deltadromeus/wuerhosaurus/dracorex/microceratus across fires 216-220) is REPLACED by the actual Printables production mechanism - the getDownloadLink GraphQL mutation (id=<stl_id>, printId=<print_id>, fileType='stl', source='model_detail') against api.printables.com/graphql/, confirmed anonymous, mints a fresh TTL-bound (86400s) signed URL for ANY print/file (not just flat-layout ones) - filePreviewPath was a red herring the whole time. Downloaded becklespinax.obj (800,686 bytes, byte-exact vs GraphQL fileSize; Blender 3.6.17 export; single object 'Brunette_Brunette_0', 5,757 verts / 9,606 faces). Rip-check: grepped for Daz/Dinoraul/Jurassic/franchise/copyright/trademark/Sammy/Citipati strings - none found, clean (contrast: this SAME technique applied to agujaceratops and deltadromeus this fire surfaced origin filenames literally named 'lmx3d_daz_originals__dino_rauls_agujaceratops.obj' and 'daz_originals__dinorauls_deltadromeus.obj' - both REJECTED as Daz-Originals/Dino-Raul commercial re-uploads mislabeled CC-BY-SA; see candidate_backlog for those 2 slugs). Converted via trimesh (OBJ load, -90deg rotation about Y to bring the long Z-axis into X per convention, center X/Z at origin, feet translated to Y=0, neutral olive-tan vertex-color applied since no skin/color evidence survives a 3-vertebrae holotype) - no decimation needed (already under the ~20k tri convention at 9,606 faces). Final GLB: 208,456 bytes, extents X=15.46/Y=6.31/Z=2.91 scene units pre-normalize (loader scales longest axis to targetLenUnits=12 at runtime). Species note for the page author: Becklespinax is known ONLY from 3 fused dorsal vertebrae (originally referred to Altispinax) - gate 1 content verdict is ELIGIBLE_WITH_CAUTION, any BODYWELCOME copy MUST disclose the fragmentary holotype explicitly and frame length/mass as composite genus-level estimates, not as directly-measured figures. Vendored to the ready queue; no page/CMS/registry authored this fire (time-boxed to model-sourcing + vendoring)."
+    },
     "kentrosaurus": {
       "slug": "kentrosaurus",
       "file": "kentrosaurus.glb",
@@ -795,6 +808,17 @@
       "origin_download": "https://files.printables.com/media/prints/a7475ac6-b7ce-4119-b19f-400aa8f6937c/stls/13241886_642f2513-b1de-4982-a91a-53d6fd295064_8f653c36-a727-4350-9319-14d51f39eedc/dinosaur-art-abelisaurus.stl",
       "printables_id": 1767713,
       "notes": "dino3d-discovery-loop-runbook fire150 (2026-07-20). Printables 1767713 Model Magic CC0. STL 50732084 bytes; GLB 320772 bytes, 7986 verts / 16000 faces, sha256 f74ceb9be12548c8208bfd3dd4df2fcecb2e04e9bb5be4dfa7bcba687f97e136. Morphology gate CLEAR (bipedal theropod)."
+    },
+    "psittacosaurus": {
+      "file": "psittacosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 7.0,
+      "license": "CC0 1.0",
+      "credit": "Psittacosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Psittacosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1753562-dinosaur-art-psittacosaurus",
+      "origin_download": "https://files.printables.com/media/prints/37347a1a-0faf-4db2-b076-c1861784ec30/stls/13139415_6f794ff7-49d4-47e1-98b4-4bf6e658e913_aa825d66-4d13-4921-b493-ff8d59a2b36e/dinosaur-art-psittacosaurus.stl",
+      "printables_id": 1753562,
+      "notes": "dino3d-discovery-loop-runbook fire151 (2026-07-20). Primary lead Printables 1757494 'Dinosaur Art - Oviraptor' REJECTED morphology (not bipedal theropod silhouette; L/H=0.98). Fallback Printables 1753562 Model Magic CC0. STL 50991084 bytes; GLB 320436 bytes, sha256 30eb7e66da70deb50dbe3a1760b4ec6513d99c26402ce89a9b9be6ed90bd3b12, 7965 verts / 16000 faces. Morphology gate CLEAR (small bipedal ceratopsian)."
     }
   }
 }
