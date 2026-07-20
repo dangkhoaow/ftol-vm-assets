@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.18",
+  "version": "1.48.19",
   "models": {
     "kentrosaurus": {
       "slug": "kentrosaurus",
@@ -323,7 +323,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus",
       "origin_download": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
@@ -436,6 +436,17 @@
       "origin_download": "https://files.printables.com/media/prints/f2d01bce-6f15-4aa6-ae6d-b154949797e9/stls/13269703_ecdbd19f-b717-4bda-b838-15d7ec9b67b7_452ff5d0-0f09-4bb7-a474-99828ff6df03/dinosaur-art-amargasaurus.stl",
       "printables_id": 1771127,
       "notes": "dino3d-discovery-loop-runbook fire147. Printables model 1771127, Model Magic 'Dinosaur Art - Amargasaurus', license CC0 / Public Domain (Printables license id 7). Flat display base stripped before export. Converted headlessly (trimesh + Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 faces, vertex-color countershading. Final GLB 320,772 bytes, 7,986 verts / 16,000 faces, length scaled to targetLenUnits 14."
+    },
+    "acrocanthosaurus": {
+      "file": "acrocanthosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC0 1.0",
+      "credit": "Acrocanthosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Acrocanthosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1768652-dinosaur-art-acrocanthosaurus",
+      "origin_download": "https://files.printables.com/media/prints/3b0bd157-8e11-44f4-8563-8315f37789d6/stls/13249163_24347aab-8f5b-4091-9243-403a299940e5_84c65d18-3017-477a-9282-8503cd568af8/dinosaur-art-acrocanthosaurus.stl",
+      "printables_id": 1768652,
+      "notes": "dino3d-discovery-loop-runbook fire148. Printables model 1768652, Model Magic 'Dinosaur Art - Acrocanthosaurus', license CC0 / Public Domain (Printables license id 7). Flat display base stripped before export. Converted headlessly (trimesh + Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 faces, vertex-color countershading. Final GLB 320,884 bytes, 7,993 verts / 16,000 faces, length scaled to targetLenUnits 14."
     },
     "ampelosaurus": {
       "file": "ampelosaurus.glb",
@@ -683,7 +694,7 @@
       "kind": "fleshed",
       "targetLenUnits": 8,
       "credit": "Troodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
-      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons — Attribution — Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
+      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons \u2014 Attribution \u2014 Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
     },
     "deinocheirus": {
       "slug": "deinocheirus",

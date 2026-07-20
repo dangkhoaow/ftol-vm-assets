@@ -989,3 +989,14 @@ amargasaurus.glb
             series (fire147). Flat display-base stripped. Converted headlessly (trimesh +
             Open3D): Z-up to Y-up axis correction, 949,630 -> 16,000 tris + vertex-color
             countershading. ~321 KB GLB. Credit voluntary under CC0.
+
+acrocanthosaurus.glb
+  Title:    Dinosaur Art - Acrocanthosaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1768652-dinosaur-art-acrocanthosaurus
+  Origin:   https://files.printables.com/media/prints/3b0bd157-8e11-44f4-8563-8315f37789d6/stls/13249163_24347aab-8f5b-4091-9243-403a299940e5_84c65d18-3017-477a-9282-8503cd568af8/dinosaur-art-acrocanthosaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series (fire148). Flat display-base stripped. Converted headlessly (trimesh +
+            Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 tris + vertex-color
+            countershading. ~321 KB GLB. Credit voluntary under CC0.

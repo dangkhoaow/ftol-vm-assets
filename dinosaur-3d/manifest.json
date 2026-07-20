@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.18",
+  "version": "1.48.19",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -473,6 +473,16 @@
       "license": "CC0 1.0",
       "credit": "Amargasaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Amargasaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~950k->16k tris)",
       "source_url": "https://www.printables.com/model/1771127-dinosaur-art-amargasaurus"
+    },
+    "acrocanthosaurus": {
+      "file": "acrocanthosaurus.glb",
+      "bytes": 320884,
+      "sha256": "9d3be7e8095b5c1d8d3906e6c136352d3258bb9390b20685f36395dee33761ef",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC0 1.0",
+      "credit": "Acrocanthosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Acrocanthosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1768652-dinosaur-art-acrocanthosaurus"
     },
     "ampelosaurus": {
       "file": "ampelosaurus.glb",
