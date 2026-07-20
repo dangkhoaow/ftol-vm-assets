@@ -978,3 +978,14 @@ kentrosaurus.glb
             on the final colored GLB: shape and countershading intact,
             no inverted normals or holes introduced by decimation.
             ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+amargasaurus.glb
+  Title:    Dinosaur Art - Amargasaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1771127-dinosaur-art-amargasaurus
+  Origin:   https://files.printables.com/media/prints/f2d01bce-6f15-4aa6-ae6d-b154949797e9/stls/13269703_ecdbd19f-b717-4bda-b838-15d7ec9b67b7_452ff5d0-0f09-4bb7-a474-99828ff6df03/dinosaur-art-amargasaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series (fire147). Flat display-base stripped. Converted headlessly (trimesh +
+            Open3D): Z-up to Y-up axis correction, 949,630 -> 16,000 tris + vertex-color
+            countershading. ~321 KB GLB. Credit voluntary under CC0.
