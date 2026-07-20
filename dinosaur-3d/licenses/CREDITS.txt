@@ -1100,3 +1100,18 @@ oviraptor.glb
             REJECTED without downloading: dracorex (Printables 993826, filename
             self-confirms "daz_originals_..." rip) and alamosaurus-figurine
             (Printables 1139226, CC-BY-NC-SA license).
+
+pinacosaurus.glb
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0
+  Via:      Printables - https://www.printables.com/model/643281-pinacosaurus
+  Origin:   https://files.printables.com/media/prints/643281/stls/5079067_9517f2de-b7f5-417a-bdf7-406520c3f3a9_66d5b1b2-3535-47cb-a44b-4dd3fdbc8585/pinacosaurus.stl
+  Note:     dino3d-discovery-loop-runbook fire236 (2026-07-21, LEAN one-off). Same
+            trusted creator already vendored cleanly for panoplosaurus. Binary STL,
+            single connected mesh (no separate print-support plinth), no exporter
+            signature in the header. Raw file is print-posed standing upright along
+            its own long axis; fixed by rotating +90deg about the raw Y axis and
+            recentering, verified against a rendered ground-plane reference (feet
+            planted, not inverted) before finalizing. Converted via Blender 4.5.11
+            headless, vertex-color countershading dark-olive-back/pale-tan-belly,
+            quadric decimate 4,453,696 -> 9,000 tris, GLB export Y-up, no Draco.
