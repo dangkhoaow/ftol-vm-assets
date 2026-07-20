@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.49.0",
+  "version": "1.50.0",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -842,6 +842,16 @@
       "license": "CC-BY 4.0",
       "credit": "Panoplosaurus model by Pan Wolodyjowski (CC-BY 4.0, via Printables 'Panoplosaurus Mirus'; OBJ decimated 1,178,960 -> 9,000 tris in Blender, vertex-color countershading applied, Z-up to Y-up)",
       "source_url": "https://www.printables.com/model/643341-panoplosaurus-mirus"
+    },
+    "oviraptor": {
+      "file": "oviraptor.glb",
+      "bytes": 1026688,
+      "sha256": "01a397eae64d5c7aa3103b4721d5e5d7240d27d047c74d86e019c80000473870",
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "license": "CC0 1.0 (Public Domain)",
+      "credit": "Oviraptor model by Model Magic (CC0 1.0 Public Domain, via Printables 'Dinosaur Art - Oviraptor')",
+      "source_url": "https://www.printables.com/model/1757494-dinosaur-art-oviraptor"
     }
   }
 }

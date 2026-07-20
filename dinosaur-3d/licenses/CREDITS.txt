@@ -1083,3 +1083,20 @@ panoplosaurus.glb
             color countershading (dark olive back, pale tan belly), Z-up to
             Y-up. No Draco compression (site GLTFLoader has no DRACOLoader
             wired). Attribution license (plain CC-BY, not NC/ND/SA).
+
+oviraptor.glb
+  Author:   Model Magic
+  License:  CC0 1.0 (Public Domain)
+  Via:      Printables - https://www.printables.com/model/1757494-dinosaur-art-oviraptor
+  Origin:   https://files.printables.com/media/prints/ae81cf59-e486-46a0-87a4-54926fed35dd/stls/13166231_5e6f18a3-10b4-4290-bbee-c4f5fe8925b1_34a1fc05-683c-4d40-933d-2415221857fb/dinosaur-art-oviraptor.stl
+  Note:     dino3d-discovery-loop-runbook fire233 (2026-07-21, LEAN one-off). Same
+            trusted "Dinosaur Art" series as lambeosaurus/monolophosaurus/panoplosaurus.
+            Single STL fused a flat print-display plinth with the creature; separated
+            via Blender "Separate by Loose Parts" and kept only the larger island
+            (494,255 of 512,137 verts). Converted via real Blender 4.5.11 headless
+            (wm.stl_import, remove_doubles, recenter+ground-plane, vertex-color
+            countershading dark-olive-back/pale-tan-belly, quadric decimate 988,488 ->
+            8,999 tris, GLB export Y-up, no Draco). Sibling leads in the same search
+            REJECTED without downloading: dracorex (Printables 993826, filename
+            self-confirms "daz_originals_..." rip) and alamosaurus-figurine
+            (Printables 1139226, CC-BY-NC-SA license).
