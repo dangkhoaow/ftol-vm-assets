@@ -832,6 +832,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Monolophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
       "source_url": "https://www.printables.com/model/764471-monolophosaurus"
+    },
+    "panoplosaurus": {
+      "file": "panoplosaurus.glb",
+      "bytes": 1243176,
+      "sha256": "f7f6dbb2495723c15dabe90f847ad9fcef1e378f49ebaa0dcf37d1be142d4589",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Panoplosaurus model by Pan Wolodyjowski (CC-BY 4.0, via Printables 'Panoplosaurus Mirus'; OBJ decimated 1,178,960 -> 9,000 tris in Blender, vertex-color countershading applied, Z-up to Y-up)",
+      "source_url": "https://www.printables.com/model/643341-panoplosaurus-mirus"
     }
   }
 }

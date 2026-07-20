@@ -1066,3 +1066,20 @@ monolophosaurus.glb
             (all legitimate anatomy, no print-support base), 90deg Y rotation to align
             long axis to X, centered X/Z, feet at Y=0, quadric-decimated 76,376 -> 21,999
             tris via Open3D. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+panoplosaurus.glb
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0
+  Via:      Printables - https://www.printables.com/model/643341-panoplosaurus-mirus
+  Origin:   https://files.printables.com/media/prints/643341/stls/5079473_4e03a8cd-ea69-4a01-b7a7-252525daf03f_08a4fda9-5a98-4260-9c9d-4ebc5c6dbcb1/yourmesh-3.obj
+  Note:     dino3d-discovery-loop-runbook fire232. Resolves the fire216/217/231
+            flat-preview-bucket misdiagnosis - this print has the legacy nested
+            filePreviewPath layout, but the STL's internal preview stem
+            ("yourmesh-3") does not match the display filename ("Panoplosaurus"),
+            so the naive <folder>/<DisplayName>.obj guess 404d. Fix: derive the
+            real filename from the basename of filePreviewPath (strip
+            "_preview.png") paired with the extension from stls[].name. OBJ
+            decimated 1,178,960 -> 9,000 tris in Blender 4.5 headless, vertex-
+            color countershading (dark olive back, pale tan belly), Z-up to
+            Y-up. No Draco compression (site GLTFLoader has no DRACOLoader
+            wired). Attribution license (plain CC-BY, not NC/ND/SA).
