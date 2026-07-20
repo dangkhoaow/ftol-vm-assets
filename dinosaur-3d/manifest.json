@@ -1,9 +1,19 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.16",
+  "version": "1.48.17",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
+    "kentrosaurus": {
+      "file": "kentrosaurus.glb",
+      "bytes": 1200904,
+      "sha256": "7bdfabe7589a7e3024fd673a983a71a150748bb2feaa7418b1ef6b3f97d94626",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Kentrosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757272-kentrosaurus"
+    },
     "pentaceratops": {
       "file": "pentaceratops.glb",
       "bytes": 123224,

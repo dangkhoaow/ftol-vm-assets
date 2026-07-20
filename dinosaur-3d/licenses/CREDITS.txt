@@ -945,3 +945,36 @@ postosuchus.glb
             via a matplotlib side-view projection of the final colored
             GLB: clear robust quadruped archosaur silhouette. ShareAlike:
             re-hosted derivative remains under CC-BY-SA 4.0.
+
+kentrosaurus.glb
+  Title:    kentrosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/757272-kentrosaurus
+  Origin:   https://files.printables.com/media/prints/757272/stls/5907285_c40376a9-5546-46e1-91cf-232cbe2ff0de_748e5a7f-1616-4683-bfcc-cf58e1ed1724/kentrosaurus.stl
+  Notes:    dino3d-discovery-loop-runbook fire (2026-07-20). Lead first
+            found fire139, flagged NEEDS_VERIFICATION (same uploader had
+            a 2-of-7 Daz-rip rate elsewhere on this loop, and the binary
+            STL carries no object/material names to run the usual
+            Daz-tell check). Re-verified this fire by downloading the
+            STL (12,716,484 bytes, 127,162 verts / 254,328 faces, single
+            watertight connected component - not a multi-part Daz-rip
+            assembly) and geometry-checking it via a matplotlib
+            depth-sorted shaded wireframe from both sides: unmistakable
+            quadrupedal stegosaur silhouette - grazing head-down pose, 4
+            sturdy clawed legs, alternating plates-to-spikes row rising
+            from the neck and peaking mid-back before tapering into long
+            paired tail spikes (matches the published "at least 7 pairs
+            of tail spikes" distinguishing anatomy) - not a generic or
+            fantasy stand-in. Converted headlessly via Blender 4.5 bpy
+            (STL import, join, recalculate normals, Decimate modifier
+            254,328 -> 20,000 faces for web-viewer weight, glTF export)
+            then trimesh (recentered X/Z at 0, feet at Y=0, vertex-color
+            countershading: dark olive-brown back/plates to pale cream
+            belly, a plausible stegosaur-family palette since no
+            skin/color evidence survives in the fossil record; no baked
+            texture in the source STL). Final GLB: 59,992 verts / 20,000
+            faces, 1,200,904 bytes. Render-verified again post-conversion
+            on the final colored GLB: shape and countershading intact,
+            no inverted normals or holes introduced by decimation.
+            ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.

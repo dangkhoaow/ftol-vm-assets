@@ -1,7 +1,20 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.16",
+  "version": "1.48.17",
   "models": {
+    "kentrosaurus": {
+      "slug": "kentrosaurus",
+      "file": "kentrosaurus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/757272-kentrosaurus",
+      "origin_download": "https://files.printables.com/media/prints/757272/stls/5907285_c40376a9-5546-46e1-91cf-232cbe2ff0de_748e5a7f-1616-4683-bfcc-cf58e1ed1724/kentrosaurus.stl",
+      "printables_id": 757272,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Kentrosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion with applied countershading)",
+      "notes": "dino3d-discovery-loop-runbook fire (2026-07-20). Lead first found fire139, flagged NEEDS_VERIFICATION because the same uploader had a 2-of-7 Daz-rip rate on this loop's checks and the binary STL carries no object/material names to run the usual Daz-tell check. Re-verified this fire: downloaded kentrosaurus.stl (12,716,484 bytes, 127,162 verts / 254,328 faces, single watertight connected component - not a multi-part Daz-rip assembly). Geometry sanity-checked via a matplotlib depth-sorted shaded wireframe (both sides): unmistakable quadrupedal stegosaur silhouette - grazing head-down pose, 4 sturdy clawed legs, alternating plates-to-spikes row rising from the neck and peaking mid-back before tapering into long paired tail spikes (matches the published 'at least 7 pairs of tail spikes' distinguishing anatomy) - not a generic/fantasy stand-in. Converted headlessly via Blender 4.5 bpy (STL import -> join -> recalculate normals -> Decimate modifier ratio-applied to bring 254,328 faces down to 20,000 for web-viewer weight -> glTF export), then trimesh (recentered X/Z at 0, feet at Y=0, vertex-color countershading applied: dark olive-brown back/plates to pale cream belly, a plausible stegosaur-family palette since no skin/color evidence survives in the fossil record) - no baked texture in the source STL. Final GLB: 59,992 verts / 20,000 faces, 1,200,904 bytes. Render-verified post-conversion via a second matplotlib pass on the final colored GLB: shape and countershading intact, no inverted normals or holes introduced by decimation. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0."
+    },
     "pentaceratops": {
       "slug": "pentaceratops",
       "file": "pentaceratops.glb",
@@ -310,7 +323,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus",
       "origin_download": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
@@ -659,7 +672,7 @@
       "kind": "fleshed",
       "targetLenUnits": 8,
       "credit": "Troodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
-      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons \u2014 Attribution \u2014 Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
+      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons — Attribution — Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
     },
     "deinocheirus": {
       "slug": "deinocheirus",
