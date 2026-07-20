@@ -822,6 +822,16 @@
       "license": "CC0 1.0 (Public Domain)",
       "credit": "Lambeosaurus model by Model Magic (CC0 1.0 Public Domain, via Printables)",
       "source_url": "https://www.printables.com/model/1759419-dinosaur-art-lambeosaurus"
+    },
+    "monolophosaurus": {
+      "file": "monolophosaurus.glb",
+      "bytes": 410504,
+      "sha256": "d7f7e4f0b9c07d3615bd5fb55dbe7a27d6bae3176ca62946d4a96e5a4b24100f",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Monolophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/764471-monolophosaurus"
     }
   }
 }

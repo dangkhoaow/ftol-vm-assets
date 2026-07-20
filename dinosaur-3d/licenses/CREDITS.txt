@@ -1054,3 +1054,15 @@ lambeosaurus.glb
             mutation. Binary STL, no material names (rip-check clean). Flat display-base
             stripped, Z-up to Y-up, quadric decimation to 16,000 tris + vertex-color
             countershading (dark olive back, pale cream belly).
+
+monolophosaurus.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/764471-monolophosaurus
+  Origin:   https://files.printables.com/media/prints/764471/stls/5955036_3348f4f5-33e1-4f81-a4e4-7fce25d310f4_124a160e-5a8e-4c79-9c1e-4aadcb11edc8/monolophosaurus.obj
+  Note:     dino3d-discovery-loop-runbook fire229. Legacy nested filePreviewPath layout
+            (unlike the still-stuck styracosaurus/metriacanthosaurus/saurosuchus flat-
+            layout leads) so the folder token resolved directly. Merged 7 mesh components
+            (all legitimate anatomy, no print-support base), 90deg Y rotation to align
+            long axis to X, centered X/Z, feet at Y=0, quadric-decimated 76,376 -> 21,999
+            tris via Open3D. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
