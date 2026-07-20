@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.20",
+  "version": "1.48.21",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -782,6 +782,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Postosuchus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/764414-postosuchus"
+    },
+    "abelisaurus": {
+      "file": "abelisaurus.glb",
+      "bytes": 320772,
+      "sha256": "f74ceb9be12548c8208bfd3dd4df2fcecb2e04e9bb5be4dfa7bcba687f97e136",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Abelisaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Abelisaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1767713-dinosaur-art-abelisaurus"
     }
   }
 }

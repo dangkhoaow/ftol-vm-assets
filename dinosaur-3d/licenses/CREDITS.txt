@@ -1010,3 +1010,14 @@ chasmosaurus.glb
             series (fire149). Flat display-base stripped. Converted headlessly (trimesh +
             Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 tris + vertex-color
             countershading. ~321 KB GLB. Credit voluntary under CC0.
+
+abelisaurus.glb
+  Title:    Dinosaur Art - Abelisaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1767713-dinosaur-art-abelisaurus
+  Origin:   https://files.printables.com/media/prints/a7475ac6-b7ce-4119-b19f-400aa8f6937c/stls/13241886_642f2513-b1de-4982-a91a-53d6fd295064_8f653c36-a727-4350-9319-14d51f39eedc/dinosaur-art-abelisaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series (fire150). Flat display-base stripped. Converted headlessly (trimesh +
+            Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 tris + vertex-color
+            countershading. ~321 KB GLB. Credit voluntary under CC0.

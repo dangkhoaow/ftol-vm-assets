@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.20",
+  "version": "1.48.21",
   "models": {
     "kentrosaurus": {
       "slug": "kentrosaurus",
@@ -784,6 +784,17 @@
       "targetLenUnits": 12,
       "credit": "Postosuchus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "notes": "dino3d-discovery-loop-runbook fire144. License CC-BY-SA 4.0 GraphQL-confirmed; no Daz/franchise naming marker; same trusted uploader as sarcosuchus above (from the SAME creator, different pose/gait confirms not a copy-paste stand-in). Geometry sanity-checked fire143 via offline matplotlib wireframe on the raw OBJ: robust quadruped with legs held sub-erect under the body (not sprawled, unlike sarcosuchus), deep boxy archosaur skull, long tail - matches the modern semi-improved-gait reconstruction. postosuchus.obj: 2065 verts / 3456 faces, native axes already Y-up/length-along-Z (no axis swap needed). Converted headlessly via trimesh: recentered X/Z, feet at Y=0, scaled so length(Z) maps to targetLenUnits 12 (default compact-archetype framing, matching Postosuchus's 4-7m published length range); applied vertex-color countershading (rust/sandstone back to pale cream belly, evoking the Triassic red-beds formation where it was found) since the source OBJ carried no baked texture. Post-scale extents length:height 4.57 / length:width 7.77 - matches the pre-conversion raw-OBJ bbox ratios exactly. Render-verified via a matplotlib side-view projection of the final colored GLB: clear robust quadruped archosaur silhouette (deep skull, sub-erect legs, long tail)."
+    },
+    "abelisaurus": {
+      "file": "abelisaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Abelisaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Abelisaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1767713-dinosaur-art-abelisaurus",
+      "origin_download": "https://files.printables.com/media/prints/a7475ac6-b7ce-4119-b19f-400aa8f6937c/stls/13241886_642f2513-b1de-4982-a91a-53d6fd295064_8f653c36-a727-4350-9319-14d51f39eedc/dinosaur-art-abelisaurus.stl",
+      "printables_id": 1767713,
+      "notes": "dino3d-discovery-loop-runbook fire150 (2026-07-20). Printables 1767713 Model Magic CC0. STL 50732084 bytes; GLB 320772 bytes, 7986 verts / 16000 faces, sha256 f74ceb9be12548c8208bfd3dd4df2fcecb2e04e9bb5be4dfa7bcba687f97e136. Morphology gate CLEAR (bipedal theropod)."
     }
   }
 }
