@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.22",
+  "version": "1.49.0",
   "models": {
     "becklespinax": {
       "slug": "becklespinax",
@@ -819,6 +819,19 @@
       "origin_download": "https://files.printables.com/media/prints/37347a1a-0faf-4db2-b076-c1861784ec30/stls/13139415_6f794ff7-49d4-47e1-98b4-4bf6e658e913_aa825d66-4d13-4921-b493-ff8d59a2b36e/dinosaur-art-psittacosaurus.stl",
       "printables_id": 1753562,
       "notes": "dino3d-discovery-loop-runbook fire151 (2026-07-20). Primary lead Printables 1757494 'Dinosaur Art - Oviraptor' REJECTED morphology (not bipedal theropod silhouette; L/H=0.98). Fallback Printables 1753562 Model Magic CC0. STL 50991084 bytes; GLB 320436 bytes, sha256 30eb7e66da70deb50dbe3a1760b4ec6513d99c26402ce89a9b9be6ed90bd3b12, 7965 verts / 16000 faces. Morphology gate CLEAR (small bipedal ceratopsian)."
+    },
+    "lambeosaurus": {
+      "slug": "lambeosaurus",
+      "file": "lambeosaurus.glb",
+      "license": "CC0 1.0 (Public Domain)",
+      "author": "Model Magic",
+      "source_url": "https://www.printables.com/model/1759419-dinosaur-art-lambeosaurus",
+      "origin_download": "https://files.printables.com/media/prints/cf99ab7b-8233-4495-b0aa-0505a3e1456b/stls/13180130_4154ff3d-e334-4da2-9736-4ba720538ea9_5c8d33e6-aa99-481c-84f3-cd86c14b62f7/dinosaur-art-lambeosaurus.stl",
+      "printables_id": 1759419,
+      "kind": "fleshed",
+      "targetLenUnits": 13,
+      "credit": "Lambeosaurus model by Model Magic (CC0 1.0 Public Domain, via Printables)",
+      "notes": "dinosaur-3d-discovery-loop-runbook fire228 (2026-07-20). Fresh model lead surfaced by enumerating the Model Magic creator's full 'dinosaur-art-*' series search results page directly (printables.com/search/all-models?q=dinosaur-art) rather than blind per-species search - this listing (Printables 1759419) is a DIFFERENT print than the earlier-rejected NC-licensed lambeosaurus lead (Printables 981532, rejected fire139 for CC-BY-NC). License CC0/Public Domain confirmed via GraphQL license{name}. Download resolved via the getDownloadLink GraphQL mutation (fire225 breakthrough technique): id=7326530 (stl file id), printId=1759419, fileType=stl, source=model_detail -> signed URL, byte-verified exact match against reported fileSize (51,472,484 bytes). Binary STL (no material names to rip-check; grep for daz/dinoraul/jurassic/franchise/turbosquid/cgtrader substrings clean). Converted headlessly (trimesh + Open3D): flat display-base plinth stripped via a horizontal plane cut at z=2.9 (established footprint-analysis technique - base spans x-width ~172 vs the figure's own ~56, transition confirmed by sampling per-slice cross-sections), quadric decimation 978,157 -> 16,000 faces (8,063 verts), Z-up (STL) -> Y-up (glTF) axis correction, recentered X/Z at origin with feet at Y=0, vertex-color countershading applied (dark olive-brown back to pale cream belly, plausible hadrosaur-family palette; no skin/color evidence survives in the fossil record). Render-verified via an offline matplotlib side-profile scatter plot before vendoring: unmistakable duckbill-hadrosaur silhouette on all fours with a small hollow crest bump atop the head and a long balancing tail - matches the published hatchet-shaped-crest anatomy, not a generic/mislabeled stand-in (contrast: the fire149 Corythosaurus lead from this SAME creator/series was correctly rejected as a mislabeled tube-crested Parasaurolophus preview). Final GLB: 321,992 bytes. This exact search-page-enumeration technique also surfaced a second fresh, license-clean, download-resolved lead this fire - archaeopteryx (Printables 1772799, CC0/PD, STL byte-verified 49,646,084 bytes) - queued in the ready backlog for the next fire (not shipped this fire; one species per fire per doctrine)."
     }
   }
 }

@@ -1043,3 +1043,14 @@ psittacosaurus.glb
   Origin:   https://files.printables.com/media/prints/37347a1a-0faf-4db2-b076-c1861784ec30/stls/13139415_6f794ff7-49d4-47e1-98b4-4bf6e658e913_aa825d66-4d13-4921-b493-ff8d59a2b36e/dinosaur-art-psittacosaurus.stl
   Note:     DERIVATIVE: fire151 fallback after Oviraptor STL morphology REJECT. Flat display-base
             stripped. Z-up to Y-up, quadric decimation to 16,000 tris + vertex-color countershading.
+
+lambeosaurus.glb
+  License:  CC0 1.0 (Public Domain)
+  Author:   Model Magic (Printables user)
+  Source:   https://www.printables.com/model/1759419-dinosaur-art-lambeosaurus
+  Origin:   https://files.printables.com/media/prints/cf99ab7b-8233-4495-b0aa-0505a3e1456b/stls/13180130_4154ff3d-e334-4da2-9736-4ba720538ea9_5c8d33e6-aa99-481c-84f3-cd86c14b62f7/dinosaur-art-lambeosaurus.stl
+  Note:     dino3d-discovery-loop-runbook fire228. Found via the Model Magic series
+            search-page enumeration, download resolved via the getDownloadLink GraphQL
+            mutation. Binary STL, no material names (rip-check clean). Flat display-base
+            stripped, Z-up to Y-up, quadric decimation to 16,000 tris + vertex-color
+            countershading (dark olive back, pale cream belly).

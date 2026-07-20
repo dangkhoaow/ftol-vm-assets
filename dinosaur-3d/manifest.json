@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.22",
+  "version": "1.49.0",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -812,6 +812,16 @@
       "license": "CC0 1.0",
       "credit": "Psittacosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Psittacosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
       "source_url": "https://www.printables.com/model/1753562-dinosaur-art-psittacosaurus"
+    },
+    "lambeosaurus": {
+      "file": "lambeosaurus.glb",
+      "bytes": 321992,
+      "sha256": "a77dcb43f90979cd0ba812f961c1e75d185aa401cbead415833ec077c8a9d647",
+      "kind": "fleshed",
+      "targetLenUnits": 13,
+      "license": "CC0 1.0 (Public Domain)",
+      "credit": "Lambeosaurus model by Model Magic (CC0 1.0 Public Domain, via Printables)",
+      "source_url": "https://www.printables.com/model/1759419-dinosaur-art-lambeosaurus"
     }
   }
 }
