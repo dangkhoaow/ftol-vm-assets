@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.15",
+  "version": "1.48.16",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -722,6 +722,26 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Torvosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/774270-torvosaurus"
+    },
+    "sarcosuchus": {
+      "file": "sarcosuchus.glb",
+      "bytes": 894632,
+      "sha256": "1b8479502d201f16c27d9ec5b638f14e9a2bd75ceab2cc9c90a33919f892f3a6",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Sarcosuchus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/764457-sarcosuchus"
+    },
+    "postosuchus": {
+      "file": "postosuchus.glb",
+      "bytes": 75536,
+      "sha256": "46e8758f89007a22a2b62ff7e9e8c1025ddbd772ab9ade0280a03d8b25190fc2",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Postosuchus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/764414-postosuchus"
     }
   }
 }

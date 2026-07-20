@@ -897,3 +897,51 @@ torvosaurus.glb
             tail raised as a counterweight, digitigrade legs, arched back.
             ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
 
+
+sarcosuchus.glb
+  Title:    sarcosuchus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/764457-sarcosuchus
+  Origin:   https://files.printables.com/media/prints/764457/stls/5954979_5aaf5eb3-c88d-4a6d-bffd-da387de39d34_5d5bddbd-e52b-4a6f-9e74-0d02024e0f59/sarcosuchus_no_animated.obj
+  Notes:    dino3d-discovery-loop fire144. Same trusted uploader as the
+            already-vendored barosaurus/torvosaurus/deinocheirus/troodon/
+            ostafrikasaurus. Geometry sanity-checked fire143 via offline
+            matplotlib wireframe on the raw OBJ: unmistakable long tapered
+            crocodilian snout with an open toothy jaw, dorsal osteoderm
+            ridge along the back, low-slung body, tapering tail, 4 legs
+            correctly sprawled (crocodilian gait). 23804 verts / 42728
+            faces; native axes already Y-up/length-along-Z, no axis swap
+            needed. Recentered X/Z, feet at Y=0, scaled so length maps to
+            targetLenUnits 14; vertex-color countershading (olive-green
+            back to cream belly, real crocodilian palette), no baked
+            texture in the source. Post-scale extents length:width 4.29 /
+            length:height 5.8 - matches the pre-conversion raw-OBJ bbox
+            ratios exactly. Render-verified via a matplotlib side-view
+            projection of the final colored GLB: clear crocodilian
+            silhouette. ShareAlike: re-hosted derivative remains under
+            CC-BY-SA 4.0.
+
+postosuchus.glb
+  Title:    postosuchus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/764414-postosuchus
+  Origin:   https://files.printables.com/media/prints/764414/stls/5954720_198d5bff-efae-4811-a028-04ff1d9ddd70_b31c709f-f239-41a4-b9bb-77342051b6e4/postosuchus.obj
+  Notes:    dino3d-discovery-loop fire144. Same trusted uploader as
+            sarcosuchus above (different pose/gait rules out a
+            copy-paste stand-in). Geometry sanity-checked fire143 via
+            offline matplotlib wireframe: robust quadruped with legs held
+            sub-erect under the body (not sprawled), deep boxy archosaur
+            skull, long tail - matches the modern semi-improved-gait
+            reconstruction. 2065 verts / 3456 faces; native axes already
+            Y-up/length-along-Z, no axis swap needed. Recentered X/Z,
+            feet at Y=0, scaled so length maps to targetLenUnits 12;
+            vertex-color countershading (rust/sandstone back to pale
+            cream belly, evoking the Triassic red-beds formation), no
+            baked texture in the source. Post-scale extents
+            length:height 4.57 / length:width 7.77 - matches the
+            pre-conversion raw-OBJ bbox ratios exactly. Render-verified
+            via a matplotlib side-view projection of the final colored
+            GLB: clear robust quadruped archosaur silhouette. ShareAlike:
+            re-hosted derivative remains under CC-BY-SA 4.0.
