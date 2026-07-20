@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.48.19",
+  "version": "1.48.20",
   "models": {
     "kentrosaurus": {
       "slug": "kentrosaurus",
@@ -281,6 +281,17 @@
       "credit": "Ceratosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 79k->16k tris)",
       "source_url": "https://www.printables.com/model/757229-ceratosaurus",
       "origin_download": "https://files.printables.com/media/prints/757229/stls/5906938_948097ea-ae56-4ead-b4f4-4fb3c81437fa_bbca66c4-0546-4524-95a1-611037bf1805/cero.obj"
+    },
+    "chasmosaurus": {
+      "file": "chasmosaurus.glb",
+      "kind": "fleshed",
+      "targetLenUnits": 13,
+      "license": "CC0 1.0",
+      "credit": "Chasmosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Chasmosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1766773-dinosaur-art-chasmosaurus",
+      "origin_download": "https://files.printables.com/media/prints/d88988fc-9fed-4b2b-8f35-8becc1d9c183/stls/13234709_25627b25-c477-474f-b56b-de05a53600d3_8cd4c405-09af-4ced-9e8b-7a1ed4a26ed4/dinosaur-art-chasmosaurus.stl",
+      "printables_id": 1766773,
+      "notes": "dino3d-discovery-loop-runbook fire149. Printables model 1766773, Model Magic 'Dinosaur Art - Chasmosaurus', license CC0 / Public Domain (Printables license id 7). Same fire REJECTED Printables 1777347 'Dinosaur Art - Corythosaurus' as Parasaurolophus mislabel (backward tube crest). Flat display base stripped before export. Converted headlessly (trimesh + Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 faces, vertex-color countershading. Final GLB 320,936 bytes, 7,996 verts / 16,000 faces, length scaled to targetLenUnits 13."
     },
     "therizinosaurus": {
       "file": "therizinosaurus.glb",

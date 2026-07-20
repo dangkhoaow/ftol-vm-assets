@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.48.19",
+  "version": "1.48.20",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -303,6 +303,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Ceratosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 79k->16k tris)",
       "source_url": "https://www.printables.com/model/757229-ceratosaurus"
+    },
+    "chasmosaurus": {
+      "file": "chasmosaurus.glb",
+      "bytes": 320936,
+      "sha256": "61a734a756b01c74e423f4338c2749b52704d6a0f26571d27878db8b9e9261dd",
+      "kind": "fleshed",
+      "targetLenUnits": 13,
+      "license": "CC0 1.0",
+      "credit": "Chasmosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Chasmosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1766773-dinosaur-art-chasmosaurus"
     },
     "therizinosaurus": {
       "file": "therizinosaurus.glb",

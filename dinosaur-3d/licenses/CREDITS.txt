@@ -1000,3 +1000,13 @@ acrocanthosaurus.glb
             series (fire148). Flat display-base stripped. Converted headlessly (trimesh +
             Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 tris + vertex-color
             countershading. ~321 KB GLB. Credit voluntary under CC0.
+chasmosaurus.glb
+  Title:    Dinosaur Art - Chasmosaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1766773-dinosaur-art-chasmosaurus
+  Origin:   https://files.printables.com/media/prints/d88988fc-9fed-4b2b-8f35-8becc1d9c183/stls/13234709_25627b25-c477-474f-b56b-de05a53600d3_8cd4c405-09af-4ced-9e8b-7a1ed4a26ed4/dinosaur-art-chasmosaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series (fire149). Flat display-base stripped. Converted headlessly (trimesh +
+            Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 tris + vertex-color
+            countershading. ~321 KB GLB. Credit voluntary under CC0.
