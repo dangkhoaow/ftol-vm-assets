@@ -1115,3 +1115,28 @@ pinacosaurus.glb
             planted, not inverted) before finalizing. Converted via Blender 4.5.11
             headless, vertex-color countershading dark-olive-back/pale-tan-belly,
             quadric decimate 4,453,696 -> 9,000 tris, GLB export Y-up, no Draco.
+
+wendiceratops.glb
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0
+  Via:      Printables - https://www.printables.com/model/651498-wendiceratops
+  Origin:   https://media.printables.com/media/prints/651498/stls/5138352_a826ace7-0315-4c7e-856e-49abb86c217f_0ce478a3-b217-414b-bdfb-b593b3c2296c/wendiceratops.stl
+  Note:     dino3d-discovery-loop-runbook fire237 (2026-07-21, LEAN one-off,
+            curate-only - sibling dinosaur-3d-guides-loop confirmed live, zero
+            writes to either child repo). Resolves the fire234
+            download-unresolved lead (same print, uploader NOT on the
+            suspected-rip list; two later CC-BY-NC / CC-BY-NC-ND revisions by
+            the same uploader were NOT used). New technique: GraphQL
+            print(id){stls{name fileSize filePreviewPath}} gives the STL's
+            display name and folder token; the real file sits in that same
+            folder at the LOWERCASED display name on media.printables.com,
+            byte-exact vs GraphQL fileSize (86,096,084). Header bytes all-zero
+            (no Aspose/Daz signature); single connected mesh, no print-support
+            plinth. Raw file is print-posed standing upright along its own
+            spine axis (legs splayed sideways as print supports); fixed by
+            rotating +90deg about the raw X axis and recentering, verified
+            against a rendered ground-plane reference (feet planted, head/
+            frill forward, tail back, not inverted) before finalizing.
+            Converted via Blender 4.5.11 headless, vertex-color countershading
+            dark-olive-back/pale-tan-belly, quadric decimate 1,721,920 ->
+            9,000 tris, GLB export Y-up, no Draco.

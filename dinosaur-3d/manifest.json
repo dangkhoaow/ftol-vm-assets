@@ -4,6 +4,16 @@
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
+    "wendiceratops": {
+      "file": "wendiceratops.glb",
+      "bytes": 1027088,
+      "sha256": "ada98e46bb4426dec1109db1c403d5c680f38692d235a3b167c64cafb38dca73",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Wendiceratops model by Pan Wolodyjowski (CC-BY 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/651498-wendiceratops"
+    },
     "pinacosaurus": {
       "file": "pinacosaurus.glb",
       "bytes": 1027188,
