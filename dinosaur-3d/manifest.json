@@ -912,6 +912,16 @@
       "license": "CC0 1.0",
       "credit": "Corythosaurus model by Model Magic (CC0 / Public Domain, via Printables)",
       "source_url": "https://www.printables.com/model/1777347-dinosaur-art-corythosaurus"
+    },
+    "daspletosaurus": {
+      "file": "daspletosaurus.glb",
+      "bytes": 3000704,
+      "sha256": "d434926371a829cebfa37494f3d12b1e5d170564f91ecf805223daac8f9b1cfe",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Daspletosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate unposed sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/311875-despletosaurus-figurine"
     }
   }
 }

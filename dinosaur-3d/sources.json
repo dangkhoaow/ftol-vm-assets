@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.52.2",
+  "version": "1.50.1",
   "models": {
     "wendiceratops": {
       "slug": "wendiceratops",
@@ -957,6 +957,21 @@
       "notes": "dino3d-discovery-loop-runbook fire241 (2026-07-21). Printables 1777347 Dinosaur Art - Corythosaurus by Model Magic, license id 7 Public Domain. STL id 7403717 downloaded via getDownloadLink (50,303,584 bytes byte-exact). Separate-by-loose-parts found 2 islands: main body + flat display base (Z 0-2.75, 17882 verts) - base deleted. Binary STL 'daz' byte hits are float false-positives (no ASCII daz/dinoraul/jurassic tokens). Converted Blender 4.5.11: -90 X Y-up, ground Y=0, decimate ~970k->16k tris, height countershading, GLB no Draco. Render-verified crested hadrosaur silhouette.",
       "discovered": "2026-07-21-fire241",
       "model_search_checked_iso": "2026-07-21T12:47:00.000Z"
+    },
+    "daspletosaurus": {
+      "slug": "daspletosaurus",
+      "file": "daspletosaurus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "DragonArtist15",
+      "source_url": "https://www.printables.com/model/311875-despletosaurus-figurine",
+      "origin_download": "https://files.printables.com/media/prints/311875/stls/2708057_7f978000-c01d-47e4-8cd1-c37452805cc3/despletosaurusfigunposed.stl",
+      "printables_id": 311875,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Daspletosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate unposed sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "notes": "dino3d-discovery-loop-runbook fire242 (2026-07-21). Printables 311875 Despletosaurus Figurine by DragonArtist15 (typo title; taxon Daspletosaurus), license id 2 CC-BY-SA. STL id 1398619 (Unposed) via getDownloadLink - 67,337,684 bytes. Header Exported from Blender-3.2.1; binary 'daz' byte hit is float false-positive (no Genesis/jurassic ASCII). Single loose part, no display base. Blender 4.5.11: -90 X Y-up, ground Y=0, decimate 1.35M->25k tris, height vertex-color countershading, GLB no Draco (3,000,704 bytes sha256 d434926371a8...). Render-verified bipedal tyrannosaurid with tiny forelimbs, muscular hind legs, tapering tail, feet grounded.",
+      "discovered": "2026-07-21-fire242",
+      "model_search_checked_iso": "2026-07-21T13:40:00.000Z"
     }
   }
 }
