@@ -1,5 +1,5 @@
 const FR_TRANSLATIONS = {
-    "title": "SERVER: Survival Protocol",
+    "title": "Server Survival TD",
     "survival": "SURVIE",
     "budget": "BUDGET",
     "upkeep_cost": "Coût de maintenance",

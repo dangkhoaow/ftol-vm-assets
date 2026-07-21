@@ -1,5 +1,5 @@
 const EN_TRANSLATIONS = {
-    "title": "SERVER: Survival Protocol",
+    "title": "Server Survival TD",
     "survival": "SURVIVAL",
     "budget": "BUDGET",
     "upkeep_cost": "Upkeep Cost",
