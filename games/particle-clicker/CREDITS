@@ -1,0 +1,18 @@
+Particle Clicker
+Upstream: particle-clicker/particle-clicker (https://github.com/particle-clicker/particle-clicker)
+License: MIT (Copyright (c) 2014-2016 Igor Babuschkin, Kevin Dungs, Tadej Novak, Gabor Biro) - see LICENSE
+
+Made during CERN Webfest 2014.
+
+Vendored runtime libraries (MIT / OFL as applicable):
+- jQuery 2.1.1
+- AngularJS 1.3.0-beta.17
+- Bootstrap 3.3.1 (JS) + Bootstrap CSS already in upstream
+- Font Awesome 4.2.0 (CSS MIT; font SIL OFL 1.1)
+
+FreeToolOnline adaptations:
+- robots noindex on iframe document
+- stripped Google Analytics, Open Graph, and Social share menu
+- vendored jQuery / Angular / Bootstrap JS / Font Awesome (zero runtime CDN)
+- localStorage namespaced to ftol:particleclicker:* (scoped clear)
+- title "Particle Clicker"
