@@ -1,0 +1,4 @@
+Layer Flip Platformer is adapted from ONOFF (js13kGames 2018)
+by Daniel Marino and Brad Dunbar.
+Upstream: https://github.com/starzonmyarmz/js13k-2018
+License: MIT (see LICENSE)

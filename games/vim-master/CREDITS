@@ -1,0 +1,9 @@
+Vim Master
+Copyright (c) 2025 RNZ / renzorlive
+License: MIT (see LICENSE)
+Source: https://github.com/renzorlive/vimmaster
+
+Vendored for FreeToolOnline:
+- Screenshot GIFs omitted (not runtime)
+- localStorage namespaced to ftol:vimmaster:*
+- robots noindex on engine iframe documents

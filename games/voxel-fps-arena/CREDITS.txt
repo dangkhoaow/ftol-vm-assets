@@ -1,0 +1,3 @@
+Voxel FPS Arena adapted from js13kGames/q1k3 (MIT, Copyright 2021 Dominic Szablewski / phoboslab).
+WebGL voxel FPS: 2 levels, 5 enemy types, 3 weapons, dynamic lighting.
+Music by Andy Loesch (no-fate.net) embedded in compo build.

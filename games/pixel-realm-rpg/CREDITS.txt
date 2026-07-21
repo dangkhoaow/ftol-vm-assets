@@ -1,0 +1,2 @@
+Pixel Realm RPG adapted from andy64lol/jsrpg (MIT, Copyright 2026 andy64lol).
+Original 8x8 tile top-down browser RPG with maps, inventory, equipment, and combat.

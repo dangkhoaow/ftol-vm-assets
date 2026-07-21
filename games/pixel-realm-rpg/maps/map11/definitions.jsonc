@@ -1,0 +1,47 @@
+{
+    "tiles": {
+        "0": "assets/tiles/pared_dungeon_verde.png",
+        "1": "assets/tiles/suelo_dungeon_verde.png",
+        "2": "assets/tiles/pared_puerta_dungeon_verde.png",
+        "3": "assets/tiles/suelo_dungeon_verde_pinchos.png",
+        "4": "assets/tiles/chest.png"
+    },
+    "collisions": {
+        "0": { "type": "air" },
+        "1": { "type": "solid" },
+        "3": {
+            "type": "door",
+            "target_map": "map8",
+            "target_tile": { "x": 13, "y": 2 }
+        },
+        "4": { "type": "player_damage", "damage": 1 },
+        "5": { "type": "entity_spawn", "entity": "bat_oscuro", "floorCollision": 0 },
+        "6": { "type": "entity_spawn", "entity": "bat_oscuro", "floorCollision": 0 },
+        "7": { "type": "entity_spawn", "entity": "bat_oscuro", "floorCollision": 0 },
+        "8": {
+            "type": "chest",
+            "contains": "bronzeSword",
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterOpeningCollision": "0",
+            "afterOpeningTile": "1"
+        },
+        "9": {
+            "type": "door",
+            "target_map": "map14",
+            "target_tile": { "x": 12, "y": 1 }
+        }
+    },
+    "entities": {
+        "bat_oscuro": {
+            "sprite": "assets/sprites/enemy/bat.png",
+            "health": 5,
+            "damage": 2,
+            "speed": 2,
+            "behavior": "chase",
+            "chaseRadius": 6,
+            "exp_drop": 40
+        }
+    }
+}

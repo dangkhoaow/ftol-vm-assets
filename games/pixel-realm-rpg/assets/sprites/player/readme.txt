@@ -1,0 +1,1 @@
+btw the player has only right and left facing, no down or up, so it's 2 faces, if you move down or up, it would face the last direction between left or right

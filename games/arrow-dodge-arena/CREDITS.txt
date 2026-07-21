@@ -1,0 +1,5 @@
+Arrow Dodge Arena (adapted from Arrow Escape Game by Hamdan Saddique)
+Upstream: https://github.com/Hamdan-Saddique-ai/Arrow-Escape-Game
+License: MIT (see LICENSE)
+30-second canvas dodge arcade: arrow keys, red arrow enemies, blue star power-ups.
+Adaptations: noindex meta, title rebrand, localStorage namespaced ftol:arrowdodgearena:hs.

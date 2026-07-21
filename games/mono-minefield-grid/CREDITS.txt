@@ -1,0 +1,9 @@
+Mono Minefield
+Adapted from flancast90/cursor-arcade-games sweeper module (MIT, Copyright 2026 flancast90).
+https://github.com/flancast90/cursor-arcade-games
+
+Site adapt (freetoolonline.com):
+- Extracted sweeper only (not the full 8-game Cursor Arcade pack)
+- Replaced VS Code webview API with localStorage key ftol:monominefieldgrid:storage
+- Rebranded to Mono Minefield / Minefield (generic public-domain minefield concept)
+- noindex on engine HTML; LICENSE + this CREDITS ship beside the game files

@@ -1,0 +1,2217 @@
+<!-- ready for terser+roadroller -->
+<!doctype html><meta charset=utf-8><meta name=robots content=noindex><title>Ritual Catacombs — Director's Cut Version 05.10.2025</title>
+<style>html,body{margin:0;height:100%;overflow:hidden;background:#000}canvas{display:block;width:100vw;height:100vh; image-rendering: pixelated;}</style>
+<canvas id=c></canvas>
+<!-- crosshair -->
+ <div id="xh" style="position:fixed;left:50%;top:50%;width:24px;height:24px;pointer-events:none;transform:translate(-50%,-50%);transform-origin:50% 50%;">
+   <div style="position:absolute;left:11px;top:0;width:2px;height:24px;background:#fff;opacity:.7"></div>
+   <div style="position:absolute;left:0;top:11px;width:24px;height:2px;background:#fff;opacity:.7"></div>
+ </div><div id="hud" style="
+  position:fixed;
+  top:5%;
+  left:50%;
+  transform:translateX(-50%);
+  pointer-events:none;
+  font:700 40px/1.2 system-ui,sans-serif;
+  color:#f33;
+  text-shadow:0 0 8px #000;
+  letter-spacing:2px;">
+</div>
+<!-- NEW: кінцевий екран (pointer-events:none, щоб кліки доходили до canvas; логіка блокує в JS) -->
+<div id="end" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);color:#eee;z-index:9;pointer-events:none;
+  font:700 32px/1.3 system-ui,sans-serif;text-align:center;letter-spacing:1px;">
+  <div id="endT" style="margin-top:16vh;font-size:64px;color:#f33;text-shadow:0 0 14px #500;"></div>
+  <div id="endB" style="margin-top:18px;font-weight:600;opacity:.95"></div>
+  <div id="endS" style="margin-top:28px;font-size:18px;color:#aaa">Wait for 60 s, then click to restart.</div>
+</div>
+<script>
+const canvas=c, gl=canvas.getContext('webgl2',{antialias:false,depth:false,stencil:false,preserveDrawingBuffer:true});
+
+ let W=0,H=0, DPR=Math.min(1,devicePixelRatio||1);
+ // пресети внутрішнього рендеру (від кращої якості до простішої)
+ const RES_PRESETS = [
+   [640,480], [512,384], [400,300], [320,240], [288,216], [256,192], [224,168], [192,144]
+ ];
+ let resIdx = 0; // 0 = найкраща (640x480)
+ function setRenderSize(idx){
+   resIdx = Math.max(0, Math.min(RES_PRESETS.length-1, idx));
+   const [rw, rh] = RES_PRESETS[resIdx];
+   W=canvas.width=rw; H=canvas.height=rh;
+   const s=Math.min(innerWidth/rw, innerHeight/rh);
+   canvas.style.width=(rw*s)+'px';
+   canvas.style.height=(rh*s)+'px';
+   canvas.style.marginLeft=((innerWidth-rw*s)/2)+'px';
+   canvas.style.marginTop=((innerHeight-rh*s)/2)+'px';
+   canvas.style.position='absolute';
+   canvas.style.left=canvas.style.top='0';
+   gl.viewport(0,0,W,H);
+ }
+function resize(){
+  setRenderSize(resIdx);
+}
+addEventListener('resize',resize);resize();
+// --- input & camera ---
+let keys={}, yaw=0, pitch=0, pos=[0,0,0], frames=0, startT=performance.now(), enemyDownUntil=0;
+let shardCount=0, hp=100, gameOver=false, hurtPulse=0, muzzle=0;
+// додати холод страху
+let fearPulse=0;
+// NEW: recoil + xhair + ROF
+let pitchKick=0, xhPulse=0, nextShotAt=0;
+// NEW: mouse sensitivity (feedback)
+let MOUSE_SENS=0.002;
+// NEW: footsteps accumulators
+let stepCarry=0, stepFlip=0;
+const SHOT_CD=120; // ms between shots
+// track right mouse button state
+let rightMouse = false;
+// NEW: impact decals (до 8 короткоживучих слідів)
+const MAX_DECALS=8, DECAL_TTL=800; // ms
+let decals=[];
+// NEW: last rendered camera basis (to align hitscan with what you see)
+let lastCam=[0,0,0], lastF=[0,0,0], lastU=[0,0,0], lastR=[0,0,0];
+// NEW: CPU copy of aim offset (to match shader ray exactly)
+let aimOff=[0,0];
+// NEW: debug flag (V to toggle)
+let aimDebug=0;
+// --- HUD ---
+const hud=document.getElementById('hud');
+let hudUntil=0, hudMsg='';
+// NEW: crosshair ref
+const xh=document.getElementById('xh');
+// NEW: кінцівки
+let endState='none'; // 'none'|'fail'|'bossWin'|'ritualWin'
+let endLockUntil=0;
+const endEl=document.getElementById('end'), endT=document.getElementById('endT'), endB=document.getElementById('endB'), endS=document.getElementById('endS');
+function showEnd(type,title,body,lockMs=60000){
+  endState=type; gameOver=true; endLockUntil=performance.now()+lockMs;
+  endT.textContent=title; endB.textContent=body; endEl.style.display='block';
+}
+function hideEnd(){ endEl.style.display='none'; endState='none'; endLockUntil=0; }
+
+// чекпоінт (кожні 3 рівні)
+let checkpointIndex=0;
+// геймплейні константи
+const HUD_MS=2500, CAT_ALERT_RADIUS=3.5, CAT_EYES_DELAY_MS=1500, CAT_CHARGE=3.0, CAT_WALK=0.4;
+const CAT_SAFE_MS=7000; // скільки кіт «білий» після попадання
+// NEW: shards/doors/health/FX
+const SHARDS_REQ=3; // залишаємо як дефолт, але двері мають власні req
+// Додаткові константи «білого»
+const WRAITH_ORBIT_R=1.9, WRAITH_SPEED=1.2, WRAITH_DRAIN_RANGE=4.0;
+
+// --- minimal "zzfx" style inline shot sound ---
+const AC=window.AudioContext||window.webkitAudioContext;const ac=new AC();
+function sfx(f=1200,len=0.08,vol=0.2,type='square'){
+  let o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;o.connect(g);
+  // ROUTE: єдина SFX-шина
+  g.connect(gSfx);
+  let t=ac.currentTime;
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.linearRampToValueAtTime(vol, t+0.006);                  // 6 ms атака
+  g.gain.exponentialRampToValueAtTime(0.0001, t+len);            // реліз
+  o.start(t); o.stop(t+len+0.01);
+}
+// --- minimal mix/echo bus + ambience/sfx (NEW) ---
+const master=ac.createGain();master.gain.value=1.0;
+// NEW: soft limiter to catch peaks
+const comp=ac.createDynamicsCompressor();
+comp.threshold.value=-16; comp.knee.value=6; comp.ratio.value=3; comp.attack.value=0.003; comp.release.value=0.20;
+master.connect(comp); comp.connect(ac.destination);
+const echoIn=ac.createGain(), echo=ac.createDelay(), fb=ac.createGain(), wet=ac.createGain();
+echo.delayTime.value=0.21; fb.gain.value=0.22; wet.gain.value=0.28; // tighter, less ring
+echoIn.connect(echo); echo.connect(fb); fb.connect(echo); echo.connect(wet); wet.connect(master);
+// NEW: persistent buses (no per-call node churn)
+const gSfx=ac.createGain(); gSfx.gain.value=1.0; gSfx.connect(master); gSfx.connect(echoIn);
+// REWIRE AMBIENT: add highpass to kill low hum
+const gAmb=ac.createGain(); gAmb.gain.value=1.0;
+const ambHP=ac.createBiquadFilter(); ambHP.type='highpass'; ambHP.frequency.value=55; // try 55–70 Hz
+gAmb.connect(ambHP); ambHP.connect(master); ambHP.connect(echoIn);
+const gMus=ac.createGain(); gMus.gain.value=1.0; gMus.connect(master); gMus.connect(echoIn);
+
+// NEW: toggle for tonal music bed (disabled by default)
+let MUSIC_BED=0;
+
+// NEW: music "bed" — periodic, independent of ambient
+let musBedStarted=false, bedG=null;
+function startMusicBed(){
+  if(musBedStarted) return; musBedStarted=true;
+  bedG=ac.createGain(); bedG.gain.value=0.0; bedG.connect(gMus);
+  // gentle filter for smooth texture
+  const lp=ac.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=420; lp.Q.value=0.7; lp.connect(bedG);
+  // two low oscs (root + fifth), very soft
+  const o1=ac.createOscillator(); o1.type='triangle';
+  const o2=ac.createOscillator(); o2.type='sawtooth';
+  o1.frequency.value=110; o2.frequency.value=165;
+  o1.connect(lp); o2.connect(lp); o1.start(); o2.start();
+  // slow detune drift (no clicks)
+  setInterval(()=>{
+    const t=ac.currentTime, f=100+Math.random()*40;
+    o1.frequency.setTargetAtTime(f, t, 1.5);
+    o2.frequency.setTargetAtTime(f*1.5, t, 1.5);
+  }, 2200);
+
+  // independent “breathing” cycle 12–30 s with rests + sparse plucks
+  (function bedCycle(){
+    const t=ac.currentTime;
+    const P=12+Math.random()*18; // 12..30 s
+    const up=P*0.32, hold=P*0.16, down=P*0.52;
+    const lo=0.00+Math.random()*0.01, hi=0.02+Math.random()*0.01;
+    bedG.gain.cancelScheduledValues(t);
+    bedG.gain.setValueAtTime(lo,t);
+    bedG.gain.linearRampToValueAtTime(hi,t+up);
+    bedG.gain.setValueAtTime(hi,t+up);
+    bedG.gain.linearRampToValueAtTime(lo,t+up+hold+down);
+
+    // tiny inner plucks on the plateau
+    const n=3+(Math.random()*3|0);
+    for(let i=0;i<n;i++){
+      const at=(t+up+0.05)+Math.random()*(Math.max(0,hold-0.10));
+      let o=ac.createOscillator(), g=ac.createGain();
+      o.type='square';
+      const root=110, S=[0,3,5,7,10], st=S[Math.random()*S.length|0];
+      o.frequency.value=root*Math.pow(2,st/12);
+      g.gain.value=0.0; o.connect(g); g.connect(bedG);
+      g.gain.setValueAtTime(0.0,at); g.gain.linearRampToValueAtTime(0.06,at+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001,at+0.14);
+      o.start(at); o.stop(at+0.16);
+    }
+    setTimeout(bedCycle, (P*1000)|0);
+  })();
+}
+// helper: duck bed under stinger
+function duckBed(sec=8, amt=0.45){
+  if(!bedG) return;
+  const t=ac.currentTime, g=bedG.gain, cur=g.value||0.0001;
+  g.cancelScheduledValues(t);
+  g.setValueAtTime(cur, t);
+  g.linearRampToValueAtTime(cur*amt, t+0.20);
+  g.linearRampToValueAtTime(cur, t+sec+0.20);
+}
+function bus(v=1){let g=ac.createGain();g.gain.value=v;g.connect(master);g.connect(echoIn);return g;} // kept for legacy, not used below
+
+// NEW: layered gunshot (unchanged logic, routed to bus)
+function gunShot(v=0.28){
+  const t=ac.currentTime, out=bus(v);
+  // CRACK (square, pitch drop)
+  let o1=ac.createOscillator(), g1=ac.createGain();
+  o1.type='square'; o1.frequency.setValueAtTime(1400,t); o1.frequency.exponentialRampToValueAtTime(700,t+0.07);
+  g1.gain.setValueAtTime(0.9,t); g1.gain.exponentialRampToValueAtTime(0.0001,t+0.09);
+  o1.connect(g1); g1.connect(out); o1.start(t); o1.stop(t+0.1);
+  // THUMP
+  let o2=ac.createOscillator(), g2=ac.createGain();
+  o2.type='sine'; o2.frequency.setValueAtTime(120,t); o2.frequency.exponentialRampToValueAtTime(90,t+0.10);
+  g2.gain.setValueAtTime(0.55,t); g2.gain.exponentialRampToValueAtTime(0.0001,t+0.12);
+  o2.connect(g2); g2.connect(out); o2.start(t); o2.stop(t+0.13);
+  // NOISE BURST
+  let n=ac.createBuffer(1,(ac.sampleRate*0.06)|0,ac.sampleRate), d=n.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  let ns=ac.createBufferSource(); ns.buffer=n;
+  let bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1600; bp.Q.value=3.5;
+  let gn=ac.createGain(); gn.gain.value=0.35; ns.connect(bp); bp.connect(gn); gn.connect(out);
+  ns.start(t); ns.stop(t+0.06);
+}
+
+// NEW: ambience (drone + wind, ultra-cheap)
+let ambStarted=false;
+function startAmbience(){
+  if(ambStarted) return; ambStarted=true;
+  const t0=ac.currentTime;
+
+  // WIND (detuned sines/saws → bandpass), без луп-шва
+  let bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=320; bp.Q.value=0.7;
+  let wg=ac.createGain(); wg.gain.value=0.0; bp.connect(wg); wg.connect(gAmb);
+  for(let i=0;i<5;i++){
+    let ow=ac.createOscillator(), gw=ac.createGain();
+    ow.type='sawtooth'; ow.frequency.value=220+Math.random()*420;
+    gw.gain.value=0.02+Math.random()*0.03; ow.connect(gw); gw.connect(bp); ow.start(t0);
+  }
+  // м’який старт вітру
+  wg.gain.setValueAtTime(0.0,t0); wg.gain.linearRampToValueAtTime(0.06,t0+0.30);
+
+  // колір вітру (спектр)
+  setInterval(()=>{
+    bp.frequency.setTargetAtTime(260+Math.random()*220, ac.currentTime, 0.7);
+  }, 1200);
+
+  // --- NEW: DRONE (низький синус), незалежний цикл 10–30 c + частотний дрейф ---
+  const dLP = ac.createBiquadFilter(); dLP.type='lowpass'; dLP.frequency.value=220;
+  const dg  = ac.createGain(); dg.gain.value=0.0;
+  const dOsc= ac.createOscillator();
+  dOsc.type='sine'; dOsc.frequency.value=58; // базова нота (легко “дияволська”)
+  dOsc.connect(dLP); dLP.connect(dg); dg.connect(gAmb);
+  dOsc.start(t0);
+
+  // легкий дрейф частоти (58 ± ~4 Гц), плавно, без клацань
+  setInterval(()=>{
+    const f = 56 + Math.random()*8; // 56..64 Гц
+    dOsc.frequency.setTargetAtTime(f, ac.currentTime, 1.2);
+  }, 1800);
+
+  // незалежний “дихальний” цикл гучності drone (асинхронно до вітру)
+  (function droneCycle(){
+    const t=ac.currentTime;
+    const P = 10 + Math.random()*20;        // 10..30 s
+    const up=P*0.30, hold=P*0.14, down=P*0.56;
+    const lo= 0.00 + Math.random()*0.01;    // майже тиша
+    const hi= 0.04 + Math.random()*0.05;    // пік (тонкий, щоб не “грузити”)
+
+    dg.gain.cancelScheduledValues(t);
+    dg.gain.setValueAtTime(lo, t);
+    dg.gain.linearRampToValueAtTime(hi, t+up);
+    dg.gain.setValueAtTime(hi, t+up);
+    dg.gain.linearRampToValueAtTime(lo, t+up+hold+down);
+
+    //setTimeout(droneCycle, (P*1000)|0);
+  })();
+
+  // --- існуючий цикл амбієнту (тільки для вітру + wet) ---
+  (function ambCycle(){
+    const t=ac.currentTime;
+    const P = 10 + Math.random()*20;          // 10..30 s
+    const up = P*0.35, hold=P*0.18, down=P*0.47;
+    const lo = 0.00 + Math.random()*0.01;
+    const hi = 0.08 + Math.random()*0.06;
+
+    // ВІТЕР гучність — тільки setTargetAtTime (без миттєвих стрибків)
+    wg.gain.cancelScheduledValues(t);
+    wg.gain.setTargetAtTime(lo, t,           0.30);
+    wg.gain.setTargetAtTime(hi, t+up*0.15,   0.60);
+    wg.gain.setTargetAtTime(lo, t+up+hold,   0.60);
+
+    // НЕ модулюємо wet.gain (стабільний reverb рівень)
+    setTimeout(ambCycle, (P*1000)|0);
+  })();
+
+  // музика планується у loadLevel (one-shot per level)
+  if(MUSIC_BED) startMusicBed(); // was: startMusicBed();
+}
+
+// NEW: footsteps + cat vocals
+function footstep(v=0.16){ sfx(110+Math.random()*30,0.06,v,'triangle'); }
+function catHiss(v=0.18){
+  const t=ac.currentTime;
+  let n=ac.createBuffer(1,(ac.sampleRate*0.22)|0,ac.sampleRate), d=n.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=Math.random()*2-1;
+  let src=ac.createBufferSource(); src.buffer=n;
+  let bp=ac.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1900; bp.Q.value=5;
+  let eg=ac.createGain(); eg.gain.setValueAtTime(0.0,t); eg.gain.linearRampToValueAtTime(v,t+0.01); eg.gain.exponentialRampToValueAtTime(0.0001,t+0.22);
+  src.connect(bp); bp.connect(eg); eg.connect(gSfx); src.start(t); src.stop(t+0.22);
+}
+function catMeow(v=0.20){
+  const t=ac.currentTime, out=gSfx;
+  let o=ac.createOscillator(), g=ac.createGain();
+  o.type='sawtooth'; o.frequency.setValueAtTime(380,t); o.frequency.exponentialRampToValueAtTime(220,t+0.10);
+  g.gain.setValueAtTime(0.9*v,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);
+  o.connect(g); g.connect(out); o.start(t); o.stop(t+0.13);
+}
+function wraithWhine(v=0.12){
+  const t=ac.currentTime, out=gSfx;
+  let o=ac.createOscillator(), g=ac.createGain();
+  o.type='sine'; o.frequency.setValueAtTime(620,t); o.frequency.exponentialRampToValueAtTime(420,t+0.25);
+  g.gain.setValueAtTime(0.5*v,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.28);
+  o.connect(g); g.connect(out); o.start(t); o.stop(t+0.3);
+}
+// NEW: minimalist “stinger” music — sparse, random, with reprise
+let mus={on:false,next:Infinity,played:false};
+function scheduleMusicIn(ms=3000){
+  if(mus.played) return;
+  const n=performance.now()+ms;
+  mus.next = isFinite(mus.next) ? Math.min(mus.next, n) : n;
+}
+function musicCue(){
+  if(mus.on||!ambStarted) return; mus.on=true;
+  const t0=ac.currentTime+0.03, root=[55,65,73,82][(Math.random()*4|0)], mode=(Math.random()*3|0);
+  const len=6+Math.random()*5, tEnd=t0+len, MV=0.26; // was 0.42 → чистіше, без «пампінгу»
+
+  // груповий фільтр для всього стингера (м’якше, без піску)
+  const mOut=ac.createGain(); mOut.gain.value=1.0; mOut.connect(gMus);
+  const mLP=ac.createBiquadFilter(); mLP.type='lowpass'; mLP.frequency.value=1400; mLP.Q.value=0.7; mLP.connect(mOut);
+
+  duckBed(len, 0.35);
+
+  // low drone
+  { let o=ac.createOscillator(), g=ac.createGain();
+    o.type='triangle'; o.frequency.value=root; o.connect(g); g.connect(mLP);
+    g.gain.setValueAtTime(0.0,t0);
+    g.gain.linearRampToValueAtTime(0.16*MV,t0+0.45);
+    g.gain.exponentialRampToValueAtTime(0.0001,tEnd);
+    o.start(t0); o.stop(tEnd+0.05);
+  }
+  // plucks (з атаками, у LP)
+  const S=[0,3,5,7,10,12];
+  const n=9+((mode===2)?3:0);
+  for(let i=0;i<n;i++){
+    let st=S[Math.random()*S.length|0]; if(mode===1 && Math.random()<0.35) st+=1;
+    const f=root*Math.pow(2,st/12), at=t0+Math.random()*(len*0.8), d=0.10+Math.random()*0.20, v=(0.10+Math.random()*0.10)*MV;
+    let o=ac.createOscillator(), g=ac.createGain(); o.type='sawtooth'; o.frequency.value=f; o.connect(g); g.connect(mLP);
+    g.gain.setValueAtTime(0.0001,at);
+    g.gain.linearRampToValueAtTime(v,at+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001,at+d);
+    o.start(at); o.stop(at+d+0.03);
+  }
+  // reprise knocks (м’яко)
+  for(let j=0;j<3;j++){
+    const at=tEnd-0.6 + j*0.18; let o=ac.createOscillator(), g=ac.createGain();
+    o.type='triangle'; o.frequency.value=root*(1+0.02*j); o.connect(g); g.connect(mLP);
+    g.gain.setValueAtTime(0.0001,at);
+    g.gain.linearRampToValueAtTime(0.14*MV,at+0.006);
+    g.gain.exponentialRampToValueAtTime(0.0001, at+0.12);
+    o.start(at); o.stop(at+0.14);
+  }
+  setTimeout(()=>{ mus.on=false; mus.played=true; mus.next=Infinity; }, (len*1000)|0);
+}
+
+// --- ASCII LEVEL (центруємо в світі) ---
+const TILE=2.0;
+// ЗАМІСТЬ const LEVELS=[...] → 3 фіксовані «закриті» рівні
+const LEVELS=[
+  // Level 1 — дуже маленький, одна кімната ~3×5 та вхід у катакомби: 3 S, 0 k, двері d видно здалеку
+  // Знайомство із рухом та дверями
+  [
+    "oooooooooooooooo",
+    "o********o",
+    "ooooo****o",
+    "o***E***po",
+    "ooooo****o",
+    "o********o",
+    "oooooooooo"
+  ],
+  // Level 2 — дуже широкий коридор ~1×15: 1 k, 3 S, двері d видно здалеку
+  // Знаймомство із котами
+  [
+    "ooooooooooooooooooooooooo",
+    "o***********************o",
+    "oooo***o**o**ko***oooooo",
+    "oE***k***ko**********po",
+    "oooo***o**o**ko***oooooo",
+    "o***********************o",
+    "ooooooooooooooooooooooooo"
+  ],
+  // Level 3 - знайомство із шардами S
+  [
+    "ooooooooooooo",
+    "ooo**S**ooooo",
+    "od***S*****po",
+    "ooo**S**ooooo",
+    "ooooooooooooo"
+  ],  
+  // Level 4 — одна кімната ~8×8 потім довгий корідор, невеличкий лабірінт: 3 S, 4 k, двері d трохи приховані у тунелях
+  [
+    "oooooooooooooooooooooooooooooo**ooooo",
+    "o*********od******************ooooooo",
+    "o****o****oooooooooooo*ooo*oooooooooo",
+    "o*********oooooooooooo*oooooooooooooo",
+    "o*********oooo*ooooooo*oooooooooooooo",
+    "o*S**o**Sk************k************po",
+    "o*********oooooooooooo*ooooooo*oooooo",
+    "o*********oooooooooooo*ooooooo*oooooo",
+    "o*k**ok***ooooooooooo***ooooooooooooo",
+    "o*********ooooooooooo*S*ooooooooooooo",
+    "ooooooooooooooooooooooooooooooooooooo"
+  ],
+
+  // Level 5 — ~16×16, 3–4 кімнати, більше котів, «зала колонн», двері d=3, багато S (<=8)
+  [
+    "ooooooooooooooo",
+    "ooo*S**o******o",
+    "oD****k***o***o",
+    "ooo***o*o*o***o",
+    "o****S**k*****o",
+    "o***o*o*o*o***o",
+    "o*k**k*****k**o",
+    "o***o*o*o*o***o",
+    "o**k*****k****o",
+    "o***oS***So***o",
+    "o*k*ooo*ooo**So",
+    "o***o*****o***o",
+    "o*k**o***So**po",
+    "ooooooooooooooo"
+  ],
+  // Level 6 — filler level, знайомство з турелями T
+  [
+    "ooooooooooooooooooooooooo***",
+    "oE********T***********poooo",
+    "oooooo****************ooooooo***",
+    "oooooooo************o*oooooooo***",
+    "ooooooooooHHHooooooooooooo***",
+    "ooooo**ooooooooooooo***",
+  ],
+  // Level 7
+  // довгий плутаний коридор із турелями та котами
+  [ 
+    "ooooooooooooooooooooooooo***",
+    "o*d**********T****o****poooo",
+    "oooooo***oooooooooo*oooooooo***",
+    "oooooooo***oooooooo*oooooooo***",
+    "oooooooooo***ooooooSooooooo***",
+    "ooT*****S**oooooooo*ooooo***",
+    "ooooo*ooooooooooooo*ooooo***",
+    "ooo***ooooooooooooo*ooooo***",
+    "oo**o*ooooooooooooo*ooooo***",
+    "ook*o*oooo*T********oooooooooo***",
+    "ooo***ooooooo*ooooooooooo***",
+    "oo**o*ooooooo*ooooooooooo***",
+    "oo**o***S****kooooooooooooooooooo***",
+    "oo**o*ooooooooooooooooooo***",
+    "ooooooooooooooooooooooooo***",
+  ],
+  // Level 8 — дуже великий, велика D-двері поруч зі стартом (6 S на карті), таємна кімната за X з d=3
+  [
+    "ooooooooooooooooooooooooo***",
+    "oD*********************po",
+    "oo**o***o***S*S***o****oo",
+    "o***o*S*o***ooo***o**S**o",
+    "o***o***o***odo***o*****o",
+    "o*******o***oXo***o*****o",
+    "o***********************o",
+    "o***********************o",
+    "o****T******T******T****o",
+    "o***********************o",
+    "o***********************o",
+    "ooooo***ooooooooooooo***o",
+    "o****k*k**ooo*ooo****k*k*o",
+    "o**********o***o*********o",
+    "o***ooooo***o***o***oooo*o",
+    "o***o***o***o***o***o***o",
+    "o***o***oXXXXXXXXXo***o*do",
+    "o***o***oSk*o***oSk*o*k*o",
+    "o***o***ok**o*k*okk*o***o",
+    "o********k************kSo",
+    "ooooooooooooooooooooooooo"
+  ],
+  // Level 9 — filler level, знайомство із босом (який неактивний) + трохи лікувальних сфер H
+  [
+    "ooooooooooooooooooooooo**",
+    "E***************H*****po",
+    "o***oo***oo***oo******o",
+    "o**Hoo***ooH**ooH*****o",
+    "o*********************o",
+    "oooooooooooooooooooooo*"
+  ],
+  // додаткові рівні для циклу
+  // 10
+  [
+  "ooooooooooooooooooooooo",
+  "o**********H********po",
+  "o****S***T**k******oo",
+  "d***ooo***ooo***oooo",
+  "o**ko*S*k*o*Tk*o***o",
+  "o***ooo***ooo***oooo",
+  "o****k***H**S*****ko",
+  "oooooooooooooooooooo"
+  ],
+  // 11
+  [
+  "ooooooooooo****",
+  "d*********po",
+  "o****S****o",
+  "o****k****o",
+  "o****o****o",
+  "oSok****kSo",
+  "o****o****o",
+  "o****k****o",
+  "o****T****o",
+  "o*********o",
+  "ooooooooooo"
+  ],
+  // 12
+  [
+  "oooooooooooooooooo****",
+  "o*******S*****oooo",
+  "o***oooo*oooo***po",
+  "o***oS****o*k*Sooo",
+  "o***o*o*o*o***o",
+  "oT***oH*Ho***So",
+  "o***o*o*ooo***o",
+  "oS*k*o*****o*k*o",
+  "o***oooooooo***o",
+  "D******S*******o",
+  "ooooooooooooooooo"
+  ],
+  //boss test level 13
+  [
+    "ooooooooooooooooooooo",
+    "o********H*****H***po",
+    "o*H****************o",
+    "o*************H****o",
+    "o******************o",
+    "o*H******H****H****o",
+    "o******************o",
+    "o*H***********H****o",
+    "o******************o",
+    "oB***H*************o",
+    "oooooooooooooooooooo"
+  ]
+];
+// Символи, які трактуємо як “стіни”
+const WALL_SET = new Set(['o','X','#']);
+// NEW: тверді (колізія) vs. "привиди" (прохідні, але малюються як стіни)
+const SOLID_SET = new Set(['o','#']); // 'X' = ghost wall; 'T' = passable idol
+
+function parseLevel(level){
+  const rows=level.length, cols=level[0].length;
+  const cx=(cols-1)/2, cz=(rows-1)/2;
+  const toWorld=(col,row)=>[ (col-cx)*TILE, -0.4, -(row-cz)*TILE ];
+  let playerStart=[0,0,0], catSpawns=[], sphereSpawns=[], healSpawns=[], doors=[];
+  let turretSpawns=[]; // NEW
+  const tiles=[];
+  // NEW: boss anchor
+  let bossPos=null;
+  for(let r=0;r<rows;r++){
+    const line=level[r];
+    for(let c=0;c<cols;c++){
+      const ch=line[c];
+      const [x,y,z]=toWorld(c,r);
+      if(ch==='p') playerStart=[x,0,z];
+      if(ch==='C'||ch==='c'||ch==='K'||ch==='k') catSpawns.push([x,y,z]);
+      if(ch==='S') sphereSpawns.push([x,y,z]);
+      if(ch==='H'||ch==='h') healSpawns.push([x,y,z]);
+      if(ch==='d'||ch==='D'||ch==='E'||ch==='e') doors.push({x,y,z,ch}); // зберігаємо символ для req (E/e = free)
+      if(ch==='T') turretSpawns.push([x,y,z]); // NEW
+      // NEW: boss marker
+      if(ch==='B') bossPos=[x,0.0,z];
+      tiles.push({ch,x,y,z});
+    }
+  }
+  return {playerStart,catSpawns,sphereSpawns,healSpawns,doors,tiles,rows,cols,center:[cx,cz],turretSpawns,bossPos};
+}
+//const LV = parseLevel(LEVEL);
+//console.log('LEVEL parsed:', LV);
+
+ 
+// --- TILE TEXTURE (R8): 0=empty, 1=wall(o/X/#) ---
+function buildTileTexture(level){
+  const rows=level.length, cols=level[0].length;
+  const data=new Uint8Array(cols*rows);
+  for(let r=0;r<rows;r++){
+    const line=level[r];
+    for(let c=0;c<cols;c++){
+      const ch=line[c];
+      const i=r*cols+c;
+      data[i]= WALL_SET.has(ch) ? 1 : 0;
+    }
+  }
+  const tex=gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+  gl.pixelStorei(gl.UNPACK_ROW_LENGTH, 0); // WebGL2: гарантуємо, що рядки йдуть щільно
+  // міні-діагностика
+  console.assert(data.byteLength === cols*rows, 'tile data size mismatch', {cols, rows, len:data.byteLength});
+  // WebGL2: R8 texture
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.R8,cols,rows,0,gl.RED,gl.UNSIGNED_BYTE,data);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  return {tex, cols, rows};
+}
+//const TILE_TEX = buildTileTexture(LEVEL);
+
+// NEW: Boss (Black Cat Avatar)
+let boss = {active:false,pos:[0,0,0],scale:2.0,phase:0,until:0,eyes:0,lives:9,nextShot:0,didNova:false};
+
+// ---- Мульти-списки з карти ----
+const MAX_CATS=13, MAX_SPHERES=17, MAX_DOORS=4; // менший ліміт — рідкісніші релік-шарди
+const SHARDS_LIMIT=7; // макс. шардiв на рівень
+// NEW: turrets + orbs
+const MAX_TURRETS=6, MAX_ORBS=12;
+const TURRET_RANGE=8.0, ORB_SPEED=2.1, ORB_DMG=10;
+// ЗАМІСТЬ констант — робимо перезавантажувані структури
+let LV, TILE_TEX, cats=[], spheres=[], doors=[], turrets=[], orbs=[], levelIndex=0, minDoorReq=3;
+let LEVEL_ROWS = null; // NEW: зберігаємо сирі рядки карти
+// завантаження рівня
+function loadLevel(levelRows){
+  LEVEL_ROWS = levelRows; // NEW
+  LV = parseLevel(levelRows);
+  // оновити тайл-текстуру
+  if(TILE_TEX && TILE_TEX.tex){ gl.deleteTexture(TILE_TEX.tex); }
+  TILE_TEX = buildTileTexture(levelRows);
+  // коти
+  cats = LV.catSpawns.slice(0, MAX_CATS).map(([x,y,z])=>({
+    pos:[x,y,z], eyes:0, attacking:false,
+    mode:0, modeUntil:0,
+    spawn:[x,y,z],
+    theta:Math.random()*6.283, nextBlink:performance.now()+1500+Math.random()*1500,
+    gaze:0, noGazeUntil:0,
+    nextSfx:0 // NEW
+  }));
+  // шард-и
+  spheres = [];
+  // звичайні шард-и (зелені)
+  const cap = Math.min(MAX_SPHERES, SHARDS_LIMIT);
+  spheres.push(...LV.sphereSpawns.slice(0, cap).map(([x,y,z])=>({
+    pos:[x, -0.1, z], R:0.3, downUntil:0, collected:false, type:'shard'
+  })));
+  // лікувальні (ціанові) — додаємо, якщо влізуть у ліміт
+  const roomLeft = Math.max(0, MAX_SPHERES - spheres.length);
+  spheres.push(...LV.healSpawns.slice(0, roomLeft).map(([x,y,z])=>({
+    pos:[x, -0.1, z], R:0.3, downUntil:0, collected:false, type:'heal'
+  })));
+  
+  //spheres = LV.sphereSpawns.slice(0, MAX_SPHERES).map(([x,y,z])=>({
+  //   pos:[x, -0.2, z], R:0.3, downUntil:0, collected:false
+  //}));
+  // двері з req за символом: E/e=0, d=3, D=6
+  doors = LV.doors.slice(0, MAX_DOORS).map(d=>({
+    pos:[d.x, 0.0, d.z],
+    // ширина дверей ≈ повна ширина тайла (більше не прослизнути краями)
+    half:[0.08, 0.6, TILE*0.5-0.08],
+    open:false,
+    req: (d.ch==='D') ? 6 : ((d.ch==='E'||d.ch==='e') ? 0 : 3),
+    activeVisual:false
+  }));
+  // NEW: turrets
+  turrets = LV.turretSpawns.slice(0, MAX_TURRETS).map(([x,y,z])=>({
+    pos:[x,0.0,z], next:performance.now()+500+Math.random()*800
+  }));
+  orbs = [];
+  // мінімальна вимога на рівні (для стартового HUD)
+  minDoorReq = doors.length? Math.min(...doors.map(d=>d.req)) : 0;
+  // старт гравця
+  if(LV.playerStart){ pos=[LV.playerStart[0],0,LV.playerStart[2]]; }
+
+  // NEW: initial facing — 90° left on Level 1 (default forward -Z → left is -X)
+  if(levelIndex===0){
+    yaw = -Math.PI/2;
+    // Optional: face the nearest door exactly (uncomment to use precise aim)
+    // if(doors.length){
+    //   const d=doors[0], dx=d.pos[0]-pos[0], dz=d.pos[2]-pos[2];
+    //   yaw = Math.atan2(dx, -dz); // matches F=[sin(yaw),*, -cos(yaw)]
+    // }
+  }
+
+  // NEW: boss init if anchor exists
+  if(LV.bossPos){
+    const now=performance.now();
+    boss.active=true; boss.pos=[LV.bossPos[0],0,LV.bossPos[2]];
+    boss.scale=2.0; boss.phase=1; boss.until=now+1600; boss.eyes=0; boss.lives=9;
+    boss.nextShot=now+1400; boss.didNova=false;
+    hudMsg='NINE LIVES RITUAL'; hudUntil=now+2000;
+  }else{
+    boss.active=false;
+  }
+  // скинути прогрес рівня (шарди), але HP залишаємо
+  shardCount=0;
+  // стартова підказка
+  hudMsg = LV.bossPos ? 'DON\'T STARE — WAIT FOR THE EYES' : (minDoorReq>0 ? `COLLECT ${minDoorReq} SHARDS` : 'FIND EXIT');
+  hudUntil = performance.now()+3200;
+  // NEW: one-shot music per level (early entrance cue)
+  mus.played=false; mus.on=false; mus.next=Infinity;
+  scheduleMusicIn(2000+Math.random()*4000);
+}
+// стартова ініціалізація
+//loadLevel(LEVELS[levelIndex]);
+
+// --- shaders ---
+const vs=`#version 300 es
+void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0,1);}
+`;
+const fs=`#version 300 es
+precision highp float;out vec4 o;
+uniform vec2 uRes;uniform float uTime;uniform vec3 uCam,uF,uR,uU;uniform float uEnemy;
+// add: hurt tint + muzzle flash
+uniform float uHurt, uMuzzle;
+// + холод страху
+uniform float uFear;
+// NEW: center alignment offset for even resolutions
+uniform vec2 uAimOff;
+// NEW: debug toggle for aim dot
+uniform float uAimDebug;
+// NEW: impact decals
+const int MAX_DECALS = 8;
+uniform int uDecalCount;
+uniform vec4 uDecals[MAX_DECALS]; // xyz=pos, w=bornSec
+// tile texture (walls)
+uniform sampler2D uTileTex;
+uniform ivec2 uTileSize;     // (cols, rows)
+uniform vec2  uTileCenter;   // (cx, cz) як у parseLevel
+uniform float uTileScale;    // TILE (розмір тайла)
+// multi-cats
+const int MAX_CATS = 13;
+uniform int uCatCount;
+uniform vec4 uCatsPos[MAX_CATS];   // xyz=pos
+uniform float uCatsState[MAX_CATS]; // 1.0=black, 2.0=white, 0=hidden
+uniform float uCatsEyes[MAX_CATS];  // 0..1
+// ---------------- pack/unpack cat id in material value ----------------
+// Кодуємо індекс у вигляді 3.00, 3.01, 3.02, ... (крок 0.01)
+float packCatId(int i){ return 3.0 + float(i)*0.01; }
+int unpackCatId(float m){
+  // Перетворюємо назад: (m-3.0)*100 ≈ i, з округленням до найближчого
+  int id = int(floor((m - 3.0)*100.0 + 0.5));
+  // безпечно обмежуємо
+  if(id < 0) id = 0;
+  if(id >= MAX_CATS) id = MAX_CATS-1;
+  return id;
+}
+
+// spheres
+const int MAX_SPHERES = 8;
+uniform int uSphereCount;
+uniform vec4 uSpheresPos[MAX_SPHERES]; // xyz=pos, w=radius (sign: >0 shard, <0 heal)
+uniform float uSpheresActive[MAX_SPHERES]; // 1 active, 0 hidden
+
+// sphere id pack/unpack (2.00, 2.01, ...)
+float packSphereId(int i){ return 2.0 + float(i)*0.01; }
+int unpackSphereId(float m){
+  int id = int(floor((m - 2.0)*100.0 + 0.5));
+  if(id < 0) id = 0;
+  if(id >= MAX_SPHERES) id = MAX_SPHERES-1;
+  return id;
+}
+
+
+// + small hashing (deterministic per-tile)
+float hash21(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453123); }
+float hash31(vec3 p){ return fract(sin(dot(p,vec3(17.3,113.1,241.7)))*43758.5453); }
+float sdCircle2(vec2 p,float r){ return length(p)-r; }
+
+// Cat paw mask (0..1) in 0..1 UV tile space
+float pawMask(vec2 uv){
+  // place big pad at uv0, 3 toes above; compact and cheap
+  vec2 c = uv - vec2(0.32,0.34);
+  float d = sdCircle2(c,0.11);
+  d = min(d, sdCircle2(c-vec2(-0.10,0.14),0.050));
+  d = min(d, sdCircle2(c-vec2( 0.00,0.16),0.058));
+  d = min(d, sdCircle2(c-vec2( 0.10,0.14),0.050));
+  return smoothstep(0.03,0.0,d);
+}
+
+// Cat-head rune mask (0..1) in 0..1 UV (centered)
+float catRune(vec2 uv){
+  vec2 p = (uv-0.5);
+  // squash a bit for a “feline” look
+  p.x/=0.86;
+  float d = sdCircle2(p,0.24);              // face
+  d = min(d, sdCircle2(p-vec2(-0.18,0.16),0.11)); // ear L
+  d = min(d, sdCircle2(p-vec2( 0.18,0.16),0.11)); // ear R
+  return smoothstep(0.03,0.0,d);
+}
+
+
+// doors
+const int MAX_DOORS = 4;
+uniform int uDoorCount;
+uniform vec4 uDoorsPos[MAX_DOORS];  // xyz=center
+uniform vec4 uDoorsHalf[MAX_DOORS]; // xyz=half-size, w=activeFlag(>0 = активні/“сексуальні”)
+
+// door id pack/unpack (5.00, 5.01, 5.02, ...)
+float packDoorId(int i){ return 5.0 + float(i)*0.01; }
+int unpackDoorId(float m){
+  int id = int(floor((m - 5.0)*100.0 + 0.5));
+  if(id < 0) id = 0;
+  if(id >= MAX_DOORS) id = MAX_DOORS-1;
+  return id;
+}
+// turrets (sentinel idols)
+const int MAX_TURRETS = 6;
+uniform int uTurretCount;
+uniform vec4 uTurretsPos[MAX_TURRETS]; // xyz=base position
+// NEW: boss uniforms
+uniform int uBossActive;
+uniform vec4 uBoss;       // xyz=pos, w=scale
+uniform float uBossEyes;  // 0..1
+uniform float uBossPhase; // 1..5
+float packTurretId(int i){ return 6.0 + float(i)*0.01; }
+int unpackTurretId(float m){
+  int id = int(floor((m - 6.0)*100.0 + 0.5));
+  if(id < 0) id = 0;
+  if(id >= MAX_TURRETS) id = MAX_TURRETS-1;
+  return id;
+}
+float sdSphere(vec3 p,float r){return length(p)-r;}
+float sdRect(vec2 p,vec2 b){vec2 d=abs(p)-b;return min(max(d.x,d.y),0.)+length(max(d,0.));}
+
+// === helpers (ГЛОБАЛЬНО, не всередині map!) ===
+float sdCapsule(vec3 q, vec3 a, vec3 b, float r){
+  vec3 pa=q-a, ba=b-a;
+  float h=clamp(dot(pa,ba)/dot(ba,ba),0.0,1.0);
+  return length(pa-ba*h)-r;
+}
+float sdEllipsoid(vec3 q, vec3 s){
+  return (length(q/s)-1.0)*min(min(s.x,s.y),s.z);
+}
+float sdBox(vec3 p, vec3 b){
+  vec3 d=abs(p)-b;
+  return min(max(d.x,max(d.y,d.z)),0.) + length(max(d,0.));
+}
+
+// smooth union (м’яке складання форм) — щоб голова не виглядала з «кульок»
+float smin(float a, float b, float k){
+  // k ~ 0.04..0.12 для наших масштабів; більше = плавніше
+  float h = clamp(0.5 + 0.5*(b - a)/k, 0.0, 1.0);
+  return mix(b, a, h) - k*h*(1.0 - h);
+}
+float opInter(float a, float b){ return max(a,b); } // (припасовано для вух, якщо треба)
+float opSub(float a, float b){ return max(a, -b); } // SDF-віднімання (вирізи)
+// --- extra SDF helpers for "relic spinner" shard ---
+// mat2 r2(float a){ float c=cos(a), s=sin(a); return mat2(c,-s,s,c); }
+// float sdTorus(vec3 p, vec2 t){ vec2 q=vec2(length(p.xz)-t.x, p.y); return length(q)-t.y; } // (залишаємо, якщо десь знадобиться)
+// float sdOctahedron(vec3 p, float s){
+//   p=abs(p); float m=p.x+p.y+p.z - s; vec3 q=max(p-vec3(s),0.0); return min(m, length(q));
+// }
+// НОВЕ: округлий шард — низький еліпсоїд (обертання)
+float sdShard(vec3 q){
+  // радіуси: X/Z ~ 0.26, Y ~ 0.14 (низький силует)
+  return sdEllipsoid(q, vec3(0.26, 0.14, 0.26));
+}
+
+// дві площини y=±h (поверхні, НЕ заповнений шар)
+float sdTwoPlanesY(vec3 p, float h){
+  return min(abs(p.y - h), abs(p.y + h));
+}
+float sdCatModelAt(vec3 q, vec3 catPos){
+  q -= catPos;
+  float d = 1e9;
+
+  // Torso (котячий: гнучка спина, тонший попереду)
+  d = min(d, sdEllipsoid(q - vec3(-0.06, 0.03, 0.00), vec3(0.58, 0.24, 0.28))); // тулуб
+  // Chest/shoulders (виступаюча лопатка кота)
+  d = min(d, sdEllipsoid(q - vec3( 0.18, 0.01, 0.00), vec3(0.22, 0.14, 0.22)));
+  // Gentle back arch + slight belly
+  d = min(d, sdEllipsoid(q - vec3(-0.10, 0.07, 0.00), vec3(0.52, 0.20, 0.26))); // арка спини
+  d = min(d, sdEllipsoid(q - vec3( 0.03,-0.06, 0.00), vec3(0.28, 0.11, 0.20))); // легкий «пузик»
+
+
+  // Neck (коротша, стрункіша — котяча посадка голови)
+  d = min(d, sdCapsule(q, vec3(0.36,0.10,0.17), vec3(0.48,0.14,0.17), 0.070));
+
+  // === HEAD (smooth, feline) ==========================================
+  // Збираємо голову однією SDF через smin, щоб не було «кульок».
+  {
+    // базова «черепна» форма: плаский лоб, округлі щоки
+    float hd  = sdEllipsoid(q - vec3(0.585,0.160,0.170), vec3(0.155,0.125,0.135));
+    // скулові дуги (ширина морди)
+    float hZL = sdEllipsoid(q - vec3(0.575,0.150,0.255), vec3(0.105,0.070,0.070));
+    float hZR = sdEllipsoid(q - vec3(0.575,0.150,0.085), vec3(0.105,0.070,0.070));
+    // whisker pads — ближче до низу, округлі
+    float hWL = sdEllipsoid(q - vec3(0.635,0.108,0.230), vec3(0.088,0.058,0.078));
+    float hWR = sdEllipsoid(q - vec3(0.635,0.108,0.110), vec3(0.088,0.058,0.078));
+    // короткий snout (НЕ «собачий»): коротко і вузько
+    float hSN = sdEllipsoid(q - vec3(0.690,0.095,0.170), vec3(0.060,0.045,0.060));
+    // легке сплощення лоба коробкою — котячий профіль
+    float hFL = sdBox(q - vec3(0.570,0.185,0.170), vec3(0.120,0.030,0.120));
+
+    // плавні з’єднання
+    float k = 0.08; // радіус «плавності»
+    hd = smin(hd, hZL, k);
+    hd = smin(hd, hZR, k);
+    hd = smin(hd, hWL, k);
+    hd = smin(hd, hWR, k);
+    hd = smin(hd, hSN, k*0.85);
+    hd = smin(hd, hFL, k*0.70);
+
+    d = min(d, hd);
+  }
+
+  // Ears — коротші, тонші, без «труб»
+  {
+    vec3 eBL = vec3(0.620,0.292,0.100), eTL = vec3(0.640,0.332,0.095);
+    vec3 eBR = vec3(0.620,0.292,0.240), eTR = vec3(0.640,0.332,0.245);
+    float earL = smin(sdBox(q - eBL, vec3(0.046,0.085,0.026)),
+                      sdBox(q - eTL, vec3(0.030,0.050,0.018)), 0.06);
+    float earR = smin(sdBox(q - eBR, vec3(0.046,0.085,0.026)),
+                      sdBox(q - eTR, vec3(0.030,0.050,0.018)), 0.06);
+    d = min(d, earL);
+    d = min(d, earR);
+  }
+
+  // Legs: котячі пропорції — сухі плечі, опуклі стегна
+  // передні (тонша верхня половина)
+  d = min(d, sdCapsule(q, vec3( 0.05,-0.12, 0.20), vec3( 0.05,-0.48, 0.20), 0.038)); // front L
+  d = min(d, sdCapsule(q, vec3( 0.05,-0.12,-0.20), vec3( 0.05,-0.48,-0.20), 0.038)); // front R
+  // задні (виразніше «стегно»)
+  d = min(d, sdEllipsoid(q - vec3(-0.31,-0.06, 0.25), vec3(0.13,0.095,0.105))); // thigh L
+  d = min(d, sdEllipsoid(q - vec3(-0.31,-0.06,-0.25), vec3(0.13,0.095,0.105))); // thigh R
+  d = min(d, sdCapsule(q, vec3(-0.34,-0.16, 0.25), vec3(-0.34,-0.46, 0.25), 0.053)); // shank L
+  d = min(d, sdCapsule(q, vec3(-0.34,-0.16,-0.25), vec3(-0.34,-0.46,-0.25), 0.053)); // shank R
+
+
+  // Tail (tapered S-curve)
+  // вищий вихід із крупу і сильніше звуження — котячий жест
+  d = min(d, sdCapsule(q, vec3(-0.62, 0.00, 0.02), vec3(-0.92, 0.19, 0.02), 0.036));
+  d = min(d, sdCapsule(q, vec3(-0.92, 0.19, 0.02), vec3(-1.02, 0.36,-0.06), 0.030));
+  d = min(d, sdCapsule(q, vec3(-1.02, 0.36,-0.06), vec3(-1.07, 0.47, 0.10), 0.024));
+
+  return d;
+}
+// NEW: scaled cat SDF
+float sdCatScaled(vec3 p, vec3 c, float s){
+  vec3 q = c + (p - c)/s;
+  return sdCatModelAt(q, c) * s;
+}
+// return (dist,matId)
+vec2 map(vec3 p){
+  float d=1e9, m=0.;
+  // підлога/стеля (мат 4) — відстань до найближчої площини
+  float dFloor = sdTwoPlanesY(p, 0.6);
+  if(dFloor<d){ d=dFloor; m=4.; }
+  // стіни/колони з TILE TEXTURE — 3×3 локальне оточення (мат 1)
+  // обчислюємо індекс поточного тайла з p.xz (інверс до parseLevel)
+  int ix = int(floor(p.x / uTileScale + uTileCenter.x + 0.5));
+  int iz = int(floor(-p.z / uTileScale + uTileCenter.y + 0.5));
+  for(int dz=-1; dz<=1; dz++){
+    for(int dx=-1; dx<=1; dx++){
+      int tx = ix + dx;
+      int tz = iz + dz;
+      if(tx<0 || tz<0 || tx>=uTileSize.x || tz>=uTileSize.y) continue;
+      // семпл з текстури (0..255)
+      float code = texture(uTileTex, (vec2(tx, tz)+0.5)/vec2(uTileSize)).r * 255.0;
+      if(code < 0.5) continue; // порожньо
+      // центр тайла в світі (як у parseLevel: (col-cx)*TILE, z=-(row-cz)*TILE)
+      vec3 c = vec3( (float(tx)-uTileCenter.x)*uTileScale, 0.0, -(float(tz)-uTileCenter.y)*uTileScale );
+      vec3 b = vec3(uTileScale*0.48, 0.6, uTileScale*0.48);
+      // швидка груба відсічка
+      vec3 d3 = abs(p - c) - b;
+      float rough = max(max(d3.x,d3.y), d3.z);
+      if(rough > d) continue;
+      float db = sdBox(p - c, b);
+      if(db < d){ d=db; m=1.; }
+    }
+  }  
+  for(int i=0;i<MAX_SPHERES;i++){
+    if(i>=uSphereCount) break;
+    if(uSpheresActive[i] < 0.5) continue;
+    vec3 sp = uSpheresPos[i].xyz;
+    float rW = uSpheresPos[i].w;
+    bool isHeal = (rW<0.0);
+    bool isProj = (uSpheresActive[i] > 1.5);
+    float rr = abs(rW);
+    vec3 q = p - sp;
+    float ds;
+    if(isProj || isHeal){
+      ds = sdSphere(q, rr);
+    } else {
+      // НОВЕ: шард статичний (без обертання), коротший bicone
+      ds = sdShard(q);
+    }
+    if(ds < d){ d=ds; m=packSphereId(i); }
+  }
+  // кіт (мат 3.xx, де xx — індекс*0.01) — масив
+  for(int i=0;i<MAX_CATS;i++){
+    if(i>=uCatCount) break;
+    if(uCatsState[i] < 0.5) continue; // hidden
+    vec3 cp = uCatsPos[i].xyz;
+    // NEW: cheap bounding-sphere test to avoid full SDF most of the time
+    float cb = sdSphere(p - cp, 0.80);
+    if(cb < d){
+      float dc = sdCatModelAt(p, cp);
+      if(dc < d){ d=dc; m=packCatId(i); }
+    }
+  }
+  // двері (мат 5.xx) — світний тонкий бокс
+  for(int i=0;i<MAX_DOORS;i++){
+    if(i>=uDoorCount) break;
+    vec3 dp = uDoorsPos[i].xyz;
+    vec3 dh = uDoorsHalf[i].xyz;
+    float dd = sdBox(p - dp, dh);
+    if(dd < d){ d=dd; m=packDoorId(i); }
+  }
+    // турелі/ідоли (мат 6.xx) — стрижень + «око»-куля
+    for(int i=0;i<MAX_TURRETS;i++){
+      if(i>=uTurretCount) break;
+      vec3 tp = uTurretsPos[i].xyz;
+      // pole: slim capsule
+      float dp = sdCapsule(p, tp + vec3(0.0,-0.45,0.0), tp + vec3(0.0,0.30,0.0), 0.035);
+      if(dp < d){ d=dp; m=packTurretId(i); }
+      // eye orb: small sphere floating above
+      float de = sdSphere(p - (tp + vec3(0.0,0.38,0.0)), 0.11);
+      if(de < d){ d=de; m=packTurretId(i); }
+  }
+  // NEW: boss (мат 7.00)
+  if(uBossActive>0){
+    float db = sdCatScaled(p, uBoss.xyz, uBoss.w);
+    if(db<d){ d=db; m=7.0; }
+  }
+  return vec2(d,m);
+}
+vec2 march(vec3 ro,vec3 rd){
+  float t = 0.0;
+  float m = 0.0;
+  // Менше кроків (швидше), але з розумним раннім виходом
+  for (int i=0; i<128; i++) {
+    vec2 h = map(ro + rd*t);
+    // dynamic epsilon: далі = грубіше, ближче = точніше
+    float eps = mix(0.001, 0.015, clamp((t - 5.0)/20.0, 0.0, 1.0));
+    if (h.x < eps) { m = h.y; break; }
+    t += h.x;
+    // межа сцени
+    if (t > 40.0) { m = 0.0; break; }
+    // трохи густіший туман для раннього виходу
+    if (exp(-0.09 * t) < 0.03) { m = 0.0; break; }
+  }
+  return vec2(t, m);
+}
+vec3 nrm(vec3 p){
+  float e=0.001;
+  vec2 k=vec2(1,-1);
+  return normalize(
+    k.xyy*map(p+k.xyy*e).x+
+    k.yyx*map(p+k.yyx*e).x+
+    k.yxy*map(p+k.yxy*e).x+
+    k.xxx*map(p+k.xxx*e).x);
+}
+void main(){
+  // shift UV by half-pixel when W/H are even so crosshair center matches ray(0,0)
+  vec2 uv=(gl_FragCoord.xy-0.5*uRes)/uRes.y - uAimOff;
+  vec3 rd=normalize(uv.x*uR+uv.y*uU+uF);
+  vec2 h=march(uCam,rd); float t=h.x, mat=h.y;
+  vec3 bg=vec3(0.02,0.02,0.04);
+  // Якщо вийшли по туману/межі — не рахуємо нормалі (економія)
+  if (t>40. || mat<0.5) { o=vec4(bg,1.0); return; }
+  vec3 p=uCam+rd*t;
+  // для підлоги/стелі нормаль відома — економимо 4 map-виклики
+  vec3 n = (mat>3.5 && mat<4.5) ? vec3(0.0, (p.y>0.0)?1.0:-1.0, 0.0) : nrm(p);
+  
+  // Helpers: tile indices + per-tile uv (0..1)
+  float fx = (p.x/uTileScale + uTileCenter.x);
+  float fz = (-p.z/uTileScale + uTileCenter.y);
+  int   ix = int(floor(fx+0.5));
+  int   iz = int(floor(fz+0.5));
+  vec2  tuv = fract(vec2(fx,fz)); // floor/ceiling uv per tile
+  
+  // materials (1=wall, 2=sphere, 3.xx=cat(index), 4=floor/ceiling, 5=door)
+  vec3 col;
+  // обчислимо id кота / дверей, якщо влучили
+  int ciHit = -1, diHit = -1, siHit = -1;
+  int tiHit = -1;
+  if(mat >= 3.0 && mat < 4.0) ciHit = unpackCatId(mat);
+  if(mat >= 5.0 && mat < 6.0) diHit = unpackDoorId(mat);
+  if(mat >= 2.0 && mat < 3.0) siHit = unpackSphereId(mat);
+  if(mat >= 6.0 && mat < 7.0) tiHit = unpackTurretId(mat);
+
+
+  if(mat < 1.5){
+    // WALLS — patchy limestone: macro “cells”, broken segments, and smooth tint drift
+    // Per-tile hash + macro-cell id for variety clusters
+    float rTile = hash21(vec2(ix,iz)*1.23);
+    ivec2 blk = ivec2(ix/2, iz/2);              // 2×2 tile macro-cell → "клітинка"
+    float hBlk = hash21(vec2(blk));
+
+    // plane uv for current wall face
+    float u = (abs(n.x) > abs(n.z)) ? fract(-p.z/uTileScale + uTileCenter.y)
+                                    : fract( p.x/uTileScale + uTileCenter.x);
+    float v = clamp((p.y+0.6)/1.2,0.0,1.0);
+    vec2 wuv=vec2(u,v);
+
+    // Smooth global color drift (old stone → yellowish → whiter) across space
+    float tA = 0.5 + 0.5*sin(p.x*0.14 + p.z*0.10 + rTile*4.0);
+    float tB = 0.5 + 0.5*sin(p.x*0.06 - p.z*0.11 + rTile*2.3);
+    float tone = clamp(0.5*tA + 0.5*tB, 0.0, 1.0);
+    vec3 cGrey   = vec3(0.12,0.13,0.14);
+    vec3 cOchre  = vec3(0.17,0.16,0.13);
+    vec3 cWhite  = vec3(0.19,0.19,0.20);
+    vec3 base = mix(cGrey,  cOchre, smoothstep(0.20,0.80,tone));
+         base = mix(base,   cWhite, smoothstep(0.65,0.95,tone));
+
+    // 1) “Carved” style: seams + saw grooves + mild pores
+    float seamX = smoothstep(0.035, 0.0, abs(fract(wuv.x*(2.0+floor(rTile*2.0)) + rTile*0.30)-0.5));
+    float seamY = smoothstep(0.035, 0.0, abs(fract(wuv.y*(3.0+floor(rTile*3.0)) + rTile*0.70)-0.5));
+    float seams = clamp(max(seamX, seamY), 0.0, 1.0);
+
+    float ang = rTile*6.2831853;
+    vec2  dir = vec2(cos(ang), sin(ang));
+    float saw = abs(sin(dot(p.xz, dir)*8.0 + rTile*3.0));
+    float grooves = smoothstep(0.92, 0.995, saw);
+    float grooveMask = mix(1.0, 1.6, smoothstep(0.05, 0.55, wuv.y));
+
+    vec2 gp = floor(p.xz*4.0);
+    vec2 f  = fract(p.xz*4.0);
+    vec2 cc = vec2(hash21(gp+13.1), hash21(gp+7.7));
+    float pitD = length(f-cc);
+    float pits = smoothstep(0.22, 0.12, pitD) * (0.6 + 0.4*hash21(gp+7.7));
+
+    vec3 cCarved = base;
+    cCarved = mix(cCarved, cCarved*0.70, seams*0.85);
+    cCarved -= grooves * grooveMask * 0.030;
+    cCarved -= pits * 0.08;
+
+    // 2) “Plain” style: almost no tooling, just subtle grain
+    float grain = 0.5 + 0.5*(sin(p.x*3.0 + rTile*5.0)*0.6 + sin(p.z*4.0 + rTile*3.0)*0.4);
+    vec3 cPlain = base * (0.98 + 0.02*grain);
+
+    // 3) “Broken” style: cracks + deeper pores, no seams/grooves
+    float crackW = abs(sin((wuv.x*24.0 + sin(wuv.y*9.0 + rTile*6.0))));
+    float crack  = smoothstep(0.06, 0.03, crackW);
+    vec2 gp2 = floor(p.xz*7.0);
+    vec2 f2  = fract(p.xz*7.0);
+    vec2 cc2 = vec2(hash21(gp2+2.1), hash21(gp2+5.7));
+    float pit2 = smoothstep(0.28, 0.12, length(f2-cc2)) * (0.6 + 0.4*hash21(gp2+9.9));
+    vec3 cBroken = base;
+    cBroken -= pit2 * 0.14;
+    cBroken -= crack * 0.10;
+
+    // Style weights per macro-cell: some plain runs, some broken, rest carved
+    float wPlain  = step(0.82, hBlk);                            // ~18% plain patches
+    float wBroken = smoothstep(0.58, 0.82, hBlk) * (1.0-wPlain); // ~24% broken patches
+    float wCarved = 1.0 - wPlain - wBroken;
+
+    // Compose by weights (branchless)
+    col = cCarved*wCarved + cPlain*wPlain + cBroken*wBroken;
+
+    // Warm dust near floor
+    col += vec3(0.01,0.008,0.004) * smoothstep(0.0, 0.55, wuv.y);
+
+    // Rare cyan rune overlay (subtle)
+    if(rTile < 0.16){
+      float m = catRune(wuv);
+      col = mix(col, col + vec3(0.00,0.08,0.12), m*0.24);
+    }
+  } else if(mat < 3.0){
+    // сфери: зелений (шард) або ціан (хіл) або червоно-пурпурний (орб)
+    bool isHeal = false;
+    bool isProj = false;
+    if(siHit>=0 && siHit<uSphereCount){
+      isHeal = (uSpheresPos[siHit].w < 0.0);
+      isProj = (uSpheresActive[siHit] > 1.5);
+    }
+    if(isProj){
+      float pulse = 0.5 + 0.5*sin(uTime*8.0);
+      col = vec3(0.10,0.02,0.03) + pulse*vec3(1.8,0.3,0.6);
+    } else if(isHeal){
+      col = vec3(0.05,0.10,0.12) + 0.8*vec3(0.2,0.9,1.6);
+    } else {
+      // НОВЕ: шард — дрібніший узор (тайлінг по колу), колір як у активних дверей
+      vec3 pr = p - uSpheresPos[siHit].xyz;
+      float ang = atan(pr.z, pr.x);
+      float u = fract(ang/6.2831853 + 0.05*uTime + float(siHit)*0.11);
+      // під нову висоту еліпсоїда — менше h
+      float h = 0.20;
+      float v = clamp((pr.y + h)/(2.0*h), 0.0, 1.0);
+      vec2 uv = vec2(u,v);
+
+      // ДРІБНИЙ УЗОР: локальні UV з тайлінгом ×1.8 (і легким скролом по U)
+      float tileK = 1.8;
+      vec2 suv = fract(uv*tileK + vec2(0.07*uTime, 0.0));
+
+      float panel = 0.55 + 0.45*sin(uTime*1.8 + float(siHit)*1.3);
+      vec3 base  = vec3(0.06,0.06,0.08);
+      vec3 colOn = vec3(1.60, 0.35, 0.90);   // як у активних дверей
+
+      float ring = smoothstep(0.08, 0.00, min(uv.y,1.0-uv.y));
+      float seam = smoothstep(0.06, 0.00, abs(uv.x-0.5));
+      float swirl= 0.5 + 0.5*sin(suv.x*6.2831853*3.0 - uTime*1.6 + suv.y*2.0);
+
+      float rune = catRune(suv);
+      float paw  = pawMask(suv) * smoothstep(0.4, 0.9, uv.y);
+
+      float eBoost = mix(1.0, 1.6, smoothstep(8.0, 22.0, t));
+
+      vec3 emiss = vec3(0.0);
+      emiss += panel * 0.28 * colOn;
+      emiss += (0.10*ring + 0.12*seam + 0.18*swirl) * colOn;
+      emiss += (0.25*rune + 0.20*paw) * (0.4 + 0.6*(0.5+0.5*sin(uTime*6.0+float(siHit)))) * colOn;
+      emiss *= eBoost;
+
+      col = base + emiss;
+    }
+  } else if(mat < 4.0){
+    // кіт: беремо стан саме того кота, в якого влучили
+    float state = (ciHit>=0 && ciHit<uCatCount) ? uCatsState[ciHit] : 1.0; // 1=black, 2=white
+    if(state < 1.5){
+      // BLACK — темний + червоний Fresnel rim
+      col = vec3(0.02,0.02,0.03);
+      float fr = pow(1.0 - max(dot(n, -rd), 0.0), 3.0);
+      col += fr * vec3(0.35, 0.05, 0.05);
+    } else {
+      // WHITE — примарне мерехтіння цианом
+      col = vec3(0.85);
+      float flick = 0.5 + 0.5*sin(uTime*20.0 + p.x*10.0 + p.z*7.0);
+      col += vec3(0.15,0.45,0.55) * flick;
+    }
+  } else if(mat < 4.5){
+    // FLOOR / CEILING — stone base + per-tile variety
+    bool isCeil = (n.y>0.0);
+    col = mix(vec3(0.10), vec3(0.18,0.19,0.20), 0.5 + 0.5*sin(p.x*2.0));
+    float rv = hash21(vec2(ix,iz));
+    if(!isCeil){
+      // Floor variants
+      if(rv < 0.33){
+        // Paw prints (subtle, darkened + red tint)
+        float paw = pawMask(tuv);
+        col = mix(col, col*0.60 + vec3(0.03,0.00,0.00), paw*0.75);
+      } else if(rv < 0.66){
+        // Cracks: warped sine linework
+        float w = abs(sin((tuv.x*18.0 + sin(tuv.y*6.0 + rv*6.0))*1.0));
+        float crack = smoothstep(0.06,0.03, w);
+        col -= crack*0.07;
+      } // else plain stone
+    } else {
+      // Ceiling: faint cyan mold/scratches
+      float str = abs(sin((tuv.x+tuv.y + rv)*14.0))*0.5 + abs(sin((tuv.x*2.0 - tuv.y)*9.0))*0.5;
+      float mold = smoothstep(1.0,0.85,str);
+      col = mix(col, col + vec3(0.00,0.12,0.16), mold*0.20);
+    }
+  } else if(mat < 5.5){
+    // ДВЕРІ: відрізняються від стін — панельне мерехтіння (в обох станах), активні — яскраві
+    float door_active = (diHit>=0 && diHit<uDoorCount) ? step(0.5, uDoorsHalf[diHit].w) : 0.0;
+    vec3 dp = uDoorsPos[diHit].xyz;
+    vec3 dh = uDoorsHalf[diHit].xyz;
+    vec3 lp = p - dp;
+    bool faceX = (dh.x < dh.z);
+    vec2 uvd = faceX
+      ? vec2((lp.z/dh.z)*0.5+0.5, (lp.y/dh.y)*0.5+0.5)
+      : vec2((lp.x/dh.x)*0.5+0.5, (lp.y/dh.y)*0.5+0.5);
+    uvd = clamp(uvd, 0.0, 1.0);
+
+    // базовий камінь дверей
+    vec3 base = vec3(0.08,0.08,0.10);
+
+    // повне «панельне» мерехтіння
+    float panel = 0.55 + 0.45*sin(uTime*1.8 + float(diHit)*1.3);
+    vec3 colOff = vec3(0.35, 0.10, 0.55);   // неактивні — холодно-фіолетові
+    vec3 colOn  = vec3(1.60, 0.35, 0.90);   // активні — яскраво-магентні
+    vec3 eCol   = mix(colOff, colOn, door_active);
+
+    // шов та край
+    float seam = smoothstep(0.06, 0.00, abs(uvd.x-0.5));
+    float edge = smoothstep(0.10, 0.00, min(min(uvd.x,1.0-uvd.x), min(uvd.y,1.0-uvd.y)));
+
+    // символіка
+    float rune = catRune(uvd);
+    vec2 pawUV = fract(uvd*vec2(2.0,1.5) + vec2(0.0,-0.15));
+    float paw = pawMask(pawUV) * smoothstep(0.4, 0.9, uvd.y);
+
+    // трохи підсилюємо емісію з відстанню — краще пробиває туман
+    float eBoost = mix(1.0, 1.8, smoothstep(8.0, 24.0, t));
+
+    vec3 emiss = vec3(0.0);
+    emiss += panel * (0.22 + 0.28*door_active) * eCol;
+    emiss += seam  * (0.14 + 0.24*door_active) * eCol;
+    emiss += edge  * (0.08 + 0.22*door_active) * eCol;
+    emiss += (0.28*rune + 0.22*paw) * (0.4 + 0.6*(0.5+0.5*sin(uTime*6.0+float(diHit)))) * eCol;
+    emiss *= eBoost;
+
+    col = base + emiss;
+  } else if(mat < 7.0){
+    // турель: базальтовий стрижень + «око» з емісією
+    col = vec3(0.08,0.08,0.10);
+    if(tiHit>=0 && tiHit<uTurretCount){
+      vec3 tp = uTurretsPos[tiHit].xyz;
+      float dEye = length(p - (tp + vec3(0.0,0.45,0.0)));
+      float pulse = 0.6 + 0.4*sin(uTime*3.0 + float(tiHit)*1.7);
+      // eye glow if near the eye sphere
+      float glow = smoothstep(0.20, 0.03, dEye);
+      col += glow * (vec3(0.10,0.02,0.05) + pulse*vec3(1.00,0.30,0.90));
+      // faint runic tint along pole even when not on eye
+      float poleBand = 0.15 + 0.85*abs(sin((p.y+tp.y+1.5)*6.0));
+      col = mix(col, col + vec3(0.06,0.01,0.08)*pulse, 0.25*poleBand);
+    }
+  } else if(mat < 8.0){
+    // NEW: boss look — black with purple rim; eyes glow when open
+    col = vec3(0.02,0.02,0.03);
+    float fr = pow(1.0 - max(dot(n, -rd), 0.0), 3.0);
+    col += fr * vec3(0.40, 0.10, 0.45);
+    if(uBossEyes>0.0){
+      vec3 pr = p - uBoss.xyz;
+      float eL = length(pr - vec3(0.662,0.172,0.238)*uBoss.w);
+      float eR = length(pr - vec3(0.662,0.172,0.102)*uBoss.w);
+      float glow = uBossEyes * smoothstep(0.20*uBoss.w, 0.04*uBoss.w, min(eL,eR));
+      col += glow * vec3(2.2, 0.5, 2.6);
+    }
+  } else {
+    // бекграунд fallback (не має траплятись, але на всяк випадок)
+    col = vec3(0.1);
+  }
+  // NEW: apply bullet scorch/spark near hit points (short TTL, small radius)
+  for(int i=0;i<MAX_DECALS;i++){
+    if(i>=uDecalCount) break;
+    float age = uTime - uDecals[i].w;
+    if(age<0.0 || age>0.65) continue;
+    float a = smoothstep(0.65, 0.0, age); // fade out
+    float d = length(p - uDecals[i].xyz);
+    float scorch = smoothstep(0.22, 0.00, d); // dark spot
+    col = mix(col, col*0.5, scorch * a * 0.8);
+    float ring = smoothstep(0.12, 0.08, abs(d - 0.10)); // warm spark ring
+    col += ring * a * vec3(1.2, 0.6, 0.2);
+  }
+
+  vec3 l=normalize(vec3(0.4,0.6,0.7));
+  float diff=max(0.05,dot(n,l));
+  col*=diff + (mat>2.5 ? 0.3 : 0.3);
+  // Eyes glow (emission) — тільки для того кота, якого ми рендеримо
+  if(ciHit >= 0 && ciHit < uCatCount){
+    float eyes = uCatsEyes[ciHit];
+    if(eyes > 0.0){
+      vec3 pr = p - uCatsPos[ciHit].xyz;
+      // feline eye anchors — трохи вище і ширше під новий череп
+      float eyeL = length(pr - vec3(0.662,0.172,0.238));
+      float eyeR = length(pr - vec3(0.662,0.172,0.102));
+      float dEye = min(eyeL, eyeR);
+      // чутливіший «зіниця»-глоу, щоб не «перепікало» морду
+      float glow = eyes * smoothstep(0.10, 0.028, dEye);
+      float stateE = (ciHit>=0 && ciHit<uCatCount) ? uCatsState[ciHit] : 1.0;
+      vec3 glowCol = (stateE < 1.5) ? vec3(3.0, 0.6, 0.2) : vec3(0.6, 1.6, 2.3);
+      col += glow * glowCol;
+    }
+  }
+  float fog=exp(-0.09*t);
+  vec3 colFog = mix(bg,col,fog);
+  // blood tint (hurt)
+  colFog = mix(colFog, vec3(0.45,0.0,0.0), clamp(uHurt,0.0,1.0));
+  // fear cold tint (blue-cyan)
+  colFog = mix(colFog, vec3(0.0,0.22,0.33), clamp(uFear,0.0,1.0));
+  // muzzle flash bloom at screen center
+  float flash = uMuzzle * smoothstep(0.6, 0.0, length(uv));
+  // colFog += flash * 0.6; // old
+  colFog += flash * vec3(1.2, 0.8, 0.2); // NEW: warm, gun-like
+  colFog *= 2.5; // global brighten factor
+  
+  // NEW: debug aim dot exactly at hitscan center (uv=0 after uAimOff)
+  if(uAimDebug>0.5){
+    float px = 1.0/uRes.y;
+    float r = length(uv);
+    float dot  = smoothstep(1.5*px, 0.5*px, r);                 // центр-піксель
+    float ring = smoothstep(4.0*px, 3.2*px, abs(r-3.6*px));     // тонке кільце
+    float m = max(dot, ring);
+    vec3  colD = vec3(2.0, 2.0, 0.1);                           // жовтий
+    float alpha = 0.05;                                         // прозорість ~35%
+    colFog = mix(colFog, colD, m*alpha);
+  }
+
+  o=vec4(colFog,1.0);  
+}
+`;
+// --- GL program ---
+function shader(t,src){
+  const s=gl.createShader(t);
+  gl.shaderSource(s,src);
+  gl.compileShader(s);
+  if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){
+    console.error('SHADER COMPILE ERROR:', gl.getShaderInfoLog(s), '\n--- SOURCE ---\n'+src);
+  }
+  return s;
+}
+
+const pr=gl.createProgram(), vao=gl.createVertexArray();
+gl.attachShader(pr,shader(gl.VERTEX_SHADER,vs));
+gl.attachShader(pr,shader(gl.FRAGMENT_SHADER,fs));
+gl.linkProgram(pr);gl.useProgram(pr);gl.bindVertexArray(vao);
+if(!gl.getProgramParameter(pr,gl.LINK_STATUS)){
+  console.error('PROGRAM LINK ERROR:', gl.getProgramInfoLog(pr));
+}
+const uRes=gl.getUniformLocation(pr,'uRes'),
+      uTime=gl.getUniformLocation(pr,'uTime'),
+      uCam =gl.getUniformLocation(pr,'uCam'),
+      uF   =gl.getUniformLocation(pr,'uF'),
+      uR   =gl.getUniformLocation(pr,'uR'),
+      uU   =gl.getUniformLocation(pr,'uU'),
+      uEnemy=gl.getUniformLocation(pr,'uEnemy'),
+      // NEW uniforms
+      uHurt=gl.getUniformLocation(pr,'uHurt'),
+      uMuzzle=gl.getUniformLocation(pr,'uMuzzle'),
+      // додати uFear
+      uFear=gl.getUniformLocation(pr,'uFear'),
+      // NEW: aim offset
+      uAimOff=gl.getUniformLocation(pr,'uAimOff'),   
+      // NEW: debug aim dot
+      uAimDebug=gl.getUniformLocation(pr,'uAimDebug'),         
+      // tile texture
+      uTileTex   = gl.getUniformLocation(pr,'uTileTex'),
+      uTileSize  = gl.getUniformLocation(pr,'uTileSize'),
+      uTileCenter= gl.getUniformLocation(pr,'uTileCenter'),
+      uTileScale = gl.getUniformLocation(pr,'uTileScale'),
+      // multi-cats
+      uCatCount= gl.getUniformLocation(pr,'uCatCount'),
+      uCatsPos = gl.getUniformLocation(pr,'uCatsPos[0]'),
+      uCatsState = gl.getUniformLocation(pr,'uCatsState[0]'),
+      uCatsEyes  = gl.getUniformLocation(pr,'uCatsEyes[0]'),
+      // spheres
+      uSphereCount = gl.getUniformLocation(pr,'uSphereCount'),
+      uSpheresPos  = gl.getUniformLocation(pr,'uSpheresPos[0]'),
+      uSpheresActive = gl.getUniformLocation(pr,'uSpheresActive[0]'),
+      // doors
+      uDoorCount = gl.getUniformLocation(pr,'uDoorCount'),
+      uDoorsPos  = gl.getUniformLocation(pr,'uDoorsPos[0]'),
+      uDoorsHalf = gl.getUniformLocation(pr,'uDoorsHalf[0]'),
+      // turrets
+      uTurretCount = gl.getUniformLocation(pr,'uTurretCount'),
+      uTurretsPos  = gl.getUniformLocation(pr,'uTurretsPos[0]'); 
+      // NEW: boss uniforms
+      uBossActive = gl.getUniformLocation(pr,'uBossActive'),
+      uBoss       = gl.getUniformLocation(pr,'uBoss'),
+      uBossEyes   = gl.getUniformLocation(pr,'uBossEyes'),
+      uBossPhase  = gl.getUniformLocation(pr,'uBossPhase'),
+      // NEW decals uniforms
+      uDecalCount = gl.getUniformLocation(pr,'uDecalCount'),
+      uDecals     = gl.getUniformLocation(pr,'uDecals[0]');
+
+// Тільки тепер — завантажуємо рівень (всі залежні let уже оголошені)
+loadLevel(LEVELS[levelIndex]);
+
+function onKey(e){if(['KeyW','KeyA','KeyS','KeyD'].includes(e.code)){keys[e.code]=e.type==='keydown';e.preventDefault()}}
+document.addEventListener('keydown',onKey);document.addEventListener('keyup',onKey);
+canvas.addEventListener('mousedown',()=>{ 
+  // NEW: ensure AudioContext is running (avoids glitchy first sound)
+  if(ac.state==='suspended') ac.resume();
+  try{const _pl=canvas.requestPointerLock?.();if(_pl&&_pl.catch)_pl.catch(()=>{});}catch(_e){}
+},{passive:true});
+document.addEventListener('pointerlockchange',()=>{},false);
+document.addEventListener('keydown',e=>{
+  if(e.code==='KeyV'){ aimDebug^=1; }
+// NEW: sensitivity adjust
+  if(e.code==='BracketLeft'){ MOUSE_SENS=Math.max(0.0005, MOUSE_SENS*0.85); hudMsg=`SENS ${MOUSE_SENS.toFixed(4)}`; hudUntil=performance.now()+1200; }
+  if(e.code==='BracketRight'){ MOUSE_SENS=Math.min(0.01, MOUSE_SENS*1.18); hudMsg=`SENS ${MOUSE_SENS.toFixed(4)}`; hudUntil=performance.now()+1200; }
+});
+
+document.addEventListener('mousemove',e=>{
+  if(document.pointerLockElement===canvas){yaw+=e.movementX*MOUSE_SENS;pitch-=e.movementY*MOUSE_SENS;pitch=Math.max(-1.5,Math.min(1.5,pitch));}
+});
+canvas.addEventListener('mousedown',e=>{
+  if(e.button===0){
+    // NEW: unlock audio + ambience on first click
+    if(!ambStarted) startAmbience();
+    // NEW: керування кінцівками та рестартом
+    if(endState!=='none'){
+      if(performance.now() < endLockUntil) return; // заблоковано на 60 с
+      // перемога → з початку; поразка → з чекпоінта
+      if(endState==='bossWin' || endState==='ritualWin'){ levelIndex=0; checkpointIndex=0; }
+      else { levelIndex=checkpointIndex|0; }
+      gameOver=false; hideEnd(); hp=100;
+      loadLevel(LEVELS[levelIndex]);
+      hudMsg=`RESPAWN AT LEVEL ${levelIndex+1}`; hudUntil=performance.now()+2000;
+      return;
+    }
+    if(gameOver){
+      // старий шлях поразки (сумісність): тепер це покриває endState==='fail', але лишаємо як fallback
+      levelIndex=checkpointIndex|0; gameOver=false; hp=100;
+      loadLevel(LEVELS[levelIndex]);
+      hudMsg=`RESPAWN AT LEVEL ${levelIndex+1}`; hudUntil=performance.now()+2000;
+      return;
+    }
+
+    // NEW: ROF gate
+    const nowShot=performance.now();
+    if(nowShot<nextShotAt) { sfx(300,0.03,0.15,'square'); return; }
+    nextShotAt=nowShot+SHOT_CD;   
+    
+    // shoot
+    muzzle=1.0;
+    // sfx(1200,0.08,0.22,'square'); // old
+    gunShot(0.30);                    // NEW aggressive shot
+    // NEW: recoil + crosshair pulse
+    pitchKick=Math.min(0.18, pitchKick+0.065);
+    xhPulse=1.0;
+
+    const now=performance.now();
+    // USE RENDERED CAMERA + FORWARD (includes recoil and shake)
+    const O=lastCam;
+    {
+      const Dx = lastF[0] - aimOff[0]*lastR[0] - aimOff[1]*lastU[0];
+      const Dy = lastF[1] - aimOff[0]*lastR[1] - aimOff[1]*lastU[1];
+      const Dz = lastF[2] - aimOff[0]*lastR[2] - aimOff[1]*lastU[2];
+      const inv = 1/Math.hypot(Dx,Dy,Dz);
+      var D = [Dx*inv, Dy*inv, Dz*inv];
+    }
+
+    // NEW: знайти першу перешкоду
+    const lim = rayLimitToBlock(O,D,40);
+
+    // Знайти найближчу ціль до ліміту
+    let best={t:Infinity,type:'none', idx:-1};
+    // сфери (шарди/хіли/орби)
+    for (let i=0;i<spheres.length;i++){
+      const s=spheres[i]; if(s.collected) continue;
+      const tHit = raySphereHitT(O,D,s.pos,s.R,0.03);
+      if(tHit<=lim.t && tHit<best.t){ best={t:tHit,type:'sphere',idx:i}; }
+    }
+    // орби
+    for (let i=0;i<orbs.length;i++){
+      const b=orbs[i]; if(b.collected) continue;
+      const tHit = raySphereHitT(O,D,b.pos,b.R,0.03);
+      if(tHit<=lim.t && tHit<best.t){ best={t:tHit,type:'orb',idx:i}; }
+    }
+
+    // коти (3 сфери-апрокс)
+    for (let i=0;i<cats.length;i++){
+      const c=cats[i];
+      const parts=[
+        {C:[c.pos[0]+0.60, c.pos[1]+0.16, c.pos[2]+0.17], R:0.32},
+        {C:[c.pos[0]+0.22, c.pos[1]+0.00, c.pos[2]+0.00], R:0.40},
+        {C:[c.pos[0]-0.15, c.pos[1]+0.02, c.pos[2]+0.00], R:0.44},
+      ];
+      let tMin=Infinity;
+      for(const p of parts){ tMin=Math.min(tMin, raySphereHitT(O,D,p.C,p.R,0.03)); }
+      if(tMin<=lim.t && tMin<best.t){ best={t:tMin,type:'cat',idx:i}; }
+    }
+
+    // Застосувати ефекти для найближчого попадання або по перешкоді
+    if(best.type!=='none'){
+      const hitP=[O[0]+D[0]*best.t, O[1]+D[1]*best.t, O[2]+D[2]*best.t];
+      addDecal(hitP);
+      if(best.type==='sphere'){
+        const s=spheres[best.idx];
+        if(!s.collected){
+          if(s.type==='heal'){
+            s.downUntil = now - 1; // «пірнути» миттєво (без зникнення)
+          }else{
+            s.downUntil = now - 1;
+          }
+        }
+      }else if(best.type==='orb'){
+        const b=orbs[best.idx]; if(!b.collected){ b.collected=true; sfx(420,0.05,0.18,'triangle'); }
+      } else if(best.type==='cat'){
+        const c=cats[best.idx];
+        if(c.mode===0){
+          c.mode=1; c.modeUntil=now + CAT_SAFE_MS + 2500;
+          c.attacking=false; c.eyes=0;
+          hudMsg='IT SPLITS — WRAITH!'; hudUntil=now+HUD_MS; sfx(1800,0.10,0.25,'sawtooth'); fearPulse=1.0;
+          // music is one-shot per level; no extra scheduling here
+        }else{
+          c.modeUntil = now + Math.max(1500, (c.modeUntil-now)+800);
+          hudMsg='WRAITH SHRIEKS'; hudUntil=now+HUD_MS; sfx(260,0.12,0.25,'triangle'); fearPulse=1.0;
+        }
+        // Бос — окремо (очі)
+        if(boss.active && boss.phase===3){
+          // залишаємо поточну eye-логіку нижче — вона працює через пряме попадання у сферу очей
+        }
+      }
+    } else {
+      // нічого до стіни — ставимо декаль на першу перешкоду (стіна/двері), якщо вона є
+      if(lim.type!=='none'){
+        addDecal(lim.p);
+        sfx(280,0.03,0.12,'square'); // «тупий» удар
+      }
+    }
+
+    // Бос очі (залишається, але природно обмежено стінами завдяки лиміту)
+    if(boss.active && boss.phase===3){
+      const s=boss.scale, bp=boss.pos;
+      const eyeL=[bp[0]+0.662*s, bp[1]+0.172*s, bp[2]+0.238*s];
+      const eyeR=[bp[0]+0.662*s, bp[1]+0.172*s, bp[2]+0.102*s];
+      const r=0.10*s;
+      const tL = raySphereHitT(O,D,eyeL,r,0.02), tR = raySphereHitT(O,D,eyeR,r,0.02);
+      const tEye = Math.min(tL,tR);
+      if(tEye<=lim.t){
+        boss.lives=Math.max(0,boss.lives-1);
+        boss.phase=4; boss.until=now+900; boss.eyes=0; boss.didNova=false;
+        hudMsg = `LIFE -1 (${boss.lives}/9)`; hudUntil=now+1200;
+        sfx(460,0.2,0.28,'triangle'); fearPulse=1.0;
+        addDecal([O[0]+D[0]*tEye, O[1]+D[1]*tEye, O[2]+D[2]*tEye]);
+        if(boss.lives<=0){
+          boss.active=false; gameOver=true;
+          showEnd('bossWin','CEREMONY COMPLITE','CHERNOCOT avatar has been banished from this realm. The World signs in relief.');
+          sfx(1200,0.6,0.25,'triangle');
+        }
+      }
+    }
+  }
+});
+canvas.addEventListener('mousedown', e=>{
+  if(e.button===2){ // right mouse
+    rightMouse = true;
+    e.preventDefault();
+  }
+});
+canvas.addEventListener('mouseup', e=>{
+  if(e.button===2){
+    rightMouse = false;
+    e.preventDefault();
+  }
+});
+// optional: block default context menu
+canvas.addEventListener('contextmenu', e=>e.preventDefault());
+// NEW: simple LOS (tile-stepping)
+function hasLOS(ax,az,bx,bz){
+  const dx=bx-ax, dz=bz-az, dist=Math.hypot(dx,dz);
+  const steps=Math.max(1, Math.floor(dist/(TILE*0.25)));
+  let x=ax, z=az, stepx=dx/steps, stepz=dz/steps;
+  for(let i=0;i<steps;i++){ x+=stepx; z+=stepz; if(isSolidAt(x,z)) return false; }
+  return true;
+}
+
+
+// --- helpers (двері/зіткнення) ---
+function pointInDoor(p, d, pad=0){
+  const dx=Math.abs(p[0]-d.pos[0])-(d.half[0]+pad);
+  const dy=Math.abs(p[1]-d.pos[1])-(d.half[1]+pad);
+  const dz=Math.abs(p[2]-d.pos[2])-(d.half[2]+pad);
+  return (dx<=0 && dy<=0 && dz<=0);
+}
+// повертає позицію після простої обробки зіткнень із ЗАЧИНЕНИМИ дверима
+function resolveDoorCollision(oldP, nextP){
+  let out=[nextP[0], nextP[1], nextP[2]];
+  const pad=0.02;
+  for(const d of doors){
+    if(d.open) continue;
+    if(pointInDoor(out,d,pad)){
+      const tryX=[nextP[0], oldP[1], oldP[2]];
+      const tryZ=[oldP[0], oldP[1], nextP[2]];
+      const inX=pointInDoor(tryX,d,pad);
+      const inZ=pointInDoor(tryZ,d,pad);
+      if(!inX && inZ){ out=tryX; }
+      else if(inX && !inZ){ out=tryZ; }
+      else if(!inX && !inZ){ out= (Math.abs(tryX[0]-d.pos[0])>Math.abs(tryZ[2]-d.pos[2]))?tryX:tryZ; }
+      else { out=[oldP[0], oldP[1], oldP[2]]; }
+    }
+  }
+  return out;
+}
+
+// NEW --- tile collision (стіни/«привиди») ---
+function worldToTile(x,z){
+  // інверс як у шейдері/parseLevel
+  const col = Math.floor(x / TILE + LV.center[0] + 0.5);
+  const row = Math.floor(-z / TILE + LV.center[1] + 0.5);
+  return {col,row};
+}
+function isSolidAt(x,z){
+  const {col,row}=worldToTile(x,z);
+  if(col<0 || row<0 || col>=LV.cols || row>=LV.rows) return true; // за межами — твердо
+  const ch = LEVEL_ROWS[row][col];
+  return SOLID_SET.has(ch); // 'o','#'=твердо; 'X'=ghost
+}
+function resolveWallCollision(oldP,nextP){
+  const r=0.28; // радіус «тіла» гравця
+  // перевірка по осях для легкого слайдингу
+  let nx = nextP[0], nz = nextP[2];
+
+  // спроба змінити X окремо
+  let candX = [nx, nextP[1], oldP[2]];
+  if (isSolidAt(candX[0]+r, candX[2]) || isSolidAt(candX[0]-r, candX[2]) ||
+      isSolidAt(candX[0],   candX[2]+r) || isSolidAt(candX[0],   candX[2]-r)) {
+    candX[0] = oldP[0]; // відкотити X
+  }
+
+  // спроба змінити Z окремо (із вже оновленим X)
+  let candZ = [candX[0], nextP[1], nz];
+  if (isSolidAt(candZ[0]+r, candZ[2]) || isSolidAt(candZ[0]-r, candZ[2]) ||
+      isSolidAt(candZ[0],   candZ[2]+r) || isSolidAt(candZ[0],   candZ[2]-r)) {
+    candZ[2] = oldP[2]; // відкотити Z
+  }
+  return [candZ[0], nextP[1], candZ[2]];
+}
+
+ // --- utility: pick nearest k elements to player ---
+ function pickNearest(arr, k, getPos){
+   // повертає індекси найближчих k елементів до гравця
+   const tmp = arr.map((_,i)=>{
+     const p=getPos(arr[i]);
+     const dx=p[0]-pos[0], dy=p[1]-pos[1], dz=p[2]-pos[2];
+     return {i, d: dx*dx+dy*dy+dz*dz};
+   });
+   tmp.sort((a,b)=>a.d-b.d);
+   return tmp.slice(0, Math.min(k,tmp.length)).map(o=>o.i);
+ }
+
+
+// --- утиліта: перше блокування променя (стіна тайла або ЗАЧИНЕНІ двері)
+function rayLimitToBlock(O,D,maxT=40){
+  const step=0.1; // грубо, але дешево (постріл не кожен кадр)
+  let t=0;
+  while(t<maxT){
+    t+=step;
+    const px=O[0]+D[0]*t, py=O[1]+D[1]*t, pz=O[2]+D[2]*t;
+    // тверда стіна
+    if(isSolidAt(px,pz)) return {t, type:'wall', p:[px,py,pz]};
+    // зачинені двері як блок
+    for(const d of doors){
+      if(d.open) continue;
+      if(pointInDoor([px,py,pz], d, 0.0)) return {t, type:'door', p:[px,py,pz], door:d};
+    }
+  }
+  return {t:maxT, type:'none', p:[O[0]+D[0]*maxT, O[1]+D[1]*maxT, O[2]+D[2]*maxT]};
+}
+// --- утиліта: t перетину променя і сфери (-|D|=1), або Infinity
+function raySphereHitT(O,D,C,R,slack=0.02){
+  const L=[C[0]-O[0],C[1]-O[1],C[2]-O[2]];
+  const tca = L[0]*D[0]+L[1]*D[1]+L[2]*D[2];
+  if(tca<0) return Infinity;
+  const ll = L[0]*L[0]+L[1]*L[1]+L[2]*L[2];
+  const r2=(R+slack)*(R+slack);
+  const d2=ll - tca*tca;
+  if(d2>r2) return Infinity;
+  const thc=Math.sqrt(r2-d2);
+  const t=tca-thc;
+  return t>0?t:Infinity;
+}
+// NEW: додати декаль
+function addDecal(p){
+  const bornSec = ((performance.now()-startT)/1000);
+  decals.push({pos:[p[0],p[1],p[2]], born:bornSec});
+  if(decals.length>MAX_DECALS) decals.shift();
+}
+
+
+// --- loop ---
+function vec3(x,y,z){return new Float32Array([x,y,z])}
+function frame(t){
+  frames++; let dt=(t-(frame.t||t))/1000;frame.t=t;
+  // ---- адаптивна роздільна здатність ----
+  frame.acc = (frame.acc||0)+dt; frame.count = (frame.count||0)+1;
+  // NEW: store previous position for footsteps
+  const prevX = frame.px==null?pos[0]:frame.px, prevZ = frame.pz==null?pos[2]:frame.pz;
+  if(frame.acc >= 0.75){ // кожні ~0.75с
+    const fps = frame.count / frame.acc;
+    // якщо просіли нижче 55 → знизити пресет; якщо >62 і не міняли щойно → підвищити
+    if(fps < 55 && resIdx < RES_PRESETS.length-1){ setRenderSize(resIdx+1); }
+    else if(fps > 62 && resIdx > 0){ setRenderSize(resIdx-1); }
+    frame.acc = 0; frame.count = 0;
+  }
+  // movement
+  // NEW: apply recoil kick to render pitch
+  const pitchR = pitch + pitchKick;
+  const cy=Math.cos(yaw), sy=Math.sin(yaw), cp=Math.cos(pitchR), sp=Math.sin(pitchR);
+  const F=[sy*cp, sp, -cy*cp], U=[-sy*sp, cp, cy*sp], Rv=[cy,0,sy];
+
+  const speed=3.0*dt*(gameOver?0:1);
+  // попередній розрахунок нової позиції
+  let next=[pos[0],pos[1],pos[2]];
+  if(keys.KeyW|| rightMouse){next[0]+=F[0]*speed;next[1]+=F[1]*speed;next[2]+=F[2]*speed}
+  if(keys.KeyS){next[0]-=F[0]*speed;next[1]-=F[1]*speed;next[2]-=F[2]*speed}
+  if(keys.KeyA){next[0]-=Rv[0]*speed;next[2]-=Rv[2]*speed}
+  if(keys.KeyD){next[0]+=Rv[0]*speed;next[2]+=Rv[2]*speed}
+  next[1]=0.0; // lock Y
+  // зіткнення зі СТІНАМИ (тверді), потім ЗАЧИНЕНИМИ дверима
+  next = resolveWallCollision(pos, next);
+  next = resolveDoorCollision(pos, next);
+  pos = next;
+  // --- footsteps (distance-based) ---
+  const moved = Math.hypot(pos[0]-prevX, pos[2]-prevZ);
+  if(!gameOver && moved>0.001){
+    stepCarry += moved;
+    if(stepCarry>0.5){
+      footstep(0.14 + Math.min(0.06, moved/dt/25));
+      stepCarry=0; stepFlip^=1;
+    }
+  }
+  frame.px = pos[0]; frame.pz = pos[2];
+
+  const now=performance.now();
+  // NEW: one-shot stinger per level
+  if(!mus.on && !mus.played && now>mus.next) musicCue();
+
+  // прибрано стартову ініціалізацію в frames===1 (ми робимо це в loadLevel)
+  // --- pickups: shards by proximity ---
+  for(let i=0;i<spheres.length;i++){
+    const s=spheres[i]; if(s.collected) continue;
+    const dx=pos[0]-s.pos[0], dy=pos[1]-s.pos[1], dz=pos[2]-s.pos[2];
+    const d=Math.hypot(dx,dy,dz);
+    if(d<0.8){
+      s.collected=true;
+      if(s.type==='heal'){
+        const before=hp|0;
+        hp=Math.min(100, hp+25);
+        const got=(hp|0)-before;
+        hudMsg = `HEAL +${got}`; hudUntil=performance.now()+HUD_MS;
+        sfx(640,0.10,0.22,'triangle');
+      }else{
+        shardCount++;
+        hudMsg = 'SHARD +1'; hudUntil=performance.now()+HUD_MS;
+        sfx(900,0.06,0.25,'triangle');
+      }
+    }
+  }
+  // --- doors: стани (відкриття за вимогою) ---
+  for(let i=0;i<doors.length;i++){
+    const d=doors[i];
+    d.open = shardCount>=d.req;       // колізія вимикається, якщо відкриті
+    d.activeVisual = d.open;          // візуальний стан у шейдері
+  }
+  
+  // --- двері: підказка/перехід рівня ---
+  if(!gameOver){
+    for(const d of doors){
+      const distXZ = Math.hypot(pos[0]-d.pos[0], pos[2]-d.pos[2]);
+      if(!d.open && distXZ<1.2 && now>hudUntil){
+        hudMsg = `NEED ${d.req} SHARDS`; hudUntil = now+900;
+      }
+      if(d.open && pointInDoor(pos, d, 0.02)){
+        // перехід на наступний рівень: невелике лікування
+        hp = Math.min(100, hp+25);
+        sfx(1080,0.20,0.20,'triangle');
+        // перехід на наступний рівень
+        levelIndex++;
+        if(levelIndex < LEVELS.length){
+          sfx(1200,0.5,0.25,'triangle');
+          loadLevel(LEVELS[levelIndex]);
+          hudMsg=`LEVEL ${levelIndex+1} — COLLECT ${minDoorReq||0} SHARDS`;
+          hudUntil=performance.now()+2600;
+          // чекпоінт кожні 3 рівні
+          if(levelIndex % 3 === 0){
+            checkpointIndex = levelIndex;
+            hudMsg = `RITUAL ${Math.floor(levelIndex/3)} COMPLETE — CHECKPOINT SET`;
+            hudUntil = performance.now()+2800;
+          }
+        }else{
+          // NEW: переможний екран (фінал рівнів)
+          gameOver=true;
+          showEnd('ritualWin','RITUAL COMPLITE','Catacombs now silent. You have made way out.');
+          sfx(1200,0.5,0.25,'triangle');
+        }
+        break;
+      }
+    }
+  }
+  // --- CATS behavior ---
+  if(!gameOver){
+    for (let i=0;i<cats.length;i++){
+      const c=cats[i];
+      const now=performance.now();
+      // режим
+      let isWraith = (c.mode===1 && now < c.modeUntil);
+      if(c.mode===1 && !isWraith){ c.mode=0; c.gaze=0; c.eyes=0; c.attacking=false; c.pos=c.spawn.slice(); }
+      const dx=pos[0]-c.pos[0], dy=pos[1]-c.pos[1], dz=pos[2]-c.pos[2];
+      const dist=Math.hypot(dx,dy,dz);
+      if(isWraith){
+        // Білий: орбіта + епізодичний блинок за спину
+        c.attacking=false; c.eyes=0;
+        c.theta += dt*0.8;
+        const tx=pos[0]+Math.sin(c.theta)*WRAITH_ORBIT_R;
+        const tz=pos[2]+Math.cos(c.theta)*WRAITH_ORBIT_R;
+        c.pos[0] += (tx - c.pos[0]) * Math.min(1, dt*WRAITH_SPEED*1.5);
+        c.pos[2] += (tz - c.pos[2]) * Math.min(1, dt*WRAITH_SPEED*1.5);
+        if(now > c.nextBlink){
+          c.nextBlink = now + 1500 + Math.random()*1500;
+          c.pos[0] = pos[0] - F[0]*1.4 + (Math.random()-0.5)*0.4*Rv[0];
+          c.pos[2] = pos[2] - F[2]*1.4 + (Math.random()-0.5)*0.4*Rv[2];
+          c.noGazeUntil = now + 300;
+          // NEW: wraith blink whine
+          wraithWhine(0.10);
+        }
+        // Холод погляду
+        // Використовуємо вектор від гравця до кота (player->cat), а не навпаки
+        const pctx = c.pos[0]-pos[0], pcty = c.pos[1]-pos[1], pctz = c.pos[2]-pos[2];
+        const lookDot = (pctx*F[0] + pcty*F[1] + pctz*F[2]) / Math.max(0.001, Math.hypot(pctx,pcty,pctz));
+        if(lookDot>0.92 && dist < WRAITH_DRAIN_RANGE && now > (c.noGazeUntil||0)){
+          c.gaze += dt;
+          fearPulse = Math.min(1, fearPulse + dt*1.5);
+          if(c.gaze > 0.6){
+            // drain must be fractional per-frame; round only for HUD
+            hp = Math.max(0, hp - 8*dt);
+            hudMsg="DON'T STARE"; hudUntil=now+HUD_MS;
+            if(hp<=0){
+              gameOver=true;
+              endState='fail'; // NEW
+              hudMsg='RITUAL FAILED — CLICK TO RESTART'; hudUntil=now+999999;
+              sfx(140,0.6,0.25,'sawtooth');
+            }
+          }
+        }else{
+          c.gaze *= Math.exp(-dt*2.0);
+        }
+      } else {
+        // Чорний: попередній AI + легкий зиг-заг у ривку
+        if(!c.attacking){
+          if(dist < CAT_ALERT_RADIUS){
+            c.eyes = Math.min(1, (c.eyes + dt* (1.0/CAT_EYES_DELAY_MS*1000.0)));
+            // NEW: hiss while charging (rate-limited)
+            if(c.eyes>0.5 && now>c.nextSfx){ catHiss(0.15); c.nextSfx=now+1200; }
+            if(c.eyes>=1.0){ c.attacking=true; catMeow(0.22); } // NEW: angry meow on pounce
+          }else{
+            c.eyes = 0.0;
+            c.pos[2]+=CAT_WALK*dt;
+            if(c.pos[2] > c.spawn[2]+1.5) c.pos[2] = c.spawn[2]+1.5;
+          }
+        } else {
+          const inv=1/Math.max(1e-5,dist);
+          let vx=dx*inv, vy=dy*inv, vz=dz*inv;
+          // невеликий зиг-заг поперек руху
+          const zig = Math.sin(now*0.012 + i)*0.3;
+          vx += Rv[0]*zig; vz += Rv[2]*zig;
+          const norm = 1/Math.max(1e-5, Math.hypot(vx,vy,vz));
+          vx*=norm; vy*=norm; vz*=norm;
+          c.pos[0]+=vx*CAT_CHARGE*dt; c.pos[1]+=vy*CAT_CHARGE*dt; c.pos[2]+=vz*CAT_CHARGE*dt;
+          c.eyes=1.0;
+          if(dist<0.6){
+            hp = Math.max(0, hp-25);
+            hurtPulse = 1.0;
+            hudMsg='BLACK CAT ATTACKED YOU'; hudUntil=now+HUD_MS; sfx(220,0.12,0.3,'square');
+            catMeow(0.18); // NEW: hit meow
+            c.pos = c.spawn.slice(); c.attacking=false; c.eyes=0;
+            if(hp<=0){
+              gameOver=true;
+              endState='fail'; // NEW
+              hudMsg='RITUAL FAILED — CLICK TO RESTART'; hudUntil=now+999999;
+              sfx(140,0.6,0.25,'sawtooth');
+            }
+          }
+        }
+      }
+    }
+  }
+  // FX decay
+  hurtPulse *= Math.exp(-dt*3.5);
+  muzzle *= Math.exp(-dt*25.0);
+  fearPulse *= Math.exp(-dt*2.2);
+  // NEW: recoil + xhair decay
+  pitchKick *= Math.exp(-dt*12.0);
+  xhPulse *= Math.exp(-dt*8.0);
+
+  // NEW: Boss behavior
+  if(boss.active && !gameOver){
+    const now=performance.now();
+    // phases: 1 INTRO, 2 STALK, 3 EYE, 4 STAGGER
+    if(boss.phase===1){
+      boss.eyes=0;
+      if(now>boss.until){ boss.phase=2; boss.until=now+3000+Math.random()*1000; }
+    }else if(boss.phase===2){ // STALK
+      boss.eyes=0;
+      // slow orbit around player
+      const R=3.0, spd=0.9;
+      const ang = (now*0.0007)%6.283;
+      const tx=pos[0]+Math.sin(ang)*R, tz=pos[2]+Math.cos(ang)*R;
+      boss.pos[0]+= (tx-boss.pos[0])*Math.min(1, dt*spd*1.6);
+      boss.pos[2]+= (tz-boss.pos[2])*Math.min(1, dt*spd*1.6);
+      // fear-gaze drain
+      const vx=boss.pos[0]-pos[0], vy=boss.pos[1]-pos[1], vz=boss.pos[2]-pos[2];
+      const d=Math.hypot(vx,vy,vz);
+      const lookDot=(vx*F[0]+vy*F[1]+vz*F[2]) / Math.max(0.001,d);
+      if(lookDot>0.9 && d<6.0){
+        fearPulse=Math.min(1, fearPulse+dt*2.0);
+        hp=Math.max(0, hp-15*dt);
+        if(now>hudUntil){ hudMsg="THE AVATAR FEEDS ON YOUR STARE"; hudUntil=now+900; }
+        if(hp<=0){
+          gameOver=true;
+          endState='fail'; // NEW
+          hudMsg='RITUAL FAILED — CLICK TO RESTART'; hudUntil=now+999999;
+          sfx(140,0.6,0.25,'sawtooth');
+        }
+      }
+      // aimed orb poke
+      if(now>=boss.nextShot){
+        const dx=pos[0]-boss.pos[0], dz=pos[2]-boss.pos[2];
+        const dist=Math.hypot(dx,dz), inv=1/Math.max(1e-5,dist);
+        const vx=dx*inv*ORB_SPEED*1.05, vz=dz*inv*ORB_SPEED*1.05;
+        if(orbs.length>=MAX_ORBS) orbs.shift();
+        orbs.push({pos:[boss.pos[0],0.0,boss.pos[2]], vel:[vx,0.0,vz], R:0.24, collected:false, type:'orb', born:now, ttl:4800});
+        sfx(520,0.05,0.15,'square');
+        boss.nextShot = now + 1100 + Math.random()*700;
+      }
+      if(now>boss.until){ boss.phase=3; boss.until=now+1200; boss.eyes=1; }
+    }else if(boss.phase===3){ // EYE OPEN
+      boss.eyes = Math.min(1, boss.eyes + dt*3.0);
+      if(now>boss.until){ boss.phase=2; boss.until=now+2600+Math.random()*900; boss.eyes=0; }
+    }else if(boss.phase===4){ // STAGGER
+      boss.eyes=0;
+      if(!boss.didNova){
+        boss.didNova=true;
+        const N=8, sp=ORB_SPEED*0.9;
+        for(let j=0;j<N;j++){
+          const a=j*(Math.PI*2/N);
+          const vx=Math.cos(a)*sp, vz=Math.sin(a)*sp;
+          if(orbs.length>=MAX_ORBS) orbs.shift();
+          orbs.push({pos:[boss.pos[0],0.0,boss.pos[2]], vel:[vx,0.0,vz], R:0.22, collected:false, type:'orb', born:now, ttl:5200});
+        }
+        sfx(360,0.10,0.18,'square');
+      }
+      if(now>boss.until){ boss.phase=2; boss.until=now+2600+Math.random()*900; }
+    }
+  }
+  // NEW: turrets fire + orbs update
+  {
+    // fire
+    for(const t of turrets){
+      if(now >= t.next){
+        const dx=pos[0]-t.pos[0], dz=pos[2]-t.pos[2];
+        const dist=Math.hypot(dx,dz);
+        if(dist < TURRET_RANGE && hasLOS(t.pos[0],t.pos[2],pos[0],pos[2])){
+          const inv=1/Math.max(1e-5,dist);
+          const vx=dx*inv*ORB_SPEED, vz=dz*inv*ORB_SPEED;
+          if(orbs.length>=MAX_ORBS) orbs.shift();
+          orbs.push({pos:[t.pos[0],0.0,t.pos[2]], vel:[vx,0.0,vz], R:0.22, collected:false, type:'orb', born:now, ttl:5200});
+          sfx(520,0.05,0.15,'square');
+        }
+        t.next = now + 1400 + Math.random()*1000;
+      }
+    }
+    // move orbs
+    for(const b of orbs){
+      if(b.collected) continue;
+      b.pos[0]+=b.vel[0]*dt;
+      b.pos[2]+=b.vel[2]*dt;
+      // collide with walls
+      if(isSolidAt(b.pos[0], b.pos[2])){ b.collected=true; continue; }
+      // collide with closed doors
+      for(const d of doors){ if(!d.open && pointInDoor([b.pos[0],0,b.pos[2]], d, b.R)){ b.collected=true; break; } }
+      if(b.collected) continue;
+      // TTL
+      if(now > b.born + b.ttl){ b.collected=true; continue; }
+      // hit player
+      const pd=Math.hypot(b.pos[0]-pos[0], b.pos[2]-pos[2]);
+      if(pd < 0.38){
+        hp = Math.max(0, hp-ORB_DMG);
+        hurtPulse = 1.0;
+        b.collected=true;
+        sfx(180,0.08,0.22,'square');
+        if(hp<=0){
+          gameOver=true;
+          endState='fail'; // NEW
+          hudMsg='RITUAL FAILED — CLICK TO RESTART'; hudUntil=now+999999;
+          sfx(140,0.6,0.25,'sawtooth');
+        }
+      }
+    }
+  }
+  // HUD оновлення
+  const base=(now<hudUntil)?hudMsg:'';
+  const hudNew = `${base}   SHARDS:${shardCount}   HP:${hp|0}`;
+  if(hud._prev !== hudNew){ hud.textContent = hudNew; hud._prev = hudNew; }
+
+  // NEW: crosshair pulse
+  if(xh){
+    const s = Math.max(0,Math.min(1,xhPulse));
+    xh.style.transform = `translate(-50%,-50%) scale(${(1+0.35*s).toFixed(2)})`;
+    xh.style.opacity = (0.6 + 0.4*s).toFixed(2);
+  }
+
+  // NEW: оновлення підказки на екрані кінцівки (зворотний відлік)
+  if(endState!=='none'){
+    const left = Math.ceil((endLockUntil - performance.now())/1000);
+    endS.textContent = left>0
+      ? `Wait for ${left} s, then click to restart.`
+      : `Click to restart.`;
+  }
+
+  // NEW: purge old decals
+  const nowSec = (t - startT)/1000;
+  decals = decals.filter(d => (nowSec - d.born) < (DECAL_TTL/1000));
+
+  // uniforms & draw
+  gl.uniform2f(uRes,W,H);
+  gl.uniform1f(uTime,(t-startT)/1000);
+
+  // NEW: set aim offset for even W/H to kill right/down drift
+  const aimX = (W & 1) ? 0 : 0.5 / H;
+  const aimY = (H & 1) ? 0 : 0.5 / H;
+  gl.uniform2f(uAimOff, aimX, aimY);
+  // keep a CPU copy for hitscan
+  aimOff[0]=aimX; aimOff[1]=aimY;
+
+  // NEW: tiny camera shake (render-only)
+  const sh = muzzle*0.05 + hurtPulse*0.04;
+  const shx = (Math.random()*2-1)*sh, shy = (Math.random()*2-1)*sh; // was: sx, sy (conflicted with sin(yaw))
+  const camX = pos[0] + Rv[0]*shx + U[0]*shy;
+  const camY = pos[1] + Rv[1]*shx + U[1]*shy;
+  const camZ = pos[2] + Rv[2]*shx + U[2]*shy;
+
+  // NEW: store rendered camera + basis for hitscan alignment
+  lastCam[0]=camX; lastCam[1]=camY; lastCam[2]=camZ;
+  lastF[0]=F[0];   lastF[1]=F[1];   lastF[2]=F[2];
+  lastU[0]=U[0];   lastU[1]=U[1];   lastU[2]=U[2];
+  lastR[0]=Rv[0];  lastR[1]=Rv[1];  lastR[2]=Rv[2];  
+
+  gl.uniform3fv(uCam,vec3(camX,camY,camZ));
+  gl.uniform3fv(uF,vec3(F[0],F[1],F[2]));
+  gl.uniform3fv(uR,vec3(Rv[0],Rv[1],Rv[2]));
+  gl.uniform3fv(uU,vec3(U[0],U[1],U[2]));
+  gl.uniform1f(uEnemy, performance.now()<enemyDownUntil?0.0:1.0);
+  gl.uniform1f(uHurt, hurtPulse);
+  gl.uniform1f(uMuzzle, muzzle);
+  gl.uniform1f(uFear, fearPulse);
+  // NEW: push aim debug toggle
+  gl.uniform1f(uAimDebug, aimDebug?1:0);
+
+// --- push cats ---
+  {
+    const CAT_GPU_MAX = 4; // was 6 — cut GPU cat budget
+    const pick = pickNearest(cats, CAT_GPU_MAX, c=>c.pos);
+    const catCount = pick.length|0;
+    const posArr = new Float32Array(MAX_CATS*4);
+    const stateArr = new Float32Array(MAX_CATS);
+    const eyesArr = new Float32Array(MAX_CATS);
+    const now=performance.now();
+    for(let j=0;j<Math.min(catCount,MAX_CATS);j++){
+      const i = pick[j];
+      const c=cats[i];
+      posArr[j*4+0]=c.pos[0]; posArr[j*4+1]=c.pos[1]; posArr[j*4+2]=c.pos[2];
+      stateArr[j]=(c.mode===1 && now<c.modeUntil)?2.0:1.0;
+      eyesArr[j]=c.eyes;
+    }
+    gl.uniform1i(uCatCount, Math.min(catCount,MAX_CATS));
+    gl.uniform4fv(uCatsPos, posArr);
+    gl.uniform1fv(uCatsState, stateArr);
+    gl.uniform1fv(uCatsEyes, eyesArr);
+  }
+  // --- push spheres ---
+  {
+    const SPH_GPU_MAX = 4; // was 6 — lighter
+    const balls = spheres.concat(orbs.filter(o=>!o.collected));
+    const pick = pickNearest(balls, SPH_GPU_MAX, s=>s.pos);
+    const n = pick.length|0;
+    const posArr=new Float32Array(MAX_SPHERES*4);
+    const actArr=new Float32Array(MAX_SPHERES);
+    const now=performance.now();
+    for(let j=0;j<Math.min(n,MAX_SPHERES);j++){
+      const i = pick[j];
+      const s=balls[i];
+      posArr[j*4+0]=s.pos[0]; posArr[j*4+1]=s.pos[1]; posArr[j*4+2]=s.pos[2];
+      // sign of radius encodes heal; active>1.5 encodes projectile
+      posArr[j*4+3]=(s.type==='heal'?-1:1)*s.R;
+      actArr[j]= (s.collected || now<(s.downUntil||0))?0.0: (s.type==='orb'?2.0:1.0);
+    }
+    gl.uniform1i(uSphereCount, Math.min(n,MAX_SPHERES));
+    gl.uniform4fv(uSpheresPos, posArr);
+    gl.uniform1fv(uSpheresActive, actArr);
+  }
+  // --- push doors (без фільтрації: завжди шлемо, w=active flag) ---
+  {
+    const n=Math.min(doors.length|0, MAX_DOORS);
+    const posArr=new Float32Array(MAX_DOORS*4);
+    const halfArr=new Float32Array(MAX_DOORS*4);
+    for(let i=0;i<n;i++){
+      const d=doors[i];
+      posArr[i*4+0]=d.pos[0]; posArr[i*4+1]=d.pos[1]; posArr[i*4+2]=d.pos[2];
+      halfArr[i*4+0]=d.half[0]; halfArr[i*4+1]=d.half[1]; halfArr[i*4+2]=d.half[2];
+      halfArr[i*4+3]= d.activeVisual ? 1.0 : 0.0; // w = active flag
+    }
+    gl.uniform1i(uDoorCount, n);
+    gl.uniform4fv(uDoorsPos, posArr);
+    gl.uniform4fv(uDoorsHalf, halfArr);
+  }
+  // --- push turrets (найближчі, до 6) ---
+  {
+    const TUR_GPU_MAX = Math.min(MAX_TURRETS, 6);
+    const pick = pickNearest(turrets, TUR_GPU_MAX, t=>t.pos);
+    const n = Math.min(pick.length|0, MAX_TURRETS);
+    const posArr=new Float32Array(MAX_TURRETS*4);
+    for(let j=0;j<n;j++){
+      const t = turrets[pick[j]];
+      posArr[j*4+0]=t.pos[0]; posArr[j*4+1]=t.pos[1]; posArr[j*4+2]=t.pos[2];
+    }
+    gl.uniform1i(uTurretCount, n);
+    gl.uniform4fv(uTurretsPos, posArr);
+  }
+  // NEW: push decals
+  {
+    const n=Math.min(decals.length|0, MAX_DECALS);
+    const arr=new Float32Array(MAX_DECALS*4);
+    for(let i=0;i<n;i++){
+      arr[i*4+0]=decals[i].pos[0];
+      arr[i*4+1]=decals[i].pos[1];
+      arr[i*4+2]=decals[i].pos[2];
+      arr[i*4+3]=decals[i].born; // seconds since start
+    }
+    gl.uniform1i(uDecalCount, n);
+    gl.uniform4fv(uDecals, arr);
+  }
+  // NEW: push boss
+  gl.uniform1i(uBossActive, boss.active?1:0);
+  gl.uniform4f(uBoss, boss.pos[0], boss.pos[1], boss.pos[2], boss.scale);
+  gl.uniform1f(uBossEyes, boss.eyes);
+  gl.uniform1f(uBossPhase, boss.phase);
+  // level boxes (статичні — можна сетити кожен кадр; дешеві)
+  // tile texture (одноразово можна, але ставимо тут для простоти)
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, TILE_TEX.tex);
+  gl.uniform1i(uTileTex, 0);
+  gl.uniform2i(uTileSize, TILE_TEX.cols, TILE_TEX.rows);
+  gl.uniform2f(uTileCenter, LV.center[0], LV.center[1]);
+  gl.uniform1f(uTileScale, TILE);
+  gl.drawArrays(gl.TRIANGLES,0,3);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+// --- smoke tests ---
+console.assert(canvas && gl instanceof WebGL2RenderingContext,'canvas exists');
+console.assert('requestPointerLock'in canvas && ('exitPointerLock'in document),'pointer lock path');
+(function(){let K=keys;onKey({code:'KeyW',type:'keydown',preventDefault:()=>{}});console.assert(K.KeyW===true,'input update');onKey({code:'KeyW',type:'keyup',preventDefault:()=>{}})})();
+console.assert(gl.getProgramParameter(pr,gl.LINK_STATUS),'shader compile success');
+setTimeout(()=>console.assert(frames>0,'frame counter > 0 after 1s'),1100);
+
+// helpers
+function resetGame(){
+  shardCount=0; hp=100; gameOver=false; hurtPulse=0; muzzle=0;
+  hideEnd(); endState='none'; endLockUntil=0; // NEW
+  levelIndex=checkpointIndex|0; loadLevel(LEVELS[levelIndex]);
+}
+</script>

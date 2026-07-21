@@ -1,0 +1,13 @@
+Eight Ball Pool
+Upstream: henshmi/Classic-Pool-Game (https://github.com/henshmi/Classic-Pool-Game)
+License: MIT (Copyright (c) [2018] [Chen Shmilovich]) - see LICENSE.txt
+
+Music:
+  "Bossa Antigua" by Kevin MacLeod (incompetech.com)
+  Licensed under Creative Commons Attribution 3.0
+  http://creativecommons.org/licenses/by/3.0/
+
+FreeToolOnline adaptations:
+- robots noindex on iframe document
+- dropped unused BallsCollide-old1.wav and Side.mp3
+- title "Eight Ball Pool"

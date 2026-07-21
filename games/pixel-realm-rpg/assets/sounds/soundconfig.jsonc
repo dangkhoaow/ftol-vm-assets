@@ -1,0 +1,10 @@
+{
+    "BGM":{
+        "map1": "dungeon.ogg",
+        "map2": "dungeon.ogg",
+        "map3": "dungeon.ogg"
+    },
+    "player":{
+        "receive_damage": "damage_receive.ogg"
+    }
+}

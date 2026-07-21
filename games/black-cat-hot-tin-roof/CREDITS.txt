@@ -1,0 +1,28 @@
+Black Cat on a Hot Tin Roof
+Original author: Csaba Csecskedi (tricsi, https://github.com/tricsi)
+Source: https://github.com/js13kGames/black-cat-on-a-hot-tin-roof
+        (js13kGames org mirror of the js13kGames 2025 "Black Cat" competition entry)
+License: MIT (Copyright (c) 2025 Csaba Csecskedi) - see LICENSE in this directory.
+
+Vendored file:
+- index.html - extracted verbatim from the repo's .website/game.zip, the
+  exact already-built, roadroller-minified competition submission (16,091
+  bytes; js13k requires <=13KB compressed - this is the uncompressed size
+  of the packed single-file HTML). Custom WebGL2 engine (own ECS/module
+  architecture under src/modules + src/scenes), GLSL shaders authored by
+  the same developer. Using the pre-built competition artifact rather than
+  running the esbuild+roadroller build ourselves guarantees byte-for-byte
+  parity with the version that was actually judged/played.
+
+Adaptation for freetoolonline.com:
+- Added <meta name="robots" content="noindex"> to index.html.
+- Changed the body's data-prefix attribute from "bcoahtr_" to "ftol:bchtr:"
+  (site-wide localStorage namespacing convention). The upstream storage()
+  helper (src/modules/utils.ts) reads this attribute at runtime and
+  prepends it to the single "high" score key, so this is a data-attribute
+  value change only - no game logic was modified.
+- No other changes. The game has zero CDN calls and zero network requests
+  of any kind (verified against the plaintext TypeScript source in
+  src/**/*.ts, since the shipped bundle is roadroller-packed and not
+  directly greppable). The only persisted value is the high score
+  (localStorage key "ftol:bchtr:high" after the adaptation above).

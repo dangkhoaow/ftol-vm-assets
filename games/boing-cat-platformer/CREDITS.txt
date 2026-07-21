@@ -1,0 +1,28 @@
+Boing Cat Platformer - vendored + adapted for FreeToolOnline (game-discovery-loop-runbook fire143, 2026-07-18).
+
+Upstream: makeclassicgames/BoingKat (also tagged js13k-geomKat in package.json)
+https://github.com/makeclassicgames/BoingKat
+License: MIT, Copyright (c) 2025 Make Classic Games (see LICENSE).
+
+Team (per upstream Readme.md):
+- Programming: Zerasul (https://github.com/zerasul) with help from Banus10 (https://github.com/TheBanusco10)
+- Graphics: Maxi_oscar
+- Made for the JS13K Games Jam; levels designed with Tiled (https://www.mapeditor.org/)
+
+Vendored third-party libraries (already bundled by upstream, unmodified here):
+- Kontra.js by Steven Lambert - MIT - https://straker.github.io/kontra/
+- ZzFX by Frank Force - MIT - https://github.com/KilledByAPixel/ZzFX
+
+Adaptations made in this build:
+- Rebranded title-screen text and <title> from "Boing Kat" to "Boing Cat".
+- Converted level1.json/level2.json/level3.json into plain ES modules
+  (export default {...}) so the engine no longer relies on the JSON
+  import-attribute syntax (`with {type:'json'}`), for broader static-host
+  browser compatibility. Tile data is byte-identical; no gameplay change.
+- Renamed kontra.min.mjs to kontra.min.js (byte-identical content; only the
+  extension changed, plus the 3 import specifiers that reference it). GitHub
+  Pages has served .mjs as application/octet-stream in the past, which
+  browsers refuse to execute as an ES module under strict MIME checking.
+- Added <meta name="robots" content="noindex"> (this iframe-only engine page
+  is not meant to be indexed; the canonical URL is /games/boing-cat-platformer.html).
+- No CDN, no analytics, no localStorage in the upstream code; none added here.

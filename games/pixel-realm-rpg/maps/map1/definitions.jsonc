@@ -1,0 +1,66 @@
+// en los tiles defines los tiles de esta mapa y en collisions defines las colisiones y lógica como eventos y eso
+// esto es de la mapa 1
+// los ids al ser locales no son afectados por otras mapas, por ejempo, si el id de 3 en map1 es puerta en el map2 puede ser otra cosa
+// eso sí, no puede haber dos tiles con ciertos tipos dos veces, como es el "player_spawn", que solo puede ser definido una vez, y si hay dos tiles con ese tipo, el juego no sabrá cuál usar y dará error
+
+
+{
+    "tiles":{
+        "0": "assets/tiles/pared_dungeon_verde.png",
+        "1": "assets/tiles/suelo_dungeon_verde.png",
+        "2":"assets/tiles/pared_puerta_dungeon_verde.png",
+        "3": "assets/tiles/suelo_dungeon_verde_fuente_regenerativa.png"  
+    },
+    "collisions":{
+        "0": {
+            "type": "air"
+        },
+        "1":{
+            "type": "solid"
+        },
+        "2":{
+            "type": "player_spawn"
+        },
+        "3":{
+            "type":"door",
+            "target_map":"map2",
+            "target_tile": {
+                "x": 4,
+                "y": 2
+            }
+        },
+        "4":{
+            "type": "heal",
+            "infinity": true,
+            "heals": 10,
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements":{
+                "player_in_radius": 1,
+                "diagonal": false
+            },
+            "afterInteractText": "You drank the water and restored 10 health."
+        },
+        "5":{
+            "type": "entity_spawn",
+            "entity": "bat",
+            "floorCollision": 0
+        },
+        "6":{
+            "type": "entity_spawn",
+            "entity": "bat",
+            "floorCollision": 0
+        }
+    },
+    "entities":{ //así se define las entidades, aún en proceso de añadir más IA y comportamientos
+        "bat":{
+            "sprite": "assets/sprites/enemy/bat.png",
+            "health": 3,
+            "damage": 1,
+            "speed": 1,
+            "behavior": "patrol",
+            "chaseRadius": 4,
+            "exp_drop": 15
+        }
+    }
+}

@@ -1,0 +1,965 @@
+/* ============================================================
+   Violencetown — v0.17.0
+   Full pixel-art UI. Minimal HTML — mostly canvas.
+   ============================================================ */
+
+/* Violencetown menu palette — warm gold-on-black noir, tuned to sit around
+   the chunky Kenney Tiny pixel art. Gold is the brand; sewer-green and
+   blood-red are the two sharp accents pulled from the in-game goo / HP. */
+:root {
+    --ink:        #0b0907;   /* deepest warm black (page) */
+    --ink-2:      #14100b;   /* splash floor */
+    --panel:      #1a1610;   /* chrome dark */
+    --panel-2:    #241d14;   /* chrome raised */
+    --gold:       #d4b96a;
+    --gold-bright:#f1d488;
+    --gold-dim:   #8b7340;
+    --goo:        #9bb43e;    /* sewer-green accent */
+    --blood:      #c0432e;    /* danger / HP accent */
+    --text-dim:   #6a5a3a;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    /* World-dressing: the page sits on a darkened Kenney cobblestone field
+       (CC0, derived from roguelikeCity) so the area around the square play-
+       field reads as a textured surface instead of black void. A soft radial
+       vignette darkens toward the screen edges to frame the game. */
+    background-color: #0a0a0a;
+    background-image:
+        radial-gradient(ellipse at center, rgba(8,8,10,0) 42%, rgba(4,4,6,0.6) 100%),
+        url('assets/bg_cobble.png');
+    background-repeat: no-repeat, repeat;
+    background-size: cover, 64px 64px;
+    image-rendering: pixelated;
+    color: #c8b888;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Stop iOS pull-to-refresh and rubber-banding when tapping near edges. */
+    overscroll-behavior: none;
+    /* Browser-game polish: kill double-tap-to-zoom (which also drives accidental
+       text selection on iOS), the gray tap-flash, and the long-press callout.
+       Pinch-zoom is preserved via touch-action: manipulation; the help modal
+       opts selection back in so its GitHub link stays copyable. */
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.hidden { display: none !important; }
+
+/* --- Splash --- */
+
+#splash {
+    position: fixed; inset: 0; z-index: 100;
+    /* Warm radial vignette — light pools at the center marquee and falls off
+       to near-black at the edges, like a darkened arcade. */
+    background:
+        radial-gradient(ellipse 80% 70% at 50% 42%, var(--ink-2) 0%, var(--ink) 70%, #000 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 22px;
+    overflow: hidden;
+}
+#splash.gone { display: none; }
+
+/* Faint CRT scanline overlay over the whole splash — 2px repeating dark
+   bands at low opacity. Pure CSS, pixel-friendly, no asset. */
+#splash::before {
+    content: '';
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0)   0px,
+        rgba(0, 0, 0, 0)   2px,
+        rgba(0, 0, 0, 0.22) 3px,
+        rgba(0, 0, 0, 0.22) 4px
+    );
+    z-index: 2;
+    mix-blend-mode: multiply;
+}
+/* A breathing gold glow behind the canvas marquee. */
+#splash::after {
+    content: '';
+    position: absolute;
+    width: 680px; height: 480px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -58%);
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, rgba(212,185,106,0.10) 0%, rgba(212,185,106,0) 65%);
+    z-index: 0;
+    animation: splash-marquee-breathe 5s ease-in-out infinite;
+}
+@keyframes splash-marquee-breathe {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 1; }
+}
+
+#splash-canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    /* 320×220 bitmap shown at up to 2× (640×440), but never wider than the
+       viewport (minus the box-shadow frame) nor so tall its derived height
+       crowds out the buttons/hint. Folding the height cap into the width via
+       min() keeps the 16:11 ratio exact at every size — no distortion, and
+       desktop is unchanged (min() resolves to 640). */
+    width: min(640px, calc(100vw - 24px), calc((100vh - 180px) * 320 / 220));
+    aspect-ratio: 320 / 220;
+    height: auto;
+    position: relative; z-index: 1;
+    /* Chunky multi-layer pixel frame: hairline black seat → gold trim →
+       dark bezel, then a soft outer glow. Reads like a framed cabinet
+       screen rather than a bare canvas. */
+    box-shadow:
+        0 0 0 2px var(--panel),
+        0 0 0 5px var(--gold-dim),
+        0 0 0 8px var(--panel-2),
+        0 0 0 9px #000,
+        0 6px 30px 6px rgba(0, 0, 0, 0.6),
+        0 0 40px 4px rgba(212, 185, 106, 0.12);
+}
+
+#splash-buttons {
+    display: flex; gap: 16px;
+    position: relative; z-index: 3;
+}
+
+/* Chunky beveled arcade keys. The stacked box-shadow builds a hard 3px
+   "lip" beneath each button so it reads as a physical key; :active
+   collapses the lip and drops the button down for a tactile press. */
+/* Aged-brown 9-slice keys matching the in-game menu buttons (parchment theme).
+   The dark arcade-cabinet vignette / scanlines / gold-breathe around them stay. */
+#splash-buttons button {
+    background-color: #8a5a2c;                 /* fallback if border-image fails */
+    border: 14px solid transparent;
+    border-image: url(assets/ui/panel_brown.png) 8 fill / 14px stretch;
+    image-rendering: pixelated;
+    color: #f3e3c0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px; font-weight: 700;
+    letter-spacing: 4px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+    padding: 6px 22px; min-height: 46px;
+    cursor: pointer;
+    transition: filter 120ms ease, color 140ms ease, transform 70ms ease;
+}
+
+/* Primary key (GAME START) — brighter, with a breathing gold glow. */
+#splash-go {
+    filter: brightness(1.1);
+    color: #fff8e6;
+    animation: splash-go-pulse 2.4s ease-in-out infinite;
+}
+@keyframes splash-go-pulse {
+    0%, 100% { box-shadow: 0 0 6px 1px rgba(212, 185, 106, 0.25); }
+    50%      { box-shadow: 0 0 18px 3px rgba(212, 185, 106, 0.6); }
+}
+
+#splash-buttons button:hover {
+    filter: brightness(1.15);
+    color: #fff;
+    animation-play-state: paused;
+}
+#splash-buttons button:active {
+    transform: translateY(2px);
+    filter: brightness(0.9);
+    animation-play-state: paused;
+}
+/* GAME START needs its OWN state filters: its base #splash-go { filter }
+   (id specificity 1,0,0) otherwise beats the shared :hover/:active (0,1,1),
+   killing its press feedback. */
+#splash-go:hover  { filter: brightness(1.25); animation-play-state: paused; }
+#splash-go:active { filter: brightness(0.95); transform: translateY(2px); animation-play-state: paused; }
+
+#splash-hint {
+    position: relative; z-index: 3;
+    font-size: 10px; color: var(--gold-dim);
+    letter-spacing: 3px; text-transform: uppercase;
+    animation: splash-hint-blink 1.6s steps(1, end) infinite;
+}
+@keyframes splash-hint-blink {
+    0%, 60%  { opacity: 0.85; }
+    61%,100% { opacity: 0.30; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #splash::after,
+    #splash-go,
+    #splash-hint { animation: none; }
+}
+
+/* --- Game layout --- */
+
+#game-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw; height: 100vh;
+}
+
+#game-layout {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    height: min(calc(100vh - 16px), calc(100vw - 16px));
+    max-height: 900px;
+}
+
+#game-canvas {
+    display: block;
+    background: #000;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    aspect-ratio: 1;
+    height: 100%;
+    /* Block browser gestures (pinch-zoom, double-tap-zoom, panning) so taps
+       go straight to our pointer handler. Critical for the in-canvas
+       hotbar / radial-menu / item-overlay tap targets. */
+    touch-action: none;
+}
+
+/* --- MENU button (top-right on desktop, bottom-right on touch) ---
+   Replaces the previous NEW button and the dedicated touch WAIT button —
+   one button opens an action sheet with Wait / Cancel / Help / Restart.
+   Centralizing these as a menu frees screen space (was two buttons) and
+   gives Help a discoverable home on touch where ? key isn't reachable. */
+/* Desktop ☰ — aged-brown chip matching the menu buttons (gold rim, cream
+   glyph). The mobile media query overrides this to the Kenney ctrl_menu sprite. */
+#menu-btn {
+    position: absolute; top: 8px; right: 8px;
+    background: #8a5a2c;
+    border: 2px solid #d4b96a;
+    color: #f3e3c0;
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    line-height: 1;
+    padding: 4px 10px;
+    cursor: pointer;
+    z-index: 10;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+    transition: transform 80ms ease, filter 120ms ease;
+}
+#menu-btn:hover { filter: brightness(1.12); color: #fff8e6; }
+#menu-btn:focus-visible { outline: 2px solid #d4b96a; outline-offset: 2px; }
+#menu-btn:active {
+    transform: scale(0.93);
+    filter: brightness(0.9);
+    box-shadow: 0 0 14px rgba(212, 185, 106, 0.55),
+                0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* (Slice 3) Remoticon opener — a standalone always-visible button stacked below
+   the ☰ menu; opens/pockets the tabbed device (ITEMS·GEAR·QUESTS·MAP). Desktop
+   mouse + touch both tap it; keyboard uses Tab. Uses the .tc-btn palette; the
+   ☰ button ends at ~36px so top:42px clears it with a small gap. */
+#remoticon-btn {
+    position: absolute; top: 42px; right: 8px;
+    width: 40px; height: 34px;
+    border-radius: 6px;
+    font-size: 18px; line-height: 1;
+    padding: 0;
+    z-index: 10;
+}
+
+/* --- Version badge (always visible) --- */
+
+#version-badge {
+    position: absolute; bottom: 8px; right: 8px;
+    background: rgba(20, 16, 10, 0.85);
+    border: 1px solid #8b7340;
+    color: #d4b96a;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 8px;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* --- Touch controls --- */
+
+#touch-controls { display: none; }
+
+.tc-btn {
+    background: #2a2218;
+    border: 2px solid #8b7340;
+    color: #d4b96a;
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+    transition: transform 80ms ease, box-shadow 120ms ease,
+                background-color 120ms ease, border-color 120ms ease;
+}
+.tc-btn:active {
+    background: #3a2e1f;
+    border-color: #d4b96a;
+    transform: scale(0.93);
+    box-shadow: 0 0 14px rgba(212, 185, 106, 0.55),
+                0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Keyboard / accessibility focus — visible ring matched to brand gold. Only
+   shows for keyboard navigation (:focus-visible), not on mouse clicks, so
+   touch users don't see lingering focus rings after each tap. */
+#splash-buttons button:focus-visible,
+.tc-btn:focus-visible,
+.menu-item:focus-visible {
+    outline: 2px solid #d4b96a;
+    outline-offset: 2px;
+}
+
+/* --- Menu action sheet --- */
+
+#menu-sheet {
+    position: fixed; inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#menu-sheet.hidden { display: none; }
+
+#menu-sheet-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+}
+
+#menu-sheet-panel {
+    position: relative;
+    background: #1a1610;
+    /* Three-layer border to match the canvas 9-slice panel chrome:
+       outer dark 2px, gold trim 2px, inner dark hairline 1px. The
+       box-shadow stack does what nested borders can't (rendering all
+       layers inside the same element without extra wrappers). */
+    border: 2px solid #2a2218;
+    padding: 16px;
+    display: flex; flex-direction: column;
+    gap: 8px;
+    min-width: 220px;
+    max-width: 90vw;
+    box-shadow:
+        inset 0 0 0 2px #8b7340,
+        inset 0 0 0 4px #1a1610,
+        0 0 0 1px #0a0a0a;
+}
+
+/* Corner gem accents — mirror the canvas panel's highlight pixels.
+   Anchored to top-left and bottom-right corners via pseudo-elements. */
+#menu-sheet-panel::before,
+#menu-sheet-panel::after {
+    content: '';
+    position: absolute;
+    width: 3px; height: 3px;
+    background: #d4b96a;
+    pointer-events: none;
+}
+#menu-sheet-panel::before { top: 5px;    left: 5px; }
+#menu-sheet-panel::after  { bottom: 5px; right: 5px; }
+
+.menu-item {
+    background: #2a2218;
+    border: 1px solid #5a4a30;
+    color: #d4b96a;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+    /* Each menu item is its own ~44pt tap target for touch. */
+    min-height: 44px;
+    text-align: center;
+}
+.menu-item:hover, .menu-item:focus-visible {
+    background: #3a3020;
+    border-color: #d4b96a;
+    color: #fff;
+}
+.menu-item-danger {
+    color: #cc6644;
+    border-color: #5a3a20;
+}
+.menu-item-danger:hover { color: #ff8866; border-color: #cc6644; }
+.menu-item-close {
+    color: #888;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-top: 4px;
+}
+
+/* --- Help modal --- */
+
+#help-modal {
+    position: fixed; inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#help-modal.hidden { display: none; }
+
+#help-modal-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+#help-modal-panel {
+    position: relative;
+    background: #1a1610;
+    /* Matches #menu-sheet-panel chrome — see comment there. */
+    border: 2px solid #2a2218;
+    padding: 20px 24px;
+    color: #c8b888;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    max-width: min(520px, 92vw);
+    max-height: 88vh;
+    overflow-y: auto;
+    box-shadow:
+        inset 0 0 0 2px #8b7340,
+        inset 0 0 0 4px #1a1610,
+        0 0 0 1px #0a0a0a;
+    /* Opt back in to selection — body disables it globally for browser-game
+       feel, but the GitHub link and controls reference here are worth copying. */
+    user-select: text;
+    -webkit-user-select: text;
+    -webkit-touch-callout: default;
+}
+#help-modal-panel::before,
+#help-modal-panel::after {
+    content: '';
+    position: absolute;
+    width: 3px; height: 3px;
+    background: #d4b96a;
+    pointer-events: none;
+}
+#help-modal-panel::before { top: 5px;    left: 5px; }
+#help-modal-panel::after  { bottom: 5px; right: 5px; }
+#help-modal-panel h2 {
+    color: #d4b96a;
+    font-size: 16px;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+}
+#help-modal-panel h3 {
+    color: #d4b96a;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin: 16px 0 6px;
+    border-bottom: 1px solid #3a3020;
+    padding-bottom: 2px;
+}
+#help-modal-panel ul {
+    list-style: none;
+    padding-left: 4px;
+}
+#help-modal-panel li {
+    padding: 3px 0;
+    color: #a89868;
+}
+#help-modal-panel .help-lede {
+    color: #888;
+    font-style: italic;
+    margin-bottom: 4px;
+}
+#help-modal-panel .help-touch {
+    color: #88aa44;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+#help-modal-panel kbd {
+    background: #2a2218;
+    border: 1px solid #5a4a30;
+    color: #d4b96a;
+    padding: 0 5px;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    border-radius: 2px;
+    display: inline-block;
+    min-width: 14px;
+    text-align: center;
+}
+#help-modal-panel .help-foot {
+    margin-top: 16px;
+    padding-top: 8px;
+    border-top: 1px solid #3a3020;
+    color: #666;
+    font-size: 10px;
+}
+#help-modal-panel a {
+    color: #88aa44;
+    text-decoration: underline;
+}
+#help-modal-panel a:hover { color: #d4b96a; }
+#help-close {
+    width: 100%;
+    margin-top: 12px;
+}
+
+/* --- Options / accessibility modal ---
+   Reuses the help-modal / menu-sheet chrome (backdrop + ornate gold-on-black
+   panel with corner gems). Adds form controls — range sliders and on/off
+   toggles — restyled to sit inside the pixel-art frame. */
+
+#options-modal {
+    position: fixed; inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#options-modal.hidden { display: none; }
+
+#options-modal-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+}
+
+#options-modal-panel {
+    position: relative;
+    background: #1a1610;
+    /* Matches #menu-sheet-panel / #help-modal-panel chrome. */
+    border: 2px solid #2a2218;
+    padding: 20px 24px;
+    color: #c8b888;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    width: min(420px, 92vw);
+    max-height: 88vh;
+    overflow-y: auto;
+    box-shadow:
+        inset 0 0 0 2px #8b7340,
+        inset 0 0 0 4px #1a1610,
+        0 0 0 1px #0a0a0a;
+}
+#options-modal-panel::before,
+#options-modal-panel::after {
+    content: '';
+    position: absolute;
+    width: 3px; height: 3px;
+    background: #d4b96a;
+    pointer-events: none;
+}
+#options-modal-panel::before { top: 5px;    left: 5px; }
+#options-modal-panel::after  { bottom: 5px; right: 5px; }
+#options-modal-panel h2 {
+    color: #d4b96a;
+    font-size: 16px;
+    letter-spacing: 4px;
+    margin-bottom: 16px;
+}
+
+/* Each setting is a label + control on one baseline. The slider rows leave a
+   fixed-width readout column on the right; toggle rows push the switch to the
+   far edge. */
+.opt-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 40px;
+    padding: 4px 0;
+}
+.opt-row label {
+    color: #a89868;
+    letter-spacing: 2px;
+    font-size: 11px;
+    flex: 0 0 110px;
+}
+.opt-row-toggle label { flex: 1 1 auto; }
+
+/* Range slider — restyled track + thumb in brand gold. Both WebKit and Moz
+   pseudo-elements are covered so it looks the same across engines. */
+.opt-slider {
+    flex: 1 1 auto;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    background: #2a2218;
+    border: 1px solid #5a4a30;
+    cursor: pointer;
+    outline: none;
+}
+.opt-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px; height: 18px;
+    background: #d4b96a;
+    border: 1px solid #0a0a0a;
+    box-shadow: 0 0 0 1px #8b7340;
+    cursor: pointer;
+}
+.opt-slider::-moz-range-thumb {
+    width: 14px; height: 18px;
+    background: #d4b96a;
+    border: 1px solid #0a0a0a;
+    box-shadow: 0 0 0 1px #8b7340;
+    cursor: pointer;
+}
+.opt-slider:focus-visible {
+    outline: 2px solid #d4b96a;
+    outline-offset: 2px;
+}
+.opt-val {
+    flex: 0 0 34px;
+    text-align: right;
+    color: #d4b96a;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+/* On/off pill. Reuses the .menu-item look but compact and fixed-width so the
+   ON/OFF label swap doesn't reflow the row. .is-on flips it to the gold-bright
+   active state. */
+.opt-toggle {
+    flex: 0 0 64px;
+    background: #2a2218;
+    border: 1px solid #5a4a30;
+    color: #888;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 8px 0;
+    min-height: 40px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.opt-toggle:hover,
+.opt-toggle:focus-visible {
+    border-color: #d4b96a;
+    color: #d4b96a;
+}
+.opt-toggle.is-on {
+    background: #3a3020;
+    border-color: #d4b96a;
+    color: #f1d488;
+}
+.opt-toggle:focus-visible {
+    outline: 2px solid #d4b96a;
+    outline-offset: 2px;
+}
+.opt-note {
+    margin-top: 12px;
+    padding-top: 8px;
+    border-top: 1px solid #3a3020;
+    color: #666;
+    font-size: 10px;
+    font-style: italic;
+}
+#options-close {
+    width: 100%;
+    margin-top: 12px;
+}
+
+/* --- Pause overlay ---
+   Full-screen scrim that blocks input (gated in main.js) until RESUME. Same
+   panel chrome, centered, with a tall dim backdrop so the world reads as
+   suspended behind it. */
+
+#pause-overlay {
+    position: fixed; inset: 0;
+    z-index: 55;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#pause-overlay.hidden { display: none; }
+
+#pause-overlay-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+#pause-overlay-panel {
+    position: relative;
+    background: #1a1610;
+    border: 2px solid #2a2218;
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    min-width: 240px;
+    max-width: 90vw;
+    text-align: center;
+    box-shadow:
+        inset 0 0 0 2px #8b7340,
+        inset 0 0 0 4px #1a1610,
+        0 0 0 1px #0a0a0a;
+}
+#pause-overlay-panel::before,
+#pause-overlay-panel::after {
+    content: '';
+    position: absolute;
+    width: 3px; height: 3px;
+    background: #d4b96a;
+    pointer-events: none;
+}
+#pause-overlay-panel::before { top: 5px;    left: 5px; }
+#pause-overlay-panel::after  { bottom: 5px; right: 5px; }
+#pause-overlay-panel h2 {
+    color: #d4b96a;
+    font-size: 20px;
+    letter-spacing: 6px;
+    margin-bottom: 4px;
+}
+#pause-overlay-panel .pause-hint {
+    color: #6a5a3a;
+    font-size: 11px;
+    font-style: italic;
+    margin-bottom: 8px;
+}
+
+/* Keyboard focus rings for the new modal controls — same brand-gold treatment
+   as the existing menu/help buttons. */
+#options-close:focus-visible,
+#pause-resume:focus-visible,
+#pause-options:focus-visible {
+    outline: 2px solid #d4b96a;
+    outline-offset: 2px;
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   KENNEY "PIXEL ADVENTURE" PANEL THEME  (overhaul: touch + menus)
+   A parchment 9-slice frame holding aged-brown 9-slice buttons. Declared
+   after the original dark-chrome rules so it wins on specificity ties.
+   Frames are real Kenney CC0 tiles (see tools/gen_ui_panels.py) used as
+   border-image; text colors flip to dark ink on the parchment fill.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* --- Panel frames: parchment 9-slice (replaces the dark box-shadow chrome) --- */
+#menu-sheet-panel,
+#help-modal-panel,
+#options-modal-panel,
+#pause-overlay-panel {
+    background-color: #e9dcc0;                 /* fallback if border-image fails */
+    border: 16px solid transparent;
+    border-image: url(assets/ui/panel_parchment.png) 8 fill / 16px stretch;
+    image-rendering: pixelated;
+    box-shadow: none;
+    color: #4a3a22;
+    padding: 12px 16px 16px;
+}
+/* Retire the gold corner-gem pseudo-elements — the Kenney frame has its own. */
+#menu-sheet-panel::before,  #menu-sheet-panel::after,
+#help-modal-panel::before,  #help-modal-panel::after,
+#options-modal-panel::before, #options-modal-panel::after,
+#pause-overlay-panel::before, #pause-overlay-panel::after { display: none; }
+
+/* Panel titles — dark ink on parchment. */
+#help-modal-panel h2,
+#options-modal-panel h2,
+#pause-overlay-panel h2 { color: #5a4326; }
+
+/* --- Buttons: aged-brown 9-slice --- */
+.menu-item {
+    background-color: #8a5a2c;                 /* fallback if border-image fails */
+    border: 14px solid transparent;
+    border-image: url(assets/ui/panel_brown.png) 8 fill / 14px stretch;
+    image-rendering: pixelated;
+    color: #f3e3c0;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+    padding: 6px 10px;
+    min-height: 46px;
+    transition: filter 0.12s, color 0.12s;
+}
+.menu-item:hover,
+.menu-item:focus-visible {
+    background-color: #8a5a2c;
+    filter: brightness(1.13);
+    color: #fff8e6;
+}
+.menu-item:active { filter: brightness(0.9); transform: translateY(1px); }
+.menu-item-danger { color: #ff9a6a; }
+.menu-item-danger:hover { color: #ffb487; filter: brightness(1.05); }
+.menu-item-close { color: #e2d2ac; }
+
+/* --- Help modal content on parchment --- */
+#help-modal-panel { color: #4a3a22; }
+#help-modal-panel h3 { color: #5a4326; border-bottom-color: #bda572; }
+#help-modal-panel li { color: #4a3a22; }
+#help-modal-panel .help-lede { color: #6a5a3a; }
+#help-modal-panel .help-touch { color: #4a6a28; }
+#help-modal-panel .help-foot { color: #7a6647; border-top-color: #bda572; }
+#help-modal-panel a { color: #9a5a18; }
+#help-modal-panel a:hover { color: #6a3a08; }
+#help-modal-panel kbd {
+    background: #d9c9a4;
+    border-color: #8b7340;
+    color: #4a3a22;
+}
+
+/* --- Options modal controls on parchment --- */
+#options-modal-panel { color: #4a3a22; }
+.opt-row label { color: #5a4326; }
+.opt-val { color: #5a4326; }
+.opt-note { color: #7a6647; border-top-color: #bda572; }
+.opt-slider { background: #cbb588; border-color: #8b7340; }
+.opt-slider::-webkit-slider-thumb {
+    background: #7a5a2a; border-color: #3a2a12;
+    box-shadow: 0 0 0 1px #b9985a;
+}
+.opt-slider::-moz-range-thumb {
+    background: #7a5a2a; border-color: #3a2a12;
+    box-shadow: 0 0 0 1px #b9985a;
+}
+/* Toggle pills: simple brown fill + gold rim (crisper than a 9-slice at this
+   size). .is-on brightens toward gold. */
+.opt-toggle {
+    background: #8a5a2c;
+    border: 2px solid #d4b96a;
+    color: #e2d2ac;
+}
+.opt-toggle:hover,
+.opt-toggle:focus-visible { border-color: #fff0c4; color: #fff8e6; }
+.opt-toggle.is-on { background: #b07a2e; border-color: #ffe7a0; color: #fff8e6; }
+
+/* --- Pause overlay on parchment --- */
+#pause-overlay-panel .pause-hint { color: #7a6647; }
+
+/* (pointer model) First-run onboarding line — centered near the bottom; a quiet
+   gold-on-dark hint shown on the first run, dismissed by the first tap/keypress. */
+#first-run-hint {
+    position: fixed;
+    left: 50%; bottom: 14%;
+    transform: translateX(-50%);
+    max-width: 90vw;
+    padding: 10px 16px;
+    background: rgba(20, 16, 10, 0.82);
+    border: 1px solid rgba(212, 185, 106, 0.5);
+    border-radius: 10px;
+    color: #e8cf90;
+    font-size: 15px;
+    text-align: center;
+    z-index: 30;
+    pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+@media (pointer: coarse), (max-width: 700px) {
+    /* Splash: keep the title-card stack clear of the notch / home indicator and
+       tighten the gap so it fits short phones. (The canvas itself is capped
+       responsively in the base #splash-canvas rule.) */
+    #splash {
+        gap: 16px;
+        padding: max(12px, env(safe-area-inset-top))
+                 max(12px, env(safe-area-inset-right))
+                 max(12px, env(safe-area-inset-bottom))
+                 max(12px, env(safe-area-inset-left));
+    }
+    #splash-buttons { flex-wrap: wrap; justify-content: center; }
+
+    /* A square canvas on a portrait phone is width-bound (can't exceed 100vw),
+       so the old top-anchor left a tall empty band BELOW it that read as sparse.
+       Center the canvas instead so the surrounding cobblestone backdrop frames
+       it evenly top + bottom (like the desktop layout), and drop the -220px
+       under-sizing so the canvas uses the full width. The touch controls stay
+       pinned to the bottom within thumb reach, in the field below the canvas. */
+    #game-wrapper {
+        align-items: center;
+        padding-top: 0;
+        /* Reserve the bottom-right control band (the action-wheel button + the ☰
+           menu stacked above it, ~164px tall) so the centered canvas — and the
+           hotbar drawn at its bottom edge, which is tap-hit-tested — is never
+           pushed under the controls on short phones. */
+        padding-bottom: calc(184px + env(safe-area-inset-bottom));
+    }
+    #game-layout {
+        height: min(100vw, calc(100vh - 184px - env(safe-area-inset-bottom)));
+        max-height: 100vw;
+    }
+
+    /* On touch the version badge previously overlapped the bottom-right
+       WAIT button. Pin it to top-left under the canvas's HP panel area
+       instead; the badge sits in dead viewport space and reads cleanly. */
+    #version-badge {
+        top: 8px; left: 8px;
+        bottom: auto; right: auto;
+    }
+
+    /* Touch HUD — the pointer model retired the on-screen d-pad (tap-to-move
+       replaces it); only the action-wheel opener (bottom-right) + the ☰ menu
+       stacked above it remain, single composited Kenney sprites (see
+       tools/gen_ui_controls.py). Glyph text is hidden (font-size:0) but kept
+       for aria/fallback. */
+    #touch-controls {
+        display: flex;
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        padding: 16px max(16px, env(safe-area-inset-left)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right));
+        justify-content: flex-end;
+        align-items: flex-end;
+        z-index: 20;
+        pointer-events: none;
+    }
+
+    /* ACTION button — opens/fires the action wheel. Bottom-right, primary thumb. */
+    #action-btn {
+        pointer-events: auto;
+        align-self: flex-end;
+        width: 88px; height: 88px;
+        background: url(assets/ui/ctrl_action.png) center / contain no-repeat;
+        border: none; box-shadow: none; border-radius: 50%;
+        color: transparent; font-size: 0;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+    }
+    #action-btn:active {
+        transform: scale(0.92);
+        filter: brightness(1.18) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+    }
+
+    /* MENU button — stacked ABOVE the action button (previously it overlapped
+       the action button in the same corner). Clear of every in-canvas HUD
+       corner: HP (top-left), zone label (top-center), clock (top-right). */
+    #menu-btn {
+        position: fixed;
+        top: auto; left: auto;
+        right: max(16px, env(safe-area-inset-right));
+        bottom: calc(max(16px, env(safe-area-inset-bottom)) + 104px);
+        width: 60px; height: 60px;
+        background: url(assets/ui/ctrl_menu.png) center / contain no-repeat;
+        border: none; box-shadow: none; border-radius: 50%;
+        color: transparent; font-size: 0;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+        z-index: 21;
+    }
+    #menu-btn:active {
+        transform: scale(0.92);
+        filter: brightness(1.18) drop-shadow(0 1px 3px rgba(0, 0, 0, 0.6));
+    }
+    /* (Slice 3) On touch, move the Remoticon opener into the bottom-right thumb
+       stack, above the ☰ menu button (phones have no Tab key). Keeps the .tc-btn
+       glyph look since there's no ctrl_remoticon sprite yet. */
+    #remoticon-btn {
+        position: fixed;
+        top: auto; left: auto;
+        right: max(16px, env(safe-area-inset-right));
+        bottom: calc(max(16px, env(safe-area-inset-bottom)) + 184px);
+        width: 60px; height: 60px;
+        border-radius: 50%;
+        font-size: 28px;
+        z-index: 21;
+    }
+}
+

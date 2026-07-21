@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: #1a1a2e;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#game {
+  background: #000;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  width: min(100vw, 150vh);
+  height: auto;
+}

@@ -1,0 +1,2 @@
+Species Life Battle adapted from emmazangAI/life-battle (MIT, Copyright 2026 Emma Zang).
+auto_cell_battle/ only; Google Fonts removed; English UI default.

@@ -1,0 +1,10 @@
+{
+  "name": "City Drive 3D - Open World Driving",
+  "short_name": "City Drive 3D",
+  "description": "A browser-based 3D open-world driving game.",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#05060a",
+  "theme_color": "#05060a",
+  "start_url": "."
+}

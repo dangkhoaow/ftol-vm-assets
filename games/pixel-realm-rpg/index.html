@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixel Realm RPG</title>
+    <style>
+      * { box-sizing: border-box; }
+
+      /* fuente pixelada */
+      @font-face {
+        font-family: "PixeloidMono";
+        src: url("./assets/UI/font/PixeloidMono-nAOpP.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000000;
+        color: #ffffff;
+        font-family: "PixeloidMono", monospace, system-ui, sans-serif;
+      }
+
+      .game-container {
+        position: relative;
+        display: inline-block;
+      }
+
+      canvas {
+        width: 512px;
+        height: 512px;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        border: 4px solid #000000;
+        background: #000000;
+        display: block;
+      }
+
+      /* columna hud izquierda */
+      .hud-col {
+        position: fixed;
+        top: 12px;
+        left: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        pointer-events: none;
+        z-index: 10;
+      }
+      /* hud de corazones */
+      .hud {
+        display: flex;
+        gap: 4px;
+      }
+      .hud-heart {
+        display: block;
+        width: 16px;
+        height: 16px;
+      }
+      /* fila de nivel */
+      .hud-nivel-fila {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .hud-nivel-ico {
+        width: 16px;
+        height: 16px;
+        image-rendering: pixelated;
+      }
+      .hud-nivel-txt {
+        font-size: 10px;
+        color: #fff;
+        font-family: "PixeloidMono", monospace;
+        opacity: 0.85;
+      }
+
+      /* boton de ajustes arriba derecha */
+      .settings-button {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        z-index: 20;
+        padding: 0;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        outline: none;
+      }
+      .settings-button img {
+        display: block;
+        width: 64px;
+        height: 64px;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+      }
+
+      /* panel de ajustes */
+      .settings-panel {
+        position: fixed;
+        top: 84px;
+        right: 12px;
+        z-index: 20;
+        width: 200px;
+        background: #000;
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 10px;
+        padding: 12px;
+        color: #fff;
+        display: none;
+        font-size: 13px;
+      }
+      .settings-panel-title {
+        text-align: center;
+        margin-bottom: 10px;
+        opacity: 0.7;
+        letter-spacing: 0.05em;
+      }
+      .settings-img-btn {
+        display: block;
+        width: 100%;
+        padding: 0;
+        margin-top: 8px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        outline: none;
+        text-align: center;
+      }
+      .settings-img-btn img {
+        width: 128px;
+        height: 64px;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+      }
+      .settings-text-btn {
+        display: block;
+        width: 100%;
+        margin-top: 8px;
+        padding: 8px;
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 6px;
+        background: rgba(255,255,255,0.06);
+        color: #ffffff;
+        cursor: pointer;
+        font-family: "PixeloidMono", monospace, system-ui, sans-serif;
+        font-size: 12px;
+        transition: border-color 0.1s, background 0.1s;
+      }
+      .settings-text-btn:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+      .settings-text-btn.danger:hover { border-color: #ff5f5f; background: rgba(255,95,95,0.1); }
+      #importFileInput { display: none; }
+
+      /* mensajes del juego abajo */
+      .message {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 18px;
+        background: #000;
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 8px;
+        color: #fff;
+        font-family: "PixeloidMono", monospace, system-ui, sans-serif;
+        font-size: 13px;
+        z-index: 15;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+
+      /* inventario overlay */
+      .inv-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.82);
+      }
+      .inv-overlay.open { display: flex; }
+
+      .inv-panel {
+        width: 540px;
+        background: #000;
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .inv-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px 10px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+      }
+      .inv-title {
+        font-size: 14px;
+        letter-spacing: 0.12em;
+        color: #fff;
+        text-transform: uppercase;
+      }
+      .inv-header-hint {
+        font-size: 10px;
+        color: rgba(255,255,255,0.3);
+      }
+
+      .inv-body {
+        display: flex;
+        flex: 1;
+        min-height: 0;
+      }
+
+      .inv-grid-wrap {
+        flex: 1;
+        padding: 14px;
+        overflow-y: auto;
+      }
+      .inv-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 72px);
+        gap: 8px;
+      }
+
+      .inv-slot {
+        width: 72px;
+        height: 72px;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: rgba(255,255,255,0.03);
+        transition: border-color 0.12s, background 0.12s;
+        position: relative;
+      }
+      .inv-slot:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.07); }
+      .inv-slot.selected { border-color: #fff; background: rgba(255,255,255,0.1); }
+      .inv-slot-icon {
+        width: 48px;
+        height: 48px;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        display: block;
+      }
+      .inv-slot-fallback { font-size: 22px; color: #ffffff; opacity: 0.6; }
+
+      .inv-empty-msg {
+        grid-column: 1 / -1;
+        padding: 32px 0;
+        text-align: center;
+        font-size: 11px;
+        color: rgba(255,255,255,0.25);
+        letter-spacing: 0.06em;
+      }
+
+      .inv-detail {
+        width: 170px;
+        min-width: 170px;
+        border-left: 1px solid rgba(255,255,255,0.12);
+        padding: 18px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255,255,255,0.02);
+      }
+      .inv-detail-icon {
+        width: 64px;
+        height: 64px;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        padding: 6px;
+        background: rgba(0,0,0,0.3);
+      }
+      .inv-detail-name { font-size: 12px; color: #fff; text-align: center; line-height: 1.4; word-break: break-word; }
+      .inv-detail-desc { font-size: 10px; color: rgba(255,255,255,0.55); text-align: center; line-height: 1.5; }
+      .inv-detail-stat { font-size: 11px; color: #fff; text-align: center; }
+      .inv-detail-placeholder { font-size: 10px; color: rgba(255,255,255,0.2); text-align: center; margin-top: auto; line-height: 1.6; }
+      .inv-detail-use { margin-top: auto; font-size: 10px; color: rgba(255,255,255,0.35); text-align: center; }
+
+      .inv-footer {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 10px 16px;
+        border-top: 1px solid rgba(255,255,255,0.12);
+        background: transparent;
+      }
+      .inv-footer-hint {
+        font-size: 10px;
+        color: rgba(255,255,255,0.3);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .inv-kbd {
+        display: inline-block;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 3px;
+        padding: 1px 5px;
+        font-family: "PixeloidMono", monospace;
+        font-size: 9px;
+        color: #fff;
+        line-height: 1.4;
+      }
+
+      /* pantalla de inicio */
+      #startScreen {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+        gap: 20px;
+      }
+      #startScreen.hidden { display: none; }
+      .start-logo {
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        width: 256px;
+        height: 128px;
+        margin-bottom: 16px;
+      }
+      .start-btn-text {
+        font-family: "PixeloidMono", monospace;
+        font-size: 11px;
+        color: #fff;
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 4px;
+        padding: 8px 32px;
+        cursor: pointer;
+        letter-spacing: 0.1em;
+        transition: border-color 0.1s, background 0.1s;
+      }
+      .start-btn-text:hover { border-color: #fff; background: rgba(255,255,255,0.07); }
+      .start-hint {
+        font-family: "PixeloidMono", monospace;
+        font-size: 10px;
+        color: rgba(255,255,255,0.18);
+        margin-top: 12px;
+        letter-spacing: 0.08em;
+      }
+
+      /* nivel y exp */
+      .hud-level {
+        position: fixed;
+        top: 44px;
+        left: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        pointer-events: none;
+        z-index: 10;
+        font-family: "PixeloidMono", monospace;
+        font-size: 10px;
+        color: rgba(255,255,255,0.7);
+      }
+      .hud-exp-bar {
+        width: 64px;
+        height: 4px;
+        background: rgba(255,255,255,0.12);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .hud-exp-fill {
+        height: 100%;
+        background: #44aaff;
+        border-radius: 2px;
+        transition: width 0.3s ease;
+        width: 0%;
+      }
+
+      /* equipamiento overlay */
+      .equip-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.82);
+      }
+      .equip-overlay.open { display: flex; }
+      .equip-panel {
+        width: 480px;
+        background: #000;
+        border: 1px solid rgba(255,255,255,0.25);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .equip-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px 10px;
+        border-bottom: 1px solid rgba(255,255,255,0.15);
+      }
+      .equip-title {
+        font-size: 14px;
+        letter-spacing: 0.12em;
+        color: #fff;
+        text-transform: uppercase;
+      }
+      .equip-header-hint { font-size: 10px; color: rgba(255,255,255,0.3); }
+      .equip-body { display: flex; flex: 1; min-height: 0; }
+      .equip-slots-wrap { flex: 1; padding: 16px; }
+      .equip-slot-grid { display: flex; flex-direction: column; gap: 8px; }
+      .equip-slot {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 8px;
+        background: rgba(255,255,255,0.03);
+        cursor: pointer;
+        transition: border-color 0.12s, background 0.12s;
+      }
+      .equip-slot:hover { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.07); }
+      .equip-slot-icon {
+        width: 40px; height: 40px;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        flex-shrink: 0;
+      }
+      .equip-slot-label { font-size: 10px; color: rgba(255,255,255,0.35); min-width: 60px; }
+      .equip-slot-item-name { font-size: 11px; color: #fff; flex: 1; }
+      .equip-slot-stat { font-size: 10px; color: #44aaff; }
+      .equip-stats-wrap {
+        width: 160px; min-width: 160px;
+        border-left: 1px solid rgba(255,255,255,0.12);
+        padding: 16px 14px;
+        background: rgba(255,255,255,0.02);
+      }
+      .equip-stats-title {
+        font-size: 11px;
+        color: rgba(255,255,255,0.45);
+        letter-spacing: 0.06em;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+      }
+      .equip-stat-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 8px; }
+      .equip-stat-key { color: rgba(255,255,255,0.5); }
+      .equip-stat-val { color: #fff; }
+      .equip-footer {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 10px 16px;
+        border-top: 1px solid rgba(255,255,255,0.12);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- pantalla de inicio -->
+    <div id="startScreen">
+      <img src="./assets/UI/menu/game_title.png" class="start-logo" alt="Pixel Realm RPG" />
+      <button class="start-btn-text" id="btnNewGame" type="button">New Game</button>
+      <button class="start-btn-text" id="btnContinue" type="button" style="display:none">Continue</button>
+      <div class="start-hint">arrows / WASD to move</div>
+    </div>
+
+    <div class="game-container">
+      <canvas id="game" width="56" height="56" aria-label="ventana del juego"></canvas>
+    </div>
+    <div class="hud-col" aria-label="hud">
+      <div id="hud" class="hud" aria-label="salud"></div>
+      <div class="hud-nivel-fila">
+        <img src="./assets/UI/level.gif" class="hud-nivel-ico" alt="nivel" />
+        <span id="levelLabel" class="hud-nivel-txt">Nv.1</span>
+        <div class="hud-exp-bar"><div id="expBarFill" class="hud-exp-fill"></div></div>
+      </div>
+    </div>
+
+    <div id="message" class="message" aria-live="polite"></div>
+
+    <!-- inventario -->
+    <div id="inventoryOverlay" class="inv-overlay" aria-hidden="true" role="dialog" aria-label="Inventario">
+      <div class="inv-panel">
+        <div class="inv-header">
+          <span class="inv-title">Inventario</span>
+          <span class="inv-header-hint"><kbd class="inv-kbd">I</kbd> cerrar</span>
+        </div>
+        <div class="inv-body">
+          <div class="inv-grid-wrap">
+            <div id="inventoryGrid" class="inv-grid"></div>
+          </div>
+          <div class="inv-detail" id="inventoryDetail">
+            <p class="inv-detail-placeholder">Selecciona<br>un objeto</p>
+          </div>
+        </div>
+        <div class="inv-footer">
+          <span class="inv-footer-hint"><kbd class="inv-kbd">E</kbd> Usar</span>
+          <span class="inv-footer-hint"><kbd class="inv-kbd">[</kbd><kbd class="inv-kbd">]</kbd> Navegar</span>
+          <span class="inv-footer-hint"><kbd class="inv-kbd">I</kbd> / <kbd class="inv-kbd">ESC</kbd> Cerrar</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- equipamiento -->
+    <div id="equipmentOverlay" class="equip-overlay" aria-hidden="true" role="dialog" aria-label="Equipamiento">
+      <div class="equip-panel">
+        <div class="equip-header">
+          <span class="equip-title">Equipamiento</span>
+          <span class="equip-header-hint"><kbd class="inv-kbd">G</kbd> cerrar</span>
+        </div>
+        <div class="equip-body">
+          <div class="equip-slots-wrap">
+            <div id="equipSlotGrid" class="equip-slot-grid"></div>
+          </div>
+          <div class="equip-stats-wrap">
+            <div class="equip-stats-title">Stats</div>
+            <div id="equipStatsGrid"></div>
+          </div>
+        </div>
+        <div class="equip-footer">
+          <span class="inv-footer-hint"><kbd class="inv-kbd">E</kbd> Equipar (desde inv.)</span>
+          <span class="inv-footer-hint"><kbd class="inv-kbd">U</kbd> Desequipar slot</span>
+          <span class="inv-footer-hint"><kbd class="inv-kbd">G</kbd>/<kbd class="inv-kbd">ESC</kbd> Cerrar</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- boton de ajustes -->
+    <button id="settingsButton" class="settings-button" type="button" aria-label="Ajustes" title="Ajustes">
+      <img id="settingsButtonImg"
+           src="./assets/UI/buttons/settings.png"
+           data-normal="./assets/UI/buttons/settings.png"
+           data-hover="./assets/UI/buttons/settings_hover.png"
+           alt="Ajustes" />
+    </button>
+
+    <div id="settingsPanel" class="settings-panel" aria-hidden="true">
+      <div class="settings-panel-title">Ajustes</div>
+
+      <button id="downloadSaveButton" class="settings-img-btn" type="button" aria-label="Descargar partida">
+        <img src="./assets/UI/buttons/save.png"
+             data-normal="./assets/UI/buttons/save.png"
+             data-hover="./assets/UI/buttons/save_hover.png"
+             alt="Descargar partida" />
+      </button>
+
+      <button id="importSaveButton" class="settings-img-btn" type="button" aria-label="Importar partida">
+        <img src="./assets/UI/buttons/load.png"
+             data-normal="./assets/UI/buttons/load.png"
+             data-hover="./assets/UI/buttons/load_hover.png"
+             alt="Importar partida" />
+      </button>
+      <input type="file" id="importFileInput" accept=".json" />
+
+      <button id="toggleMusicButton" class="settings-text-btn" type="button">Música</button>
+      <button id="clearSaveButton" class="settings-text-btn danger" type="button">Reiniciar</button>
+          </div>
+
+    <script type="module">
+      import Game from "./engine/index.js";
+
+      // teclas de movimiento
+      const TECLAS_MOVIMIENTO = {
+        w: true, arrowup: true,
+        s: true, arrowdown: true,
+        a: true, arrowleft: true,
+        d: true, arrowright: true
+      };
+
+      const inventoryGrid      = document.getElementById("inventoryGrid");
+      const inventoryOverlay   = document.getElementById("inventoryOverlay");
+      const inventoryDetail    = document.getElementById("inventoryDetail");
+      const equipmentOverlay   = document.getElementById("equipmentOverlay");
+      const messageElement     = document.getElementById("message");
+      const hud                = document.getElementById("hud");
+      const settingsButton   = document.getElementById("settingsButton");
+      const settingsPanel    = document.getElementById("settingsPanel");
+      const downloadSaveBtn  = document.getElementById("downloadSaveButton");
+      const importSaveBtn    = document.getElementById("importSaveButton");
+      const importFileInput  = document.getElementById("importFileInput");
+      const toggleMusicButton = document.getElementById("toggleMusicButton");
+      const clearSaveButton  = document.getElementById("clearSaveButton");
+      const canvas           = document.getElementById("game");      const levelLabel       = document.getElementById("levelLabel");
+
+      const game = new Game(canvas, hud, inventoryGrid, messageElement, equipmentOverlay, levelLabel);
+      // expone el juego pa que el editor lo pueda pausar
+      window.__game = game;
+
+      // abre o cierra el inventario
+      function setInventoryOpen(open) {
+        game.setInventoryOpen(open);
+        inventoryOverlay.classList.toggle("open", open);
+        inventoryOverlay.setAttribute("aria-hidden", String(!open));
+        if (open) {
+          renderInventoryGrid();
+          renderInventoryDetail();
+        }
+      }
+
+      // abre o cierra el panel de equipamiento
+      function setEquipmentOpen(open) {
+        game.setEquipmentOpen(open);
+        equipmentOverlay.classList.toggle("open", open);
+        equipmentOverlay.setAttribute("aria-hidden", String(!open));
+        if (open) renderEquipmentPanel();
+      }
+
+      function renderEquipmentPanel() {
+        game.drawEquipmentUI();
+      }
+
+      // clic en slot de equipamiento → desequipar
+      equipmentOverlay.addEventListener("click", (e) => {
+        const slot = e.target.closest(".equip-slot");
+        if (!slot) return;
+        const slotKey = slot.dataset.slot;
+        if (slotKey && game.equipment[slotKey]) {
+          game.unequipItem(slotKey);
+          game._inventoryRenderKey = null;
+          renderEquipmentPanel();
+          renderInventoryGrid();
+        }
+      });
+
+      game.onEquipmentChanged = () => {
+        if (game.equipmentOpen) renderEquipmentPanel();
+      };
+
+      // detalle del item seleccionado
+      function renderInventoryDetail(hoveredIndex) {
+        const idx    = hoveredIndex ?? game.selectedInventoryIndex;
+        const itemId = game.inventory?.[idx];
+        const item   = game.itemDefinitions?.[itemId];
+
+        if (!item) {
+          const empty = !game.inventory?.length;
+          inventoryDetail.innerHTML = `<p class="inv-detail-placeholder">${
+            empty ? "Inventario<br>vacío" : "Selecciona<br>un objeto"
+          }</p>`;
+          return;
+        }
+
+        const esc = (s) => String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;");
+        let stat = "";
+        if (item.use?.action === "heal")     stat = `+${item.use.amount} HP`;
+        else if (item.type === "consumable") stat = "Consumible";
+
+        inventoryDetail.innerHTML = `
+          ${item.texture ? `<img src="${item.texture}" class="inv-detail-icon" alt="">` : ""}
+          <div class="inv-detail-name">${esc(item.display_name ?? itemId)}</div>
+          ${item.description ? `<div class="inv-detail-desc">${esc(item.description)}</div>` : ""}
+          ${stat             ? `<div class="inv-detail-stat">${esc(stat)}</div>` : ""}
+          <div class="inv-detail-use"><kbd class="inv-kbd">E</kbd> pa usar</div>
+        `;
+      }
+
+      function renderInventoryGrid() {
+        game.drawInventoryUI();
+        if (!game.inventory?.length) {
+          inventoryGrid.innerHTML = `<div class="inv-empty-msg">Inventario vacío</div>`;
+        }
+      }
+
+      inventoryGrid.addEventListener("click", (e) => {
+        const slot = e.target.closest(".inv-slot");
+        if (!slot) return;
+        const idx = Number(slot.dataset.index);
+        game.selectedInventoryIndex = idx;
+        game._inventoryRenderKey = null;
+        renderInventoryGrid();
+        renderInventoryDetail();
+      });
+
+      inventoryGrid.addEventListener("mouseover", (e) => {
+        const slot = e.target.closest(".inv-slot");
+        if (slot) renderInventoryDetail(Number(slot.dataset.index));
+      });
+      inventoryGrid.addEventListener("mouseout", (e) => {
+        if (!e.relatedTarget || !inventoryGrid.contains(e.relatedTarget)) {
+          renderInventoryDetail();
+        }
+      });
+
+      // abre inventario automaticamente al agarrar item
+      game.onInventoryChanged = () => {
+        if (game.equipmentOpen) { renderEquipmentPanel(); return; }
+        if (!game.inventoryOpen) setInventoryOpen(true);
+        else { renderInventoryGrid(); renderInventoryDetail(); }
+      };
+
+      const _origDraw = game.drawInventoryUI.bind(game);
+      game.drawInventoryUI = function () {
+        _origDraw();
+        if (game.inventoryOpen) renderInventoryDetail();
+      };
+
+      async function init(freshStart) {
+        try {
+          if (freshStart) game.clearSave();
+          await game.start("map1");
+          requestAnimationFrame(loop);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      function loop(now) {
+        game.update(now);
+        game.draw();
+        requestAnimationFrame(loop);
+      }
+
+      const startScreen = document.getElementById("startScreen");
+      const btnNewGame  = document.getElementById("btnNewGame");
+      const btnContinue = document.getElementById("btnContinue");
+
+      if (localStorage.getItem("ftol:pixelrealmrpg:jsrpg_save")) {
+        btnContinue.style.display = "";
+      }
+
+      btnNewGame.addEventListener("click", () => {
+        startScreen.classList.add("hidden");
+        init(true);
+      });
+      btnContinue.addEventListener("click", () => {
+        startScreen.classList.add("hidden");
+        init(false);
+      });
+
+      // hover en botones con imagen
+      function attachHoverSprite(buttonEl) {
+        const img = buttonEl.querySelector("img[data-hover]");
+        if (!img) return;
+        buttonEl.addEventListener("pointerenter", () => { img.src = img.dataset.hover; });
+        buttonEl.addEventListener("pointerleave", () => { img.src = img.dataset.normal; });
+        buttonEl.addEventListener("blur",         () => { img.src = img.dataset.normal; });
+      }
+
+      attachHoverSprite(settingsButton);
+      attachHoverSprite(downloadSaveBtn);
+      attachHoverSprite(importSaveBtn);
+
+      settingsButton.addEventListener("click", () => {
+        const isOpen = settingsPanel.style.display === "block";
+        settingsPanel.style.display = isOpen ? "none" : "block";
+        settingsPanel.setAttribute("aria-hidden", String(isOpen));
+      });
+
+      document.addEventListener("pointerdown", (e) => {
+        if (settingsPanel.style.display !== "block") return;
+        if (!settingsPanel.contains(e.target) && e.target !== settingsButton && !settingsButton.contains(e.target)) {
+          settingsPanel.style.display = "none";
+          settingsPanel.setAttribute("aria-hidden", "true");
+        }
+      });
+
+      downloadSaveBtn.addEventListener("click",  () => { game.downloadSave(); });
+      importSaveBtn.addEventListener("click",    () => { importFileInput.value = ""; importFileInput.click(); });
+      importFileInput.addEventListener("change", () => { if (importFileInput.files[0]) game.importSave(importFileInput.files[0]); });
+      toggleMusicButton.addEventListener("click",() => { game.toggleMusic(); });
+      clearSaveButton.addEventListener("click",  () => { game.clearSave(); window.location.reload(); });
+      window.addEventListener("keydown", event => {
+        if (event.defaultPrevented) return;
+        const key = event.key.toLowerCase();
+        if (TECLAS_MOVIMIENTO[key]) {
+          event.preventDefault();
+          game.setMoveKey(key, true);
+          return;
+        }
+
+        if (key === "g") {
+          event.preventDefault();
+          if (game.inventoryOpen && !game.equipmentOpen) return; // inv open, ignore G
+          setEquipmentOpen(!game.equipmentOpen);
+          return;
+        }
+
+        if (key === "i") {
+          event.preventDefault();
+          if (game.equipmentOpen) { setEquipmentOpen(false); return; }
+          setInventoryOpen(!game.inventoryOpen);
+          return;
+        }
+
+        if (key === "escape") {
+          event.preventDefault();
+          if (game.equipmentOpen) { setEquipmentOpen(false); return; }
+          if (game.inventoryOpen) { setInventoryOpen(false); return; }
+          return;
+        }
+
+        if (key === "u") {
+          event.preventDefault();
+          if (game.equipmentOpen) {
+            // desequipa el primer slot equipado
+            const slots = ["weapon","armor","offhand"];
+            const slot = slots.find(s => game.equipment[s]);
+            if (slot) {
+              game.unequipItem(slot);
+              game._inventoryRenderKey = null;
+              renderEquipmentPanel();
+              renderInventoryGrid();
+            }
+          }
+          return;
+        }
+
+        if (key === "e") {
+          event.preventDefault();
+          if (game.equipmentOpen) {
+            // desde panel de equipo, E no hace nada especial (los items se equipan desde inventario)
+            return;
+          }
+          game.useSelectedItem();
+          if (game.inventoryOpen) { renderInventoryGrid(); renderInventoryDetail(); }
+          return;
+        }
+
+        if (key === "f") {
+          event.preventDefault();
+          game.interactForward();
+          return;
+        }
+
+        if (key === "x") {
+          event.preventDefault();
+          game.attackForward();
+          return;
+        }
+
+        if (key === "[") {
+          event.preventDefault();
+          game.cycleInventory(-1);
+          if (game.inventoryOpen) { renderInventoryGrid(); renderInventoryDetail(); }
+          return;
+        }
+
+        if (key === "]") {
+          event.preventDefault();
+          game.cycleInventory(1);
+          if (game.inventoryOpen) { renderInventoryGrid(); renderInventoryDetail(); }
+          return;
+        }
+      });
+
+      window.addEventListener("keyup", event => {
+        const key = event.key.toLowerCase();
+        if (TECLAS_MOVIMIENTO[key]) {
+          event.preventDefault();
+          game.setMoveKey(key, false);
+        }
+      });
+
+      // interactuar con clic en el canvas
+      canvas.addEventListener("click", event => {
+        if (game.inventoryOpen) return;
+        const rect   = canvas.getBoundingClientRect();
+        const scaleX = canvas.width  / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const tileX  = Math.floor((event.clientX - rect.left) * scaleX / game.tileSize);
+        const tileY  = Math.floor((event.clientY - rect.top)  * scaleY / game.tileSize);
+        const camera = game.getCamera();
+        game.interactAt(camera.x + tileX, camera.y + tileY);
+      });
+    </script>
+  </body>
+</html>

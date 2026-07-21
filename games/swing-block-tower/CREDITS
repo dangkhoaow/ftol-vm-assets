@@ -1,0 +1,9 @@
+Swing Block Tower (upstream: Tower Building Game)
+Copyright (c) 2018 BMQB, Inc / iamkun
+License: MIT (see LICENSE)
+Source: https://github.com/iamkun/tower_game
+
+Vendored for FreeToolOnline:
+- Google Analytics / gtag stripped from index.html
+- robots noindex on engine iframe document
+- Relative asset paths preserved (./dist, ./assets)

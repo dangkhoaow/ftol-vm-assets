@@ -1,0 +1,1 @@
+Adapted from zcor/slingshot (MIT, Copyright 2026 zcor). Google Fonts removed; localStorage namespaced ftol:gravityorbitgolf:*.

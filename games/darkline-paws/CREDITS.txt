@@ -1,0 +1,22 @@
+DarkLine Paws - vendored for FreeToolOnline (game-discovery-loop-runbook fire145, 2026-07-18).
+
+Upstream: shaurya6903/DarkLine-Paws (also mirrored at js13kGames/darkline-paws)
+https://github.com/shaurya6903/DarkLine-Paws
+js13kGames 2025, Black Cat theme.
+License: MIT, Copyright (c) 2025 shaurya6903 (see LICENSE).
+
+This is a 3-mode bundle selected from index.html's own dropdown menu:
+- index.html  - raycasted first-person maze ("Deadly Maze" / "Maze" layouts)
+- index2.html - Tic-Tac-Toe vs an unbeatable minimax cat AI
+- index3.html - "Cat Jumper" endless rooftop building-hop auto-runner
+
+Adaptations made in this build:
+- Added <meta name="robots" content="noindex"> to all 3 HTML files (this
+  iframe-only engine bundle is not meant to be indexed; the canonical URL
+  is /games/darkline-paws.html).
+- No CDN, no analytics, no localStorage anywhere in the upstream code;
+  none added here. No rebrand needed - all 3 titles were already clean
+  English ("DarkLine Paws - Enhanced Edition", "Tic Tac Toe", "Cat Jumper -
+  Rooftop Adventure").
+- cat1.ng.webp / cat2.webp are the upstream tic-tac-toe piece icons
+  (index2.html only), vendored byte-identical.

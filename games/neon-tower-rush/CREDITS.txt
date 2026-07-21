@@ -1,0 +1,4 @@
+Neon Tower Rush (adapted from TowerRush by Ooxygen7)
+Upstream: https://github.com/Ooxygen7/TowerRush
+License: MIT (see LICENSE)
+Adaptations for freetoolonline.com: removed Google Fonts CDN, disabled online leaderboard/OAuth, namespaced localStorage keys to ftol:neontowerrush:*, added noindex meta.

@@ -1,0 +1,7 @@
+Seasonal Witchcat
+Original game: Witchcat by Jonathan Vallet & Lylouf (Music and Bits)
+Source: https://github.com/jonathan-vallet/js13k-2025 (games/witchcat)
+Also: https://github.com/js13kGames/witchcat
+License: MIT (repo LICENSE). Embedded music player by Marcus Geelnard (zlib-style permissive notice in source).
+Adaptation: FreeToolOnline iframe vendor - robots noindex, localStorage namespaced to ftol:seasonalwitchcat:save.
+Adaptation: pixel scale floored with Math.max(1,...) so narrow viewports still render.

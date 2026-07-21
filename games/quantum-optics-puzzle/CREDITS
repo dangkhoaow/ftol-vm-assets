@@ -1,0 +1,10 @@
+Quantum Optics Puzzle (upstream: Quantum Game with Photons)
+Copyright (c) 2015-2017 Piotr Migdal, Patryk Hes
+License: MIT (see LICENSE)
+Source: https://github.com/stared/quantum-game
+
+Vendored for FreeToolOnline:
+- Google Fonts and Plausible analytics stripped
+- localStorage namespaced to ftol:quantumoptics:*
+- robots noindex on engine iframe document
+- English title Quantum Optics Puzzle

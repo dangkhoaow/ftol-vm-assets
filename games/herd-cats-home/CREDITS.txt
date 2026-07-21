@@ -1,0 +1,7 @@
+Herd Cats Home (upstream: black_cat)
+Original game: WMAR-9 / js13kGames 2025 entry black_cat
+License: MIT, Copyright (c) 2025 WMAR-9
+Isometric multi-cat herding puzzle - lead colored cats home with the black cat
+
+FreeToolOnline adaptations: noindex meta on iframe document, localStorage key CAT namespaced to ftol:herdcathome:CAT,
+LICENSE shipped next to engine.

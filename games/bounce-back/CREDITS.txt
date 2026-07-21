@@ -1,0 +1,10 @@
+Bounce Back - A boomerang roguelite for JS13k
+Upstream: https://github.com/KilledByAPixel/BounceBack
+Copyright (C) 2019 Frank Force
+License: GNU General Public License v2 (or later) - see LICENSE in this folder.
+
+Adaptation for FreeToolOnline (/games/bounce-back.html):
+- Added <meta name="robots" content="noindex"> on the engine page.
+- localStorage keys namespaced to ftol:bounceback:* (coins, warp, bestTime, won).
+- Comment wording adjusted to match site copy policy.
+Engine code otherwise vendored as shipped by upstream.

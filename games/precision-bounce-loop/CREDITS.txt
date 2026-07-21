@@ -1,0 +1,2 @@
+Precision Bounce Loop adapted from Horean0574/iBouncy (MIT, Copyright 2026 Horean0574).
+Leafer-Game canvas timing arcade: keep a ball bouncing on a moving tablet with combo scoring.

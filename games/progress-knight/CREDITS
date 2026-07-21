@@ -1,0 +1,10 @@
+Progress Knight
+Copyright (c) Ihtasham42 - released under Unlicense (public domain; see LICENSE)
+Source: https://github.com/ihtasham42/progress-knight
+
+Vendored for FreeToolOnline:
+- W3.CSS vendored locally as css/w3.css (no CDN)
+- Discord icon CDN removed (text link only)
+- localStorage namespaced to ftol:progressknight:gameDataSave
+- localStorage.clear() narrowed to namespaced key only
+- robots noindex on engine iframe document

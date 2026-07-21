@@ -1,0 +1,9 @@
+Neuro Aim Arena
+Upstream: https://github.com/victorqribeiro/aimAndShoot
+Author: Victor Ribeiro
+License: MIT (see LICENSE)
+Adapted for FreeToolOnline iframe embed 2026-07-20:
+- stripped og/social meta, manifest, apple-touch-icon; added robots noindex; retitled
+- excluded sw.js and manifest.json (aux.js SW register already commented out upstream)
+- kept artwork.png, controls.png (mobile GuiControls), sounds/shoot.mp3, favicon.png
+- relative asset paths unchanged for iframe

@@ -1,0 +1,6 @@
+Wash The Cat
+Upstream: HomerDilpleu/WashTheCat (GitHub)
+Author: Homer Dilpleu
+License: MIT (see LICENSE)
+JS13K 2025 entry - pipe and valve puzzle to wash a cat.
+Adapted for FreeToolOnline: noindex meta, localStorage key ftol:washthecat:lj.

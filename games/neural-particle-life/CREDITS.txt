@@ -1,0 +1,5 @@
+Neural Particle Life (adapted from Neuroparticles by Serhii Herasymov)
+Upstream: https://github.com/xcontcom/neuroparticles
+License: MIT (see LICENSE)
+Shipped mode: 11x11 single-channel artificial life simulation (2000 neural-network agents on a toroidal grid).
+Adaptations for freetoolonline.com: noindex meta in iframe, page title rebrand, removed external GitHub footer link.

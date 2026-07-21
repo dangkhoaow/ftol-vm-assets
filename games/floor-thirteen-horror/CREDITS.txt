@@ -1,0 +1,2 @@
+Floor Thirteen Horror adapted from js13kGames/13th-floor (MIT, Copyright 2023 Robert Louie).
+Stealth horror: explore 13 rooms, find keys, use flashlight F, hide from It.

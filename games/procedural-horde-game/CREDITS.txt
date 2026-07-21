@@ -1,0 +1,9 @@
+Procedural Horde Game (upstream project: CodeQuest)
+https://github.com/Stark-52/codequest
+
+Copyright (c) 2026 Andy Garcia
+MIT License - see LICENSE in this folder.
+
+Adapted 2026-07-09 for freetoolonline.com/games/procedural-horde-game.html:
+- Added <meta name="robots" content="noindex"> to the iframe document.
+- Vendored as a same-origin iframe; no upstream analytics or network calls.

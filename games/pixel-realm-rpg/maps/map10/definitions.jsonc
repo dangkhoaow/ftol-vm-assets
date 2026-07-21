@@ -1,0 +1,50 @@
+{
+    "tiles": {
+        "0": "assets/tiles/pared_dungeon_verde.png",
+        "1": "assets/tiles/suelo_dungeon_verde.png",
+        "2": "assets/tiles/pared_puerta_dungeon_verde.png",
+        "3": "assets/tiles/suelo_dungeon_verde_fuente_regenerativa.png",
+        "4": "assets/tiles/chest.png"
+    },
+    "collisions": {
+        "0": { "type": "air" },
+        "1": { "type": "solid" },
+        "3": {
+            "type": "door",
+            "target_map": "map7",
+            "target_tile": { "x": 10, "y": 5 }
+        },
+        "4": {
+            "type": "heal",
+            "infinity": true,
+            "heals": 10,
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterInteractText": "La fuente restaura tu fuerza. +10 HP."
+        },
+        "5": {
+            "type": "chest",
+            "contains": "ironSword",
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterOpeningCollision": "0",
+            "afterOpeningTile": "1"
+        },
+        "6": {
+            "type": "chest",
+            "contains": "leatherArmour",
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterOpeningCollision": "0",
+            "afterOpeningTile": "1"
+        },
+        "7": {
+            "type": "door",
+            "target_map": "map13",
+            "target_tile": { "x": 2, "y": 4 }
+        }
+    }
+}

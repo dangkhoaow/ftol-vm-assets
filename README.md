@@ -140,6 +140,18 @@ levers: kernel `cmdline` + ready markers/timeouts in `scripts/snapshot.mjs`
 (PROFILES table), package set in the Dockerfiles. Failed runs upload their
 step logs to the `vm-assets-debug` prerelease for unauthenticated reading.
 
+## Vendored FOSS game bundles (`games/`)
+
+The 105 self-contained FOSS game bundles the freetoolonline.com `/games/*`
+pages run in an iframe. Migrated here 2026-07-21 from the site repos'
+`static/games/` (operator decision: game static bundles NEVER live in the
+site repos - cumulative per-fire vendoring had bloated the staging repo to
+~750 MB git-side). Each bundle keeps its upstream `LICENSE`; the site page
+iframes `https://dangkhoaow.github.io/ftol-vm-assets/games/<dir>/index.html`
+cross-origin (no CORS needed for iframes; each game saves progress in this
+origin's localStorage). New game ships add the bundle HERE first, verify the
+published URL returns 200, then point the page's `*_GAME_URL` constant at it.
+
 ## Vendored browser libraries (`vendor/`)
 
 Version-pinned third-party libraries served to freetoolonline.com pages

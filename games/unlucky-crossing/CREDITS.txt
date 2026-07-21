@@ -1,0 +1,9 @@
+Unlucky Crossing (adapted from Unlucky Street)
+Original game: ilyasmirnov03/unlucky-street
+Author: Ilya Smirnov
+License: MIT
+JS13K Games 2025 entry (Black Cat theme)
+
+FreeToolOnline adaptations: noindex meta on iframe document, English rebrand title,
+relative asset paths preserved, LICENSE shipped next to engine.
+Engine uses no localStorage; ftol:unluckycrossing:* namespace reserved for site policy.

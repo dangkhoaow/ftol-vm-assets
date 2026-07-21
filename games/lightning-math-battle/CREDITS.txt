@@ -1,0 +1,3 @@
+Lightning Math Battle adapted from pasuay/thunder-math (MIT, Copyright 2026 Pashur Au Yeung).
+Browser math-quiz action game with Canvas 2D playfield and WebGL lightning overlay.
+Eight practice modes and four difficulty tiers with local high-score persistence.

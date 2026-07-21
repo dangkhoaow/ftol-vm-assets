@@ -1,0 +1,10 @@
+Black Hole Square
+Upstream: https://github.com/Quinten/black-hole-square
+Author: Quinten Clause
+License: MIT (see LICENSE)
+js13kGames 2021 entry (theme: SPACE)
+Adaptations for FreeToolOnline:
+- noindex meta on iframe document
+- removed Web Monetization meta and service worker registration
+- localStorage namespaced to ftol:blackholesquare:storage
+- payed flag remains forced true so all puzzle levels stay unlocked (upstream already did this in the public build)

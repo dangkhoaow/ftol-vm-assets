@@ -1,0 +1,9 @@
+Chili Blast Shooter
+
+Adapted from Pimenta by izag8216 (https://github.com/izag8216/pimenta)
+MIT License - Copyright (c) 2026 izag8216
+
+Adapted 2026-07-09 for freetoolonline.com/games/chili-blast-shooter.html:
+- noindex meta on iframe document
+- localStorage key namespaced to ftol:chiliblastshooter:hs
+- page title rebranded to Chili Blast Shooter

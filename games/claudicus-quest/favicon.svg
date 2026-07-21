@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Backdrop: matches the site background -->
+  <rect width="32" height="32" rx="7" fill="#1a1a2e"/>
+  <!-- Leather-clad shoulders -->
+  <path d="M5 32 Q5 24 16 24 Q27 24 27 32 Z" fill="#4a3728"/>
+  <path d="M5 32 Q5 24 16 24 Q27 24 27 32 Z" fill="none" stroke="#2a1f14" stroke-width="0.75"/>
+  <!-- Neck -->
+  <rect x="13.5" y="21" width="5" height="5" fill="#c8995f"/>
+  <!-- Hair (frames the head from behind) -->
+  <circle cx="16" cy="13.2" r="9.6" fill="#2a1f14"/>
+  <!-- Face -->
+  <circle cx="16" cy="15.3" r="8" fill="#d4a574" stroke="#2a1f14" stroke-width="0.85"/>
+  <!-- Fringe sweeping across the forehead -->
+  <path d="M8.2 12.4 Q16 5.5 23.8 12.4 Q19.5 8.8 16 8.8 Q12.5 8.8 8.2 12.4 Z" fill="#2a1f14"/>
+  <!-- Eyes -->
+  <rect x="11.7" y="14.4" width="2.6" height="3.3" rx="0.6" fill="#1a1218"/>
+  <rect x="17.7" y="14.4" width="2.6" height="3.3" rx="0.6" fill="#1a1218"/>
+  <!-- Mouth -->
+  <rect x="14.3" y="20" width="3.4" height="1.1" rx="0.55" fill="#a87f57"/>
+</svg>

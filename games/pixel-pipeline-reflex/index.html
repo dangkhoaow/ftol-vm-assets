@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Scanline Sprint is a tiny browser reflex game about feeding a pixel pipeline before the beam catches you, with daily and custom seeds.">
+    <title>Pixel Pipeline Reflex</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar" aria-label="Game controls">
+        <div>
+          <p class="eyebrow">Daily pixel panic</p>
+          <h1>Scanline Sprint</h1>
+        </div>
+        <div class="actions">
+          <button class="primary" id="startButton" type="button">Start frame</button>
+          <button id="pauseButton" type="button" disabled>Pause</button>
+          <button class="sound-toggle" id="soundButton" type="button" aria-pressed="false">Sound off</button>
+        </div>
+      </section>
+
+      <section class="game" aria-label="Scanline Sprint game">
+        <div class="hud" aria-live="polite">
+          <div>
+            <span>Score</span>
+            <strong id="scoreValue">0</strong>
+          </div>
+          <div>
+            <span>Frame</span>
+            <strong id="frameValue">0/12</strong>
+          </div>
+          <div>
+            <span>Beam</span>
+            <strong id="beamValue">6.2</strong>
+          </div>
+          <div>
+            <span>Glitches</span>
+            <strong id="glitchValue">0/5</strong>
+          </div>
+          <div>
+            <span>Combo</span>
+            <strong id="comboValue">x0</strong>
+          </div>
+        </div>
+
+        <div class="viewport">
+          <canvas id="gameCanvas" width="960" height="620" aria-label="Animated scanline game display"></canvas>
+          <div class="screen-note" id="screenNote">Press the next lit stage before the scan beam reaches the edge.</div>
+        </div>
+
+        <div class="next-panel" aria-live="polite">
+          <div>
+            <span>Next stage</span>
+            <strong id="nextStage">Fetch tile</strong>
+          </div>
+          <ol class="queue" id="queueList" aria-label="Current pixel pipeline queue"></ol>
+        </div>
+
+        <div class="stage-pad" aria-label="Pipeline stage buttons">
+          <button class="stage fetch" type="button" data-stage="fetch">
+            <span class="key">1</span>
+            <strong>Fetch</strong>
+            <span>tile</span>
+          </button>
+          <button class="stage fifo" type="button" data-stage="fifo">
+            <span class="key">2</span>
+            <strong>FIFO</strong>
+            <span>queue</span>
+          </button>
+          <button class="stage mix" type="button" data-stage="mix">
+            <span class="key">3</span>
+            <strong>Mix</strong>
+            <span>shade</span>
+          </button>
+          <button class="stage light" type="button" data-stage="light">
+            <span class="key">4</span>
+            <strong>Light</strong>
+            <span>LCD</span>
+          </button>
+        </div>
+
+        <div class="control-row" aria-label="Difficulty">
+          <button class="chip" type="button" data-difficulty="chill">Chill</button>
+          <button class="chip active" type="button" data-difficulty="arcade">Arcade</button>
+          <button class="chip" type="button" data-difficulty="meltdown">Meltdown</button>
+        </div>
+
+        <form class="seed-tools" id="seedForm" aria-label="Challenge seed">
+          <label for="seedInput">Challenge seed</label>
+          <div class="seed-actions">
+            <input id="seedInput" name="seed" type="text" inputmode="text" autocomplete="off" maxlength="36">
+            <button id="loadSeedButton" type="button">Load seed</button>
+            <button id="copySeedButton" type="button">Copy link</button>
+            <button id="todaySeedButton" type="button">Today</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="status-grid" aria-label="Game details">
+        <div>
+          <span>Goal</span>
+          <strong id="goalText">Stabilize 12 frames.</strong>
+        </div>
+        <div>
+          <span>Controls</span>
+          <strong>Keys 1-4, tap, or click</strong>
+        </div>
+        <div>
+          <span>Current seed</span>
+          <strong id="seedText">today</strong>
+        </div>
+        <div>
+          <span>Best local score</span>
+          <strong id="bestText">0</strong>
+        </div>
+      </section>
+
+      <section class="result-panel" id="resultPanel" hidden aria-live="polite">
+        <div>
+          <p class="eyebrow">Signal report</p>
+          <h2 id="resultTitle">Ready</h2>
+          <p id="resultCopy">Start a frame to get a shareable result.</p>
+        </div>
+        <button id="shareButton" type="button">Copy result</button>
+      </section>
+    </main>
+
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>

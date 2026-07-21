@@ -1,0 +1,9 @@
+Desk Cat Coder
+Adapted from BlackCat_Hacker by Zach End / Beanminchild (MIT, JS13K 2025).
+https://github.com/Beanminchild/BlackCat_Hacker
+
+Adaptations for FreeToolOnline:
+- Added meta robots noindex on the iframe document
+- Rebranded start-screen title to Desk Cat Coder
+- LICENSE + CREDITS shipped beside the engine
+- No localStorage in upstream minified build (session-only play)

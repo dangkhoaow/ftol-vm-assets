@@ -142,6 +142,13 @@ jobs:
           # out). Consumed cross-origin by freetoolonline.com via <script src>
           # so the site repos never carry the bytes.
           cp -a vendor out/site/vendor
+          # games/ ships as-is: the vendored FOSS game bundles the /games/*
+          # pages iframe cross-origin (operator decision 2026-07-21: game
+          # static bundles NEVER live in the site repos - they bloated the
+          # staging repo to ~750 MB before this migration). Committed to git
+          # (small self-contained bundles); Pages serves them; each bundle
+          # keeps its upstream LICENSE alongside.
+          cp -a games out/site/games
           bash scripts/make-index.sh out/site
       - name: Upload step logs on failure (public debug channel)
         if: failure()

@@ -1,0 +1,10 @@
+Iso City Sandbox
+Upstream: https://github.com/victorqribeiro/isocity
+Author: Victor Ribeiro
+License: MIT (see LICENSE)
+Textures: Kenney.nl "Isometric Landscape" (CC0) via OpenGameArt
+  https://opengameart.org/content/isometric-landscape
+Adapted for FreeToolOnline iframe embed 2026-07-20:
+- stripped og/social meta; added robots noindex; retitled page
+- excluded screenshot.png from ship payload
+- URL hash still encodes the 7x7 tile map (shareable within the iframe)

@@ -1,0 +1,4 @@
+Night Swarm Survivor
+Adapted from ricardo-foundry/canvas-vampire-survivors (MIT, Copyright 2024 Survivor Game).
+Vendored for freetoolonline.com /games/night-swarm-survivor.html.
+Page title rebranded away from commercial trademark references.

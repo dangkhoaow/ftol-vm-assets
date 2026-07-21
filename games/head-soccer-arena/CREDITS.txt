@@ -1,0 +1,9 @@
+Head Soccer Arena
+Adapted from flancast90/cursor-arcade-games soccer module (MIT, Copyright 2026 flancast90).
+https://github.com/flancast90/cursor-arcade-games
+
+Site adapt (freetoolonline.com):
+- VS Code acquireVsCodeApi stubbed to localStorage ftol:headsoccerarena:storage
+- Single-game extract (soccer only); auto-start head soccer
+- Rebranded Head Soccer Arena / Pitch Duel; noindex iframe document
+- Fire124 2026-07-18

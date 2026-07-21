@@ -1,0 +1,2 @@
+Void Trader - vendored from daniel-silva-perez/orbitron (https://github.com/daniel-silva-perez/orbitron), MIT (c) 2026 Daniel Silva Perez.
+Adaptation (freetoolonline.com): UI title rebranded from "Orbitron" to "Void Trader", noindex meta added (canonical URL is the framed /games/void-trader.html page). Single-file engine; no external assets, no analytics, no persistence (permadeath = session-only). Original game (c) Daniel Silva Perez under MIT (see LICENSE).

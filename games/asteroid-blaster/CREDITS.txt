@@ -1,0 +1,36 @@
+Asteroid Blaster - credits and license notes
+==============================================
+
+Game engine (game.js, index.html, ipad.js): Doug McInnes, 2010, MIT license.
+Source: https://github.com/dmcinnes/HTML5-Asteroids (commit 930301c).
+See LICENSE in this folder.
+
+jquery-1.4.1.min.js: jQuery, Copyright 2010 John Resig, MIT license.
+Vendored from the same upstream repository, unmodified.
+
+laser.wav: "laser" by THE_bizniss, freesound.org sound ID 39459.
+License: Creative Commons Attribution 3.0 (CC-BY 3.0).
+https://freesound.org/people/THE_bizniss/sounds/39459/
+Renamed from 39459__THE_bizniss__laser.wav; audio bytes unmodified.
+
+explosion.wav: "missile_explosion" by smcameron, freesound.org sound ID 51467.
+License: Creative Commons Attribution 4.0 (CC-BY 4.0).
+https://freesound.org/people/smcameron/sounds/51467/
+Renamed from 51467__smcameron__missile_explosion.wav; audio bytes unmodified.
+
+Text rendering (2026-07-08 adaptation): the upstream repo bundled
+vector_battle_regular.typeface.js, a canvas vector-font conversion of the
+"Vector Battle" font (c) 1999 by "ck!" / freakyfonts, which carries only a
+bare copyright notice and empty license fields - no permissive license
+grant. That file is NOT vendored here. game.js's Text.renderText was
+rewritten to draw with the browser's built-in canvas font/strokeText API
+instead (no font file, no attribution needed - system fonts are not
+redistributed).
+
+Rebrand note: the upstream project's README and repo name use the literal
+title "Asteroids", which is a registered Atari trademark for the 1979
+arcade game. This vendored build is retitled "Asteroid Blaster" - a
+generic, descriptive name - and no Atari branding, sprites, or audio are
+used; the game mechanic (rotate/thrust ship, shoot rocks that split into
+smaller rocks, screen-wrap) is a public-domain-style arcade archetype
+implemented from scratch in this MIT-licensed codebase.

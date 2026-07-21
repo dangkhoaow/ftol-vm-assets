@@ -1,0 +1,5 @@
+Space Pi Defense
+Adapted from SpacePi by Jack Rugile (js13kGames).
+Upstream: https://github.com/jackrugile/spacepi-js13k
+License: MIT (Copyright (c) 2014 Jack Rugile) — see LICENSE.
+Adaptations (2026-07-17 fire122): noindex meta; localStorage key ftol:spacepidefense:user; page title Space Pi Defense; iframe launcher on FreeToolOnline.

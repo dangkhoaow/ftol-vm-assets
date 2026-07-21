@@ -1,0 +1,4 @@
+Cyber Neon Maze (adapted from Neon Maze by Bhanu Pratap Saini)
+Upstream: https://github.com/bhanu2006-24/neon-maze
+License: MIT (see LICENSE)
+Adaptations for freetoolonline.com: vendored three.js r128 locally (no CDN), page title rebrand to Cyber Neon Maze, added noindex meta in iframe.

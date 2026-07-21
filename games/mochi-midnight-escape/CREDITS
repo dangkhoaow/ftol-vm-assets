@@ -1,0 +1,13 @@
+Mochi and the Midnight Escape
+Copyright (c) 2025 Jasper Renow-Clarke (picosonic)
+License: MIT (see LICENSE)
+Source: https://github.com/picosonic/js13k-2025
+Competition artifact: js13kGames/mochi-and-the-midnight-escape .website/game.zip
+
+Assets (upstream README): Kenney Pico-8 Platformer tiles + Pixel Square Regular font (CC0);
+Cat sprites (Shepardskin / OpenGameArt, no attribution required).
+
+Vendored for FreeToolOnline:
+- Single-file competition build (~42 KB)
+- localStorage key namespaced to ftol:mochimidnightescape
+- robots noindex added

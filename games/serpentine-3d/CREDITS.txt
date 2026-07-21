@@ -1,0 +1,4 @@
+Serpentine 3D (adapted from Serpentine by S-SUJAN-S)
+Upstream: https://github.com/S-SUJAN-S/serpentine-game
+License: MIT (see LICENSE)
+Adaptations for freetoolonline.com: vendored three.js r128 locally (no CDN), Google Fonts removed (system-ui fallbacks), localStorage namespaced ftol:serpentine3d:*, added noindex meta in iframe.

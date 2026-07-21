@@ -1,0 +1,5 @@
+Andromeda Star Shooter (adapted from Andromeda Invaders by Susam Pal)
+Upstream: https://github.com/susam/invaders
+License: MIT (see LICENSE)
+Single-file canvas fixed-shooter with procedural Web Audio SFX.
+Adaptations: noindex meta, title rebrand to Andromeda Star Shooter.

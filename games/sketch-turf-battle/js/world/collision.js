@@ -1,0 +1,50 @@
+'use strict';
+
+/* ============================================================
+   Collision & placement queries against the active map.
+   Buildings AND water both block movement.
+   ============================================================ */
+
+function collideWorld(x, y, r) {
+  // keep on the paper
+  x = clamp(x, r, WORLD.w - r);
+  y = clamp(y, r, WORLD.h - r);
+  for (const b of OBSTACLES) {
+    const fix = circleRectResolve(x, y, r, b.x, b.y, b.w, b.h);
+    if (fix) { x = fix.x; y = fix.y; }
+  }
+  return { x, y };
+}
+
+function pointBlocked(x, y) {
+  if (x < 0 || y < 0 || x > WORLD.w || y > WORLD.h) return true;
+  return OBSTACLES.some(b => x > b.x && x < b.x + b.w && y > b.y && y < b.y + b.h);
+}
+
+/* frozen lakes: walkable but slippery (see Fighter.move) */
+function onIce(x, y) {
+  return ICE.some(r => x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h);
+}
+
+/* lava pools: walkable but searing (damage applied in game update) */
+function lavaAt(x, y) {
+  return LAVA.some(r => x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h);
+}
+
+/* ocean currents: returns the current lane at this point, or null */
+function currentAt(x, y) {
+  for (const c of CURRENTS) {
+    if (x > c.x && x < c.x + c.w && y > c.y && y < c.y + c.h) return c;
+  }
+  return null;
+}
+
+/* Random open spot on the map (for pickups, bot targets) */
+function randomOpenSpot(margin = 60) {
+  for (let i = 0; i < 40; i++) {
+    const x = margin + Math.random() * (WORLD.w - margin * 2);
+    const y = margin + Math.random() * (WORLD.h - margin * 2);
+    if (!OBSTACLES.some(b => circleRectHit(x, y, 30, b.x, b.y, b.w, b.h))) return { x, y };
+  }
+  return { x: WORLD.w / 2, y: WORLD.h / 2 };
+}

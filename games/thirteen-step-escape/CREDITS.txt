@@ -1,0 +1,2 @@
+Thirteen Step Escape adapted from js13kGames/13-steps-to-escape (MIT, Copyright 2024 Satanimax / Jonathan Vallet).
+2D pixel puzzle: reach the flag in 13 steps or actions. Push crates, keys, switches, and boulders.

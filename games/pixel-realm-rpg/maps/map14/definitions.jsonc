@@ -1,0 +1,39 @@
+{
+    "tiles": {
+        "0": "assets/tiles/pared_dungeon_verde.png",
+        "1": "assets/tiles/suelo_dungeon_verde.png",
+        "2": "assets/tiles/pared_puerta_dungeon_verde.png",
+        "3": "assets/tiles/suelo_dungeon_verde_fuente_regenerativa.png",
+        "5": "assets/tiles/suelo_dungeon_verde.png"
+    },
+    "collisions": {
+        "0": { "type": "air" },
+        "1": { "type": "solid" },
+        "2": {
+            "type": "door",
+            "target_map": "map11",
+            "target_tile": { "x": 6, "y": 8 }
+        },
+        "4": {
+            "type": "heal",
+            "infinity": true,
+            "heals": 15,
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterInteractText": "Una fuente enorme. El agua restaura tus fuerzas. +15 HP."
+        },
+        "5": { "type": "entity_spawn", "entity": "bat_guardian", "floorCollision": 0 }
+    },
+    "entities": {
+        "bat_guardian": {
+            "sprite": "assets/sprites/enemy/bat.png",
+            "health": 8,
+            "damage": 3,
+            "speed": 2,
+            "behavior": "chase",
+            "chaseRadius": 7,
+            "exp_drop": 50
+        }
+    }
+}

@@ -1,0 +1,734 @@
+'use strict';
+
+/* ============================================================
+   Sketch helpers — everything that makes lines look hand-drawn.
+   All jitter comes from a seeded rng so the art never flickers.
+   ============================================================ */
+
+/* The drawing palette is mutable: every draw function reads these
+   at call time, so switching palette re-skins ALL sketch art.
+   'chalk' turns the whole world into a blackboard drawing. */
+let INK = '#4a4a48';
+let INK_LIGHT = '#8d8d88';
+let PAPER = '#f0efe9';
+
+const PALETTES = {
+  default:   { ink: '#4a4a48', light: '#8d8d88', paper: '#f0efe9' },
+  chalk:     { ink: '#f0f2ec', light: '#a9b8ae', paper: '#2c3b35' },
+  deep:      { ink: '#3d5566', light: '#7e97a6', paper: '#e2eef2' },
+  night:     { ink: '#dce8f2', light: '#8fb0cc', paper: '#233c5e' },
+};
+
+let PALETTE_NAME = 'default';
+
+function setPalette(name) {
+  const p = PALETTES[name] || PALETTES.default;
+  PALETTE_NAME = PALETTES[name] ? name : 'default';
+  INK = p.ink;
+  INK_LIGHT = p.light;
+  PAPER = p.paper;
+}
+
+/* menu art (cards, vignettes, previews) must always render on the
+   default palette, whatever map the match/attract-mode left active */
+function withDefaultPalette(fn) {
+  const prev = PALETTE_NAME;
+  setPalette('default');
+  try { fn(); } finally { setPalette(prev); }
+}
+
+
+/* A wobbly polyline through the given points */
+function wobblyPath(ctx, rng, pts, wobble = 1.4) {
+  ctx.beginPath();
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [x1, y1] = pts[i], [x2, y2] = pts[i + 1];
+    const segs = Math.max(2, Math.floor(dist(x1, y1, x2, y2) / 26));
+    if (i === 0) ctx.moveTo(x1 + rand(rng, -wobble, wobble), y1 + rand(rng, -wobble, wobble));
+    for (let s = 1; s <= segs; s++) {
+      const t = s / segs;
+      ctx.lineTo(
+        lerp(x1, x2, t) + rand(rng, -wobble, wobble),
+        lerp(y1, y2, t) + rand(rng, -wobble, wobble)
+      );
+    }
+  }
+}
+
+function wobblyRect(ctx, rng, x, y, w, h, wobble = 1.4) {
+  wobblyPath(ctx, rng, [[x, y], [x + w, y], [x + w, y + h], [x, y + h], [x, y]], wobble);
+}
+
+function wobblyCircle(ctx, rng, cx, cy, r, wobble = 0.05) {
+  ctx.beginPath();
+  const segs = Math.max(10, Math.floor(r / 3));
+  for (let i = 0; i <= segs; i++) {
+    const a = (i / segs) * Math.PI * 2;
+    const rr = r * (1 + rand(rng, -wobble, wobble));
+    const x = cx + Math.cos(a) * rr, y = cy + Math.sin(a) * rr;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.closePath();
+}
+
+/* Diagonal pencil hatching inside a rect */
+function hatchRect(ctx, rng, x, y, w, h, gap = 6) {
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(x, y, w, h);
+  ctx.clip();
+  ctx.beginPath();
+  for (let d = -h; d < w; d += gap) {
+    ctx.moveTo(x + d + rand(rng, -1, 1), y + h);
+    ctx.lineTo(x + d + h + rand(rng, -1, 1), y);
+  }
+  ctx.strokeStyle = INK_LIGHT;
+  ctx.lineWidth = 0.8;
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* Loose scribble blob — used for tree canopies and smudges */
+function scribbleBlob(ctx, rng, cx, cy, r) {
+  ctx.beginPath();
+  let a = rand(rng, 0, Math.PI * 2);
+  ctx.moveTo(cx + Math.cos(a) * r, cy + Math.sin(a) * r);
+  for (let i = 0; i < 14; i++) {
+    a += rand(rng, 0.5, 1.4);
+    const rr = r * rand(rng, 0.4, 1.05);
+    ctx.quadraticCurveTo(
+      cx + Math.cos(a - 0.4) * rr * 1.3, cy + Math.sin(a - 0.4) * rr * 1.3,
+      cx + Math.cos(a) * rr, cy + Math.sin(a) * rr
+    );
+  }
+}
+
+/* ============================================================
+   Paint splats — the signature. An irregular main blob plus
+   satellite droplets, drawn once onto the paint canvas.
+   ============================================================ */
+function drawSplat(ctx, rng, x, y, r, color) {
+  ctx.fillStyle = color;
+  // main blob: lumpy polygon of arcs
+  ctx.beginPath();
+  const lobes = 8 + Math.floor(rng() * 5);
+  for (let i = 0; i <= lobes; i++) {
+    const a = (i / lobes) * Math.PI * 2;
+    const rr = r * rand(rng, 0.62, 1.18);
+    const px = x + Math.cos(a) * rr, py = y + Math.sin(a) * rr;
+    if (i === 0) ctx.moveTo(px, py);
+    else {
+      const ma = a - Math.PI / lobes;
+      const mr = r * rand(rng, 0.75, 1.28);
+      ctx.quadraticCurveTo(x + Math.cos(ma) * mr, y + Math.sin(ma) * mr, px, py);
+    }
+  }
+  ctx.closePath();
+  ctx.fill();
+  // satellite droplets
+  const drops = 3 + Math.floor(rng() * 4 + r / 30);
+  for (let i = 0; i < drops; i++) {
+    const a = rand(rng, 0, Math.PI * 2);
+    const d = r * rand(rng, 1.05, 1.9);
+    ctx.beginPath();
+    ctx.arc(x + Math.cos(a) * d, y + Math.sin(a) * d, r * rand(rng, 0.07, 0.22), 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+/* Runs fn with the context rigged so every fill and stroke lands as
+   fat INK. Painting the figure through this first, then repainting
+   it in real colours on top, fuses all the separate shapes into one
+   continuous hand-inked contour — no more "assembled from parts". */
+function withInkSilhouette(ctx, fn, grow = 0.3) {
+  let proto = Object.getPrototypeOf(ctx);
+  const desc = p => {
+    for (let o = proto; o; o = Object.getPrototypeOf(o)) {
+      const d = Object.getOwnPropertyDescriptor(o, p);
+      if (d) return d;
+    }
+    return null;
+  };
+  const dFill = desc('fillStyle'), dStroke = desc('strokeStyle'), dLW = desc('lineWidth');
+  if (!dFill || !dFill.set || !dLW || !dLW.get) { fn(); return; }   // stub context (tests)
+  dFill.set.call(ctx, INK);
+  dStroke.set.call(ctx, INK);
+  Object.defineProperty(ctx, 'fillStyle', { configurable: true, get: () => INK, set: () => {} });
+  Object.defineProperty(ctx, 'strokeStyle', { configurable: true, get: () => INK, set: () => {} });
+  Object.defineProperty(ctx, 'lineWidth', {
+    configurable: true,
+    get: () => dLW.get.call(ctx) - grow,
+    set: v => dLW.set.call(ctx, v + grow),
+  });
+  try {
+    fn();
+  } finally {
+    delete ctx.fillStyle;
+    delete ctx.strokeStyle;
+    delete ctx.lineWidth;
+  }
+}
+
+/* ============================================================
+   Characters — tiny doodle people, each with their own build,
+   outfit, hair and weapon silhouette. scale 1 ≈ 34px tall.
+     SPLASH: scout — cap, scarf, antenna backpack, knee pads
+     BAM:  rusher — spikes, cheek plaster, wristband, belt
+     ZIP:  duelist — ponytail, scope eye, long-barrel pen
+     BLOB: painter — headphone beanie, splattered apron, brush
+   ============================================================ */
+function drawCharacter(ctx, teamId, x, y, opts = {}) {
+  const { scale = 1, walk = 0, aim = 0, firing = false, pose = 'battle' } = opts;
+  const team = TEAMS[teamId];
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(scale, scale);
+  ctx.lineWidth = 1.2;
+  ctx.strokeStyle = INK;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+
+  const bob = Math.sin(walk * 10) * 1.4;
+  // run pose: body bounces between footfalls; battle: gentle bob
+  const by = pose === 'run'
+    ? 0.6 - Math.abs(Math.cos(walk * 10)) * 1.3
+    : bob * 0.3;
+  const skin = ['#ba7a4a', '#e8b48c', '#d99a62', '#8d5a38'][teamId];
+  const bodyW = [13, 12, 11, 15][teamId];   // build: ZIP slim, BLOB round
+  const hw = bodyW / 2;
+  const runS = pose === 'run' ? Math.sin(walk * 10) : 0;   // stride phase
+
+  if (pose === 'run') {   // contact shadow keeps the jog grounded
+    ctx.fillStyle = 'rgba(60,60,55,0.13)';
+    ctx.beginPath();
+    ctx.ellipse(0, 15.6, 8.5 - Math.abs(runS) * 1.5, 1.8, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  /* the figure is painted twice: first as one fat ink silhouette
+     (fuses the parts into a single sticker-like contour), then in
+     real colours with shading on top. sil = silhouette pass. */
+  const paintFigure = sil => {
+  ctx.lineWidth = 1.2;
+  ctx.strokeStyle = INK;
+
+  // legs + shoes
+  if (pose === 'run') {
+    // scissor run cycle — legs swing sideways, feet lift on the kick
+    const lx = -3.5 + runS * 3.1, rx = 3.5 - runS * 3.1;
+    const lLift = Math.max(0, runS) * 1.8, rLift = Math.max(0, -runS) * 1.8;
+    ctx.beginPath();
+    ctx.moveTo(-3.5, 8.5);
+    ctx.quadraticCurveTo(-3.5 + runS * 1.4, 11.5, lx, 14 - lLift);
+    ctx.moveTo(3.5, 8.5);
+    ctx.quadraticCurveTo(3.5 - runS * 1.4, 11.5, rx, 14 - rLift);
+    ctx.stroke();
+    ctx.fillStyle = '#333';
+    ctx.beginPath(); ctx.ellipse(lx - 0.3, 14.5 - lLift, 2.6, 1.4, runS * 0.26, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(rx + 0.3, 14.5 - rLift, 2.6, 1.4, -runS * 0.26, 0, Math.PI * 2); ctx.fill();
+  } else {
+    ctx.beginPath();
+    ctx.moveTo(-3.5, 9 + bob * 0.4); ctx.lineTo(-3.5, 14 - bob);
+    ctx.moveTo(3.5, 9 - bob * 0.4); ctx.lineTo(3.5, 14 + bob);
+    ctx.stroke();
+    ctx.fillStyle = '#333';
+    ctx.beginPath(); ctx.ellipse(-3.8, 14.5 - bob, 2.6, 1.4, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(3.8, 14.5 + bob, 2.6, 1.4, 0, 0, Math.PI * 2); ctx.fill();
+  }
+  // bottoms — a different cut per fighter (hips rock with the stride)
+  ctx.save();
+  if (pose === 'run') {
+    ctx.translate(0, 6.8);
+    ctx.rotate(runS * 0.09);
+    ctx.translate(0, -6.8);
+  }
+  if (teamId === 0) {
+    // SPLASH: cargo shorts with side pockets
+    ctx.fillStyle = '#3c4a66';
+    ctx.beginPath(); ctx.roundRect(-5, 6.2, 10, 5, 1.6); ctx.fill(); ctx.stroke();
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, 8); ctx.lineTo(0, 11.2); ctx.stroke();
+    ctx.fillStyle = '#4c5a76';
+    ctx.beginPath(); ctx.roundRect(-5.6, 7.6, 2.2, 2.4, 0.6); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(3.4, 7.6, 2.2, 2.4, 0.6); ctx.fill(); ctx.stroke();
+    ctx.lineWidth = 1.2;
+  } else if (teamId === 1) {
+    // BAM: short sporty shorts with white side stripes
+    ctx.fillStyle = '#4a3c40';
+    ctx.beginPath(); ctx.roundRect(-5, 6.2, 10, 3.8, 1.6); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.1;
+    ctx.beginPath();
+    ctx.moveTo(-4.2, 6.6); ctx.lineTo(-4.2, 9.6);
+    ctx.moveTo(4.2, 6.6); ctx.lineTo(4.2, 9.6);
+    ctx.stroke();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, 7.6); ctx.lineTo(0, 10); ctx.stroke();
+    ctx.lineWidth = 1.2;
+  } else if (teamId === 2) {
+    // ZIP: little pleated skirt
+    ctx.fillStyle = '#54492e';
+    ctx.beginPath();
+    ctx.moveTo(-4, 6.2);
+    ctx.lineTo(4, 6.2);
+    ctx.lineTo(6, 10.6);
+    ctx.lineTo(-6, 10.6);
+    ctx.closePath();
+    ctx.fill(); ctx.stroke();
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(-2, 6.6); ctx.lineTo(-3, 10.4);
+    ctx.moveTo(2, 6.6); ctx.lineTo(3, 10.4);
+    ctx.stroke();
+    ctx.lineWidth = 1.2;
+  } else if (pose === 'run') {
+    // BLOB running: each baggy pant leg swings with its own leg
+    const pant = (cx, s) => {
+      ctx.save();
+      ctx.translate(cx, 7.4);
+      ctx.rotate(s * 0.38);
+      ctx.fillStyle = '#38463a';
+      ctx.beginPath(); ctx.roundRect(-2.7, -1.2, 5.4, 4.4, 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#efe9dc';
+      ctx.beginPath(); ctx.roundRect(-2.4, 2, 4.8, 1.6, 0.8); ctx.fill(); ctx.stroke();
+      ctx.restore();
+    };
+    pant(-2.7, runS);
+    pant(2.7, -runS);
+    ctx.fillStyle = '#38463a';
+    ctx.beginPath(); ctx.roundRect(-5.4, 6.2, 10.8, 3, 2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#f0b41c';
+    ctx.beginPath(); ctx.arc(-2.6, 8.2, 0.9, 0, Math.PI * 2); ctx.fill();
+  } else {
+    // BLOB: baggy painter pants, rolled cuffs, a stray drip
+    ctx.fillStyle = '#38463a';
+    ctx.beginPath(); ctx.roundRect(-5.4, 6.2, 10.8, 6.4, 2); ctx.fill(); ctx.stroke();
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, 8.4); ctx.lineTo(0, 12.6); ctx.stroke();
+    ctx.fillStyle = '#efe9dc';
+    ctx.beginPath(); ctx.roundRect(-5.4, 11.4, 4.4, 1.6, 0.8); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(1, 11.4, 4.4, 1.6, 0.8); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#f0b41c';
+    ctx.beginPath(); ctx.arc(-2.6, 9.4, 0.9, 0, Math.PI * 2); ctx.fill();
+    ctx.lineWidth = 1.2;
+  }
+  ctx.restore();
+  if (teamId === 0) {                  // SPLASH: knee pads (follow the stride)
+    ctx.fillStyle = '#dfe3ea';
+    ctx.beginPath(); ctx.arc(-3.5 + runS * 1.7, 12 - Math.max(0, runS) * 0.8, 1.5, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(3.5 - runS * 1.7, 12 - Math.max(0, -runS) * 0.8, 1.5, 0, Math.PI * 2); ctx.fill();
+  }
+
+  // SPLASH's antenna backpack pokes out behind the body
+  if (teamId === 0) {
+    ctx.fillStyle = team.dark;
+    ctx.beginPath(); ctx.roundRect(-hw - 2.4, -1 + by, 3, 8, 1.4); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-hw - 1, -1 + by); ctx.lineTo(-hw - 1, -8 + by); ctx.stroke();
+    ctx.fillStyle = '#e6392a';
+    ctx.beginPath(); ctx.arc(-hw - 1, -8.6 + by, 1.1, 0, Math.PI * 2); ctx.fill();
+  }
+  // ZIP's long ponytail swings behind
+  if (teamId === 2) {
+    ctx.strokeStyle = '#5a3d20';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(-4, -11 + by);
+    ctx.quadraticCurveTo(-8 - (pose === 'run' ? runS * 2.2 : Math.sin(walk * 6) * 1.5), -4 + by, -6.5, 3 + by);
+    ctx.stroke();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.2;
+  }
+
+  // body (team colour), per-fighter outfit details
+  ctx.fillStyle = team.color;
+  ctx.beginPath();
+  ctx.roundRect(-hw, -2 + by, bodyW, 11, 3);
+  ctx.fill(); ctx.stroke();
+  if (teamId === 0) {           // SPLASH: chest pocket grid + scarf
+    ctx.beginPath();
+    ctx.moveTo(-hw, 2.5); ctx.lineTo(hw, 2.5);
+    ctx.moveTo(0, -2 + by); ctx.lineTo(0, 2.5);
+    ctx.stroke();
+    ctx.fillStyle = '#f0b41c';
+    ctx.beginPath(); ctx.roundRect(-4, -3.4 + by, 8, 2.6, 1.3); ctx.fill(); ctx.stroke();
+  } else if (teamId === 1) {    // BAM: belt + lightning doodle + wristband
+    ctx.fillStyle = '#3c3c3a';
+    ctx.beginPath(); ctx.roundRect(-hw, 5.4, bodyW, 2, 1); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 1.05;
+    ctx.beginPath();
+    ctx.moveTo(-1.5, -1 + by); ctx.lineTo(1, 1.5 + by); ctx.lineTo(-0.5, 1.5 + by); ctx.lineTo(2, 4.5 + by);
+    ctx.stroke();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.2;
+  } else if (teamId === 2) {    // ZIP: zip line + star badge
+    ctx.beginPath(); ctx.moveTo(0, -2 + by); ctx.lineTo(0, 9 + by); ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    for (let k = 0; k <= 5; k++) {
+      const a = -Math.PI / 2 + k * Math.PI * 4 / 5;
+      const px = -3 + Math.cos(a) * 1.8, py = 1 + by + Math.sin(a) * 1.8;
+      k === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+    }
+    ctx.closePath(); ctx.fill();
+  } else {                      // BLOB: splattered apron + brush in pocket
+    ctx.fillStyle = '#efe9dc';
+    ctx.beginPath(); ctx.roundRect(-4.4, 0 + by, 8.8, 9, 2); ctx.fill(); ctx.stroke();
+    for (const [sx, sy, sc] of [[-2, 3, '#e6392a'], [1.6, 5.5, '#2f66e0'], [-0.6, 7, '#f0b41c']]) {
+      ctx.fillStyle = sc;
+      ctx.beginPath(); ctx.arc(sx, sy + by, 1, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.strokeStyle = '#7a5a38';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(3, 1.5 + by); ctx.lineTo(3, -2.5 + by); ctx.stroke();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.2;
+  }
+
+  if (!sil) {
+    // torso: marker shade down the right, sheen up the left
+    ctx.strokeStyle = 'rgba(0,0,0,0.14)';
+    ctx.lineWidth = 2.2;
+    ctx.beginPath();
+    ctx.moveTo(hw - 1.6, 0.5 + by);
+    ctx.quadraticCurveTo(hw - 0.8, 4 + by, hw - 1.9, 7.4 + by);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.32)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(-hw + 1.7, -0.4 + by);
+    ctx.quadraticCurveTo(-hw + 1, 2 + by, -hw + 1.8, 4.6 + by);
+    ctx.stroke();
+  }
+
+  // weapon — battle: held toward aim; run: a per-fighter carry pose
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 1.2;
+  if (pose === 'run') {
+    // [tx, ty, angle] — no one jogs in a firing stance, and no two match
+    const [wx, wy, rot] = [
+      [4.5, 0,   -1.10],   // SPLASH: blaster high across the chest
+      [5,   0.5, -0.78],   // BAM: scatter thrust up-forward mid-charge
+      [6.5, 0.2, -1.38],   // ZIP: pen straight up like a banner
+      [2,   4,   -0.52],   // BLOB: roller cradled at the belly
+    ][teamId];
+    const a = rot + runS * 0.07;
+    const cosA = Math.cos(a), sinA = Math.sin(a);
+    // arms reach from the shoulders to wherever the grips end up
+    const h1x = wx + 6 * cosA + 0.8 * sinA, h1y = wy + by + 6 * sinA - 0.8 * cosA;
+    const h2x = wx + 9.6 * cosA - 1.2 * sinA, h2y = wy + by + 9.6 * sinA + 1.2 * cosA;
+    ctx.beginPath();
+    ctx.moveTo(-hw + 1.5, 1 + by); ctx.quadraticCurveTo(0, 2.5 + by, h1x, h1y);
+    ctx.moveTo(hw - 1.5, 1.5 + by); ctx.lineTo(h2x, h2y);
+    ctx.stroke();
+    ctx.save();
+    ctx.translate(wx, wy + by);
+    ctx.rotate(a);
+  } else {
+    ctx.save();
+    ctx.rotate(aim);
+    // arms reaching for the grip
+    ctx.beginPath();
+    ctx.moveTo(1.5, -2.8); ctx.lineTo(5.8, -1.2);
+    ctx.moveTo(1.5, 3.2); ctx.lineTo(9, 1.6);
+    ctx.stroke();
+  }
+  ctx.fillStyle = team.color;
+  if (teamId === 1) {
+    // Splat Scatter: stubby double barrel
+    ctx.beginPath(); ctx.roundRect(4, -4, 8.4, 3.6, 1.6); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(4, 0.4, 8.4, 3.6, 1.6); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.roundRect(11.2, -3, 3.2, 6, 1.2); ctx.fill(); ctx.stroke();
+  } else if (teamId === 2) {
+    // Longshot Pen: long thin barrel with a scope ring
+    ctx.beginPath(); ctx.roundRect(4, -1.7, 15.5, 3.4, 1.4); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(19.5, -1.7); ctx.lineTo(22.5, 0); ctx.lineTo(19.5, 1.7); ctx.closePath();
+    ctx.fillStyle = '#3c3c3a'; ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.arc(9.5, -3.4, 1.9, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff'; ctx.fill(); ctx.stroke();
+  } else if (teamId === 3) {
+    // Blob Roller: fat round blob-thrower
+    ctx.beginPath(); ctx.ellipse(8.5, 0, 5.8, 4.2, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.roundRect(13.2, -2.3, 4, 4.6, 1.8); ctx.fill(); ctx.stroke();
+  } else {
+    // SketchBlaster: the classic
+    ctx.beginPath(); ctx.roundRect(4, -2.8, 11.5, 5.6, 1.8); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.roundRect(12, -1.7, 3.8, 3.4, 1.2); ctx.fill(); ctx.stroke();
+  }
+  if (!sil) {
+    // sheen along the top of the barrel
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(5.5, [-1.9, -3.1, -0.9, -2.9][teamId]);
+    ctx.lineTo([12.5, 10.5, 17, 10.5][teamId], [-1.7, -2.9, -0.8, -2.5][teamId]);
+    ctx.stroke();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.2;
+  }
+  // both hands gripping
+  ctx.fillStyle = skin;
+  ctx.lineWidth = 1.05;
+  ctx.beginPath(); ctx.arc(6, -0.8, 1.7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.arc(9.6, 1.2, 1.7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.lineWidth = 1.2;
+  if (firing) {
+    ctx.fillStyle = team.color;
+    ctx.beginPath(); ctx.arc(teamId === 2 ? 24 : 18.5, 0, 2.1, 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.restore();
+
+  // head
+  ctx.fillStyle = skin;
+  ctx.beginPath(); ctx.arc(0, -8 + by, 6.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  // eyes
+  ctx.fillStyle = '#222';
+  ctx.beginPath(); ctx.arc(-2, -8.5 + by, 0.9, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(2, -8.5 + by, 0.9, 0, Math.PI * 2); ctx.fill();
+  // little open-mouth grin, like the reference doodles
+  ctx.strokeStyle = '#222';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(0.4, -6.6 + by, 2, 0.25, Math.PI - 0.55); ctx.stroke();
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 1.2;
+  if (!sil) {
+    // face: shade along the right jaw, sheen on the brow, blush
+    ctx.strokeStyle = 'rgba(0,0,0,0.10)';
+    ctx.lineWidth = 1.9;
+    ctx.beginPath(); ctx.arc(0, -8 + by, 5.2, -0.5, 0.8); ctx.stroke();
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.arc(0, -8 + by, 5, Math.PI * 1.1, Math.PI * 1.45); ctx.stroke();
+    ctx.fillStyle = 'rgba(232,110,100,0.30)';
+    ctx.beginPath(); ctx.arc(-3.7, -5.9 + by, 1.15, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(3.7, -5.9 + by, 1.15, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.2;
+  }
+  if (teamId === 1) {           // BAM: cheek plaster
+    ctx.strokeStyle = '#e8d5a4';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(2.8, -5.6 + by); ctx.lineTo(5, -6.8 + by); ctx.stroke();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.2;
+  }
+  if (teamId === 2) {           // ZIP: scope over the right eye
+    ctx.strokeStyle = '#3c3c3a';
+    ctx.lineWidth = 1.3;
+    ctx.beginPath(); ctx.arc(2, -8.5 + by, 2.4, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(2, -11.6 + by); ctx.lineTo(2, -10.2 + by);
+    ctx.moveTo(2, -6.8 + by); ctx.lineTo(2, -5.4 + by);
+    ctx.stroke();
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.2;
+  }
+
+  const hy = -8 + by; // hat anchor
+  if (teamId === 0) { // SPLASH — blue cap with brim
+    ctx.fillStyle = team.color;
+    ctx.beginPath(); ctx.arc(0, hy - 1.5, 6, Math.PI, 0); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(-1, hy - 3.4, 9.5, 2.6, 1.2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(-2, hy - 4, 1.2, 0, Math.PI * 2); ctx.fill();
+  } else if (teamId === 1) { // BAM — red spiky hair
+    ctx.fillStyle = team.color;
+    ctx.beginPath();
+    ctx.moveTo(-6, hy - 1);
+    for (let i = 0; i < 5; i++) {
+      ctx.lineTo(-6 + i * 3 + 1.5, hy - 8 - (i % 2) * 1.5);
+      ctx.lineTo(-6 + (i + 1) * 3, hy - 1.5);
+    }
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+  } else if (teamId === 2) { // ZIP — yellow cap, brim back
+    ctx.fillStyle = team.color;
+    ctx.beginPath(); ctx.arc(0, hy - 1.5, 6, Math.PI, 0); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(-9.5, hy - 3.2, 8, 2.4, 1.2); ctx.fill(); ctx.stroke();
+  } else { // BLOB — green beanie with headphones + glasses
+    ctx.fillStyle = team.color;
+    ctx.beginPath(); ctx.roundRect(-6.2, hy - 7, 12.4, 5.4, 2.4); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = '#3c3c3a';
+    ctx.beginPath(); ctx.roundRect(-7.6, hy - 3.4, 2.4, 4, 1.1); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.roundRect(5.2, hy - 3.4, 2.4, 4, 1.1); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = '#222'; ctx.lineWidth = 1.1;
+    ctx.beginPath(); ctx.arc(-2.2, -8.3 + by, 2.1, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(2.2, -8.3 + by, 2.1, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-0.4, -8.3); ctx.lineTo(0.4, -8.3); ctx.stroke();
+  }
+  if (!sil) {
+    // headwear: darker strands in BAM's hair, a sheen on the others
+    if (teamId === 1) {
+      ctx.strokeStyle = 'rgba(0,0,0,0.20)';
+      ctx.lineWidth = 1.3;
+      ctx.beginPath();
+      ctx.moveTo(-2.8, hy - 2); ctx.lineTo(-3.8, hy - 6);
+      ctx.moveTo(2, hy - 2); ctx.lineTo(2.8, hy - 6.5);
+      ctx.stroke();
+    } else {
+      ctx.strokeStyle = 'rgba(255,255,255,0.30)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      if (teamId === 3) ctx.arc(0, hy - 4.2, 4.4, Math.PI * 1.05, Math.PI * 1.45);
+      else ctx.arc(0, hy - 1.5, 4.3, Math.PI * 1.08, Math.PI * 1.5);
+      ctx.stroke();
+    }
+    ctx.strokeStyle = INK;
+    ctx.lineWidth = 1.2;
+  }
+  };   // end paintFigure
+
+  withInkSilhouette(ctx, () => paintFigure(true));
+  paintFigure(false);
+
+  ctx.restore();
+}
+
+/* Doodle paint bomb (round bomb with fuse) */
+function drawBombIcon(ctx, x, y, s = 1) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(s, s);
+  ctx.lineWidth = 1.6;
+  ctx.strokeStyle = INK;
+  ctx.fillStyle = '#3c3c3a';
+  ctx.beginPath(); ctx.arc(0, 1, 7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(-2.4, -1.4, 2, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(3, -5); ctx.quadraticCurveTo(6, -9, 9, -8); ctx.stroke();
+  // spark
+  ctx.strokeStyle = '#e6392a';
+  ctx.beginPath();
+  ctx.moveTo(9, -11); ctx.lineTo(9, -5);
+  ctx.moveTo(6, -8); ctx.lineTo(12, -8);
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* Speed boots pickup: a winged sneaker doodle */
+function drawBootsIcon(ctx, x, y) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.lineWidth = 1.6;
+  ctx.strokeStyle = INK;
+  ctx.fillStyle = '#f0b41c';
+  ctx.beginPath();
+  ctx.moveTo(-8, -6);
+  ctx.lineTo(-8, 4);
+  ctx.quadraticCurveTo(-8, 7, -4, 7);
+  ctx.lineTo(9, 7);
+  ctx.quadraticCurveTo(12, 7, 11, 3);
+  ctx.quadraticCurveTo(10, 0, 4, -1);
+  ctx.lineTo(-2, -2);
+  ctx.lineTo(-2, -6);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.rect(-8, 4, 19, 3); ctx.fill(); ctx.stroke();
+  // wing
+  ctx.strokeStyle = INK;
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.moveTo(-8, -4);
+  ctx.quadraticCurveTo(-15, -8, -13, -1);
+  ctx.quadraticCurveTo(-11, 1, -8, 0);
+  ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  ctx.restore();
+}
+
+/* Shield pickup: a bubble with a sheen */
+function drawShieldIcon(ctx, x, y) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.lineWidth = 1.8;
+  ctx.strokeStyle = '#2f66e0';
+  ctx.fillStyle = 'rgba(120,170,230,0.3)';
+  ctx.beginPath(); ctx.arc(0, 0, 9, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(0, 0, 5.5, -2.2, -0.9); ctx.stroke();
+  ctx.restore();
+}
+
+/* The big red button on its pedestal */
+function drawRedButton(ctx, x, y, t) {
+  ctx.save();
+  ctx.translate(x, y);
+  const pop = 1 + Math.sin(t * 4) * 0.06;
+  ctx.scale(pop, pop);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = INK;
+  ctx.fillStyle = '#c9c9c2';
+  ctx.beginPath(); ctx.ellipse(0, 6, 15, 7, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#e6392a';
+  ctx.beginPath(); ctx.ellipse(0, 0, 11, 8, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,0.5)';
+  ctx.beginPath(); ctx.ellipse(-3, -2.5, 4, 2.2, -0.4, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+}
+
+/* Falling doodle rocket */
+function drawRocket(ctx, x, y, color) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(Math.PI * 0.75); // nose down-left as it falls
+  ctx.lineWidth = 1.8;
+  ctx.strokeStyle = INK;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(14, 0);
+  ctx.quadraticCurveTo(6, -7, -8, -6);
+  ctx.lineTo(-8, 6);
+  ctx.quadraticCurveTo(6, 7, 14, 0);
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.arc(3, 0, 3, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  // fins
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.moveTo(-8, -6); ctx.lineTo(-14, -10); ctx.lineTo(-11, -1); ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-8, 6); ctx.lineTo(-14, 10); ctx.lineTo(-11, 1); ctx.closePath(); ctx.fill(); ctx.stroke();
+  // exhaust scribble
+  ctx.strokeStyle = INK_LIGHT;
+  ctx.beginPath();
+  ctx.moveTo(-15, 0); ctx.lineTo(-20, -3); ctx.lineTo(-24, 2); ctx.lineTo(-28, -1);
+  ctx.stroke();
+  ctx.restore();
+}
+
+/* Adventure pickup: the Rainbow Blaster, glowing on its pedestal */
+function drawSuperWeaponIcon(ctx, x, y, t = 0) {
+  ctx.save();
+  ctx.translate(x, y);
+  // rainbow halo
+  const cols = ['#e6392a', '#f0b41c', '#3ba24f', '#2f66e0'];
+  for (let i = 0; i < 4; i++) {
+    ctx.strokeStyle = cols[i];
+    ctx.globalAlpha = 0.7;
+    ctx.lineWidth = 2.4;
+    ctx.beginPath();
+    ctx.arc(0, 2, 14 + i * 3.5, Math.PI + 0.35, -0.35);
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1;
+  // the blaster itself
+  ctx.rotate(-0.5 + Math.sin(t * 3) * 0.08);
+  ctx.strokeStyle = INK;
+  ctx.lineWidth = 1.6;
+  ctx.fillStyle = '#fdfdf8';
+  ctx.beginPath(); ctx.roundRect(-9, -4, 15, 8, 2.4); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#f0b41c';
+  ctx.beginPath(); ctx.roundRect(4.5, -2.6, 5, 5.2, 1.6); ctx.fill(); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-6, 4); ctx.lineTo(-8, 9); ctx.stroke();
+  // sparkle
+  ctx.strokeStyle = '#f0b41c';
+  ctx.lineWidth = 1.4;
+  ctx.beginPath();
+  ctx.moveTo(10, -8); ctx.lineTo(14, -8);
+  ctx.moveTo(12, -10); ctx.lineTo(12, -6);
+  ctx.stroke();
+  ctx.restore();
+}

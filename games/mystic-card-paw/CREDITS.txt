@@ -1,0 +1,8 @@
+Mystic Card Paw (adapted from Poker Mysterio)
+Original game: ZYXPlay/js13k-2025
+Author: ZYXPlay
+License: MIT, Copyright (c) 2025 ZYXPlay
+JS13K Games 2025 entry (Black Cat theme)
+
+FreeToolOnline adaptations: noindex meta on iframe document, English rebrand title Mystic Card Paw,
+localStorage key namespaced to ftol:mysticcardpaw:highScore, relative asset paths preserved, LICENSE shipped next to engine.

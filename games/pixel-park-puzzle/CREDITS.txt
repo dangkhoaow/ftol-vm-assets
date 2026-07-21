@@ -1,0 +1,9 @@
+Pixel Park Puzzle
+Upstream: https://github.com/masonlet/pixel-parker (Pixel Parker)
+Author: Mason L'Etoile
+License: MIT (see LICENSE)
+Adaptations for FreeToolOnline:
+- vite base ./ for iframe subpath
+- noindex meta on iframe document
+- removed Digit1 debug auto-win
+- vendored production build (no CDN)

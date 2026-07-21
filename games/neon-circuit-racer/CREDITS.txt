@@ -1,0 +1,1 @@
+Neon Circuit Racer adapted from GodBook/neon-rush-racing-game (MIT, Copyright 2026 GodBook).

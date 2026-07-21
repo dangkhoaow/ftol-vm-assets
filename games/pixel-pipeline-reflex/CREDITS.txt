@@ -1,0 +1,9 @@
+Pixel Pipeline Reflex
+
+Adapted from Scanline Sprint by bte808 (https://github.com/bte808/fun-20260528-a-scanline-sprint)
+MIT License - Copyright (c) 2026 bte808
+
+Adapted 2026-07-10 for freetoolonline.com/games/pixel-pipeline-reflex.html:
+- noindex meta on iframe document
+- localStorage keys namespaced to ftol:pixelpipelinereflex:*
+- page title rebranded to Pixel Pipeline Reflex

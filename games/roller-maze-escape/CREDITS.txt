@@ -1,0 +1,6 @@
+Rollermaze
+Adapted from picosonic/js13k-2024 (https://github.com/picosonic/js13k-2024)
+MIT License - Copyright (c) 2024 Jasper Renow-Clarke
+JS13K 2024 entry: roll a cuboctahedron through timed mazes; floor buttons open paths; sentinels chase.
+Uses microW WebGL renderer (w.js, MIT/Unlicense lineage) and miniMusic-style audio (music.js).
+Runtime-only bundle (~59 KB); session-only, no localStorage.

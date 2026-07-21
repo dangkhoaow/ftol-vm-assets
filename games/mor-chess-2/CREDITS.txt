@@ -1,0 +1,35 @@
+Mor Chess 2
+Original author: eguneys (https://github.com/eguneys)
+Source: https://github.com/js13kGames/mor-chess-2 (js13kGames org mirror of the
+        js13kGames 2025 "Black Cat" competition entry; original dev repo
+        https://github.com/eguneys/morchess2_js13k_25)
+License: MIT (Copyright (c) 2025 eguneys) - see LICENSE in this directory.
+
+Vendored files:
+- index.html, assets/index.min.js, assets/index-DctGsCWz.css
+  Extracted verbatim from the repo's .website/game.zip - the exact,
+  already-built, roadroller-minified competition submission bundle
+  (js13k requires <=13KB total; this build is 13,534 bytes uncompressed).
+  Using the pre-built competition artifact (rather than re-running the
+  Vite+TypeScript build ourselves) guarantees byte-for-byte parity with
+  the version that was actually judged/played, with zero local build
+  environment risk.
+
+Adaptation for freetoolonline.com:
+- Added <meta name="robots" content="noindex"> to index.html (freetoolonline
+  policy: game engine pages are embedded via iframe on the site's own guide/
+  landing page, which carries the indexable canonical content).
+- No other changes. Asset references in index.html were already relative
+  (./assets/...), so no path rewriting was needed. The game has zero CDN
+  calls, zero localStorage/sessionStorage usage, and zero external network
+  requests (verified against the plaintext TypeScript source in
+  src/*.ts, since the shipped bundle is roadroller-packed and not
+  directly greppable).
+
+Attribution notes from source comments (not separately vendored code, just
+credited techniques/algorithms used inline in the original author's own
+TypeScript source):
+- src/infernal_sfx.ts credits https://github.com/arikwex/infernal-sigil as
+  the inspiration for its procedural sound-effect synthesis approach.
+- src/random.ts credits a Stack Overflow answer for a standard seeded PRNG
+  algorithm (a common, small, uncopyrightable numeric technique).

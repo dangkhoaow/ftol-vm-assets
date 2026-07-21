@@ -1,0 +1,3 @@
+Thirteen Card Duel
+Adapted from romualdk/js13k-2024 (Triskai-deka-phobia) by Romuald Kowalczyk.
+Original game: JS13K 2024 entry. MIT License - see LICENSE in this directory.

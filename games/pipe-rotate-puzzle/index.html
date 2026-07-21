@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="pipzzle is a small pipe puzzle game where you rotate tiles to connect every pipe.">
+    <meta name="keywords" content="puzzle, pipe, game, minimal, indie">
+    <meta name="author" content="kiy995">
+    <meta property="og:title" content="pipzzle">
+    <meta property="og:description" content="pipzzle is a small pipe puzzle game where you rotate tiles to connect every pipe.">
+    <meta property="og:image" content="https://kiy995.github.io/pipzzle/assets/screenshot-olive.png">
+    <meta property="og:url" content="https://kiy995.github.io/pipzzle/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="pipzzle">
+    <meta name="twitter:description" content="pipzzle is a small pipe puzzle game where you rotate tiles to connect every pipe.">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <title>pipzzle</title>
+    <style>
+        [data-theme="olive"]{--bg-color:#1a1f1c;--surface-color:#242b27;--grid-bg:#2d3530;--wire-off:#5a655e;--wire-on:#b8c9b3;--power-source:#7a9b7a;--text-color:#e6ece4;--text-muted:#8f9b94;--border-color:rgba(255,255,255,.05);--shadow:0 4px 24px rgba(0,0,0,.35);--cell-shadow:0 2px 10px rgba(0,0,0,.15)}
+        [data-theme="light"]{--bg-color:#f7f4eb;--surface-color:#fff;--grid-bg:#eae3d2;--wire-off:#b0a896;--wire-on:#2a445e;--power-source:#b56543;--text-color:#1e2229;--text-muted:#7d7565;--border-color:rgba(42,38,30,.08);--shadow:0 6px 20px rgba(42,38,30,.06);--cell-shadow:0 2px 8px rgba(42,38,30,.03)}
+        *{box-sizing:border-box;margin:0;padding:0;user-select:none;-webkit-tap-highlight-color:transparent}
+        body{background-color:var(--bg-color);font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;color:var(--text-color);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;overflow:hidden}
+        .game{display:flex;flex-direction:column;align-items:center;width:100%;max-width:400px;margin-top:0}
+        header{width:100%;display:flex;align-items:center;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border-color);margin-bottom:20px}
+        .left{display:flex;flex-direction:column}
+        .left h1{font-size:1.2rem;font-weight:400;letter-spacing:-.04em;color:var(--text-color);line-height:1.2}
+        .right{display:flex;align-items:center}
+        .settings{background:0 0;border:none;color:var(--text-muted);cursor:pointer;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:color .15s,background-color .15s}
+        .settings:hover{color:var(--text-color);background-color:var(--grid-bg)}
+        .settings svg{fill:currentColor;width:18px;height:18px}
+        #grid{display:grid;gap:6px;background:var(--surface-color);padding:16px;border-radius:8px;border:1px solid rgba(255,255,255,.03);box-shadow:var(--shadow);width:100%;aspect-ratio:1/1}
+        #grid.done{transform:scale(1.01);pointer-events:none}
+        .cell{background-color:var(--grid-bg);border-radius:6px;cursor:pointer;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:var(--cell-shadow)}
+        .cell:active{transform:scale(.97)}
+        .cell svg{width:100%;height:100%;overflow:visible}
+        .cell svg path,.cell svg circle{fill:none;stroke:var(--wire-off);stroke-width:6;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s ease}
+        .cell.on svg path,.cell.on svg circle{stroke:var(--wire-on)}
+        .cell.source svg .dot{fill:var(--power-source);stroke:var(--power-source)}
+        .cell.source.on svg .dot{fill:var(--wire-on);stroke:var(--wire-on)}
+        .cell-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;transition:transform .2s ease}
+        .cell.locked{opacity:.7;border:1px solid var(--text-muted);cursor:not-allowed}
+        .cell.locked::after{content:'🔒';position:absolute;font-size:.6rem;top:2px;right:3px;opacity:.4;pointer-events:none}
+        .cell.unlocked{opacity:1;border:none}
+        .cell.unlocked::after{content:'🔓';position:absolute;font-size:.6rem;top:2px;right:3px;opacity:.2;pointer-events:none}
+        .controls{display:flex;gap:14px;margin-top:24px}
+        .btn{background:0 0;color:var(--text-muted);border:1px solid var(--border-color);padding:8px 20px;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:500;transition:color .15s,background-color .15s}
+        .btn:hover{color:var(--text-color);background-color:var(--grid-bg)}
+        .btn .text{display:inline}
+        .overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.25);z-index:90;opacity:0;pointer-events:none;transition:opacity .3s ease}
+        .overlay.open{opacity:1;pointer-events:auto}
+        [data-theme="light"] .overlay{background:rgba(42,38,30,.2)}
+        .drawer{position:fixed;top:0;right:0;width:320px;height:100%;background:var(--surface-color);border-left:1px solid var(--border-color);padding:32px 28px;z-index:100;overflow-y:auto;box-shadow:-6px 0 24px rgba(0,0,0,.1);transform:translateX(100%);transition:transform .35s cubic-bezier(.16,1,.3,1)}
+        .drawer.open{transform:translateX(0)}
+        [data-theme="light"] .drawer{box-shadow:-6px 0 24px rgba(42,38,30,.08)}
+        .drawer-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border-color)}
+        .drawer-head h2{font-size:1.4rem;font-weight:500}
+        .drawer-close{background:0 0;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;padding:6px 10px;border-radius:4px;transition:background-color .15s,color .15s}
+        .drawer-close:hover{background-color:var(--grid-bg);color:var(--text-color)}
+        .drawer-body{margin-bottom:24px}
+        .drawer-body:last-child{margin-bottom:0}
+        .label{font-size:1.1rem;font-weight:500;text-transform:capitalize;letter-spacing:.5px;color:var(--text-color);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--wire-off);opacity:.8}
+        .text{font-size:1rem;color:var(--text-muted);line-height:1.6}
+        .theme{display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--text-muted)}
+        .theme-btn{display:inline-flex;align-items:center;background:0 0;border:none;color:var(--text-muted);font-size:.95rem;cursor:pointer;padding:2px 4px;opacity:.35;transition:opacity .15s;font-family:inherit}
+        .theme-btn:hover{opacity:.8}
+        .theme-btn.active{opacity:1}
+        .theme-div{opacity:.2;user-select:none}
+        .list{display:flex;flex-direction:column;gap:4px}
+        .row{display:flex;justify-content:space-between;align-items:center;font-size:1rem}
+        .row span{color:var(--text-muted)}
+        .key{font-family:monospace;background:var(--grid-bg);padding:2px 8px;border-radius:4px;font-size:.7rem;border:1px solid var(--border-color)}
+        .link{color:var(--wire-on);text-decoration:none;font-size:.95rem;font-weight:500}
+        .link:hover{text-decoration:underline}
+        .version{margin-top:42px;font-size:.85rem;color:var(--text-muted);opacity:.4;text-align:center}
+        .watermark {margin-top: 24px;font-size: 0.75rem;color: var(--text-muted);opacity: 0.25;text-align: center;letter-spacing: 0.5px;user-select: none;pointer-events: none;font-family: inherit;font-style: italic;}
+        @media(max-width:480px){body{padding:16px;overflow:hidden;height:100dvh;touch-action:manipulation;-webkit-text-size-adjust:100%}.game{max-width:100%;margin-top:0;width:100%;height:100%;justify-content:center;padding:0 4px}header{margin-bottom:12px;padding-bottom:8px;padding-top:4px}.left h1{font-size:1.05rem}.settings{width:32px;height:32px}.settings svg{width:16px;height:16px}#grid{padding:10px;gap:4px;border-radius:6px;border-width:1px;max-width:100%;aspect-ratio:1/1;width:100%;touch-action:manipulation}.cell{border-radius:4px;touch-action:manipulation;-webkit-touch-callout:none}.cell svg path,.cell svg circle{stroke-width:5}.controls{gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center;width:100%;padding:0 4px}.btn{padding:10px 16px;font-size:.8rem;border-radius:4px;flex:0 1 auto;min-width:60px;touch-action:manipulation}.btn .text{font-size:.8rem}.drawer{width:270px;padding:20px 18px;max-height:100dvh;overflow-y:auto;-webkit-overflow-scrolling:touch}.drawer-head h2{font-size:1.15rem}.drawer-close{font-size:1rem;padding:6px 12px}.drawer-body{margin-bottom:18px}.label{font-size:.75rem;margin-bottom:6px;padding-bottom:5px}.text{font-size:.85rem}.theme-btn{font-size:1rem;padding:4px 6px}.row{font-size:.75rem}.key{font-size:.6rem;padding:2px 8px}.link{font-size:.75rem}.version{font-size:.6rem;margin-top:24px}}
+        @media(max-width:360px){body{padding:12px}.game{margin-top:0}.left h1{font-size:.9rem}.settings{width:28px;height:28px}.settings svg{width:14px;height:14px}#grid{padding:6px;gap:3px}.btn{padding:8px 12px;font-size:.65rem;min-width:50px}.btn .text{font-size:.65rem}.controls{gap:4px;margin-top:10px}.drawer{width:230px;padding:14px 12px}.drawer-head h2{font-size:.95rem}.text{font-size:.7rem}.label{font-size:.6rem}.row{font-size:.6rem}}
+    </style>
+    <script>
+    (function() {
+        const theme = localStorage.getItem("ftol:piperotatepuzzle:theme") || "olive";
+        document.documentElement.setAttribute("data-theme", theme);
+    })();
+    </script>
+</head>
+<body>
+    <div class="game">
+        <header>
+            <div class="left"><h1 id="level"></h1></div>
+            <div class="right">
+                <button class="settings" id="settings" aria-label="Settings">
+                    <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.81,11.69,4.81,12c0,0.31,0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+                </button>
+            </div>
+        </header>
+        <div id="grid"></div>
+        <div class="controls">
+            <button class="btn" id="reset"><span class="text">reset</span></button>
+            <button class="btn" id="undo"><span class="text">undo</span></button>
+            <button class="btn" id="restart"><span class="text">new game</span></button>
+        </div>
+        <div class="watermark">made by kiy995</div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="drawer" id="drawer">
+        <div class="drawer-head">
+            <h2>pipzzle</h2>
+            <button class="drawer-close" id="close">✕</button>
+        </div>
+        <div class="drawer-body">
+            <p class="text">a small puzzle where you rotate tiles to connect every pipe.</p>
+        </div>
+        <div class="drawer-body">
+            <div class="label">keys</div>
+            <div class="list">
+                <div class="row"><span>reset</span><span class="key">R</span></div>
+                <div class="row"><span>undo</span><span class="key">U</span></div>
+                <div class="row"><span>new game</span><span class="key">N</span></div>
+            </div>
+        </div>
+        <div class="drawer-body">
+            <div class="label">theme</div>
+            <div class="theme">
+                <button class="theme-btn active" data-theme="olive" aria-label="Olive Theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-13.9.2"/><path d="M9 22v-4H5"/></svg>
+                </button>
+                <span class="theme-div">/</span>
+                <button class="theme-btn" data-theme="light" aria-label="Light Theme">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="drawer-body">
+            <div class="label">links</div>
+            <a class="link" href="https://github.com/kiy995/pipzzle" target="_blank" rel="noopener noreferrer">github →</a>
+        </div>
+        <div class="version">v1.0.0 • MIT</div>
+    </div>
+
+    <script src="js/core.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
