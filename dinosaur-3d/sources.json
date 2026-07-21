@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.50.1",
+  "version": "1.50.2",
   "models": {
     "wendiceratops": {
       "slug": "wendiceratops",
@@ -972,6 +972,21 @@
       "notes": "dino3d-discovery-loop-runbook fire242 (2026-07-21). Printables 311875 Despletosaurus Figurine by DragonArtist15 (typo title; taxon Daspletosaurus), license id 2 CC-BY-SA. STL id 1398619 (Unposed) via getDownloadLink - 67,337,684 bytes. Header Exported from Blender-3.2.1; binary 'daz' byte hit is float false-positive (no Genesis/jurassic ASCII). Single loose part, no display base. Blender 4.5.11: -90 X Y-up, ground Y=0, decimate 1.35M->25k tris, height vertex-color countershading, GLB no Draco (3,000,704 bytes sha256 d434926371a8...). Render-verified bipedal tyrannosaurid with tiny forelimbs, muscular hind legs, tapering tail, feet grounded.",
       "discovered": "2026-07-21-fire242",
       "model_search_checked_iso": "2026-07-21T13:40:00.000Z"
+    },
+    "maiasaura": {
+      "slug": "maiasaura",
+      "file": "maiasaura.glb",
+      "license": "CC-BY 4.0",
+      "author": "Pan Wolodyjowski",
+      "source_url": "https://www.printables.com/model/672379-maiasaura",
+      "origin_download": "https://files.printables.com/media/prints/672379/stls/5285608_44cef465-a98e-48fd-bb4b-9588d0c9c901_87e3a760-f747-4336-b3c5-6ff1af1c2bd7/maiasaura.stl",
+      "printables_id": 672379,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Maiasaura model by Pan Wolodyjowski (CC-BY 4.0, via Printables; STL->glTF with applied countershading)",
+      "notes": "dino3d-discovery-loop-runbook fire243 (2026-07-21). Printables 672379 Maiasaura by Pan Wolodyjowski, license id 1 CC-BY. STL id 2828114 via getDownloadLink (137,676,884 bytes). Binary STL 'daz' byte hit is float false-positive (no Genesis/jurassic/dinoraul ASCII). Single loose part. Rejected NC Revised Maiasaura 995273 and Daz-patterned seth tyrannotitan 1331397. Blender 4.5.11: identity Y-up (Z=length), ground Y=0, decimate 2.75M->25k tris, height countershading, GLB no Draco (~3.0MB sha256 af92ebf1.../reexport). NHM: length 9.0 m, weight 2500 kg, Late Cretaceous 80-75 Mya, USA, herbivore.",
+      "discovered": "2026-07-21-fire243",
+      "model_search_checked_iso": "2026-07-21T15:20:00.000Z"
     }
   }
 }

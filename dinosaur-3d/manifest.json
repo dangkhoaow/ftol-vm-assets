@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.52.2",
+  "version": "1.50.2",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -922,6 +922,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Daspletosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate unposed sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
       "source_url": "https://www.printables.com/model/311875-despletosaurus-figurine"
+    },
+    "maiasaura": {
+      "file": "maiasaura.glb",
+      "bytes": 3000604,
+      "sha256": "fc1216245f32f251ac6b808f8586bf2964f1ec5fbde61c9f11fdd7f767a49086",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Maiasaura model by Pan Wolodyjowski (CC-BY 4.0, via Printables; STL->glTF with applied countershading)",
+      "source_url": "https://www.printables.com/model/672379-maiasaura"
     }
   }
 }
