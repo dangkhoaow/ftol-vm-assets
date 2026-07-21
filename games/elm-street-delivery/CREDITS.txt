@@ -1,0 +1,6 @@
+Elm Street Delivery
+Upstream: zalando/elm-street-404 (https://github.com/zalando/elm-street-404)
+License: MIT - Copyright (c) 2015 Zalando SE
+Vendored from the repository gh-pages branch (prebuilt elm.js + img/).
+Adapted for FreeToolOnline CDN: noindex meta, title rebrand for delivery framing,
+relative imagesUrl. No localStorage; no runtime CDN dependencies.
