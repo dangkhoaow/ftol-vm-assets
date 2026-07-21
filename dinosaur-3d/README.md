@@ -16,7 +16,7 @@ datasets (hundreds of MB, built in CI, never in git), these models are tiny
 (~0.3 MB each) and CC0, so they are committed to git and shipped as-is - the same
 rationale as `vendor/`. The Assemble step in `.github/workflows/build-and-publish.yml`
 copies `dinosaur-3d/` into the published site, so they serve from
-`https://dangkhoaow.github.io/ftol-vm-assets/dinosaur-3d/...` with CORS (ACAO *).
+`https://gh-static.freetool.online/dinosaur-3d/...` with CORS (ACAO *).
 
 ## Layout
 

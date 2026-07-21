@@ -19,7 +19,7 @@ Build pipelines for the large browser assets used by freetoolonline.com:
 The built assets are published to this repository's **GitHub Pages site**
 (deploy-from-artifact - they never enter git):
 
-    https://dangkhoaow.github.io/ftol-vm-assets/manifest.json
+    https://gh-static.freetool.online/manifest.json
 
 Pages is the browser-facing CDN because it serves `access-control-allow-origin: *`
 and honors `Range` requests. GitHub **Releases were measured to send no CORS
@@ -119,7 +119,7 @@ floor ~-8 km). NASA/USGS MOLA data are a U.S. Government work = **public domain*
 - `space-3d/manifest.json` (schema `ftol-space-3d/1`) carries, per asset, the
   published files with `bytes` + `sha256` + the scientific metadata (elevation
   extent, decode formula, source, license). The tool page fetches
-  `https://dangkhoaow.github.io/ftol-vm-assets/space-3d/manifest.json` first,
+  `https://gh-static.freetool.online/space-3d/manifest.json` first,
   then downloads each asset once and caches it in IndexedDB (same pattern as
   retro-fps). Unlike retro-fps the files are **not gzipped** - images load in the
   browser directly (TextureLoader / fetch->blob) and JSON is gzipped on the wire
@@ -147,7 +147,7 @@ pages run in an iframe. Migrated here 2026-07-21 from the site repos'
 `static/games/` (operator decision: game static bundles NEVER live in the
 site repos - cumulative per-fire vendoring had bloated the staging repo to
 ~750 MB git-side). Each bundle keeps its upstream `LICENSE`; the site page
-iframes `https://dangkhoaow.github.io/ftol-vm-assets/games/<dir>/index.html`
+iframes `https://gh-static.freetool.online/games/<dir>/index.html`
 cross-origin (no CORS needed for iframes; each game saves progress in this
 origin's localStorage). New game ships add the bundle HERE first, verify the
 published URL returns 200, then point the page's `*_GAME_URL` constant at it.
