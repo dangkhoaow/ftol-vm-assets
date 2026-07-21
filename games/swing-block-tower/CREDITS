@@ -7,3 +7,5 @@ Vendored for FreeToolOnline:
 - Google Analytics / gtag stripped from index.html
 - robots noindex on engine iframe document
 - Relative asset paths preserved (./dist, ./assets)
+- dist/main.js recovered 2026-07-21 from upstream master (the vendored copy
+  was lost to a site-repo .gitignore dist/ rule and the game shipped broken)
