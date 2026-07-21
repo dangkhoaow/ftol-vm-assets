@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.52.0",
+  "version": "1.52.1",
   "models": {
     "wendiceratops": {
       "slug": "wendiceratops",
@@ -373,7 +373,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus",
       "origin_download": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
@@ -744,7 +744,7 @@
       "kind": "fleshed",
       "targetLenUnits": 8,
       "credit": "Troodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
-      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons — Attribution — Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
+      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons \u2014 Attribution \u2014 Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
     },
     "deinocheirus": {
       "slug": "deinocheirus",
@@ -927,6 +927,21 @@
       "notes": "dino3d-discovery-loop-runbook fire239 (2026-07-21). Unshipped pending backlog candidate. Printables 761732 by trusted uploader seth the yutyrannus (same creator as becklespinax/kentrosaurus/monolophosaurus/suchomimus). License id 2 = CC-BY-SA confirmed via GraphQL. OBJ downloaded via legacy nested stls/<folder>/ouranosaurus.obj URL (byte-exact 77098 vs GraphQL fileSize). Rip-check: object name G_Ouranosaurus, Blender 2.91 exporter, no daz/dinoraul/jurassic/franchise tokens. Converted via Blender 4.5.11 headless: +90 X (lay down print-upright Y-length) then -90 Y (length onto X), recenter X/Z, feet Y=0, vertex-color countershading dark-olive-back to pale-tan-belly, 788 verts / 500 faces (no decimation needed), GLB export Y-up no Draco. Render-verified side/top/3-4: sail-backed iguanodontian silhouette, four limbs, tapered tail, dorsal sail. ShareAlike: re-hosted derivative remains CC-BY-SA 4.0.",
       "discovered": "2026-07-21-fire239",
       "model_search_checked_iso": "2026-07-21T10:38:26.768Z"
+    },
+    "archaeopteryx": {
+      "slug": "archaeopteryx",
+      "file": "archaeopteryx.glb",
+      "license": "CC0 1.0",
+      "author": "Model Magic",
+      "source_url": "https://www.printables.com/model/1772799-dinosaur-art-archaeopteryx",
+      "origin_download": "https://files.printables.com/media/prints/c3cbe4ca-5d86-4c0e-9d83-e4c6f36cb97c/stls/13282886_fbd36caf-f13a-414b-aaa5-8393d25e6cf5_ecd71eca-9263-4787-ac7c-d7c43e2314a7/dinosaur-art-archaeopteryx.stl",
+      "printables_id": 1772799,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Archaeopteryx model by Model Magic (CC0 / Public Domain, via Printables)",
+      "notes": "dino3d-discovery-loop-runbook fire240 (2026-07-21). Resolves the fire suchomimus-notes / prior REVIEW gap for archaeopteryx: Printables 1772799 'Dinosaur Art - Archaeopteryx' by Model Magic, license id 7 = Public Domain (treated as CC0). Downloaded via getDownloadLink GraphQL mutation (stl id 7382344, printId 1772799, fileType:stl, source:model_detail) - 49,646,084 bytes byte-exact. Single connected island welded to a display stand (circular base + pole); stand stripped by deleting verts with raw STL Z < 42 (Z-histogram gap between base/pole and body). Converted via Blender 4.5.11 headless: wm.stl_import, stand cut, -90 X (Z-up to Y-up), recenter X/Z, ground Y=0, quadric decimate ~992k->16k tris, height-based vertex-color countershading dark-olive-back to pale-tan-belly, GLB export Y-up NO Draco (site GLTFLoader has no DRACOLoader). Render-verified 3/4+side+top: unmistakable feathered winged archaeopteryx - spread wings with primary feathers, long bony feathered tail, toothed snout, clawed wing fingers; not a blob and not a pterosaur. Public Domain source -> re-hosted derivative also freely redistributable.",
+      "discovered": "2026-07-21-fire240",
+      "model_search_checked_iso": "2026-07-21T11:59:00.000Z"
     }
   }
 }

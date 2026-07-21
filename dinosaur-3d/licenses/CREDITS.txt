@@ -1190,3 +1190,15 @@ ouranosaurus.glb
             countershading vertex colors, 500 faces, Y-up GLB, no Draco).
             Render-verified sail-backed iguanodontian silhouette. ShareAlike
             derivative remains CC-BY-SA 4.0.
+
+archaeopteryx.glb
+  Author:   Model Magic
+  License:  CC0 1.0 (Printables Public Domain / license id 7)
+  Via:      Printables - https://www.printables.com/model/1772799-dinosaur-art-archaeopteryx
+  Origin:   https://files.printables.com/media/prints/c3cbe4ca-5d86-4c0e-9d83-e4c6f36cb97c/stls/13282886_fbd36caf-f13a-414b-aaa5-8393d25e6cf5_ecd71eca-9263-4787-ac7c-d7c43e2314a7/dinosaur-art-archaeopteryx.stl
+  Note:     dino3d-discovery-loop-runbook fire240 (2026-07-21). License id 7
+            Public Domain via GraphQL. STL 49646084 bytes byte-exact via
+            getDownloadLink. Display stand (base+pole) stripped at raw Z<42.
+            Blender 4.5.11 headless (-90 X Y-up, countershading vertex colors,
+            15999 faces, Y-up GLB, no Draco). Render-verified feathered winged
+            archaeopteryx silhouette.

@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.52.0",
+  "version": "1.52.1",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -892,6 +892,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Ouranosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
       "source_url": "https://www.printables.com/model/761732-ouranosaurus"
+    },
+    "archaeopteryx": {
+      "file": "archaeopteryx.glb",
+      "bytes": 1632748,
+      "sha256": "3df9c4c80fc5eecc10b7751ef3179ed946f5513b1e3d6fde83ae6bf5b418ddbe",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Archaeopteryx model by Model Magic (CC0 / Public Domain, via Printables)",
+      "source_url": "https://www.printables.com/model/1772799-dinosaur-art-archaeopteryx"
     }
   }
 }
