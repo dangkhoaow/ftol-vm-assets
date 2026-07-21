@@ -872,6 +872,16 @@
       "license": "CC0 1.0 (Public Domain)",
       "credit": "Oviraptor model by Model Magic (CC0 1.0 Public Domain, via Printables 'Dinosaur Art - Oviraptor')",
       "source_url": "https://www.printables.com/model/1757494-dinosaur-art-oviraptor"
+    },
+    "suchomimus": {
+      "file": "suchomimus.glb",
+      "bytes": 667408,
+      "sha256": "cf2bfdcd14b084891bbad78bf999890199a8084d44ca9dfaf4c3b947616525ef",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Suchomimus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/747445-suchomimus"
     }
   }
 }

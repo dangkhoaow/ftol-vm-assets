@@ -1140,3 +1140,40 @@ wendiceratops.glb
             Converted via Blender 4.5.11 headless, vertex-color countershading
             dark-olive-back/pale-tan-belly, quadric decimate 1,721,920 ->
             9,000 tris, GLB export Y-up, no Draco.
+
+suchomimus.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/747445-suchomimus
+  Origin:   https://files.printables.com/media/prints/747445/stls/5835812_4cd37d90-f56e-45c0-a690-c7e37f6f195d_8539dd6a-853c-4796-aa7d-3798546b6f89/suchomimus.obj
+  Note:     dino3d-discovery-loop-runbook LEAN one-off fire (2026-07-21,
+            curate + model-sourcing). Same trusted uploader already vendored
+            cleanly for monolophosaurus - no rip-signature concerns (checked
+            for daz/dinoraul/jurassic/universal/frontier tokens, none found;
+            generic 'Aspose.3D Wavefront OBJ Exporter' signature). Printables
+            id 747445 uses the LEGACY nested stls/<folder>/ layout so the
+            origin_download OBJ URL resolved on the first request, byte-exact
+            vs GraphQL fileSize (8,420,489 bytes). License confirmed CC-BY-SA
+            (Printables license id 2) - two OTHER Suchomimus prints found
+            (id 726201, id 743137) were CC-BY-NC(-SA) and rejected on license.
+            Single OBJ, 31,634 verts / 57,192 tris, one connected mesh, no
+            print-support plinth. Raw file's cover photo shows a vertical
+            tail-balancing print pose, but the mesh geometry itself already
+            reads as a natural walking stride once correctly axis-mapped.
+            ORIENTATION: diagnosed via 6 axis-aligned renders - native
+            Blender-Y was the long head-to-tail axis (14.5 units), Blender-Z
+            was already height (5.13 units, correct per Blender's OBJ-import
+            Y-up-to-Z-up convention), Blender-X was body width (2.39 units).
+            Applied a direct-coordinate axis swap (new_x=old_y, new_y=-old_x,
+            z unchanged) baked into mesh data - NOT an object-level euler
+            rotation, which produced an incorrect compound transform on the
+            first attempt - verified numerically via vertex-density
+            cross-section (4340 verts within 5% of the head end vs 614 near
+            the thin tail tip) then flipped X sign so the head lands at +X
+            per project convention. Converted via Blender 4.5.11 headless,
+            vertex-color countershading dark-olive-back/pale-tan-belly,
+            quadric decimate 57,192 -> 20,000 tris, GLB export Y-up, no
+            Draco. Render-verified via re-imported GLB from 4 angles: clean
+            spinosaurid silhouette, LOW dorsal spine row (distinct from
+            Spinosaurus's tall sail), croc-like snout, no decimation
+            artifacts.
