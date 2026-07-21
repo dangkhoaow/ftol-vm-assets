@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.51.0",
+  "version": "1.52.0",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -882,6 +882,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Suchomimus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
       "source_url": "https://www.printables.com/model/747445-suchomimus"
+    },
+    "ouranosaurus": {
+      "file": "ouranosaurus.glb",
+      "bytes": 38944,
+      "sha256": "7c30dc898426cfde95cd1a2583fe9796064a3e7c4684382f8e07c6eb29697fea",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ouranosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/761732-ouranosaurus"
     }
   }
 }

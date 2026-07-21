@@ -1177,3 +1177,16 @@ suchomimus.glb
             spinosaurid silhouette, LOW dorsal spine row (distinct from
             Spinosaurus's tall sail), croc-like snout, no decimation
             artifacts.
+
+ouranosaurus.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/761732-ouranosaurus
+  Origin:   https://files.printables.com/media/prints/761732/stls/5936563_98c90729-057f-4b79-8a17-be07ad4b2bdd_6e6db2a7-4648-4303-af67-6bd03b354fc0/ouranosaurus.obj
+  Note:     dino3d-discovery-loop-runbook fire239 (2026-07-21). License id 2
+            CC-BY-SA via GraphQL. OBJ 77098 bytes byte-exact. Blender 2.91
+            exporter, object G_Ouranosaurus, rip-check clean. Converted via
+            Blender 4.5.11 headless (+90 X lay-down, -90 Y length-on-X,
+            countershading vertex colors, 500 faces, Y-up GLB, no Draco).
+            Render-verified sail-backed iguanodontian silhouette. ShareAlike
+            derivative remains CC-BY-SA 4.0.
