@@ -1202,3 +1202,14 @@ archaeopteryx.glb
             Blender 4.5.11 headless (-90 X Y-up, countershading vertex colors,
             15999 faces, Y-up GLB, no Draco). Render-verified feathered winged
             archaeopteryx silhouette.
+
+corythosaurus.glb
+  Author:   Model Magic
+  License:  CC0 1.0 (Printables Public Domain / license id 7)
+  Via:      Printables - https://www.printables.com/model/1777347-dinosaur-art-corythosaurus
+  Origin:   https://files.printables.com/media/prints/5db07954-9eed-4a18-93cd-0efa6280df6d/stls/13321333_1a031fbb-ccbb-4464-8c85-1fe84a6c664f_0cd53b8b-c739-4804-ab48-0efbcec1e459/dinosaur-art-corythosaurus.stl
+  Note:     dino3d-discovery-loop-runbook fire241 (2026-07-21). License id 7
+            Public Domain via GraphQL. STL 50303584 bytes byte-exact via
+            getDownloadLink. Flat display-base island stripped. Blender 4.5.11
+            headless (-90 X Y-up, countershading, ~16k faces, no Draco).
+            Render-verified crested hadrosaur silhouette.

@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.52.1",
+  "version": "1.52.2",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -902,6 +902,16 @@
       "license": "CC0 1.0",
       "credit": "Archaeopteryx model by Model Magic (CC0 / Public Domain, via Printables)",
       "source_url": "https://www.printables.com/model/1772799-dinosaur-art-archaeopteryx"
+    },
+    "corythosaurus": {
+      "file": "corythosaurus.glb",
+      "bytes": 1632400,
+      "sha256": "b4a07e69d51bac79c983b8d669728f5b8c11c14c1cbc73729446b2fba36eeddb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Corythosaurus model by Model Magic (CC0 / Public Domain, via Printables)",
+      "source_url": "https://www.printables.com/model/1777347-dinosaur-art-corythosaurus"
     }
   }
 }

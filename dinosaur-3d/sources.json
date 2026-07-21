@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.52.1",
+  "version": "1.52.2",
   "models": {
     "wendiceratops": {
       "slug": "wendiceratops",
@@ -942,6 +942,21 @@
       "notes": "dino3d-discovery-loop-runbook fire240 (2026-07-21). Resolves the fire suchomimus-notes / prior REVIEW gap for archaeopteryx: Printables 1772799 'Dinosaur Art - Archaeopteryx' by Model Magic, license id 7 = Public Domain (treated as CC0). Downloaded via getDownloadLink GraphQL mutation (stl id 7382344, printId 1772799, fileType:stl, source:model_detail) - 49,646,084 bytes byte-exact. Single connected island welded to a display stand (circular base + pole); stand stripped by deleting verts with raw STL Z < 42 (Z-histogram gap between base/pole and body). Converted via Blender 4.5.11 headless: wm.stl_import, stand cut, -90 X (Z-up to Y-up), recenter X/Z, ground Y=0, quadric decimate ~992k->16k tris, height-based vertex-color countershading dark-olive-back to pale-tan-belly, GLB export Y-up NO Draco (site GLTFLoader has no DRACOLoader). Render-verified 3/4+side+top: unmistakable feathered winged archaeopteryx - spread wings with primary feathers, long bony feathered tail, toothed snout, clawed wing fingers; not a blob and not a pterosaur. Public Domain source -> re-hosted derivative also freely redistributable.",
       "discovered": "2026-07-21-fire240",
       "model_search_checked_iso": "2026-07-21T11:59:00.000Z"
+    },
+    "corythosaurus": {
+      "slug": "corythosaurus",
+      "file": "corythosaurus.glb",
+      "license": "CC0 1.0",
+      "author": "Model Magic",
+      "source_url": "https://www.printables.com/model/1777347-dinosaur-art-corythosaurus",
+      "origin_download": "https://files.printables.com/media/prints/5db07954-9eed-4a18-93cd-0efa6280df6d/stls/13321333_1a031fbb-ccbb-4464-8c85-1fe84a6c664f_0cd53b8b-c739-4804-ab48-0efbcec1e459/dinosaur-art-corythosaurus.stl",
+      "printables_id": 1777347,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Corythosaurus model by Model Magic (CC0 / Public Domain, via Printables)",
+      "notes": "dino3d-discovery-loop-runbook fire241 (2026-07-21). Printables 1777347 Dinosaur Art - Corythosaurus by Model Magic, license id 7 Public Domain. STL id 7403717 downloaded via getDownloadLink (50,303,584 bytes byte-exact). Separate-by-loose-parts found 2 islands: main body + flat display base (Z 0-2.75, 17882 verts) - base deleted. Binary STL 'daz' byte hits are float false-positives (no ASCII daz/dinoraul/jurassic tokens). Converted Blender 4.5.11: -90 X Y-up, ground Y=0, decimate ~970k->16k tris, height countershading, GLB no Draco. Render-verified crested hadrosaur silhouette.",
+      "discovered": "2026-07-21-fire241",
+      "model_search_checked_iso": "2026-07-21T12:47:00.000Z"
     }
   }
 }
