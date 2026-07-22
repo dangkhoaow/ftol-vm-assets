@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.51.0",
+  "version": "1.52.0",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -942,6 +942,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Dakotaraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
       "source_url": "https://www.printables.com/model/764473-dakotaraptor"
+    },
+    "gorgonops": {
+      "file": "gorgonops.glb",
+      "bytes": 191348,
+      "sha256": "b39bd93ff8c296dfbc1809e75a08fd0de35a99464aeec7670341ab4b5d31a12f",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Gorgonops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; re-hosted derivative stays under the same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/761847-gorgonops"
     }
   }
 }

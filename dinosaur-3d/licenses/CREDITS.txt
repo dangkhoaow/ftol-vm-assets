@@ -1239,3 +1239,32 @@ dakotaraptor.glb
             no Draco. Render-verified via matplotlib tri-surface plots (3/4, side,
             top-down): clean bipedal feathered-raptor silhouette, head up, legs
             planted, arms/wings out, tail trailing back.
+
+gorgonops.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/761847-gorgonops
+  Origin:   https://media.printables.com/media/prints/761847/stls/5937310_d9d76060-34ba-4b76-93fa-1399133bbe0f_0e46386a-c12e-46a7-8f1e-2e3a5e415b45/primeval_gorgonopsid.obj
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-22/23).
+            CC-BY-SA 4.0 confirmed via anonymous GraphQL
+            query{print(id:761847){license{name}}} -> "Creative Commons -
+            Attribution - Share Alike". OBJ (Aspose.3D exporter) 5,230,806 bytes
+            byte-exact vs GraphQL fileSize, anonymous curl HTTP 200 from the
+            media.printables.com GCS bucket. Blender headless hangs at 0% CPU
+            indefinitely on this machine (same infra issue as dakotaraptor above,
+            re-confirmed) - converted via a Python 3.12 venv + trimesh 4.12.2 +
+            fast-simplification (no Blender dependency). ORIENTATION: raw OBJ is
+            print-posed standing UPRIGHT along its own spine axis (Z, extent 8.92;
+            head/open-jaw at high Z, tapering tail at low Z, 4 legs splayed to the
+            sides as print supports). Fix: single 90-degree rotation about the raw
+            Y axis (new_X=old_Z, new_Y=old_Y, new_Z=-old_X) - correct on the first
+            attempt, confirmed via 3 independent matplotlib Poly3DCollection
+            re-renders (side profile, top-down, 3/4 perspective): back arched up,
+            belly down, 4 legs planted below the body, tail trailing back, head
+            with open jaw and teeth forward. Centered X/Z, grounded min-Y at 0,
+            decimated 34,787 -> 9,000 triangles (trimesh quadric decimation),
+            scaled to targetLenUnits=12, Y-height vertex-color countershading
+            (dark-olive-back RGB 0.20/0.19/0.14 to pale-tan-belly RGB
+            0.68/0.58/0.42), binary glTF export (191,348 bytes). Render-verified a
+            third time on the final colored+decimated GLB: clean, correctly
+            proportioned, unmistakably a saber-toothed gorgonopsid silhouette.
