@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Neon Circuit Racer - a keyboard and touch arcade lane racer in the browser." />
+    <title>Neon Circuit Racer</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <p class="eyebrow">NEON CIRCUIT</p>
+            <h1>Neon Circuit Racer</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="icon-button" id="soundButton" type="button" aria-label="Mute sound" title="Sound">
+            <span id="soundIcon" aria-hidden="true">♪</span>
+          </button>
+          <button class="icon-button" id="pauseButton" type="button" aria-label="Pause game" title="Pause">
+            <span id="pauseIcon" aria-hidden="true">Ⅱ</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="play-layout" aria-label="Racing game">
+        <aside class="race-panel race-panel-left">
+          <div class="stat-block">
+            <span class="stat-label">Speed</span>
+            <strong><span id="speedValue">0</span><small> km/h</small></strong>
+            <div class="meter" aria-hidden="true"><span id="speedMeter"></span></div>
+          </div>
+
+          <div class="stat-grid">
+            <div>
+              <span class="stat-label">Distance</span>
+              <strong><span id="distanceValue">0.00</span><small> km</small></strong>
+            </div>
+            <div>
+              <span class="stat-label">Score</span>
+              <strong id="scoreValue">000000</strong>
+            </div>
+            <div>
+              <span class="stat-label">Combo</span>
+              <strong id="comboValue">×1</strong>
+            </div>
+            <div>
+              <span class="stat-label">Best</span>
+              <strong id="bestValue">000000</strong>
+            </div>
+          </div>
+        </aside>
+
+        <div class="game-frame" id="gameFrame">
+          <canvas id="gameCanvas" width="900" height="1600" aria-label="Racing game canvas"></canvas>
+
+          <div class="canvas-hud" aria-hidden="true">
+            <div class="race-position"><span>City loop</span><b id="zoneValue">01</b></div>
+            <div class="status-chip" id="shieldStatus">Shield ready</div>
+          </div>
+
+          <div class="game-overlay is-visible" id="startOverlay">
+            <div class="overlay-content">
+              <p class="overlay-kicker">Midnight challenge</p>
+              <h2>Dodge traffic<br />Light the city</h2>
+              <p>Change lanes and avoid cars. Near misses build combo and nitro. Hold boost when nitro is full.</p>
+              <button class="primary-button" id="startButton" type="button">
+                <span aria-hidden="true">▶</span>
+                Start race
+              </button>
+              <div class="key-hints" aria-label="Keyboard controls">
+                <span><kbd>A</kbd><kbd>D</kbd> lanes</span>
+                <span><kbd>W</kbd> boost</span>
+                <span><kbd>Space</kbd> nitro</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="game-overlay" id="pauseOverlay">
+            <div class="overlay-content compact">
+              <p class="overlay-kicker">Race paused</p>
+              <h2>Engine idle</h2>
+              <button class="primary-button" id="resumeButton" type="button">
+                <span aria-hidden="true">▶</span>
+                Resume race
+              </button>
+            </div>
+          </div>
+
+          <div class="game-overlay" id="gameOverOverlay">
+            <div class="overlay-content compact">
+              <p class="overlay-kicker">Final score</p>
+              <h2 id="finalScore">000000</h2>
+              <div class="result-row">
+                <span>Distance <b id="finalDistance">0.00 km</b></span>
+                <span>Max combo <b id="finalCombo">×1</b></span>
+              </div>
+              <button class="primary-button" id="restartButton" type="button">
+                <span aria-hidden="true">↻</span>
+                Race again
+              </button>
+            </div>
+          </div>
+
+          <div class="touch-controls" aria-label="Touch controls">
+            <button class="touch-button" id="leftButton" type="button" aria-label="Lane left">‹</button>
+            <button class="touch-button nitro-button" id="nitroButton" type="button" aria-label="Use nitro">
+              <span>N₂O</span>
+            </button>
+            <button class="touch-button" id="rightButton" type="button" aria-label="Lane right">›</button>
+          </div>
+        </div>
+
+        <aside class="race-panel race-panel-right">
+          <div class="nitro-header">
+            <span class="stat-label">Nitro tank</span>
+            <strong id="nitroValue">100%</strong>
+          </div>
+          <div class="nitro-gauge" aria-label="Nitro tank">
+            <span id="nitroMeter"></span>
+          </div>
+
+          <div class="mission">
+            <span class="mission-number">01</span>
+            <div>
+              <span class="stat-label">Current goal</span>
+              <strong>Drive 5 km</strong>
+              <p id="missionProgress">0.00 / 5.00 km</p>
+            </div>
+          </div>
+
+          <div class="controls-card">
+            <span class="stat-label">Driving tips</span>
+            <p><b>Near misses</b> boost combo and nitro refill.</p>
+            <p><b>Blue shield</b> blocks one crash.</p>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <script src="game.js"></script>
+  </body>
+</html>

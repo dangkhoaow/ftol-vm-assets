@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="robots" content="noindex">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Species Life Battle</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0a;
+      --fg: #ffffff;
+      --grid: #1a1a1a;
+      --team-a: #ff6b9d;  /* 兔子 - 粉色 */
+      --team-b: #00ff88;  /* 乌龟 - 绿色 */
+      --accent: #4a4a4a;
+      --font: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      overflow: hidden;
+      cursor: crosshair;
+    }
+
+    #canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg);
+    }
+
+    /* 顶部信息栏 */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--grid);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 1000;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .team-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .team-a { background: var(--team-a); }
+    .team-b { background: var(--team-b); }
+    .team-c { background: #4da6ff; }
+    .team-d { background: #ffffff; }
+
+    /* 底部控制栏 */
+    .control-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--grid);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 0 24px;
+      z-index: 1000;
+    }
+
+    button {
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--fg);
+      padding: 10px 20px;
+      font-family: var(--font);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    button:hover {
+      background: var(--accent);
+      border-color: var(--fg);
+    }
+
+    button.active {
+      background: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
+    }
+
+    button.primary {
+      background: var(--team-a);
+      color: var(--bg);
+      border-color: var(--team-a);
+      font-weight: 600;
+    }
+
+    button.primary:hover {
+      background: #00cc66;
+      border-color: #00cc66;
+    }
+
+    /* 速度滑块 */
+    .speed-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 32px;
+      padding-left: 32px;
+      border-left: 1px solid var(--grid);
+    }
+
+    .speed-label {
+      font-size: 11px;
+      color: #666;
+      text-transform: uppercase;
+    }
+
+    input[type="range"] {
+      width: 120px;
+      height: 2px;
+      background: var(--accent);
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      background: var(--fg);
+      cursor: pointer;
+      border: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      background: var(--team-a);
+    }
+
+    .speed-value {
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      min-width: 50px;
+    }
+
+    /* 语言切换按钮 */
+    .lang-btn {
+      margin-left: 16px;
+      padding: 6px 12px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--fg);
+      font-family: var(--font);
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lang-btn:hover {
+      background: var(--accent);
+      border-color: var(--fg);
+    }
+
+    /* 种族选择 */
+    .race-select-control {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 32px;
+      padding-left: 32px;
+      border-left: 1px solid var(--grid);
+    }
+
+    .race-btn {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--fg);
+      font-family: var(--font);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .race-btn:hover {
+      background: var(--accent);
+      border-color: var(--fg);
+    }
+
+    .race-btn.active[data-race="1"],
+    .race-btn.race-a.active {
+      background: var(--team-a);
+      color: var(--bg);
+      border-color: var(--team-a);
+    }
+
+    .race-btn.active[data-race="2"],
+    .race-btn.race-b.active {
+      background: var(--team-b);
+      color: var(--bg);
+      border-color: var(--team-b);
+    }
+
+    .race-btn.race-c.active {
+      background: #4da6ff;
+      color: var(--bg);
+      border-color: #4da6ff;
+    }
+
+    .race-btn.race-d.active {
+      background: #ffffff;
+      color: var(--bg);
+      border-color: #ffffff;
+    }
+
+    .race-btn.race-add {
+      font-size: 16px;
+      padding: 8px 12px;
+    }
+
+    /* 初始加载提示 */
+    .intro-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(10, 10, 10, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .intro-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .intro-title {
+      font-size: 48px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      letter-spacing: 4px;
+    }
+
+    .intro-subtitle {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 48px;
+      letter-spacing: 2px;
+    }
+
+    .intro-teams {
+      display: flex;
+      gap: 64px;
+      margin-bottom: 48px;
+    }
+
+    .intro-team {
+      text-align: center;
+    }
+
+    .intro-emoji {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .intro-team-name {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .team-a-name { color: var(--team-a); }
+    .team-b-name { color: var(--team-b); }
+
+    .intro-team-desc {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .intro-start-btn {
+      background: var(--fg);
+      color: var(--bg);
+      border: none;
+      padding: 16px 48px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .intro-start-btn:hover {
+      background: var(--team-a);
+      transform: scale(1.05);
+    }
+
+    /* 图案选择器 */
+    .pattern-select {
+      margin-top: 12px;
+      padding: 8px 16px;
+      background: var(--bg);
+      color: var(--fg);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      font-family: var(--font);
+      font-size: 13px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .pattern-select:hover,
+    .pattern-select:focus {
+      border-color: var(--fg);
+    }
+
+    .pattern-select option {
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    /* 图案库面板 */
+    .pattern-panel {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 520px;
+      max-height: calc(100vh - 160px);
+      overflow-y: auto;
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 16px;
+      z-index: 1500;
+      display: none;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .pattern-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pattern-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .pattern-panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .pattern-panel-close {
+      background: transparent;
+      border: none;
+      color: #666;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .pattern-panel-close:hover {
+      color: var(--fg);
+      background: transparent;
+      border: none;
+    }
+
+    .pattern-panel-section {
+      margin-bottom: 16px;
+    }
+
+    .pattern-section-title {
+      font-size: 11px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .pattern-item {
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .pattern-item:hover {
+      border-color: var(--team-a);
+      background: rgba(255, 107, 157, 0.1);
+    }
+
+    .pattern-item.selected {
+      border-color: var(--team-a);
+      background: rgba(255, 107, 157, 0.15);
+    }
+
+    .pattern-item.stamp-active {
+      border-color: var(--fg);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 2px var(--fg);
+    }
+
+    .pattern-panel-hint {
+      font-size: 11px;
+      color: #555;
+      margin: 12px 0 0;
+      text-align: center;
+    }
+
+    /* 开始游戏遮罩 */
+    .start-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(10, 10, 10, 0.55);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      transition: opacity 0.4s ease;
+    }
+
+    .start-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .start-content {
+      text-align: center;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+    }
+
+    .start-title {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      margin-bottom: 16px;
+    }
+
+    .start-desc {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 40px;
+      letter-spacing: 1px;
+    }
+
+    .start-btn {
+      background: var(--fg);
+      color: var(--bg);
+      border: none;
+      padding: 16px 48px;
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .start-btn:hover {
+      background: var(--team-a);
+      transform: scale(1.05);
+    }
+
+    /* 响应式 */
+    @media (max-width: 768px) {
+      .top-bar {
+        font-size: 10px;
+        padding: 0 8px;
+        height: 40px;
+      }
+
+      .title {
+        font-size: 11px;
+        letter-spacing: 1px;
+      }
+
+      .stats {
+        gap: 10px;
+      }
+
+      .stat-value {
+        font-size: 12px;
+      }
+
+      .control-bar {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 8px 12px;
+        gap: 8px;
+      }
+
+      .control-bar button {
+        padding: 8px 12px;
+        font-size: 10px;
+      }
+
+      .speed-control {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .race-select-control {
+        margin-left: 0;
+        padding-left: 0;
+        border-left: none;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .race-btn {
+        padding: 6px 10px;
+        font-size: 10px;
+      }
+
+      /* 图案库面板 - 移动端全屏 */
+      .pattern-panel {
+        width: calc(100vw - 16px);
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        transform: none;
+        max-height: 70vh;
+        border-radius: 12px;
+      }
+
+      .pattern-panel-header {
+        position: sticky;
+        top: 0;
+        background: rgba(15,15,15,0.98);
+        padding-bottom: 12px;
+        z-index: 1;
+      }
+
+      .pattern-panel-close {
+        font-size: 24px;
+        padding: 8px 12px;
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .pattern-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .pattern-item {
+        padding: 12px 8px;
+        font-size: 11px;
+      }
+
+      .intro-title { font-size: 32px; }
+      .intro-teams { gap: 32px; }
+      .intro-emoji { font-size: 48px; }
+
+      .lang-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 初始加载画面 -->
+  <div class="intro-overlay hidden" id="intro-overlay">
+    <div class="intro-title">LIFE</div>
+    <div class="intro-subtitle" data-i18n="subtitle">康威生命游戏 - 对战模式</div>
+    
+    <div class="intro-teams">
+      <div class="intro-team">
+        <div class="intro-emoji" id="emoji-a">🐰</div>
+        <div class="intro-team-name team-a-name" id="name-a" data-i18n="team-rabbit">兔子队</div>
+        <div class="intro-team-desc" data-i18n="team-a-color">粉色阵营</div>
+        <select id="select-pattern-a" class="pattern-select">
+          <option value="rabbit">🐰 兔子</option>
+          <option value="cat">🐱 猫</option>
+          <option value="dog">🐶 小狗</option>
+          <option value="penguin">🐧 企鹅</option>
+          <option value="lizard">🦎 蜥蜴</option>
+          <option value="turtle">🐢 乌龟</option>
+          <option value="gosperGun">🔫 高斯帕滑翔机枪</option>
+          <option value="pulsar">💫 脉冲星</option>
+          <option value="spaceship117">🛩️ 117飞船</option>
+          <option value="hwss">🚢 重型飞船</option>
+          <option value="copperhead">🐍 铜头蛇</option>
+          <option value="randomSoup">🍲 随机汤</option>
+          <option value="acorn">🌰 橡子</option>
+          <option value="rpentomino">🌱 R-五连块</option>
+          <option value="diehard">💀 顽固</option>
+          <option value="eater">🍽️ 吞噬者</option>
+        </select>
+      </div>
+      
+      <div class="intro-team" style="display:flex;align-items:center;font-size:32px;font-weight:700;color:#666;">VS</div>
+      
+      <div class="intro-team">
+        <div class="intro-emoji" id="emoji-b">🐢</div>
+        <div class="intro-team-name team-b-name" id="name-b" data-i18n="team-turtle">乌龟队</div>
+        <div class="intro-team-desc" data-i18n="team-b-color">绿色阵营</div>
+        <select id="select-pattern-b" class="pattern-select">
+          <option value="turtle">🐢 乌龟</option>
+          <option value="cat">🐱 猫</option>
+          <option value="dog">🐶 小狗</option>
+          <option value="penguin">🐧 企鹅</option>
+          <option value="lizard">🦎 蜥蜴</option>
+          <option value="rabbit">🐰 兔子</option>
+          <option value="gosperGun">🔫 高斯帕滑翔机枪</option>
+          <option value="pulsar">💫 脉冲星</option>
+          <option value="spaceship117">🛩️ 117飞船</option>
+          <option value="hwss">🚢 重型飞船</option>
+          <option value="copperhead">🐍 铜头蛇</option>
+          <option value="randomSoup">🍲 随机汤</option>
+          <option value="acorn">🌰 橡子</option>
+          <option value="rpentomino">🌱 R-五连块</option>
+          <option value="diehard">💀 顽固</option>
+          <option value="eater">🍽️ 吞噬者</option>
+        </select>
+      </div>
+    </div>
+    
+    <button class="intro-start-btn" id="intro-start-btn" data-i18n="start-game">开始游戏</button>
+  </div>
+
+  <!-- 顶部信息栏 -->
+  <div class="top-bar">
+    <div class="title">康威生命游戏</div>
+    
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-label" data-i18n="gen">代数</span>
+        <span class="stat-value" id="generation">0</span>
+      </div>
+      
+      <div class="stat-item">
+        <span class="team-indicator team-a"></span>
+        <span class="stat-value" id="team-a-count">0</span>
+      </div>
+      
+      <div class="stat-item">
+        <span class="team-indicator team-b"></span>
+        <span class="stat-value" id="team-b-count">0</span>
+      </div>
+
+      <div class="stat-item">
+        <span class="team-indicator team-c"></span>
+        <span class="stat-value" id="team-c-count">0</span>
+      </div>
+      
+      <!-- 语言切换 -->
+      <button id="btn-lang" class="lang-btn" title="切换语言 / Switch Language">EN</button>
+    </div>
+  </div>
+
+  <!-- Canvas -->
+  <canvas id="canvas"></canvas>
+
+  <!-- 开始游戏遮罩 -->
+  <div class="start-overlay" id="start-overlay">
+    <div class="start-content">
+      <div class="start-title">Species Life Battle</div>
+      <div class="start-desc">Watch colored species evolve and compete on a Conway Life grid.</div>
+      <button class="start-btn" id="btn-start-game">Start game</button>
+    </div>
+  </div>
+
+  <!-- 底部控制栏 -->
+  <div class="control-bar">
+    <button id="btn-start" class="primary" data-i18n="start">开始</button>
+    <button id="btn-pause" data-i18n="pause">暂停</button>
+    <button id="btn-reset" data-i18n="reset">重置</button>
+    <button id="btn-clear" data-i18n="clear">清空</button>
+    <button id="btn-undo">↩ 撤回</button>
+    <button id="btn-random">🎲 随机</button>
+    
+    <div class="speed-control">
+      <span class="speed-label" data-i18n="speed">速度</span>
+      <input type="range" id="slider-speed" min="50" max="1000" value="200" step="50">
+      <span class="speed-value" id="speed-value">200ms</span>
+    </div>
+    
+    <!-- 种族选择：点击弹出图案库 -->
+    <div class="race-select-control">
+      <span class="speed-label">手绘</span>
+      <button id="btn-race-1" class="race-btn race-a active" data-race="1">🐧 企鹅</button>
+      <button id="btn-race-2" class="race-btn race-b" data-race="2">🛩️ 117飞船</button>
+      <button id="btn-race-3" class="race-btn race-c" data-race="3" style="display:none;">种族C</button>
+      <button id="btn-race-4" class="race-btn race-d" data-race="4" style="display:none;">种族D</button>
+      <button id="btn-add-race" class="race-btn race-add" title="添加种族">＋</button>
+    </div>
+  </div>
+
+  <!-- 图案库面板（点击种族按钮弹出） -->
+  <div class="pattern-panel" id="pattern-panel">
+    <div class="pattern-panel-header">
+      <span class="pattern-panel-title" id="pattern-panel-title">选择图案</span>
+      <button class="pattern-panel-close" id="pattern-panel-close">✕</button>
+    </div>
+    <div class="pattern-panel-section">
+      <div class="pattern-section-title">🐾 动物</div>
+      <div class="pattern-grid" id="pattern-grid-animal"></div>
+    </div>
+    <div class="pattern-panel-section">
+      <div class="pattern-section-title">🎮 经典图案</div>
+      <div class="pattern-grid" id="pattern-grid-classic"></div>
+    </div>
+  </div>
+
+  <script src="cell-multi.js"></script>
+  <script src="patterns.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+Neon Surge Loop (adapted from Neon Surge: Dopamine Loop by Artem Ryazanov)
+Upstream: https://github.com/thegamerbay/neon-dopamine
+License: MIT (see LICENSE)
+Shipped as a canvas roguelite wave shooter with mouse-move steering, auto-fire, XP level-up cards, and procedural Web Audio SFX.
+Adaptations for freetoolonline.com: noindex meta in iframe, page title rebrand to Neon Surge Loop.

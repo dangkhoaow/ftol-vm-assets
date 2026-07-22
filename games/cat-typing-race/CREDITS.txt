@@ -1,0 +1,7 @@
+Cat Typing Race (adapted from js13k-typing-test)
+Copyright (c) 2025 Cemal Gonultas - MIT License (see LICENSE)
+
+Audio / music libraries:
+- ZzFX (Keith Clark) - MIT - https://github.com/keithclark/ZzFX
+- ZzFXM (Keith Clark) - MIT - https://github.com/keithclark/ZzFXM
+- Background music: "I am back" by Sky (MOD pattern data, embedded via ZzFXM)

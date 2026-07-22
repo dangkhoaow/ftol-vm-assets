@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="robots" content="noindex,nofollow">
+  <title>Emoji Slot Machine</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no">
+  <meta name="theme-color" content="white"/>
+  <link rel="icon" href="./favicon.ico">
+  <script defer src="./main.10ce6742c8fccf624118.js"></script>
+  <link href="./main.c8ee9c067209c44ff38c.css" rel="stylesheet">
+</head>
+<body class="app__base">
+<header class="header__base"><div class="header__content">
+  <h1 class="header__title"><span class="header__logoText" id="title">Emoji Slot</span></h1>
+  <ul class="header__state">
+    <li class="header__prop" title="Coins"><span class="header__icon" role="img" aria-label="Coins">$</span> <span class="header__value" id="coins">00000</span></li>
+    <li class="header__prop" title="Jackpot"><span class="header__icon" role="img" aria-label="Jackpot">*</span> <span class="header__value" id="jackpot">00000</span></li>
+    <li class="header__prop" title="Spins"><span class="header__icon" role="img" aria-label="Spins">#</span> <span class="header__value" id="spins">00000</span></li>
+  </ul>
+</div></header>
+<main class="app__main" id="main"><section class="sm__base"><div class="sm__reelsContainer"></div><div class="sm__display"></div></section></main>
+<div class="app__coverLeft"></div><div class="app__coverRight"></div>
+<section class="modal__root" id="instructionsModal">
+  <h2 class="modal__title instructions__title"><span class="modal__titleIcon instructions__titleIcon">!</span>Instructions <button class="modal__button" aria-label="Close Instructions Popup and Resume Game"><span class="modal__buttonIcon">x</span></button></h2>
+  <div class="instructions__root">
+    <p class="instructions__p">Click / Tap anywhere on the screen to put one Coin into the Slot Machine and start Spinning the reels.</p>
+    <p class="instructions__p">Click / Tap again to stop one reel. You need at least 3 consecutive equal figures to win a percentage of the Jackpot.</p>
+    <p class="instructions__p">Check how much each combination of figures is worth in the Pay Table.</p>
+    <p class="instructions__p">Enable / Disable sound <span id="vibrationInstructions">and vibration</span> with the buttons below.</p>
+    <button class="instructions__button" id="playButton">Ok, let's play!</button>
+  </div>
+</section>
+<section class="modal__root" id="payTableModal">
+  <h2 class="modal__title pt__title"><span class="modal__titleIcon pt__titleIcon">*</span>Pay Table <button class="modal__button" aria-label="Close Pay Table Popup and Resume Game"><span class="modal__buttonIcon">x</span></button></h2>
+  <ul class="pt__base pt__base--activeC2"></ul>
+</section>
+<footer class="footer__base"><ul class="footer__content">
+  <li class="footer__option"><span class="footer__linkText" id="author">Adapted from SlotJS (MIT)</span></li>
+  <li class="footer__optionSpacer"></li>
+  <li class="footer__option"><button class="footer__button footer__modalButton" title="Pay Table" id="togglePayTable" aria-label="Pay Table"><span class="footer__buttonIcon" aria-hidden="true">P</span></button></li>
+  <li class="footer__option"><button class="footer__button footer__modalButton" title="Instructions" id="toggleInstructions" aria-label="Instructions"><span class="footer__buttonIcon" aria-hidden="true">i</span></button></li>
+  <li class="footer__option"><button class="footer__button footer__toggleButton" id="toggleSound"><span class="footer__buttonIcon" aria-hidden="true">S</span></button></li>
+  <li class="footer__option"><button class="footer__button footer__toggleButton" id="toggleVibration"><span class="footer__buttonIcon" aria-hidden="true">V</span></button></li>
+</ul></footer>
+</body></html>

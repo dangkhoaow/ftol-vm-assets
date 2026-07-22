@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Egg Time Rewind</title>
+<style>
+body{background:#000;overflow:hidden;margin:0}
+canvas#mainCanvas{
+  background:#43523d;
+  display:block;padding:0;margin:auto;position:absolute;
+  top:0;bottom:0;left:0;right:0;
+  width:min(100vw,840px);height:auto;aspect-ratio:84/48;
+  image-rendering:-moz-crisp-edges;image-rendering:pixelated;
+}
+canvas#transitionCanvas{visibility:hidden}
+</style>
+</head>
+<body>
+<canvas id=mainCanvas width=84 height=48></canvas>
+<canvas id=transitionCanvas></canvas>
+<script src='gameEngine.js'></script>
+<script src='gameEngineDebug.js'></script>
+<script src='game.js'></script>
+</body>
+</html>

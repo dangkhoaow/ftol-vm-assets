@@ -1,0 +1,1215 @@
+dinosaur-3d asset credits + per-file license record
+=====================================================
+
+Every file below was verified to be freely redistributable PER FILE before being
+re-hosted here. Franchise/game-derived models (e.g. "Jurassic World/Park") and
+NonCommercial (CC-BY-NC) models were REJECTED regardless of any CC label an
+uploader applied, because the underlying studio copyright is not the uploader's
+to relicense.
+
+-----------------------------------------------------------------------------
+tyrannosaurus-rex.glb
+  Title:    T-Rex
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/UYtneO5FpF
+  Origin:   https://static.poly.pizza/34eed102-48f0-43dd-bc6f-ef7a6dfddfbb.glb
+  Note:     Stylised low-poly reconstruction. Credit is given voluntarily.
+
+velociraptor.glb
+  Title:    Velociraptor
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/cnlGH2UcDd
+  Origin:   https://static.poly.pizza/c1f0c4cb-c84f-415c-8323-d8cb871a2126.glb
+  Note:     Stylised low-poly reconstruction. Credit is given voluntarily.
+
+triceratops.glb
+  Title:    Triceratops
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/IGvrUqGrRM
+  Origin:   https://static.poly.pizza/6aa1f3ff-b9b3-4bb5-9d85-b2ffa514f0cc.glb
+  Note:     Stylised low-poly reconstruction (Animated Dinosaur Bundle). Credit voluntary.
+
+stegosaurus.glb
+  Title:    Stegosaurus
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/eFcNbOlpvl
+  Origin:   https://static.poly.pizza/6f8f4ac6-f9e8-488d-97a8-220b9b2fd02a.glb
+  Note:     Stylised low-poly reconstruction (Animated Dinosaur Bundle). Credit voluntary.
+
+apatosaurus.glb
+  Title:    Apatosaurus
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/fvo0x8Zk3z
+  Origin:   https://static.poly.pizza/7b873860-f23f-4266-b341-5c5e6770cfa0.glb
+  Note:     Stylised low-poly reconstruction (Animated Dinosaur Bundle). Credit voluntary.
+
+parasaurolophus.glb
+  Title:    Parasaurolophus
+  Author:   Quaternius (https://quaternius.com)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      Poly Pizza - https://poly.pizza/m/KeeQrrouRK
+  Origin:   https://static.poly.pizza/47b9d0bd-cddb-49be-b072-12201def24a9.glb
+  Note:     Stylised low-poly reconstruction (Animated Dinosaur Bundle). Credit voluntary.
+
+diplodocus.glb
+  Title:    Diplodocus
+  Author:   Poly by Google (the archived Google Poly asset library)
+  License:  CC-BY 3.0 (https://creativecommons.org/licenses/by/3.0/) - ATTRIBUTION REQUIRED
+  Via:      Poly Pizza - https://poly.pizza/m/12n6ICAVpYB
+  Origin:   https://static.poly.pizza/e60784f1-7b8c-4239-8354-c5d575a864a0.glb
+  Note:     Stylised low-poly reconstruction, 664 tris. Attribution is mandatory under
+            CC-BY: the manifest 'credit' field is surfaced by the viewer's assetInfo
+            disclosure on the page. Do NOT strip the credit when updating the manifest.
+
+pteranodon.glb
+  Title:    Low Spec Pterosaur
+  Author:   pistachio
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      OpenGameArt - https://opengameart.org/content/low-spec-pterosaur
+  Origin:   https://opengameart.org/sites/default/files/low_spec_pterosaur_oga.zip
+  Note:     DERIVATIVE: converted from the source .blend headlessly (bpy 5.0.1) -
+            posed at fly_glide frame 14, blue skin texture rebuilt as a lit
+            Principled material (source used emission/unlit), 592 tris. Tagged
+            pteranodon by the author. Credit is given voluntarily.
+
+spinosaurus.glb
+  Title:    Spinosaurus
+  Author:   Tuomo Untinen
+  License:  CC-BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      OpenGameArt - https://opengameart.org/content/spinosaurus
+  Origin:   https://opengameart.org/sites/default/files/spinosaurus.zip
+            (per-file license.txt inside the zip: "Spinosaurus by Tuomo Untinen
+            Licensed Under CC-BY-SA 3.0")
+  Note:     DERIVATIVE: converted from the source .blend headlessly (Blender/bpy
+            5.0.1) - decimated 722,781 -> ~20k tris; legacy Cycles mix-shader
+            materials rebuilt as single Principled BSDFs using each material's
+            original BSDF_DIFFUSE color (BaseSkin/DarkSkin/Claw/MouthRed/eyes).
+            Under ShareAlike this converted GLB is itself licensed CC-BY-SA 3.0.
+            Attribution is mandatory: the manifest 'credit' field is surfaced by
+            the viewer's assetInfo disclosure. Do NOT strip the credit.
+ground-sloth.glb
+  Title:    Ground sloth (Megatherium)
+  Author:   Poly by Google (the archived Google Poly asset library)
+  License:  CC-BY 3.0 (https://creativecommons.org/licenses/by/3.0/) - ATTRIBUTION REQUIRED
+  Via:      Poly Pizza - https://poly.pizza/m/34WS63awSqJ
+  Origin:   https://static.poly.pizza/eb938e39-4d71-4505-b478-4cfb62588143.glb
+  Note:     Extinct giant ground sloth (Pleistocene megafauna). Prehistoric-animal
+            cluster member. Attribution mandatory - surfaced by the viewer disclosure.
+
+pachyrhinosaurus.glb
+  Title:    Low Poly Pachy (Pachyrhinosaurus)
+  Author:   SUMO STUDIOS
+  License:  CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - ATTRIBUTION REQUIRED
+            (source dual-licensed CC-BY 4.0 / CC0; we record the stricter CC-BY)
+  Via:      OpenGameArt - https://opengameart.org/content/low-poly-pachy-dinosaur
+  Origin:   https://opengameart.org/sites/default/files/Pachy.blend
+  Note:     DERIVATIVE: converted from the source .blend headlessly (bpy 5.0.1),
+            legacy materials rebuilt as Principled from diffuse colors (nasal-boss
+            ceratopsian, orange body + white horns/frill spikes). Attribution
+            mandatory - surfaced by the viewer disclosure.
+
+deinonychus.glb
+  Title:    Dromaeosaur (used for Deinonychus - the archetypal dromaeosaurid)
+  Author:   Animaniac888 (uploaded to OpenGameArt by josepharaoh99; orig. BlendSwap)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      OpenGameArt - https://opengameart.org/content/dromaeosaur-dinosaur
+  Origin:   https://opengameart.org/sites/default/files/Dromaeosaur.blend
+  Note:     DERIVATIVE: converted from the source .blend headlessly (bpy 5.0.1) -
+            dropped the ground plane, rebuilt legacy 2.77 materials as Principled
+            (body 2048->1024 Diffuse on the 'Diffuse' UV set; Raptor Eye tex;
+            white teeth; dark claws), decimated to ~22k tris, JPEG textures.
+            Deinonychus is the type dromaeosaur, so this rigged raptor body is a
+            faithful match. Credit given voluntarily.
+
+utahraptor.glb
+  Title:    Dromaeosaur (family-level model, shown for Utahraptor)
+  Author:   Animaniac888 (via OpenGameArt; orig. BlendSwap)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      OpenGameArt - https://opengameart.org/content/dromaeosaur-dinosaur
+  Origin:   https://opengameart.org/sites/default/files/Dromaeosaur.blend
+  Note:     Same generic-dromaeosaurid GLB as deinonychus.glb, scaled up
+            (targetLenUnits 16) for Utahraptor, the largest known dromaeosaurid.
+            The source is titled "Dromaeosaur" (family), not a species-specific
+            model, so it is a legitimate within-family body; the two pages differ
+            in scale, size-vs-human, and facts. Prefer a dedicated Utahraptor
+            model if a license-clean one appears (render-fix loop backlog).
+
+ankylosaurus.glb
+  Title:    Anklyosaurus
+  Author:   Manicaeks
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      OpenGameArt - https://opengameart.org/content/anklyosaurus
+  Origin:   https://opengameart.org/sites/default/files/Anklyosaurus.zip
+  Note:     DERIVATIVE: converted from the source .blend headlessly (bpy 5.0.1).
+            The 2014 model shipped its diffuse skin in a Blender-2.7x texture SLOT
+            (dropped by Blender 2.8+), so a plain color rebuild exported grey; the
+            diffuse PNG (anklyotexture.png, 1024) was wired into a Principled Base
+            Color via the 'UVMap' UV set. 1812 tris (no decimation needed), JPEG
+            texture. Render-proven: reads clearly as an ankylosaurus - low armored
+            body, osteoderm plate rows, tail club, visible eye. Part 4 of the
+            author's CC0 dinosaurs pack. Credit given voluntarily (CC0).
+
+carnotaurus.glb
+  Title:    Carnotaurus
+  Author:   Mike Carey (unklemikey)
+  License:  CC-BY 3.0 (https://creativecommons.org/licenses/by/3.0/) - ATTRIBUTION REQUIRED
+  Via:      OpenGameArt - https://opengameart.org/content/carnotaurus
+  Origin:   https://opengameart.org/sites/default/files/carnotaurus.blend
+  Note:     DERIVATIVE: converted from the source .blend headlessly (bpy 5.0.1).
+            Blender-2.70 model with per-part diffuse-color materials (carskin1/2
+            brown+tan, carstripes dark-red, carteeth grey, carmouth, carnails);
+            each rebuilt as a Principled BSDF from its diffuse color (no image
+            texture in source), 4606 tris ~110KB. Render-proven species-accurate:
+            the diagnostic paired brow horns, deep skull, striped body. Attribution
+            mandatory - surfaced by the viewer disclosure. Do NOT strip the credit.
+
+allosaurus.glb
+  Title:    Allosaurus Figurine (Posed variant)
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/345833-allosaurus-figurine
+  Origin:   https://files.printables.com/media/prints/345833/stls/2944495_8eae12c0-7944-4c2d-8c4f-f2ebae0c9b3e/allosaurusfigposed.stl
+            (fetched anonymously via the Printables GraphQL getDownloadLink API;
+            the web UI is login-gated but the API is not for CC-licensed models)
+  Note:     DERIVATIVE: scientifically-accurate Zbrush sculpt (author's description),
+            posed/standing variant. Source is a print STL (geometry only, NO color).
+            Converted headlessly (bpy 5.0.1): decimated 1,330,240 -> 25,000 tris,
+            shade-smooth, and given biologically-plausible COUNTERSHADING via vertex
+            colors (dark olive-brown dorsal -> lighter tan ventral) since the STL
+            carries no color - a neutral treatment, NOT a fabricated species pattern.
+            601 KB, COLOR_0 vertex colors (renders in three.js/model-viewer). Under
+            ShareAlike this converted GLB is itself CC-BY-SA 4.0. Attribution
+            mandatory - surfaced by the viewer disclosure. Do NOT strip the credit.
+
+dilophosaurus.glb
+  Title:    Scientifically Accurate Dilophosaurus Statue (Posed variant)
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/413711-scientifically-accurate-dilophosaurus-statue
+  Origin:   https://files.printables.com/media/prints/413711/stls/3432390_2b6b7452-595b-46eb-867a-81fded8d1e89/dilophosaurusfigposed.stl
+  Note:     DERIVATIVE: scientifically-accurate Zbrush sculpt (scale + feather
+            texturing), posed variant. Fetched anonymously via the Printables
+            GraphQL getDownloadLink API. Source STL is geometry only (no color);
+            converted headlessly (bpy 5.0.1): decimated 6,736,974 -> 25,000 tris,
+            vertex-color countershading (dark olive dorsal -> tan ventral). ~600 KB,
+            COLOR_0. Render-proven: dual head crest, slender build, feathered neck.
+            Same creator + treatment as allosaurus.glb. Under ShareAlike this GLB is
+            CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
+
+baryonyx.glb
+  Title:    Baryonyx
+  Author:   seth the yutyrannus
+  License:  CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - ATTRIBUTION REQUIRED
+  Via:      Printables - https://www.printables.com/model/747399-baryonyx
+  Origin:   https://files.printables.com/media/prints/747399/stls/5835606_357c2c76-bad1-4e3c-9c88-81519486748f_c15946f4-fe2c-4f0a-a4ce-0b03e5cac650/baryonyx.obj
+  Note:     DERIVATIVE: OBJ sculpt (14,975 tris, no decimation needed). Fetched
+            anonymously via the Printables GraphQL API. OBJ carries no usable color;
+            converted headlessly (bpy 5.0.1) with vertex-color countershading. ~500 KB,
+            COLOR_0. Render-proven species-accurate: long crocodile-like spinosaurid
+            snout, robust clawed arms (large thumb claw), bipedal fish-hunting posture
+            - a generic paleoart Baryonyx, NOT a franchise depiction. Attribution
+            mandatory - surfaced by the viewer disclosure.
+
+plesiosaurus.glb
+  Title:    Plesiosaurus Updated
+  Author:   MZ4250
+  License:  CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - ATTRIBUTION REQUIRED
+  Via:      Printables - https://www.printables.com/model/39379-plesiosaurus-updated
+  Origin:   https://files.printables.com/media/prints/39379/stls/389324_23868709-fbf9-4d26-8530-e92338c2d199/plesiosaurus-updated.stl
+  Note:     DERIVATIVE: print STL (geometry only, no color), plain full-body variant
+            (NOT the in-water diorama variant). Fetched anonymously via the Printables
+            GraphQL API. Converted headlessly (bpy 5.0.1): decimated 563,686 -> 25,000
+            tris + biologically-plausible vertex-color countershading (dark dorsal ->
+            light ventral, as in real marine reptiles). ~560 KB, COLOR_0. Render-proven
+            in plan view: diagnostic plesiosaur body plan - long neck + small head, broad
+            teardrop body, two pairs of large paddle flippers, short tail. This clears
+            the last staging render-gate finding. Attribution mandatory - surfaced by
+            the viewer disclosure.
+
+gallimimus.glb
+  Title:    Galimimus figurine
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/343962-galimimus-figurine
+  Origin:   https://files.printables.com/media/prints/343962/stls/2931606_4913731e-3f7f-4635-a65f-a40506c17e92/galimimusfig.stl
+  Note:     DERIVATIVE: scientifically-accurate Zbrush sculpt (feather + skin detail).
+            Fetched anonymously via the Printables GraphQL API. Print STL is geometry
+            only (no color); converted headlessly (bpy 5.0.1): decimated 7,668,106 ->
+            25,000 tris + vertex-color countershading. ~600 KB, COLOR_0. Render-proven:
+            ostrich-like ornithomimid - long neck, small head, long legs, feathered
+            arms/tail. Under ShareAlike this GLB is CC-BY-SA 4.0. Attribution mandatory.
+
+mosasaurus.glb
+  Title:    Mosasaur
+  Author:   MZ4250
+  License:  CC-BY 4.0 (https://creativecommons.org/licenses/by/4.0/) - ATTRIBUTION REQUIRED
+  Via:      Printables - https://www.printables.com/model/1534756-mosasaur
+  Origin:   https://files.printables.com/media/prints/.../mosasaurus.stl (Printables GraphQL API)
+  Note:     DERIVATIVE: print STL (geometry only), plain full-body variant (NOT the
+            coming-out-of-water diorama variant). Fetched anonymously via the Printables
+            GraphQL API. Converted headlessly (bpy 5.0.1): decimated 1,767,570 -> 25,000
+            tris + vertex-color countershading (dark dorsal -> light ventral, apt for a
+            marine reptile). ~595 KB, COLOR_0. Render-proven: elongated marine reptile
+            with large jaws, paddle flippers, finned tail. Attribution mandatory.
+
+pachycephalosaurus.glb
+  Title:    Pachycephalosaurus Figurine (Posed variant)
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
+            - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/400375-pachycephalosaurus-figurine
+  Origin:   https://files.printables.com/media/prints/400375/stls/3336580_2658569b-d54d-413c-b52f-6640d8ced270/pachycephalosaurusfigposed.stl
+  Note:     DERIVATIVE: scientifically-accurate Zbrush sculpt (scale + skin detail).
+            Fetched anonymously via the Printables GraphQL API. Print STL geometry-only
+            -> decimated 5,250,790 -> 25,000 tris + vertex-color countershading. ~600 KB,
+            COLOR_0. Render-proven: diagnostic thick bony dome skull with knobby
+            ornamentation, bipedal stance, long tail. Under ShareAlike this GLB is
+            CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
+
+brachiosaurus.glb
+  Title:    Brachiosaurus dinosaur
+  Author:   gabi123
+  License:  CC0 1.0 Universal (Public Domain dedication) - no attribution required
+  Via:      Printables - https://www.printables.com/model/1553840-brachiosaurus-dinosaur
+  Origin:   https://files.printables.com/media/prints/c01e58a2-d7a4-401b-b5b2-03e8b78fd884/stls/.../brachiosaurus-dinosaur.stl (Printables GraphQL API)
+  Note:     DERIVATIVE: print STL (geometry only, no color). Fetched anonymously via
+            the Printables GraphQL API. Converted headlessly (bpy 5.0.1): decimated
+            1,499,548 -> 25,000 tris + vertex-color countershading (dark dorsal ->
+            light ventral), ~600 KB, COLOR_0. Render-proven: quadrupedal sauropod with
+            a raised long neck, small head, sturdy legs, tail - reads as a long-necked
+            sauropod (brachiosaurus; proportions are somewhat generic but a genuine,
+            non-fantasy sauropod - a real-mesh upgrade over the crude procedural body).
+            CC0 - credit given voluntarily.
+
+ichthyosaurus.glb
+  Title:    ichthyosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/) - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/757285-ichthyosaurus
+  Origin:   https://files.printables.com/media/prints/757285/stls/5907332_157ebf9f-26da-4e99-9a41-c9682745c755_616d5a65-46fe-48ff-8240-5daed4ea74dc/miconvcom__icthyosaurus.obj (Printables GraphQL API)
+  Note:     DERIVATIVE: print-sculpt geometry (single mesh, 10,730 verts / 18,624 tris,
+            no color; listed by the API as an .obj export of the original STL sculpt).
+            Fetched anonymously via the Printables GraphQL API. Converted headlessly
+            (trimesh 4.12.2 + Pillow, Python - no bpy/Blender available this session;
+            no decimation needed, already low-poly) with biologically-plausible
+            vertex-color countershading (dark slate-blue dorsal -> pale cream ventral,
+            as in convergent marine predators). 396 KB, COLOR_0. Axis-verified against
+            the raw mesh cross-sections (thin-but-tall profile at one Z-extreme = the
+            vertical tail fluke; long narrow taper at the other = the snout) - matches
+            the site's marine-archetype convention (head at +Z) with zero rotation
+            needed. Render-proven headlessly (Playwright + the vendored GLTFLoader):
+            1 mesh, 18,624 tris, 0 NaN vertices, 0 WebGL errors; screenshot confirms a
+            recognizable dolphin-shaped ichthyosaur silhouette (long toothed snout,
+            dorsal fin, 2 pairs of paddle flippers, vertical tail fluke). Under
+            ShareAlike this GLB is CC-BY-SA 4.0. Attribution mandatory - surfaced by
+            the viewer disclosure.
+
+edmontosaurus.glb
+  Title:    edmontosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/) - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/747427-edmontosaurus
+  Origin:   https://files.printables.com/media/prints/747427/stls/5835712_7efe0a51-8ee3-4075-8399-ac493068f25a_d874f889-d9c0-4307-9beb-f64b8c64d9d3/edmontosaurus.stl
+  Note:     DERIVATIVE: print-sculpt geometry (single mesh, 9,207 verts / 17,982 tris,
+            no color). Fetched anonymously via a direct static-asset URL derived from
+            the model's own filePreviewPath (Printables' GraphQL schema exposes no
+            downloadLink/url field anonymously - the working technique is to take the
+            known STL filename + the preview image's folder path from the `stls[]`
+            list and request it from files.printables.com/media/prints/<id>/stls/<same
+            folder>/<filename> directly; verified by exact byte-count match against the
+            API-reported fileSize). Converted headlessly (trimesh 4.12.2 + numpy,
+            Python - no bpy/Blender available this session; no decimation needed,
+            already low-poly) with vertex-color countershading (dark olive-brown dorsal
+            -> light tan ventral, based on local Y-height). 356 KB, COLOR_0.
+            Orientation-verified before conversion via numpy+PIL orthographic point
+            rasters (no matplotlib available): side view shows a clear standing
+            hadrosaur silhouette (duck-billed head, sweeping tail, legs at the
+            Y-near-zero base) - the raw STL is already Y-up with feet at y~=0, so zero
+            rotation was applied. Render-proven headlessly (Playwright, channel:'chrome'
+            against system Chrome since the pinned Playwright browser build is retired
+            upstream - same fix fire70/fire73 documented) + the actual vendored
+            GLTFLoader: 1 mesh, 17,982 tris, 0 NaN vertices, 0 WebGL errors; screenshot
+            confirms a recognizable duck-billed hadrosaur silhouette standing on 4 legs
+            with a long tail and no head crest (correct for Edmontosaurus, distinct
+            from the crested Parasaurolophus already shipped). Licensor also credited
+            as "seth the yutyrannus" for the already-shipped baryonyx.glb (CC-BY 4.0)
+            and ichthyosaurus.glb (CC-BY-SA 4.0) - this file's plain filename
+            ("edmontosaurus.stl") carries none of the "daz_originals"/commercial-content
+            naming red flag found on a DIFFERENT same-creator Printables upload
+            (euoplocephalus, print id 1023372, filename
+            "daz_originals__dinorauls_euoplocephalus.obj" - traced via WebSearch to a
+            paid Daz3D marketplace product, "EuoplocephalusDR" by Dinoraul's; that lead
+            was REJECTED for this cluster, not vendored). Under ShareAlike this GLB is
+            CC-BY-SA 4.0. Attribution mandatory - surfaced by the viewer disclosure.
+
+protoceratops.glb
+  Title:    protoceratops
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/) - ATTRIBUTION REQUIRED + SHARE-ALIKE
+  Via:      Printables - https://www.printables.com/model/752983-protoceratops
+  Origin:   https://files.printables.com/media/prints/752983/stls/5875710_cbaa598f-87a4-4fc8-8178-4248e42034a1_ce624f75-af45-4294-a084-8b139e6674bd/18592_protoceratops_v1.obj
+  Note:     DERIVATIVE: print-sculpt geometry (single OBJ mesh, 111,372 verts /
+            218,432 tris, "Fighting Dinosaurs" pose - this dinosaur fights with the
+            velociraptor per the author's own description). License confirmed via the
+            model page's server-hydrated GraphQL JSON (license.id="2"), cross-checked
+            against the already-vendored allosaurus.glb print (also license.id="2",
+            independently confirmed CC-BY-SA 4.0) - same numeric license-ID mapping.
+            Fetched anonymously via the same direct-static-URL technique as
+            edmontosaurus/ichthyosaurus (previewFile.filePreviewPath folder + strip
+            "_preview.png"), except the actual asset resolved as .obj, not .stl (404 on
+            .stl/.3mf/.step/.zip, 200 on .obj - verified by probing each extension).
+            Decimated 218,432 -> 16,000 tris with Open3D 0.19 quadric decimation
+            (fast_simplification wheel failed to import under the pinned Python 3.9 -
+            numpy ABI + PEP-604 syntax incompatibilities - Open3D substituted; no
+            bpy/Blender available this session). Reoriented from the source's
+            X=width/Y=length/Z=up axes to X=length/Y=up/Z=width, recentred, and scaled;
+            vertex-color countershading applied (dark olive-brown dorsal -> tan/buff
+            ventral, based on local Y-height). 327 KB, COLOR_0. Render-proven headlessly
+            (trimesh reload of the exported GLB: correct vertex/face counts, valid
+            extents, non-empty vertex-color buffer). Licensor also credited as "seth the
+            yutyrannus" for the already-shipped baryonyx.glb (CC-BY 4.0),
+            ichthyosaurus.glb, and edmontosaurus.glb (both CC-BY-SA 4.0). Under
+            ShareAlike this GLB is CC-BY-SA 4.0. Attribution mandatory - surfaced by the
+            viewer disclosure.
+
+-----------------------------------------------------------------------------
+
+CC0 1.0 full text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+CC-BY 3.0 full text: https://creativecommons.org/licenses/by/3.0/legalcode
+CC-BY-SA 3.0 full text: https://creativecommons.org/licenses/by-sa/3.0/legalcode
+
+ceratosaurus.glb
+  Title:    ceratosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757229-ceratosaurus
+  Origin:   https://files.printables.com/media/prints/757229/stls/5906938_948097ea-ae56-4ead-b4f4-4fb3c81437fa_bbca66c4-0546-4524-95a1-611037bf1805/cero.obj
+  Notes:    Original Sculptris sculpt (header: "OBJ Exported from DrPetter's Sculptris");
+            filename cero.obj carries no daz_originals/commercial-content naming red flag.
+            Printables license id "2" = Creative Commons Attribution Share Alike
+            (cross-checked against already-shipped edmontosaurus/ichthyosaurus/protoceratops).
+            Fetched anonymously via Printables GraphQL getDownloadLink (source: model_detail)
+            + direct static URL from filePreviewPath folder. Converted headlessly via
+            trimesh + Open3D decimation (79,306 -> 16,000 tris) with vertex-color
+            countershading (olive dorsal / sandy ventral). ShareAlike: re-hosted
+            derivative remains under CC-BY-SA 4.0.
+
+therizinosaurus.glb
+  Title:    Dinosaur Art - Therizinosaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1750761-dinosaur-art-therizinosaurus
+  Origin:   https://files.printables.com/media/prints/f0b05ffd-6edb-4b54-81fb-51e3a364937d/stls/13119381_f19a54de-2376-4514-868e-7301a27ed495_8f96b797-6f09-4c38-b861-6ade3849fd79/dinosaur-art-therizinosaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series. Flat display-base component (35,764 tris, 2.75-unit thick) filtered
+            out before export. Converted headlessly (trimesh 4.12.2 + Open3D 0.19
+            quadric decimation): 949,630 -> 15,995 tris + vertex-color countershading
+            (dark olive dorsal -> tan ventral). ~321 KB, COLOR_0. Render-proven via
+            silhouette projection (diagnostic long manus claws visible). REJECTED
+            alternatives this fire: seth the yutyrannus Printables #757277
+            (ark_therizinosaurus.obj = ARK: Survival Evolved game-rip filename red
+            flag); DragonArtist15 #759718 (CC-BY-NC-SA). Credit voluntary under CC0.
+
+giganotosaurus.glb
+  Title:    Dinosaur Art - Giganotosaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1763153-dinosaur-art-giganotosaurus
+  Origin:   https://files.printables.com/media/prints/7fcaeb3b-eff3-47bf-8322-2c9b0938034e/stls/13207272_17144606-d87c-419b-b5eb-268d5ef6d328_3f421b02-aedf-4b52-a403-2e496848962e/dinosaur-art-giganotosaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series. Flat display-base filtered out. Converted headlessly (trimesh +
+            Open3D): 948,262 -> 16,000 tris + vertex-color countershading. ~321 KB.
+            Render-proven (large theropod silhouette, open jaws). REJECTED alternatives
+            this fire: seth #747407 (explicit "Jurassic World Dominion" description);
+            pavel benes #750914 (JW Dominion film figurine); DragonArtist15 /
+            NC-licensed card kits; skull/jaw-only prints. Credit voluntary under CC0.
+
+iguanodon.glb
+  Title:    Dinosaur Art - Iguanodon
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1761369-dinosaur-art-iguanodon
+  Origin:   https://files.printables.com/media/prints/a96af494-20d8-41d7-899b-87c3764d4daa/stls/13194762_cc6e1a64-cb1c-4a7e-94b5-9c3c421735e3_d43a5256-3043-4bac-86ba-e03c1d15f679/dinosaur-art-iguanodon.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series. Flat display-base filtered out. Converted headlessly (trimesh +
+            Open3D): 991,748 -> 16,000 tris + vertex-color countershading. ~321 KB.
+            Render-proven (quadrupedal ornithopod silhouette, rounded snout). REJECTED
+            alternatives this fire: Leander #1057998 (CC-BY-NC); Pan Wołodyjowski
+            #1171881 (CC-BY-NC-ND); Rudolphodon Christmas mashup; Pokemon/SDFL toys.
+            Credit voluntary under CC0.
+
+brontosaurus.glb
+  Title:    Brontosaurus
+  Author:   WeaponGuy
+  License:  CC0 1.0 (Public Domain)
+  Via:      OpenGameArt - https://opengameart.org/content/brontosaurus
+  Origin:   https://opengameart.org/sites/default/files/brontosaurus.blend
+  Notes:    Listed in OGA "Truly Truly Public Domain" / CC0 Animals collections.
+            Converted headlessly with Blender 4.2.9 LTS via blend2glb.py (decimation
+            not needed - source already 6.4k tris). Vertex-color countershading
+            applied (olive dorsal / sandy ventral) because the blend materials did
+            not carry useful baked color after glTF export.
+
+megalosaurus.glb
+  Title:    megalosaurus
+  Author:   Model Magic
+  License:  Creative Commons — Public Domain (Printables license id "7")
+  Via:      Printables - https://www.printables.com/model/1758607-dinosaur-art-megalosaurus
+  Origin:   STL downloaded via Printables GraphQL getDownloadLink (source: model_detail)
+  Notes:    Full-body theropod silhouette verified against Printables preview (bipedal large-headed carnivore).
+            Decimated STL->glTF with vertex-color countershading (same Model Magic PD path as prior ships).
+            Corythosaurus Model Magic 1777347 was REJECTED this fire: preview shows tube crest = Parasaurolophus mislabel.
+
+microraptor.glb
+  Title:    microraptor
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/757274-microraptor
+  Origin:   microraptor.obj via GraphQL getDownloadLink (source: model_detail)
+  Notes:    Original Aspose.3D OBJ export; filename carries no daz_originals/commercial red flag.
+            Preview confirms four-winged feathered silhouette (fore + hind wing feathers + tail fan).
+            Decimated OBJ->glTF with vertex-color countershading.
+
+majungasaurus.glb
+  Title:    majungasaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/757208-majungasaurus
+  Origin:   majungasaurus_blue.obj via GraphQL getDownloadLink
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Preview confirms short-snouted abelisaurid with skull roof horn.
+            Decimated OBJ->glTF with vertex-color countershading.
+
+cryolophosaurus.glb
+  Title:    cryolophosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/764466-cryolophosaurus
+  Origin:   cryolophosaurus.obj via files.printables.com preview-folder direct path
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Distinctive transverse forehead crest (Elvisaurus).
+            Decimated OBJ->glTF (~16k tris) with vertex-color countershading; reoriented length-along-X.
+
+concavenator.glb
+  Title:    concavenator
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/916830-concavenator
+  Origin:   concavenator.obj via GraphQL getDownloadLink (output.link)
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Hip-hump carcharodontosaur silhouette verified vs Printables preview.
+            Decimated OBJ->glTF (~1.1M->15k tris) with vertex-color countershading; reoriented length-along-X.
+
+albertaceratops.glb
+  Title:    albertaceratops
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/757230-albertaceratops
+  Origin:   albertaceratops.obj via GraphQL getDownloadLink (output.link)
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Preview confirms ceratopsian with long brow horns + frill.
+            Decimated OBJ->glTF (~115k->16k tris) with vertex-color countershading; reoriented length-along-X.
+            Rejected this fire: elasmosaurus/abelisaurus (Daz/Dinoraul filenames); Ouranosaurus Pan (CC-BY-NC-ND).
+
+tsintaosaurus.glb
+  Title:    tsintaosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/939323-tsintaosaurus
+  Origin:   tsintaosaurus.obj via GraphQL getDownloadLink (output.link)
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Lambeosaurine with upright nasal crest (classic unicorn-spike silhouette in this sculpt).
+            Decimated OBJ->glTF (~18k->16k tris) with vertex-color countershading; reoriented length-along-X (Z was longest).
+
+ornithomimus.glb
+  Title:    ornithomimus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/939337-ornithomimus
+  Origin:   ornithomimus.obj via GraphQL getDownloadLink (output.link)
+  Notes:    Aspose.3D OBJ; no daz_originals naming. Ostrich-mimic silhouette; differentiate from shipped Gallimimus (Alberta vs Mongolia, smaller).
+            OBJ->glTF (~13k tris) with vertex-color countershading; reoriented length-along-X (Z was longest).
+
+
+tylosaurus.glb
+  Title:    tylosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/1494027-tylosaurus
+  Origin:   untitled.obj via GraphQL getDownloadLink (source:model_detail, output.link)
+  Notes:    Clean filename (untitled.obj) - no daz_originals/Dinoraul. Large Western Interior Seaway mosasaur; differentiate from shipped Mosasaurus (North American Tylosaurus vs European Mosasaurus).
+            OBJ->glTF (~12k tris) with vertex-color countershading; reoriented length-along-X (Z was longest).
+
+
+gorgosaurus.glb
+  Title:    gorgosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/1023407-gorgosaurus
+  Origin:   gorgosaurus.obj via GraphQL getDownloadLink (source:model_detail)
+  Notes:    Clean filename; Alberta albertosaurine tyrannosaurid - differentiate from shipped Tyrannosaurus rex (smaller, slenderer, earlier Dinosaur Park).
+            OBJ->glTF with vertex-color countershading; reoriented length-along-X.
+
+
+dimetrodon.glb
+  Title:    dimetrodon
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/939330-dimetrodon
+  Origin:   dimetrodon.obj via GraphQL getDownloadLink (source:model_detail)
+  Notes:    Clean filename. Early Permian sail-backed synapsid - NOT a dinosaur (more closely related to mammals). Predates dinosaurs by tens of millions of years.
+            OBJ->glTF with vertex-color countershading; reoriented length-along-X.
+
+
+ichthyovenator.glb
+  Title:    ichthyovenator
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/1053711-ichthyovenator
+  Origin:   Ichthyovenator.obj via GraphQL getDownloadLink (source:model_detail)
+  Notes:    Clean filename. Asian Early Cretaceous spinosaurid from Laos with a sinusoidal (wave-like) sail - differentiate from shipped Spinosaurus (North African, continuous sail).
+            OBJ->glTF (~31k tris) with vertex-color countershading; reoriented length-along-X.
+
+
+brontotherium.glb
+  Title:    brontotherium
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/995855-brontotherium
+  Origin:   brontotherium.obj via GraphQL getDownloadLink (source:model_detail)
+  Notes:    Clean filename (no Daz/Dinoraul). Late Eocene North American brontothere mammal - NOT a dinosaur (historically Brontotherium; often synonymized with Megacerops).
+            OBJ->glTF (~20k tris) with vertex-color countershading; reoriented length-along-X.
+
+
+hybodus.glb
+  Title:    hybodus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/1494021-hybodus
+  Origin:   shark.obj via GraphQL getDownloadLink (source:model_detail)
+  Notes:    Clean Meshpart1 filename (no Daz/Dinoraul). Mesozoic hybodont shark - NOT a dinosaur.
+            OBJ->glTF (~2k tris) with vertex-color countershading; reoriented length-along-X.
+
+
+coelophysis.glb
+  Title:    coelophysis
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/757231-coelophysis
+  Origin:   coelophysis.obj via GraphQL getDownloadLink (source:model_detail)
+  Notes:    Clean filename (no Daz/Dinoraul). Late Triassic early theropod from North America.
+            OBJ->glTF (~20k tris) with vertex-color countershading; reoriented length-along-X.
+
+
+titanosaurus.glb
+  Title:    titanosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/757201-titanosaurus
+  Origin:   https://files.printables.com/media/prints/757201/stls/5906792_4446fdfc-f3d3-4b23-b2a7-d65cffc8174a_904a56cd-f564-4c73-9585-16b46999da49/titanosaurus.obj
+  Notes:    Clean Object_* groups (no Daz/Dinoraul). Late Cretaceous Indian titanosaur (nomen dubium; Lydekker 1877).
+            OBJ->glTF (~20k tris) with vertex-color countershading; reoriented length-along-X, feet Y=0.
+
+dracovenator.glb
+  Title:    dracovenator
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Printables license id "2")
+  Via:      Printables - https://www.printables.com/model/757212-dracovenator
+  Origin:   https://files.printables.com/media/prints/757212/stls/5906849_84209958-405c-4979-b39c-d6f8db575bc6_62c336df-aa01-4287-b789-23744b5afa7e/21538_dracovenator_v1.obj
+  Notes:    Clean 3ds Max OBJ (group 21538_Dracovenator_v00211; no Daz/Dinoraul). Early Jurassic
+            basal neotheropod from South Africa (Yates 2005). OBJ->glTF (~20k tris) with
+            vertex-color countershading; reoriented length-along-X, feet Y=0 (np.ptp).
+
+sauropelta.glb
+  Title:    sauropelta
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757224-sauropelta
+  Origin:   https://files.printables.com/media/prints/757224/stls/5906906_017aff56-a1aa-4dc4-9967-dad6e5b9143d_b271aa72-28cf-4428-8175-85a87a055ac0/uploads_files_3549524_sauropelta.obj
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike.
+            Object name sauropelta_22; Blender export header cites Jean_of_arc_plate.blend
+            as the tooling source file name - not a franchise/Daz rip (no daz_originals /
+            Genesis / Jurassic strings in the OBJ). Decimated ~18k tris via
+            trimesh+Open3D (vertex clustering then quadric), Y-up, feet on y=0.
+
+tarbosaurus.glb
+  Title:    tarbosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/757281-tarbosaurus
+  Notes:    Restored into sources.json during fire106 remanifest repair.
+
+quetzalcoatlus.glb
+  Title:    quetzalcoatlus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/757267-quetzalcoatlus
+  Notes:    Restored into sources.json during fire106 remanifest repair.
+
+gigantoraptor.glb
+  Title:    gigantoraptor
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/757269-gigantoraptor
+  Notes:    Restored into sources.json during fire106 remanifest repair.
+
+brachylophosaurus.glb
+  Title:    brachylophosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757228-brachylophosaurus
+  Origin:   https://files.printables.com/media/prints/757228/stls/5906925_4639befe-f278-4f1e-8a82-a28298c388a1_bfdada17-8e0d-43da-89c5-0d879040731a/14906_brachylophosaurus_v1.obj
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike.
+            3ds Max Wavefront OBJ (object/group Brachylophosaurus_100k); no Daz/
+            Dinoraul/Jurassic/franchise strings. Decimated ~20k tris via
+            trimesh+Open3D (vertex clustering then quadric), Y-up, feet on y=0.
+
+shuangmiaosaurus.glb
+  Title:    shuangmiaosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757287-shuangmiaosaurus
+  Origin:   https://files.printables.com/media/prints/757287/stls/5907345_a8e4a723-273a-4cc9-b15a-feee5d061453_a768ba29-9673-4380-bcfd-ecbaec56030f/shuangmiaosaurus.obj
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike.
+            Aspose.3D Wavefront OBJ (object Object_5); no Daz/Dinoraul/Jurassic/
+            franchise strings. Body + limb mesh islands kept; decimated ~20k tris
+            via trimesh+Open3D quadric, Y-up, feet on y=0, length along X.
+
+alioramus.glb
+  Title:    alioramus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757289-alioramus
+  Origin:   https://files.printables.com/media/prints/757289/stls/5907350_7679a329-227f-44b5-a024-d0ed2f0a60e3_0f28d4e6-7779-42ed-b111-bc287af6a327/alioramus.obj
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike.
+            Aspose.3D Wavefront OBJ (object Object_5); no Daz/Dinoraul/Jurassic/
+            franchise strings. Body + limb mesh islands kept; decimated ~20k tris
+            via trimesh+Open3D quadric, Y-up, feet on y=0, length along X.
+
+doliosauriscus.glb
+  Title:    doliosauriscus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/757291-doliosauriscus
+  Origin:   https://files.printables.com/media/prints/757291/stls/5907358_70996f41-cb1e-4381-a24a-2f867469d4fd_0ae13378-7c48-4052-bc9f-fd172df8f596/doliosauriscus.obj
+  Notes:    Aspose.3D Wavefront OBJ exporter (object Object_5); no Daz/Dinoraul/franchise
+            markers. Printables license id "2" = Creative Commons Attribution Share Alike.
+            Converted headlessly via trimesh + Open3D (~20k tris), reoriented length-along-X,
+            feet Y=0. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+
+mamenchisaurus.glb
+  Title:    mamenchisaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/747424-mamenchisaurus
+  Origin:   https://files.printables.com/media/prints/747424/stls/5835707_d64997ab-9c7f-4681-a4fa-f4dde69a60dc_243cca81-87e5-4791-8709-b1aa15e1cf8c/mamenchisaurus_h.stl
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike;
+            disallowRemixing:false. STL header "STLEXP Object01" (generic exporter);
+            no Daz/Dinoraul/Jurassic/franchise strings found. Decimated 161,168 -> 20,000
+            tris via trimesh + Open3D quadric, reoriented length-along-X, feet Y=0,
+            neutral countershading vertex color applied (no known skin color).
+            ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+compsognathus.glb
+  Title:    compsognathus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/747520-compsognathus
+  Origin:   https://files.printables.com/media/prints/747520/stls/5836226_0929ee69-29e5-4da6-97b8-7c44fefdfed3_417a96e1-4d21-44ed-b9b0-7f4ce88b945c/compsognathus.obj
+  Notes:    Printables license id "2" = Creative Commons Attribution Share Alike.
+            Aspose.3D Wavefront OBJ (object Object_5); no Daz/Dinoraul/Jurassic/
+            franchise strings. Already low-poly (~1.8k tris); reoriented length-along-X,
+            feet Y=0, neutral countershading vertex color. ShareAlike: re-hosted
+            derivative remains under CC-BY-SA 4.0.
+
+troodon.glb
+  Title:    troodon
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike 4.0)
+  Via:      Printables - https://www.printables.com/model/747521-troodon
+  Origin:   https://files.printables.com/media/prints/747521/stls/5836229_b0f7cb0b-11c1-4b26-8d11-f2b3c9567f9b_af19c0b3-1b0b-41f2-bf00-8a978f636e00/troodon.obj
+  Notes:    License + author confirmed via the anonymous Printables GraphQL query
+            (license.name="Creative Commons — Attribution — Share Alike",
+            user.publicUsername="seth the yutyrannus"); description "the troodon has
+            a very large brain because it is the smartest dinosaur" - no Daz/Dinoraul/
+            Jurassic/franchise strings. Downloaded via the filePreviewPath-derived
+            folder path; byte-count-verified (content-length 10,087,805 matches the
+            GraphQL-reported fileSize exactly). Aspose.3D-style OBJ (single mesh);
+            decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, rotated 90deg
+            about Y to reorient length-along-X (native export was length-along-Z),
+            feet Y=0, neutral olive-brown dorsal / cream ventral countershading vertex
+            color applied (no known skin/feather color). Render-verified via matplotlib
+            triangulated side+front silhouette projection: unmistakable small bipedal
+            feathered theropod (head with eyes/jaw, feathered forearms, raised
+            counterbalancing tail). ShareAlike: re-hosted derivative remains under
+            CC-BY-SA 4.0.
+
+
+albertosaurus.glb
+  Title:    albertosaurus
+  Author:   Manicaeks
+  License:  CC0 1.0 (Public Domain)
+  Via:      OpenGameArt - https://opengameart.org/content/albertosaurus
+  Origin:   https://opengameart.org/sites/default/files/Albertosaurus.zip
+  Notes:    Part 3 of the author's "dinosaurs pack" personal-project series
+            (siblings ankylosaurus/pentaceratops/apatosaurus already on this
+            manifest from other creators). Zip held only .blend (Blender 2.69)
+            + .fbx (ASCII FBX 6.1.0, too old for assimp's FBX importer);
+            converted headlessly via Blender 4.5 bpy (--background --python).
+            Object "Cube", 343 polys/1364 tris. Legacy Blender-Internal
+            material (use_nodes=False, no diffuse node) was rebuilt as a
+            Principled BSDF wired to the model's own painted UV texture
+            (albertosaurustexture.png, 1024x1024) via a UVMap node, instead of
+            falling back to a flat gray default. Render-verified via a Blender
+            headless Eevee snapshot: clear bipedal tyrannosaurid silhouette
+            (horizontal back, raised tail counterweight, big head with
+            visible eye+jaw, small tucked arms, digitigrade legs). No
+            Daz/Dinoraul/franchise/toy-scan markers - independent hand-modeled
+            2014 asset.
+
+deinocheirus.glb
+  Title:    deinocheirus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/774263-deinocheirus
+  Origin:   https://files.printables.com/media/prints/774263/stls/6018201_963c0933-b797-4da8-a2b9-07460b0b7b78_b9a0a742-35ce-423e-ae91-ba200ab89109/deinocheirus.obj
+  Notes:    Printables license id 2 confirmed via anonymous GraphQL
+            (license.name="Creative Commons — Attribution — Share Alike",
+            user.publicUsername="seth the yutyrannus"). OBJ header Aspose.3D
+            Wavefront exporter; components Object_7/9/11; grepped clean of
+            Daz/Dinoraul/Jurassic/franchise/copyright/trademark. Downloaded
+            via filePreviewPath-derived folder (byte-count-verified 4078017).
+            Decimated 35,074 -> 19,999 tris via trimesh + Open3D quadric;
+            rotated 90deg about Y (native length-along-Z -> length-along-X);
+            feet Y=0; olive-brown/cream countershading vertex color.
+            ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+            Fire114 (deinocheirus lead recorded fire112).
+
+pentaceratops.glb
+  Title:    pentaceratops
+  Author:   Manicaeks
+  License:  CC0 1.0 (Public Domain)
+  Via:      OpenGameArt - https://opengameart.org/content/pentaceratops
+  Origin:   https://opengameart.org/sites/default/files/Pentaceratops.zip
+  Notes:    By the same author as the already-vendored albertosaurus and
+            ankylosaurus models. Zip held only .blend (Blender 2.69) + .fbx
+            (too old for assimp) + a full-res 1024x1024 painted color
+            texture + a UV-layout reference image. Converted headlessly via
+            Blender 4.5 bpy: legacy use_nodes=False material rebuilt as a
+            Principled BSDF wired to the real painted texture via a UVMap
+            node (same technique as albertosaurus); texture re-encoded to
+            JPEG q82 on glTF export, shrinking the asset from 3.2MB to
+            ~120KB with no visible quality loss. Render-verified via a
+            Blender headless Eevee snapshot: clear quadruped ceratopsian -
+            frill with epoccipital spikes, nose horn + 2 brow horns, painted
+            striped purple skin, digitigrade legs with claws. No
+            Daz/Dinoraul/franchise/toy-scan markers - independent
+            hand-modeled 2014 asset. Ready-queue entry (dino3d-discovery-loop
+            fire123) - vendored ahead of need; no page authored this fire.
+
+barosaurus.glb
+  Title:    barosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/885614-barosaurus
+  Origin:   https://files.printables.com/media/prints/885614/stls/6784845_ec0836c3-2b99-47a1-ac33-246610fe56f9_a461115d-aac9-4e4b-93dc-855d5e4da4dd/21534_barosaurus_v1.obj
+  Notes:    Model origin marked "their own original creation" on the live
+            page - not a franchise/toy-scan rip. Single OBJ (3ds Max
+            Wavefront exporter, 47386 verts, no MTL/texture). Direct file
+            URL resolved via Playwright page.waitForEvent("download") while
+            clicking the row-level Download control on the model's Files
+            tab - the real browser download event, not the GraphQL API
+            (which stayed introspection-disabled for this same creator's
+            tyrannotitan/euoplocephalus leads in fires 129/132). Converted
+            headlessly via trimesh: remapped source Z-up (3ds Max) axes to
+            glTF Y-up (newX=oldX, newY=oldZ, newZ=-oldY - confirmed
+            necessary by a before/after Playwright swiftshader render that
+            showed the pre-fix export standing on its tail end); applied a
+            vertex-color countershading gradient (light tan belly, dark
+            olive-brown back) since the source carried no baked
+            material/texture; re-centered X/Z, feet at Y=0. 49856 verts /
+            94768 faces post-export, 1.9MB. targetLenUnits 25 (matches the
+            mamenchisaurus longNeck-sauropod camera framing precedent, not
+            the 12-unit default). Render-verified via the site's own
+            vendored three.module.min.js/gltf-loader.module.js: clear
+            quadruped sauropod - raised neck, barrel body, four legs, long
+            tapering tail. ShareAlike: re-hosted derivative remains under
+            CC-BY-SA 4.0. Fire134 (dino3d-discovery-loop-runbook).
+
+ostafrikasaurus.glb
+  Title:    ostafrikasaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/1023409-ostafrikasaurus
+  Origin:   https://files.printables.com/media/prints/1023409/stls/7772716_6769957a-dd54-4586-aad1-2cc0c9a319b9_f4d2647f-a2b6-4ac5-bc38-78aeed4810fe/ostafrikasaurus.obj
+  Notes:    Fire115 fallback after REJECTING tyrannotitan Printables 1331397
+            (filename untitled.obj looked clean, but mesh names
+            Object_*_DR_Tyrannotitan_56888.Shape_skin/eyeball/mouth/... are
+            classic Daz Studio markers - rejected per Daz/NC/franchise gate).
+            This Ostafrikasaurus OBJ: Blender 3.6.15 header; object
+            LVL40Osta_LVL40Osta_0; grepped clean of Daz/Dinoraul/Jurassic/
+            franchise strings. Printables license id 2 (CC-BY-SA) via GraphQL.
+            trimesh + Open3D load (8,727 tris already under ~20k target; no
+            further decimation); np.ptp reorient longest axis -> X; feet Y=0;
+            olive/cream vertex countershading. ShareAlike: re-hosted derivative
+            remains under CC-BY-SA 4.0.
+
+torvosaurus.glb
+  Title:    torvosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/774270-torvosaurus
+  Origin:   https://files.printables.com/media/prints/774270/stls/6018239_387685fd-5656-449f-ac8b-5dcbdadbea62_6f1a2b5d-fc00-4c30-930b-f882f7cdaf65/torvosaurus.obj
+  Notes:    dino3d-discovery-loop fire139. Downloaded via the fire134 real-
+            browser-Download-button technique, launched against the system
+            Google Chrome.app (Playwright's own browser CDN download is
+            network-blocked in this environment; executablePath + a realistic
+            UA + navigator.webdriver override gets past Printables'
+            Cloudflare bot check). Aspose.3D OBJ, g Object_7/9/11, single
+            usemtl 'Torvosaurus' (species-named material) - the same
+            object-count and naming pattern as the already-shipped,
+            confirmed-clean Deinocheirus (re-verified this fire by
+            re-downloading Deinocheirus's OBJ and diffing the material
+            block). Two sibling leads from the SAME creator were downloaded
+            and REJECTED this fire as Daz Studio rips: euoplocephalus
+            (Printables 1023372, filename literally
+            daz_originals__dinorauls_euoplocephalus.obj, Object_5-10 +
+            generic claws/horn/mouth/skin/teeth materials) and suchomimus
+            (Printables 747445, same Object_5-11 + generic
+            claws/horns/material/mouth/skin/teeth/tongue materials) - do
+            not resume either without a materially different finding.
+            62,694 raw verts / 95,120 faces at print scale; recentered
+            X/Z, feet Y=0, no axis swap (native axis ordering already
+            matches the shipped Deinocheirus); scaled so length maps to
+            targetLenUnits 14; vertex-color countershading (cream belly,
+            dark brown back), no baked texture in the source. Post-merge
+            48,640 verts / 95,120 faces, 1.9MB. Render-verified via a
+            matplotlib wireframe projection and the live page (system
+            Chrome + swiftshader renders WebGL headless fine once pointed
+            at the Chrome.app binary - Playwright's bundled browser
+            download, not WebGL compositing, is what this environment
+            blocks): clear bipedal theropod, head with open jaws forward,
+            tail raised as a counterweight, digitigrade legs, arched back.
+            ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+
+sarcosuchus.glb
+  Title:    sarcosuchus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/764457-sarcosuchus
+  Origin:   https://files.printables.com/media/prints/764457/stls/5954979_5aaf5eb3-c88d-4a6d-bffd-da387de39d34_5d5bddbd-e52b-4a6f-9e74-0d02024e0f59/sarcosuchus_no_animated.obj
+  Notes:    dino3d-discovery-loop fire144. Same trusted uploader as the
+            already-vendored barosaurus/torvosaurus/deinocheirus/troodon/
+            ostafrikasaurus. Geometry sanity-checked fire143 via offline
+            matplotlib wireframe on the raw OBJ: unmistakable long tapered
+            crocodilian snout with an open toothy jaw, dorsal osteoderm
+            ridge along the back, low-slung body, tapering tail, 4 legs
+            correctly sprawled (crocodilian gait). 23804 verts / 42728
+            faces; native axes already Y-up/length-along-Z, no axis swap
+            needed. Recentered X/Z, feet at Y=0, scaled so length maps to
+            targetLenUnits 14; vertex-color countershading (olive-green
+            back to cream belly, real crocodilian palette), no baked
+            texture in the source. Post-scale extents length:width 4.29 /
+            length:height 5.8 - matches the pre-conversion raw-OBJ bbox
+            ratios exactly. Render-verified via a matplotlib side-view
+            projection of the final colored GLB: clear crocodilian
+            silhouette. ShareAlike: re-hosted derivative remains under
+            CC-BY-SA 4.0.
+
+postosuchus.glb
+  Title:    postosuchus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/764414-postosuchus
+  Origin:   https://files.printables.com/media/prints/764414/stls/5954720_198d5bff-efae-4811-a028-04ff1d9ddd70_b31c709f-f239-41a4-b9bb-77342051b6e4/postosuchus.obj
+  Notes:    dino3d-discovery-loop fire144. Same trusted uploader as
+            sarcosuchus above (different pose/gait rules out a
+            copy-paste stand-in). Geometry sanity-checked fire143 via
+            offline matplotlib wireframe: robust quadruped with legs held
+            sub-erect under the body (not sprawled), deep boxy archosaur
+            skull, long tail - matches the modern semi-improved-gait
+            reconstruction. 2065 verts / 3456 faces; native axes already
+            Y-up/length-along-Z, no axis swap needed. Recentered X/Z,
+            feet at Y=0, scaled so length maps to targetLenUnits 12;
+            vertex-color countershading (rust/sandstone back to pale
+            cream belly, evoking the Triassic red-beds formation), no
+            baked texture in the source. Post-scale extents
+            length:height 4.57 / length:width 7.77 - matches the
+            pre-conversion raw-OBJ bbox ratios exactly. Render-verified
+            via a matplotlib side-view projection of the final colored
+            GLB: clear robust quadruped archosaur silhouette. ShareAlike:
+            re-hosted derivative remains under CC-BY-SA 4.0.
+
+kentrosaurus.glb
+  Title:    kentrosaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/757272-kentrosaurus
+  Origin:   https://files.printables.com/media/prints/757272/stls/5907285_c40376a9-5546-46e1-91cf-232cbe2ff0de_748e5a7f-1616-4683-bfcc-cf58e1ed1724/kentrosaurus.stl
+  Notes:    dino3d-discovery-loop-runbook fire (2026-07-20). Lead first
+            found fire139, flagged NEEDS_VERIFICATION (same uploader had
+            a 2-of-7 Daz-rip rate elsewhere on this loop, and the binary
+            STL carries no object/material names to run the usual
+            Daz-tell check). Re-verified this fire by downloading the
+            STL (12,716,484 bytes, 127,162 verts / 254,328 faces, single
+            watertight connected component - not a multi-part Daz-rip
+            assembly) and geometry-checking it via a matplotlib
+            depth-sorted shaded wireframe from both sides: unmistakable
+            quadrupedal stegosaur silhouette - grazing head-down pose, 4
+            sturdy clawed legs, alternating plates-to-spikes row rising
+            from the neck and peaking mid-back before tapering into long
+            paired tail spikes (matches the published "at least 7 pairs
+            of tail spikes" distinguishing anatomy) - not a generic or
+            fantasy stand-in. Converted headlessly via Blender 4.5 bpy
+            (STL import, join, recalculate normals, Decimate modifier
+            254,328 -> 20,000 faces for web-viewer weight, glTF export)
+            then trimesh (recentered X/Z at 0, feet at Y=0, vertex-color
+            countershading: dark olive-brown back/plates to pale cream
+            belly, a plausible stegosaur-family palette since no
+            skin/color evidence survives in the fossil record; no baked
+            texture in the source STL). Final GLB: 59,992 verts / 20,000
+            faces, 1,200,904 bytes. Render-verified again post-conversion
+            on the final colored GLB: shape and countershading intact,
+            no inverted normals or holes introduced by decimation.
+            ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+amargasaurus.glb
+  Title:    Dinosaur Art - Amargasaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1771127-dinosaur-art-amargasaurus
+  Origin:   https://files.printables.com/media/prints/f2d01bce-6f15-4aa6-ae6d-b154949797e9/stls/13269703_ecdbd19f-b717-4bda-b838-15d7ec9b67b7_452ff5d0-0f09-4bb7-a474-99828ff6df03/dinosaur-art-amargasaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series (fire147). Flat display-base stripped. Converted headlessly (trimesh +
+            Open3D): Z-up to Y-up axis correction, 949,630 -> 16,000 tris + vertex-color
+            countershading. ~321 KB GLB. Credit voluntary under CC0.
+
+acrocanthosaurus.glb
+  Title:    Dinosaur Art - Acrocanthosaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1768652-dinosaur-art-acrocanthosaurus
+  Origin:   https://files.printables.com/media/prints/3b0bd157-8e11-44f4-8563-8315f37789d6/stls/13249163_24347aab-8f5b-4091-9243-403a299940e5_84c65d18-3017-477a-9282-8503cd568af8/dinosaur-art-acrocanthosaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series (fire148). Flat display-base stripped. Converted headlessly (trimesh +
+            Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 tris + vertex-color
+            countershading. ~321 KB GLB. Credit voluntary under CC0.
+chasmosaurus.glb
+  Title:    Dinosaur Art - Chasmosaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1766773-dinosaur-art-chasmosaurus
+  Origin:   https://files.printables.com/media/prints/d88988fc-9fed-4b2b-8f35-8becc1d9c183/stls/13234709_25627b25-c477-474f-b56b-de05a53600d3_8cd4c405-09af-4ced-9e8b-7a1ed4a26ed4/dinosaur-art-chasmosaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series (fire149). Flat display-base stripped. Converted headlessly (trimesh +
+            Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 tris + vertex-color
+            countershading. ~321 KB GLB. Credit voluntary under CC0.
+
+abelisaurus.glb
+  Title:    Dinosaur Art - Abelisaurus
+  Author:   Model Magic
+  License:  CC0 1.0 / Public Domain (Printables license id "7" Creative Commons — Public Domain)
+  Via:      Printables - https://www.printables.com/model/1767713-dinosaur-art-abelisaurus
+  Origin:   https://files.printables.com/media/prints/a7475ac6-b7ce-4119-b19f-400aa8f6937c/stls/13241886_642f2513-b1de-4982-a91a-53d6fd295064_8f653c36-a727-4350-9319-14d51f39eedc/dinosaur-art-abelisaurus.stl
+  Note:     DERIVATIVE: print STL (geometry only) from the Model Magic "Dinosaur Art"
+            series (fire150). Flat display-base stripped. Converted headlessly (trimesh +
+            Open3D): Z-up to Y-up axis correction, quadric decimation to 16,000 tris + vertex-color
+            countershading. ~321 KB GLB. Credit voluntary under CC0.
+
+becklespinax.glb
+  Title:    Becklespinax
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/1051754-becklespinax
+  Origin:   https://files.printables.com/media/prints/1051754/stls/7967803_80f28108-bbdd-43d4-ab30-ced0282e9f78_32b89520-5187-4d9d-8483-341c79c5f266/becklespinax.obj
+  Note:     dino3d-discovery-loop-runbook fire225. Downloaded via the getDownloadLink
+            GraphQL mutation (anonymous, TTL-bound signed URL - the production download
+            mechanism, replacing the filePreviewPath folder-hash heuristic). Rip-checked
+            clean (no Daz/Dinoraul/franchise strings). Converted via trimesh: -90deg Y
+            rotation to align long axis to X, centered X/Z, feet at Y=0, neutral vertex
+            countershading (no skin/color evidence survives the fossil record). ~208 KB
+            GLB. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+psittacosaurus.glb
+  License:  CC0 1.0 (Public Domain)
+  Author:   Model Magic (Printables user)
+  Source:   https://www.printables.com/model/1753562-dinosaur-art-psittacosaurus
+  Origin:   https://files.printables.com/media/prints/37347a1a-0faf-4db2-b076-c1861784ec30/stls/13139415_6f794ff7-49d4-47e1-98b4-4bf6e658e913_aa825d66-4d13-4921-b493-ff8d59a2b36e/dinosaur-art-psittacosaurus.stl
+  Note:     DERIVATIVE: fire151 fallback after Oviraptor STL morphology REJECT. Flat display-base
+            stripped. Z-up to Y-up, quadric decimation to 16,000 tris + vertex-color countershading.
+
+lambeosaurus.glb
+  License:  CC0 1.0 (Public Domain)
+  Author:   Model Magic (Printables user)
+  Source:   https://www.printables.com/model/1759419-dinosaur-art-lambeosaurus
+  Origin:   https://files.printables.com/media/prints/cf99ab7b-8233-4495-b0aa-0505a3e1456b/stls/13180130_4154ff3d-e334-4da2-9736-4ba720538ea9_5c8d33e6-aa99-481c-84f3-cd86c14b62f7/dinosaur-art-lambeosaurus.stl
+  Note:     dino3d-discovery-loop-runbook fire228. Found via the Model Magic series
+            search-page enumeration, download resolved via the getDownloadLink GraphQL
+            mutation. Binary STL, no material names (rip-check clean). Flat display-base
+            stripped, Z-up to Y-up, quadric decimation to 16,000 tris + vertex-color
+            countershading (dark olive back, pale cream belly).
+
+monolophosaurus.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/764471-monolophosaurus
+  Origin:   https://files.printables.com/media/prints/764471/stls/5955036_3348f4f5-33e1-4f81-a4e4-7fce25d310f4_124a160e-5a8e-4c79-9c1e-4aadcb11edc8/monolophosaurus.obj
+  Note:     dino3d-discovery-loop-runbook fire229. Legacy nested filePreviewPath layout
+            (unlike the still-stuck styracosaurus/metriacanthosaurus/saurosuchus flat-
+            layout leads) so the folder token resolved directly. Merged 7 mesh components
+            (all legitimate anatomy, no print-support base), 90deg Y rotation to align
+            long axis to X, centered X/Z, feet at Y=0, quadric-decimated 76,376 -> 21,999
+            tris via Open3D. ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0.
+
+panoplosaurus.glb
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0
+  Via:      Printables - https://www.printables.com/model/643341-panoplosaurus-mirus
+  Origin:   https://files.printables.com/media/prints/643341/stls/5079473_4e03a8cd-ea69-4a01-b7a7-252525daf03f_08a4fda9-5a98-4260-9c9d-4ebc5c6dbcb1/yourmesh-3.obj
+  Note:     dino3d-discovery-loop-runbook fire232. Resolves the fire216/217/231
+            flat-preview-bucket misdiagnosis - this print has the legacy nested
+            filePreviewPath layout, but the STL's internal preview stem
+            ("yourmesh-3") does not match the display filename ("Panoplosaurus"),
+            so the naive <folder>/<DisplayName>.obj guess 404d. Fix: derive the
+            real filename from the basename of filePreviewPath (strip
+            "_preview.png") paired with the extension from stls[].name. OBJ
+            decimated 1,178,960 -> 9,000 tris in Blender 4.5 headless, vertex-
+            color countershading (dark olive back, pale tan belly), Z-up to
+            Y-up. No Draco compression (site GLTFLoader has no DRACOLoader
+            wired). Attribution license (plain CC-BY, not NC/ND/SA).
+
+oviraptor.glb
+  Author:   Model Magic
+  License:  CC0 1.0 (Public Domain)
+  Via:      Printables - https://www.printables.com/model/1757494-dinosaur-art-oviraptor
+  Origin:   https://files.printables.com/media/prints/ae81cf59-e486-46a0-87a4-54926fed35dd/stls/13166231_5e6f18a3-10b4-4290-bbee-c4f5fe8925b1_34a1fc05-683c-4d40-933d-2415221857fb/dinosaur-art-oviraptor.stl
+  Note:     dino3d-discovery-loop-runbook fire233 (2026-07-21, LEAN one-off). Same
+            trusted "Dinosaur Art" series as lambeosaurus/monolophosaurus/panoplosaurus.
+            Single STL fused a flat print-display plinth with the creature; separated
+            via Blender "Separate by Loose Parts" and kept only the larger island
+            (494,255 of 512,137 verts). Converted via real Blender 4.5.11 headless
+            (wm.stl_import, remove_doubles, recenter+ground-plane, vertex-color
+            countershading dark-olive-back/pale-tan-belly, quadric decimate 988,488 ->
+            8,999 tris, GLB export Y-up, no Draco). Sibling leads in the same search
+            REJECTED without downloading: dracorex (Printables 993826, filename
+            self-confirms "daz_originals_..." rip) and alamosaurus-figurine
+            (Printables 1139226, CC-BY-NC-SA license).
+
+pinacosaurus.glb
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0
+  Via:      Printables - https://www.printables.com/model/643281-pinacosaurus
+  Origin:   https://files.printables.com/media/prints/643281/stls/5079067_9517f2de-b7f5-417a-bdf7-406520c3f3a9_66d5b1b2-3535-47cb-a44b-4dd3fdbc8585/pinacosaurus.stl
+  Note:     dino3d-discovery-loop-runbook fire236 (2026-07-21, LEAN one-off). Same
+            trusted creator already vendored cleanly for panoplosaurus. Binary STL,
+            single connected mesh (no separate print-support plinth), no exporter
+            signature in the header. Raw file is print-posed standing upright along
+            its own long axis; fixed by rotating +90deg about the raw Y axis and
+            recentering, verified against a rendered ground-plane reference (feet
+            planted, not inverted) before finalizing. Converted via Blender 4.5.11
+            headless, vertex-color countershading dark-olive-back/pale-tan-belly,
+            quadric decimate 4,453,696 -> 9,000 tris, GLB export Y-up, no Draco.
+
+wendiceratops.glb
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0
+  Via:      Printables - https://www.printables.com/model/651498-wendiceratops
+  Origin:   https://media.printables.com/media/prints/651498/stls/5138352_a826ace7-0315-4c7e-856e-49abb86c217f_0ce478a3-b217-414b-bdfb-b593b3c2296c/wendiceratops.stl
+  Note:     dino3d-discovery-loop-runbook fire237 (2026-07-21, LEAN one-off,
+            curate-only - sibling dinosaur-3d-guides-loop confirmed live, zero
+            writes to either child repo). Resolves the fire234
+            download-unresolved lead (same print, uploader NOT on the
+            suspected-rip list; two later CC-BY-NC / CC-BY-NC-ND revisions by
+            the same uploader were NOT used). New technique: GraphQL
+            print(id){stls{name fileSize filePreviewPath}} gives the STL's
+            display name and folder token; the real file sits in that same
+            folder at the LOWERCASED display name on media.printables.com,
+            byte-exact vs GraphQL fileSize (86,096,084). Header bytes all-zero
+            (no Aspose/Daz signature); single connected mesh, no print-support
+            plinth. Raw file is print-posed standing upright along its own
+            spine axis (legs splayed sideways as print supports); fixed by
+            rotating +90deg about the raw X axis and recentering, verified
+            against a rendered ground-plane reference (feet planted, head/
+            frill forward, tail back, not inverted) before finalizing.
+            Converted via Blender 4.5.11 headless, vertex-color countershading
+            dark-olive-back/pale-tan-belly, quadric decimate 1,721,920 ->
+            9,000 tris, GLB export Y-up, no Draco.
+
+suchomimus.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/747445-suchomimus
+  Origin:   https://files.printables.com/media/prints/747445/stls/5835812_4cd37d90-f56e-45c0-a690-c7e37f6f195d_8539dd6a-853c-4796-aa7d-3798546b6f89/suchomimus.obj
+  Note:     dino3d-discovery-loop-runbook LEAN one-off fire (2026-07-21,
+            curate + model-sourcing). Same trusted uploader already vendored
+            cleanly for monolophosaurus - no rip-signature concerns (checked
+            for daz/dinoraul/jurassic/universal/frontier tokens, none found;
+            generic 'Aspose.3D Wavefront OBJ Exporter' signature). Printables
+            id 747445 uses the LEGACY nested stls/<folder>/ layout so the
+            origin_download OBJ URL resolved on the first request, byte-exact
+            vs GraphQL fileSize (8,420,489 bytes). License confirmed CC-BY-SA
+            (Printables license id 2) - two OTHER Suchomimus prints found
+            (id 726201, id 743137) were CC-BY-NC(-SA) and rejected on license.
+            Single OBJ, 31,634 verts / 57,192 tris, one connected mesh, no
+            print-support plinth. Raw file's cover photo shows a vertical
+            tail-balancing print pose, but the mesh geometry itself already
+            reads as a natural walking stride once correctly axis-mapped.
+            ORIENTATION: diagnosed via 6 axis-aligned renders - native
+            Blender-Y was the long head-to-tail axis (14.5 units), Blender-Z
+            was already height (5.13 units, correct per Blender's OBJ-import
+            Y-up-to-Z-up convention), Blender-X was body width (2.39 units).
+            Applied a direct-coordinate axis swap (new_x=old_y, new_y=-old_x,
+            z unchanged) baked into mesh data - NOT an object-level euler
+            rotation, which produced an incorrect compound transform on the
+            first attempt - verified numerically via vertex-density
+            cross-section (4340 verts within 5% of the head end vs 614 near
+            the thin tail tip) then flipped X sign so the head lands at +X
+            per project convention. Converted via Blender 4.5.11 headless,
+            vertex-color countershading dark-olive-back/pale-tan-belly,
+            quadric decimate 57,192 -> 20,000 tris, GLB export Y-up, no
+            Draco. Render-verified via re-imported GLB from 4 angles: clean
+            spinosaurid silhouette, LOW dorsal spine row (distinct from
+            Spinosaurus's tall sail), croc-like snout, no decimation
+            artifacts.
+
+ouranosaurus.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/761732-ouranosaurus
+  Origin:   https://files.printables.com/media/prints/761732/stls/5936563_98c90729-057f-4b79-8a17-be07ad4b2bdd_6e6db2a7-4648-4303-af67-6bd03b354fc0/ouranosaurus.obj
+  Note:     dino3d-discovery-loop-runbook fire239 (2026-07-21). License id 2
+            CC-BY-SA via GraphQL. OBJ 77098 bytes byte-exact. Blender 2.91
+            exporter, object G_Ouranosaurus, rip-check clean. Converted via
+            Blender 4.5.11 headless (+90 X lay-down, -90 Y length-on-X,
+            countershading vertex colors, 500 faces, Y-up GLB, no Draco).
+            Render-verified sail-backed iguanodontian silhouette. ShareAlike
+            derivative remains CC-BY-SA 4.0.
+
+archaeopteryx.glb
+  Author:   Model Magic
+  License:  CC0 1.0 (Printables Public Domain / license id 7)
+  Via:      Printables - https://www.printables.com/model/1772799-dinosaur-art-archaeopteryx
+  Origin:   https://files.printables.com/media/prints/c3cbe4ca-5d86-4c0e-9d83-e4c6f36cb97c/stls/13282886_fbd36caf-f13a-414b-aaa5-8393d25e6cf5_ecd71eca-9263-4787-ac7c-d7c43e2314a7/dinosaur-art-archaeopteryx.stl
+  Note:     dino3d-discovery-loop-runbook fire240 (2026-07-21). License id 7
+            Public Domain via GraphQL. STL 49646084 bytes byte-exact via
+            getDownloadLink. Display stand (base+pole) stripped at raw Z<42.
+            Blender 4.5.11 headless (-90 X Y-up, countershading vertex colors,
+            15999 faces, Y-up GLB, no Draco). Render-verified feathered winged
+            archaeopteryx silhouette.
+
+corythosaurus.glb
+  Author:   Model Magic
+  License:  CC0 1.0 (Printables Public Domain / license id 7)
+  Via:      Printables - https://www.printables.com/model/1777347-dinosaur-art-corythosaurus
+  Origin:   https://files.printables.com/media/prints/5db07954-9eed-4a18-93cd-0efa6280df6d/stls/13321333_1a031fbb-ccbb-4464-8c85-1fe84a6c664f_0cd53b8b-c739-4804-ab48-0efbcec1e459/dinosaur-art-corythosaurus.stl
+  Note:     dino3d-discovery-loop-runbook fire241 (2026-07-21). License id 7
+            Public Domain via GraphQL. STL 50303584 bytes byte-exact via
+            getDownloadLink. Flat display-base island stripped. Blender 4.5.11
+            headless (-90 X Y-up, countershading, ~16k faces, no Draco).
+            Render-verified crested hadrosaur silhouette.

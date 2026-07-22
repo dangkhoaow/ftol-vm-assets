@@ -1,0 +1,9 @@
+Classic Pong
+Upstream: https://github.com/jakesgordon/javascript-pong
+Copyright (c) 2011-2016 Jake Gordon and contributors
+License: MIT - see LICENSE in this folder.
+
+Adaptation for FreeToolOnline (/games/classic-pong.html):
+- Added <meta name="robots" content="noindex"> on the engine page.
+- Trimmed tutorial part-links sidebar; kept controls help text.
+Engine JS/CSS/images/sounds otherwise vendored as upstream.

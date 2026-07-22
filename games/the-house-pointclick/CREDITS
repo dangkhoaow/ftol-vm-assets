@@ -1,0 +1,19 @@
+The House Point and Click
+Upstream: arturkot/the-house-game (https://github.com/arturkot/the-house-game)
+License: MIT (Copyright (c) 2019 Artur Kot) - see LICENSE
+
+Original point-and-click escape-the-house adventure by Artur Kot.
+
+Vendored runtime libraries (as shipped upstream):
+- jQuery 1.7
+- jStorage (Andris Reinman, MIT-style)
+- SoundManager 2 (HTML5 audio path; Flash SWF dropped)
+- Modernizr, spritely, jQuery UI draggable, transit, idle-timer, animate-colors
+
+FreeToolOnline adaptations (2026-07-21, game-discovery-loop fire179):
+- robots noindex on iframe document
+- stripped Google Analytics
+- dropped swf/ Flash fallback + CodeKit config + README bloat
+- jStorage keys namespaced to ftol:thehousepointclick:* (scoped flush)
+- audio base path fixed for CDN .../index.html URLs
+- title "The House Point and Click"

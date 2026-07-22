@@ -1,0 +1,9 @@
+Egg Time Rewind
+Upstream: https://github.com/KilledByAPixel/EggTimeRewind
+Author: Frank Force
+License: GPL-2.0 (see LICENSE)
+Adapted for FreeToolOnline iframe embed 2026-07-20:
+- replaced gameEngineDebug.js with stubs (no CCapture/gif tooling)
+- removed CCapture.all.min.js, gif.worker.js, screenshot.png
+- namespaced high score localStorage to ftol:eggtimerewind:highScore
+- added robots noindex; responsive canvas CSS for iframe

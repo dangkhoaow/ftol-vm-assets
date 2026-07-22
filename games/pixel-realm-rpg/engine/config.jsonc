@@ -1,0 +1,22 @@
+// Este es el archivo de configuración
+
+{
+    "player":{
+        "speed": 20000,
+        "gliding":{
+            "enabled": true,
+            "duration": 0.12
+        },
+        "hearts": 10, //hp, hearts in the UI dir inside assets, 2 hp is a heart, and what is left is the broken variant
+        "base_attack": 1,   // daño base sin arma equipada
+        "base_defense": 0   // defensa base sin armadura equipada
+    },
+    "map":{
+        "tile_size": 8,
+        "viewport_width":  16,
+        "viewport_height": 16
+    },
+    "UI":{
+        "size": 1
+    }
+}

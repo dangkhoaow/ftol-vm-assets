@@ -1,0 +1,5 @@
+Quantum Shift
+Adapted from dr5hn/quantam-shift (https://github.com/dr5hn/quantam-shift)
+MIT License - Copyright (c) 2024 Darshan Gada
+Uses Kontra.js (MIT) vendored under assets/js/kontra.min.js
+js13kGames-style puzzle entry; levels.json inlined at adapt time (no runtime fetch).

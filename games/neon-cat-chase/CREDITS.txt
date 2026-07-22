@@ -1,0 +1,2 @@
+Neon Cat Chase adapted from js13kGames/9-lives (MIT, devynstyles JS13K 2025).
+Original neon arcade cat game: collect cheese, dodge dogs, nine lives.

@@ -1,0 +1,9 @@
+Star Fuel Battle (upstream: Star Battle)
+Copyright (c) 2019 4Ark / gd4Ark
+License: MIT (see LICENSE)
+Source: https://github.com/gd4Ark/star-battle
+Originally developed for the 2017 Abu Dhabi World Skills Competition.
+
+Vendored for FreeToolOnline:
+- localStorage key namespaced to ftol:starfuelbattle:gameData
+- robots noindex on engine iframe document

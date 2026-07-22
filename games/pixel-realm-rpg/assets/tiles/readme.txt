@@ -1,0 +1,1 @@
+los tiles son de 8², como los sprites también son de 8²

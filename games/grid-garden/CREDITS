@@ -1,0 +1,9 @@
+Grid Garden
+Copyright (c) 2017 Thomas Park
+License: MIT (see LICENSE)
+Source: https://github.com/thomaspark/gridgarden
+
+Vendored for FreeToolOnline:
+- jquery 3.x and animate.css copied under vendor/ (no CDN)
+- Google Fonts, AdSense, and Google Analytics removed
+- localStorage keys namespaced to ftol:gridgarden:*

@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  Void Trader — vendored from the open-source "Orbitron" project by Daniel Silva Perez.
+  Original source: https://github.com/daniel-silva-perez/orbitron (MIT License; see LICENSE
+  in this directory). UI title rebranded to "Void Trader" for freetoolonline.com; the game
+  engine is otherwise unmodified. noindex: the canonical indexable URL is the framed page
+  /games/void-trader.html, not this raw engine HTML.
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Void Trader — Deep Space Trading Roguelike</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #000; overflow: hidden; font-family: 'Courier New', monospace; }
+  canvas { display: block; }
+  #hud {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none; z-index: 10;
+  }
+  #stats {
+    position: fixed; top: 16px; left: 16px;
+    color: #0ff; font-size: 13px; line-height: 1.6;
+    text-shadow: 0 0 8px #0ff;
+  }
+  #stats span { color: #fff; }
+  #sector-info {
+    position: fixed; top: 16px; right: 16px;
+    color: #ff0; font-size: 12px; text-align: right;
+    text-shadow: 0 0 6px #ff0;
+  }
+  #weapon-info {
+    position: fixed; bottom: 16px; left: 16px;
+    color: #f0f; font-size: 12px;
+    text-shadow: 0 0 6px #f0f;
+  }
+  #minimap {
+    position: fixed; bottom: 16px; right: 16px;
+    width: 140px; height: 140px;
+    border: 1px solid #0ff4;
+    background: #0007;
+    box-shadow: 0 0 12px #0ff4;
+  }
+  #message {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    color: #0ff; font-size: 18px; text-align: center;
+    text-shadow: 0 0 20px #0ff; pointer-events: none;
+    transition: opacity 0.5s;
+  }
+  #menu-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: #000d; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; z-index: 20;
+    pointer-events: all;
+  }
+  #menu-overlay h1 {
+    font-size: 48px; color: #0ff; letter-spacing: 8px;
+    text-shadow: 0 0 30px #0ff, 0 0 60px #0ff;
+    margin-bottom: 8px;
+  }
+  #menu-overlay h2 {
+    font-size: 14px; color: #f0f; letter-spacing: 4px;
+    text-shadow: 0 0 10px #f0f; margin-bottom: 40px;
+  }
+  .menu-btn {
+    background: none; border: 1px solid #0ff; color: #0ff;
+    font-family: 'Courier New', monospace; font-size: 14px;
+    padding: 12px 32px; margin: 6px; cursor: pointer;
+    letter-spacing: 3px; text-shadow: 0 0 8px #0ff;
+    box-shadow: 0 0 12px #0ff4; transition: all 0.2s;
+  }
+  .menu-btn:hover {
+    background: #0ff2; box-shadow: 0 0 24px #0ff;
+  }
+  #trade-panel {
+    position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    background: #000e; border: 1px solid #0ff; padding: 24px;
+    min-width: 420px; z-index: 25; box-shadow: 0 0 40px #0ff4;
+    pointer-events: all; display: none;
+  }
+  #trade-panel h3 { color: #0ff; font-size: 16px; letter-spacing: 3px; margin-bottom: 16px; }
+  .trade-row {
+    display: flex; justify-content: space-between; align-items: center;
+    color: #aaa; font-size: 12px; padding: 6px 0; border-bottom: 1px solid #222;
+  }
+  .trade-row span { color: #0ff; }
+  .trade-btn {
+    background: none; border: 1px solid #0f0; color: #0f0;
+    font-family: 'Courier New', monospace; font-size: 11px;
+    padding: 4px 12px; cursor: pointer; margin: 2px;
+  }
+  .trade-btn:hover { background: #0f02; }
+  #trade-close {
+    background: none; border: 1px solid #f00; color: #f00;
+    font-family: 'Courier New', monospace; font-size: 11px;
+    padding: 6px 20px; cursor: pointer; margin-top: 16px; float: right;
+  }
+  #trade-close:hover { background: #f002; }
+  .trade-profit { color: #0f0; }
+  .trade-loss { color: #f00; }
+  .trade-limit { color: #ff0; font-size: 10px; }
+  #instructions {
+    position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+    color: #555; font-size: 11px; text-align: center;
+  }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="hud">
+  <div id="stats">
+    HULL: <span id="hull-val">100</span>% | SHIELD: <span id="shield-val">100</span>%<br>
+    CREDITS: <span id="credits-val">500</span> Cr | CARGO: <span id="cargo-val">0/20</span><br>
+    SECTOR: <span id="sector-val">1</span> | DEPTH: <span id="depth-val">0</span> LY
+  </div>
+  <div id="sector-info">
+    ENEMIES: <span id="enemy-count">0</span><br>
+    ASTEROIDS: <span id="asteroid-count">0</span><br>
+    STATIONS: <span id="station-count">0</span><br>
+    <span id="alert-text"></span>
+  </div>
+  <div id="weapon-info">
+    CANNON: <span id="cannon-ammo">∞</span> | MISSILE: <span id="missile-ammo">3</span><br>
+    <span id="weapon-status">READY</span>
+  </div>
+  <canvas id="minimap"></canvas>
+  <div id="message"></div>
+  <div id="instructions">WASD: Move | CLICK: Fire | SPACE: Shield | E: Interact | TAB: Trade</div>
+</div>
+
+<div id="menu-overlay">
+  <h1>VOID TRADER</h1>
+  <h2>DEEP SPACE TRADING ROGUELIKE</h2>
+  <button class="menu-btn" onclick="startGame()">LAUNCH</button>
+  <button class="menu-btn" onclick="showControls()">CONTROLS</button>
+</div>
+
+<div id="trade-panel">
+  <h3>⬡ STATION TRADE</h3>
+  <div id="trade-goods"></div>
+  <button id="trade-close" onclick="closeTrade()">[E] CLOSE</button>
+</div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const rnd = (lo, hi) => Math.random() * (hi - lo) + lo;
+const rndInt = (lo, hi) => Math.floor(rnd(lo, hi + 1));
+const dist = (ax, ay, bx, by) => Math.hypot(bx - ax, by - ay);
+const angle = (ax, ay, bx, by) => Math.atan2(by - ay, bx - ax);
+const angleDiff = (a, b) => { let d = b - a; while (d > Math.PI) d -= Math.PI * 2; while (d < -Math.PI) d += Math.PI * 2; return d; };
+const randColor = () => `hsl(${rnd(0, 360)}, 80%, 60%)`;
+
+// ═══════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════
+const SHIP_RADIUS = 12;
+const WORLD_SIZE = 4000;
+const SECTOR_COUNT = 8;
+
+// ═══════════════════════════════════════════
+// AUDIO ENGINE
+// ═══════════════════════════════════════════
+class AudioEngine {
+  constructor() {
+    this.ctx = null;
+    this.master = null;
+    this.initialized = false;
+  }
+
+  init() {
+    if (this.initialized) return;
+    try {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = 0.3;
+      this.master.connect(this.ctx.destination);
+      this.initialized = true;
+    } catch(e) { console.warn('Audio unavailable'); }
+  }
+
+  shoot(type = 'cannon') {
+    if (!this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.connect(gain);
+    gain.connect(this.master);
+    if (type === 'cannon') {
+      osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(200, this.ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+      osc.start(); osc.stop(this.ctx.currentTime + 0.1);
+    } else {
+      osc.frequency.setValueAtTime(400, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.3);
+      gain.gain.setValueAtTime(0.4, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+      osc.start(); osc.stop(this.ctx.currentTime + 0.3);
+    }
+  }
+
+  explode(size = 1) {
+    if (!this.ctx) return;
+    const noise = this.ctx.createBufferSource();
+    const buf = this.ctx.createBuffer(1, this.ctx.sampleRate * 0.3, this.ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
+    noise.buffer = buf;
+    const gain = this.ctx.createGain();
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 400 * size;
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.master);
+    gain.gain.setValueAtTime(0.5 * size, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+    noise.start(); noise.stop(this.ctx.currentTime + 0.3);
+  }
+
+  pickup() {
+    if (!this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.connect(gain);
+    gain.connect(this.master);
+    osc.frequency.setValueAtTime(600, this.ctx.currentTime);
+    osc.frequency.setValueAtTime(900, this.ctx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.15);
+    osc.start(); osc.stop(this.ctx.currentTime + 0.15);
+  }
+
+  shieldUp() {
+    if (!this.ctx) return;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.connect(gain);
+    gain.connect(this.master);
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(200, this.ctx.currentTime);
+    osc.frequency.linearRampToValueAtTime(800, this.ctx.currentTime + 0.2);
+    gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.2);
+    osc.start(); osc.stop(this.ctx.currentTime + 0.2);
+  }
+}
+
+// ═══════════════════════════════════════════
+// PARTICLE SYSTEM
+// ═══════════════════════════════════════════
+class Particle {
+  constructor(x, y, vx, vy, color, life, size) {
+    this.x = x; this.y = y;
+    this.vx = vx; this.vy = vy;
+    this.color = color;
+    this.life = life;
+    this.maxLife = life;
+    this.size = size;
+  }
+  update(dt) {
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+    this.life -= dt;
+    this.vx *= 0.98;
+    this.vy *= 0.98;
+  }
+  draw(ctx, camX, camY) {
+    const alpha = Math.max(0, this.life / this.maxLife);
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x - camX, this.y - camY, this.size * alpha, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+  isDead() { return this.life <= 0; }
+}
+
+class ParticleSystem {
+  constructor() { this.particles = []; }
+  emit(x, y, count, colorFn, speed = 100, life = 1, size = 2) {
+    for (let i = 0; i < count; i++) {
+      const a = rnd(0, Math.PI * 2);
+      const spd = rnd(speed * 0.5, speed);
+      this.particles.push(new Particle(x, y, Math.cos(a) * spd, Math.sin(a) * spd, colorFn(), rnd(0.3, life), rnd(size * 0.5, size)));
+    }
+  }
+  update(dt) {
+    for (const p of this.particles) p.update(dt);
+    this.particles = this.particles.filter(p => !p.isDead());
+  }
+  draw(ctx, camX, camY) {
+    for (const p of this.particles) p.draw(ctx, camX, camY);
+  }
+}
+
+// ═══════════════════════════════════════════
+// GAME STATE
+// ═══════════════════════════════════════════
+const GOODS = [
+  { name: 'Titanium Ore', symbol: 'Ti', basePrice: 20, color: '#8899aa' },
+  { name: 'Crystal Shards', symbol: 'Cs', basePrice: 45, color: '#aa88ff' },
+  { name: 'Plasma Cells', symbol: 'Pl', basePrice: 80, color: '#00ffff' },
+  { name: 'Nav Data', symbol: 'Nd', basePrice: 150, color: '#ffaa00' },
+  { name: 'Quantum Core', symbol: 'Qc', basePrice: 300, color: '#ff00ff' },
+];
+
+const GOODS_BY_SYMBOL = {};
+GOODS.forEach(g => GOODS_BY_SYMBOL[g.symbol] = g);
+
+const SHIP_TYPES = [
+  { name: 'Scout', speed: 280, accel: 400, turn: 4, hull: 60, shield: 40, weaponCd: 0.15, color: '#00ff88' },
+  { name: 'Fighter', speed: 200, accel: 300, turn: 3, hull: 100, shield: 80, weaponCd: 0.2, color: '#ff8800' },
+  { name: 'Cruiser', speed: 120, accel: 180, turn: 2, hull: 180, shield: 150, weaponCd: 0.3, color: '#ff4444' },
+];
+
+class GameState {
+  constructor() { this.reset(); }
+  reset() {
+    this.credits = 500;
+    this.hull = 100;
+    this.maxHull = 100;
+    this.shield = 100;
+    this.maxShield = 100;
+    this.shieldCd = 0;
+    this.cargo = [];
+    this.maxCargo = 20;
+    this.sector = 1;
+    this.kills = 0;
+    this.score = 0;
+    this.deepest = 0;
+  }
+  hasItem(symbol) { return this.cargo.some(c => c.symbol === symbol); }
+  addItem(good, qty = 1) {
+    const existing = this.cargo.find(c => c.symbol === good.symbol);
+    if (existing) { existing.qty += qty; }
+    else if (this.cargo.length < this.maxCargo) { this.cargo.push({ symbol: good.symbol, qty }); }
+  }
+  removeItem(symbol, qty = 1) {
+    const idx = this.cargo.findIndex(c => c.symbol === symbol);
+    if (idx >= 0) {
+      this.cargo[idx].qty -= qty;
+      if (this.cargo[idx].qty <= 0) this.cargo.splice(idx, 1);
+    }
+  }
+  cargoCount() { return this.cargo.reduce((s, c) => s + c.qty, 0); }
+}
+
+// ═══════════════════════════════════════════
+// SHIP
+// ═══════════════════════════════════════════
+class Ship {
+  constructor(x, y) {
+    this.x = x; this.y = y;
+    this.vx = 0; this.vy = 0;
+    this.angle = 0;
+    this.thrust = 0;
+    this.typeIdx = 0;
+    this.type = SHIP_TYPES[0];
+    this.weaponCd = 0;
+    this.missileCd = 0;
+    this.missiles = 3;
+    this.maxMissiles = 3;
+    this.alive = true;
+    this.invuln = 0;
+  }
+
+  update(dt, keys, game) {
+    // Movement
+    const turn = this.type.turn * dt;
+    if (keys['KeyA'] || keys['ArrowLeft']) this.angle -= turn;
+    if (keys['KeyD'] || keys['ArrowRight']) this.angle += turn;
+
+    const accel = this.type.accel * dt;
+    if (keys['KeyW'] || keys['ArrowUp']) {
+      this.vx += Math.cos(this.angle) * accel;
+      this.vy += Math.sin(this.angle) * accel;
+      this.thrust = 1;
+    } else {
+      this.thrust = Math.max(0, this.thrust - dt * 2);
+    }
+
+    const speed = Math.hypot(this.vx, this.vy);
+    if (speed > this.type.speed) {
+      this.vx = (this.vx / speed) * this.type.speed;
+      this.vy = (this.vy / speed) * this.type.speed;
+    }
+
+    // Friction
+    this.vx *= Math.pow(0.985, dt * 60);
+    this.vy *= Math.pow(0.985, dt * 60);
+
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+
+    // World bounds
+    this.x = ((this.x % WORLD_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+    this.y = ((this.y % WORLD_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+
+    // Cooldowns
+    this.weaponCd = Math.max(0, this.weaponCd - dt);
+    this.missileCd = Math.max(0, this.missileCd - dt);
+    this.invuln = Math.max(0, this.invuln - dt);
+
+    // Missiles
+    if (this.maxMissiles < 3) this.maxMissiles = 3;
+    while (this.missiles > this.maxMissiles) this.missiles--;
+  }
+
+  fire(projectiles, audio) {
+    if (this.weaponCd > 0) return;
+    this.weaponCd = this.type.weaponCd;
+    const spread = 0.05;
+    const a = this.angle + rnd(-spread, spread);
+    projectiles.push({
+      x: this.x + Math.cos(this.angle) * 16,
+      y: this.y + Math.sin(this.angle) * 16,
+      vx: Math.cos(a) * 600 + this.vx * 0.3,
+      vy: Math.sin(a) * 600 + this.vy * 0.3,
+      life: 1.5,
+      owner: 'player',
+      size: 4,
+      color: '#0ff',
+    });
+    audio.shoot('cannon');
+  }
+
+  fireMissile(projectiles, audio) {
+    if (this.missileCd > 0 || this.missiles <= 0) return;
+    this.missileCd = 1.0;
+    this.missiles--;
+    projectiles.push({
+      x: this.x + Math.cos(this.angle) * 16,
+      y: this.y + Math.sin(this.angle) * 16,
+      vx: Math.cos(this.angle) * 350 + this.vx * 0.5,
+      vy: Math.sin(this.angle) * 350 + this.vy * 0.5,
+      life: 4,
+      owner: 'player',
+      size: 6,
+      color: '#f80',
+      isMissile: true,
+      target: null,
+    });
+    audio.shoot('missile');
+  }
+
+  takeDamage(amount, game) {
+    if (this.invuln > 0) return;
+    if (game.shield > 0) {
+      const shieldDmg = Math.min(game.shield, amount * 0.6);
+      game.shield -= shieldDmg;
+      amount -= shieldDmg;
+    }
+    game.hull -= amount;
+    this.invuln = 0.3;
+    if (game.hull <= 0) {
+      this.alive = false;
+    }
+  }
+
+  draw(ctx, camX, camY, isPlayer = false, shieldPct = 1) {
+    const sx = this.x - camX;
+    const sy = this.y - camY;
+
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.rotate(this.angle);
+
+    // Shield
+    if (isPlayer && game.state.shield > 0) {
+      ctx.beginPath();
+      ctx.arc(0, 0, SHIP_RADIUS + 8, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(0,200,255,${0.2 + shieldPct * 0.3})`;
+      ctx.lineWidth = 2;
+      ctx.shadowColor = '#0cf';
+      ctx.shadowBlur = 12;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+
+    // Engine glow
+    if (this.thrust > 0) {
+      ctx.beginPath();
+      ctx.moveTo(-SHIP_RADIUS, 0);
+      ctx.lineTo(-SHIP_RADIUS - 12 * this.thrust, -4);
+      ctx.lineTo(-SHIP_RADIUS - 18 * this.thrust, 0);
+      ctx.lineTo(-SHIP_RADIUS - 12 * this.thrust, 4);
+      ctx.closePath();
+      ctx.fillStyle = `hsl(${30 + this.thrust * 30}, 100%, 60%)`;
+      ctx.shadowColor = '#f80';
+      ctx.shadowBlur = 16;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    // Ship body
+    const col = this.type.color;
+    ctx.beginPath();
+    ctx.moveTo(SHIP_RADIUS, 0);
+    ctx.lineTo(-SHIP_RADIUS * 0.7, -SHIP_RADIUS * 0.7);
+    ctx.lineTo(-SHIP_RADIUS * 0.4, 0);
+    ctx.lineTo(-SHIP_RADIUS * 0.7, SHIP_RADIUS * 0.7);
+    ctx.closePath();
+    ctx.fillStyle = col;
+    ctx.shadowColor = col;
+    ctx.shadowBlur = isPlayer ? 15 : 8;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Cockpit
+    ctx.beginPath();
+    ctx.arc(SHIP_RADIUS * 0.3, 0, 3, 0, Math.PI * 2);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+
+    // Invuln flash
+    if (this.invuln > 0 && Math.floor(this.invuln * 20) % 2 === 0) {
+      ctx.globalAlpha = 0.4;
+      ctx.beginPath();
+      ctx.arc(0, 0, SHIP_RADIUS + 4, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    ctx.restore();
+  }
+}
+
+// ═══════════════════════════════════════════
+// ENEMY
+// ═══════════════════════════════════════════
+class Enemy {
+  constructor(x, y, type, depth) {
+    this.x = x; this.y = y;
+    this.vx = 0; this.vy = 0;
+    this.angle = rnd(0, Math.PI * 2);
+    this.type = type;
+    this.typeIdx = type;
+    this.depth = depth;
+    this.shipType = type === 0 ? SHIP_TYPES[0] : type === 1 ? SHIP_TYPES[1] : SHIP_TYPES[2];
+    this.hull = this.shipType.hull * (1 + depth * 0.15);
+    this.maxHull = this.hull;
+    this.weaponCd = rnd(0, this.shipType.weaponCd);
+    this.behavior = rndInt(0, 2);
+    this.targetAngle = 0;
+    this.wanderTimer = rnd(1, 3);
+    this.alive = true;
+    this.agroRange = 400;
+    this.bounty = Math.round(this.shipType.hull * 0.5 + depth * 10);
+  }
+
+  update(dt, player, projectiles, particles, audio) {
+    const toPlayer = angle(this.x, this.y, player.x, player.y);
+    const d = dist(this.x, this.y, player.x, player.y);
+    const inRange = d < this.agroRange;
+
+    if (this.behavior === 0 && inRange) {
+      // Aggressive chase
+      this.targetAngle = toPlayer;
+      const spd = this.shipType.speed * 0.8;
+      this.vx += Math.cos(this.targetAngle) * this.shipType.accel * 0.6 * dt;
+      this.vy += Math.sin(this.targetAngle) * this.shipType.accel * 0.6 * dt;
+    } else if (this.behavior === 1 && inRange) {
+      // Circle and shoot
+      this.targetAngle = toPlayer + Math.PI * 0.5;
+      if (Math.abs(angleDiff(this.angle, toPlayer)) < 0.5) {
+        this.tryShoot(player, projectiles, audio);
+      }
+    } else {
+      // Wander
+      this.wanderTimer -= dt;
+      if (this.wanderTimer <= 0) {
+        this.targetAngle = rnd(0, Math.PI * 2);
+        this.wanderTimer = rnd(1, 4);
+      }
+    }
+
+    // Face target angle
+    const ad = angleDiff(this.angle, this.targetAngle);
+    this.angle += clamp(ad, -this.shipType.turn * dt, this.shipType.turn * dt);
+
+    // Move
+    const spd = Math.hypot(this.vx, this.vy);
+    const maxSpd = this.shipType.speed;
+    if (spd > maxSpd) {
+      this.vx = (this.vx / spd) * maxSpd;
+      this.vy = (this.vy / spd) * maxSpd;
+    }
+    this.vx *= 0.99;
+    this.vy *= 0.99;
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+
+    // Wrap
+    this.x = ((this.x % WORLD_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+    this.y = ((this.y % WORLD_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+
+    this.weaponCd = Math.max(0, this.weaponCd - dt);
+  }
+
+  tryShoot(player, projectiles, audio) {
+    if (this.weaponCd > 0) return;
+    const toPlayer = angle(this.x, this.y, player.x, player.y);
+    if (Math.abs(angleDiff(this.angle, toPlayer)) > 0.8) return;
+    this.weaponCd = this.shipType.weaponCd * 1.5;
+    const spread = 0.15;
+    const a = toPlayer + rnd(-spread, spread);
+    projectiles.push({
+      x: this.x + Math.cos(this.angle) * 14,
+      y: this.y + Math.sin(this.angle) * 14,
+      vx: Math.cos(a) * 400,
+      vy: Math.sin(a) * 400,
+      life: 1.2,
+      owner: 'enemy',
+      size: 3,
+      color: '#f44',
+    });
+    audio.shoot('cannon');
+  }
+
+  takeDamage(amount, particles, audio) {
+    this.hull -= amount;
+    if (this.hull <= 0) {
+      this.alive = false;
+      particles.emit(this.x, this.y, 30, () => `hsl(${rnd(0, 60)}, 80%, 60%)`, 200, 1.5, 4);
+      audio.explode(this.typeIdx === 2 ? 1.5 : 0.8);
+    }
+  }
+
+  draw(ctx, camX, camY) {
+    const sx = this.x - camX;
+    const sy = this.y - camY;
+
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.rotate(this.angle);
+
+    const col = this.shipType.color;
+    ctx.beginPath();
+    ctx.moveTo(SHIP_RADIUS, 0);
+    ctx.lineTo(-SHIP_RADIUS * 0.7, -SHIP_RADIUS * 0.7);
+    ctx.lineTo(-SHIP_RADIUS * 0.4, 0);
+    ctx.lineTo(-SHIP_RADIUS * 0.7, SHIP_RADIUS * 0.7);
+    ctx.closePath();
+    ctx.fillStyle = col;
+    ctx.shadowColor = col;
+    ctx.shadowBlur = 10;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Hull bar
+    const barW = SHIP_RADIUS * 1.5;
+    const barH = 3;
+    ctx.fillStyle = '#300';
+    ctx.fillRect(-barW / 2, -SHIP_RADIUS - 8, barW, barH);
+    ctx.fillStyle = '#0f0';
+    ctx.fillRect(-barW / 2, -SHIP_RADIUS - 8, barW * (this.hull / this.maxHull), barH);
+
+    ctx.restore();
+  }
+}
+
+// ═══════════════════════════════════════════
+// ASTEROID
+// ═══════════════════════════════════════════
+class Asteroid {
+  constructor(x, y, size) {
+    this.x = x; this.y = y;
+    this.vx = rnd(-30, 30); this.vy = rnd(-30, 30);
+    this.size = size || rndInt(1, 3);
+    this.radius = this.size * 12 + 8;
+    this.angle = rnd(0, Math.PI * 2);
+    this.spin = rnd(-1, 1);
+    this.vertices = this.genVerts();
+    this.alive = true;
+    this.ore = Math.floor(this.size * 2);
+  }
+
+  genVerts() {
+    const verts = [];
+    const n = rndInt(7, 12);
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2;
+      const r = this.radius * rnd(0.7, 1.3);
+      verts.push({ x: Math.cos(a) * r, y: Math.sin(a) * r });
+    }
+    return verts;
+  }
+
+  update(dt) {
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+    this.angle += this.spin * dt;
+    this.x = ((this.x % WORLD_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+    this.y = ((this.y % WORLD_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+  }
+
+  draw(ctx, camX, camY) {
+    const sx = this.x - camX;
+    const sy = this.y - camY;
+    ctx.save();
+    ctx.translate(sx, sy);
+    ctx.rotate(this.angle);
+    ctx.beginPath();
+    ctx.moveTo(this.vertices[0].x, this.vertices[0].y);
+    for (let i = 1; i < this.vertices.length; i++) {
+      ctx.lineTo(this.vertices[i].x, this.vertices[i].y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = '#445566';
+    ctx.strokeStyle = '#667788';
+    ctx.lineWidth = 1.5;
+    ctx.shadowColor = '#445566';
+    ctx.shadowBlur = 4;
+    ctx.fill();
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.restore();
+  }
+}
+
+// ═══════════════════════════════════════════
+// STATION
+// ═══════════════════════════════════════════
+class Station {
+  constructor(x, y) {
+    this.x = x; this.y = y;
+    this.angle = 0;
+    this.radius = 50;
+    this.rotorAngle = 0;
+    this.docked = false;
+  }
+
+  update(dt) {
+    this.rotorAngle += dt * 0.5;
+  }
+
+  draw(ctx, camX, camY) {
+    const sx = this.x - camX;
+    const sy = this.y - camY;
+    ctx.save();
+    ctx.translate(sx, sy);
+
+    // Outer ring
+    ctx.beginPath();
+    ctx.arc(0, 0, this.radius, 0, Math.PI * 2);
+    ctx.strokeStyle = '#0af';
+    ctx.lineWidth = 3;
+    ctx.shadowColor = '#0af';
+    ctx.shadowBlur = 20;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // Spokes
+    ctx.strokeStyle = '#088';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 6; i++) {
+      const a = (i / 6) * Math.PI * 2 + this.rotorAngle;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * 20, Math.sin(a) * 20);
+      ctx.lineTo(Math.cos(a) * this.radius, Math.sin(a) * this.radius);
+      ctx.stroke();
+    }
+
+    // Center
+    ctx.beginPath();
+    ctx.arc(0, 0, 20, 0, Math.PI * 2);
+    ctx.fillStyle = '#0af';
+    ctx.shadowColor = '#0af';
+    ctx.shadowBlur = 15;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Docking indicator
+    ctx.beginPath();
+    ctx.arc(0, 0, this.radius + 8, 0, Math.PI * 2);
+    ctx.strokeStyle = '#0ff6';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([8, 8]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.restore();
+  }
+}
+
+// ═══════════════════════════════════════════
+// PROJECTILE
+// ═══════════════════════════════════════════
+class Projectile {
+  update(dt, state) {
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+    this.life -= dt;
+    // Missile homing
+    if (this.isMissile && this.target && this.target.alive) {
+      const ta = angle(this.x, this.y, this.target.x, this.target.y);
+      const ca = Math.atan2(this.vy, this.vx);
+      const ad = angleDiff(ca, ta);
+      const turn = clamp(ad, -3 * dt, 3 * dt);
+      const newA = ca + turn;
+      const spd = Math.hypot(this.vx, this.vy);
+      this.vx = Math.cos(newA) * spd;
+      this.vy = Math.sin(newA) * spd;
+    }
+    this.x = ((this.x % WORLD_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+    this.y = ((this.y % WORLD_SIZE) + WORLD_SIZE) % WORLD_SIZE;
+  }
+  isDead() { return this.life <= 0; }
+}
+
+// ═══════════════════════════════════════════
+// SECTOR GENERATION
+// ═══════════════════════════════════════════
+function generateSector(state) {
+  const depth = state.sector - 1;
+  const asteroids = [];
+  const enemies = [];
+  let stations = [];
+  const numAsteroids = 40 + depth * 15;
+  const numEnemies = 3 + depth * 2;
+  const numStations = state.sector === 1 ? 1 : rndInt(1, Math.min(3, depth + 1));
+
+  // Spawn away from center
+  for (let i = 0; i < numAsteroids; i++) {
+    let ax, ay;
+    do {
+      ax = rnd(0, WORLD_SIZE);
+      ay = rnd(0, WORLD_SIZE);
+    } while (dist(ax, ay, WORLD_SIZE / 2, WORLD_SIZE / 2) < 300);
+    asteroids.push(new Asteroid(ax, ay));
+  }
+
+  for (let i = 0; i < numEnemies; i++) {
+    let ex, ey;
+    do {
+      ex = rnd(0, WORLD_SIZE);
+      ey = rnd(0, WORLD_SIZE);
+    } while (dist(ex, ey, WORLD_SIZE / 2, WORLD_SIZE / 2) < 400);
+    const type = Math.min(2, Math.floor(Math.random() * (1 + depth / 3)));
+    enemies.push(new Enemy(ex, ey, type, depth));
+  }
+
+  for (let i = 0; i < numStations; i++) {
+    let sx, sy;
+    do {
+      sx = rnd(200, WORLD_SIZE - 200);
+      sy = rnd(200, WORLD_SIZE - 200);
+    } while (dist(sx, sy, WORLD_SIZE / 2, WORLD_SIZE / 2) < 400);
+    stations.push(new Station(sx, sy));
+  }
+
+  return { asteroids, enemies, stations };
+}
+
+// ═══════════════════════════════════════════
+// MAIN GAME
+// ═══════════════════════════════════════════
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const miniCanvas = document.getElementById('minimap');
+const miniCtx = miniCanvas.getContext('2d');
+
+const audio = new AudioEngine();
+const particles = new ParticleSystem();
+
+let game = null;
+let keys = {};
+let mouse = { x: 0, y: 0, down: false };
+let screenW, screenH;
+let camX = 0, camY = 0;
+let camera = { x: 0, y: 0 };
+let starField = [];
+let messageTimer = 0;
+let sector = null;
+let lastTime = 0;
+let trading = false;
+let nearestStation = null;
+
+function initStars() {
+  starField = [];
+  for (let i = 0; i < 300; i++) {
+    starField.push({
+      x: rnd(0, WORLD_SIZE),
+      y: rnd(0, WORLD_SIZE),
+      size: rnd(0.5, 2),
+      bright: rnd(0.3, 1),
+      twinkle: rnd(0, Math.PI * 2),
+    });
+  }
+}
+
+function showMessage(text, duration = 3) {
+  const el = document.getElementById('message');
+  el.textContent = text;
+  el.style.opacity = 1;
+  messageTimer = duration;
+}
+
+function resize() {
+  screenW = window.innerWidth;
+  screenH = window.innerHeight;
+  canvas.width = screenW;
+  canvas.height = screenH;
+  miniCanvas.width = 140;
+  miniCanvas.height = 140;
+}
+window.addEventListener('resize', resize);
+resize();
+
+function initGame() {
+  game = {
+    state: new GameState(),
+    player: new Ship(WORLD_SIZE / 2, WORLD_SIZE / 2),
+    projectiles: [],
+    currentSector: null,
+  };
+  initStars();
+  loadSector(1);
+}
+
+function loadSector(n) {
+  game.state.sector = n;
+  if (n > game.state.deepest) game.state.deepest = n;
+  sector = generateSector(game.state);
+  // Reset player to sector center on new sector
+  game.player.x = WORLD_SIZE / 2 + rnd(-200, 200);
+  game.player.y = WORLD_SIZE / 2 + rnd(-200, 200);
+  game.projectiles = [];
+  showMessage(`SECTOR ${n} — ${sector.enemies.length} hostiles detected`, 3);
+}
+
+function startGame() {
+  audio.init();
+  initGame();
+  document.getElementById('menu-overlay').style.display = 'none';
+  document.getElementById('hud').style.display = 'block';
+  lastTime = performance.now();
+  requestAnimationFrame(loop);
+}
+
+function showControls() {
+  alert('WASD / Arrow Keys — Move\nLeft Click — Fire Cannon\nRight Click / X — Fire Missile\nSpace — Shield (costs energy)\nE — Dock at Station\nTab — Inventory\nEsc — Pause');
+}
+
+// ─── KEYBOARD & MOUSE ───────────────────────
+window.addEventListener('keydown', e => {
+  keys[e.code] = true;
+  if (e.code === 'Space') e.preventDefault();
+  if (e.code === 'KeyE' && !trading && nearestStation) dockAtStation(nearestStation);
+  if (e.code === 'Tab') { e.preventDefault(); toggleTrade(); }
+  if (e.code === 'Escape' && trading) closeTrade();
+  if (e.code === 'KeyR' && !game.state.alive) restartGame();
+});
+
+window.addEventListener('keyup', e => { keys[e.code] = false; });
+
+window.addEventListener('mousemove', e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+window.addEventListener('mousedown', e => {
+  if (!audio.ctx) audio.init();
+  mouse.down = true;
+  if (e.button === 0) {
+    game.player.fire(game.projectiles, audio);
+  } else if (e.button === 2) {
+    game.player.fireMissile(game.projectiles, audio);
+  }
+});
+
+window.addEventListener('mouseup', () => { mouse.down = false; });
+window.addEventListener('contextmenu', e => e.preventDefault());
+
+// ─── TRADING ──────────────────────────────
+function toggleTrade() {
+  if (!nearestStation || !game.player.alive) return;
+  if (trading) { closeTrade(); return; }
+  openTrade(nearestStation);
+}
+
+function openTrade(station) {
+  trading = true;
+  const panel = document.getElementById('trade-panel');
+  panel.style.display = 'block';
+  renderTrade(station);
+}
+
+function closeTrade() {
+  trading = false;
+  document.getElementById('trade-panel').style.display = 'none';
+}
+
+function renderTrade(station) {
+  const goodsEl = document.getElementById('trade-goods');
+  const depth = game.state.sector - 1;
+  let html = `<div class="trade-row" style="color:#0ff;font-size:11px;margin-bottom:8px;">CREDITS: ${game.state.credits} Cr | CARGO: ${game.state.cargoCount()}/${game.state.maxCargo}</div>`;
+  html += `<div class="trade-row"><span>COMMODITY</span><span>PRICE</span><span>QTY</span><span>ACTION</span></div>`;
+
+  for (const good of GOODS) {
+    const priceMult = 1 + (depth * 0.2) + rnd(-0.1, 0.1);
+    const price = Math.round(good.basePrice * priceMult);
+    const hasItem = game.state.hasItem(good.symbol);
+    const buyable = game.state.credits >= price && game.state.cargoCount() < game.state.maxCargo;
+    const sellable = hasItem;
+
+    html += `<div class="trade-row">
+      <span style="color:${good.color}">[${good.symbol}] ${good.name}</span>
+      <span>${price} Cr</span>
+      <span>${hasItem ? game.state.cargo.find(c=>c.symbol===good.symbol).qty : '-'}</span>
+      <span>
+        <button class="trade-btn" onclick="buyGood('${good.symbol}', ${price})" ${buyable ? '' : 'disabled'}>BUY</button>
+        <button class="trade-btn" onclick="sellGood('${good.symbol}', ${price})" ${sellable ? '' : 'disabled'}>SELL</button>
+      </span>
+    </div>`;
+  }
+
+  // Upgrade sections
+  html += `<div style="margin-top:12px;padding-top:12px;border-top:1px solid #333;">
+    <div style="color:#0ff;font-size:11px;margin-bottom:8px;">UPGRADES</div>`;
+
+  const hullCost = Math.round(200 * Math.pow(1.5, game.player.typeIdx));
+  const shieldCost = Math.round(250 * Math.pow(1.5, game.player.typeIdx));
+  const missileCost = Math.round(100 * Math.pow(1.3, game.player.maxMissiles - 3));
+
+  html += `<div class="trade-row">
+    <span>Repair Hull (+30)</span>
+    <span>${hullCost} Cr</span>
+    <span>${game.state.hull}/${game.state.maxHull}</span>
+    <span><button class="trade-btn" onclick="repairHull(${hullCost})" ${game.state.credits >= hullCost && game.state.hull < game.state.maxHull ? '' : 'disabled'}>REPAIR</button></span>
+  </div>`;
+
+  html += `<div class="trade-row">
+    <span>Recharge Shield (+40)</span>
+    <span>${shieldCost} Cr</span>
+    <span>${game.state.shield}/${game.state.maxShield}</span>
+    <span><button class="trade-btn" onclick="rechargeShield(${shieldCost})" ${game.state.credits >= shieldCost && game.state.shield < game.state.maxShield ? '' : 'disabled'}>RECHARGE</button></span>
+  </div>`;
+
+  html += `<div class="trade-row">
+    <span>Missile Pack (+2)</span>
+    <span>${missileCost} Cr</span>
+    <span>${game.player.missiles}/${game.player.maxMissiles}</span>
+    <span><button class="trade-btn" onclick="buyMissiles(${missileCost})" ${game.state.credits >= missileCost ? '' : 'disabled'}>BUY</button></span>
+  </div>`;
+
+  if (game.player.typeIdx < 2) {
+    const upgradeCost = Math.round(800 * Math.pow(2.5, game.player.typeIdx));
+    html += `<div class="trade-row">
+      <span>Upgrade Ship → ${SHIP_TYPES[game.player.typeIdx + 1].name}</span>
+      <span>${upgradeCost} Cr</span>
+      <span>-</span>
+      <span><button class="trade-btn" onclick="upgradeShip(${upgradeCost})" ${game.state.credits >= upgradeCost ? '' : 'disabled'}>UPGRADE</button></span>
+    </div>`;
+  } else {
+    html += `<div class="trade-row"><span>Ship MAX</span><span>-</span><span>-</span><span style="color:#0f0">MAXED</span></div>`;
+  }
+
+  html += `</div>`;
+  goodsEl.innerHTML = html;
+}
+
+window.buyGood = function(symbol, price) {
+  if (game.state.credits < price || game.state.cargoCount() >= game.state.maxCargo) return;
+  const good = GOODS_BY_SYMBOL[symbol];
+  game.state.credits -= price;
+  game.state.addItem(good, 1);
+  audio.pickup();
+  renderTrade(nearestStation);
+  updateHUD();
+};
+
+window.sellGood = function(symbol, price) {
+  if (!game.state.hasItem(symbol)) return;
+  const good = GOODS_BY_SYMBOL[symbol];
+  game.state.credits += price;
+  game.state.removeItem(symbol, 1);
+  audio.pickup();
+  renderTrade(nearestStation);
+  updateHUD();
+};
+
+window.repairHull = function(cost) {
+  if (game.state.credits < cost || game.state.hull >= game.state.maxHull) return;
+  game.state.credits -= cost;
+  game.state.hull = Math.min(game.state.maxHull, game.state.hull + 30);
+  audio.pickup();
+  renderTrade(nearestStation);
+  updateHUD();
+};
+
+window.rechargeShield = function(cost) {
+  if (game.state.credits < cost || game.state.shield >= game.state.maxShield) return;
+  game.state.credits -= cost;
+  game.state.shield = Math.min(game.state.maxShield, game.state.shield + 40);
+  audio.pickup();
+  renderTrade(nearestStation);
+  updateHUD();
+};
+
+window.buyMissiles = function(cost) {
+  if (game.state.credits < cost) return;
+  game.state.credits -= cost;
+  game.player.missiles = Math.min(game.player.maxMissiles + 2, game.player.missiles + 2);
+  game.player.maxMissiles = Math.max(3, game.player.maxMissiles);
+  audio.pickup();
+  renderTrade(nearestStation);
+  updateHUD();
+};
+
+window.upgradeShip = function(cost) {
+  if (game.state.credits < cost || game.player.typeIdx >= 2) return;
+  game.state.credits -= cost;
+  game.player.typeIdx++;
+  game.player.type = SHIP_TYPES[game.player.typeIdx];
+  game.state.maxHull = game.player.type.hull;
+  game.state.maxShield = game.player.type.shield;
+  game.state.hull = game.state.maxHull;
+  game.state.shield = game.state.maxShield;
+  audio.pickup();
+  renderTrade(nearestStation);
+  updateHUD();
+};
+
+function dockAtStation(station) {
+  if (dist(game.player.x, game.player.y, station.x, station.y) > station.radius + SHIP_RADIUS + 20) return;
+  openTrade(station);
+}
+
+// ─── GAME LOOP ─────────────────────────────
+function loop(now) {
+  const dt = Math.min((now - lastTime) / 1000, 0.05);
+  lastTime = now;
+
+  update(dt);
+  render();
+  requestAnimationFrame(loop);
+}
+
+function update(dt) {
+  if (!game || !game.player.alive) return;
+  if (trading) return;
+
+  // Player
+  const player = game.player;
+  player.update(dt, keys, game.state);
+
+  // Aim at mouse
+  const worldMouseX = mouse.x + camX;
+  const worldMouseY = mouse.y + camY;
+  const aimAngle = angle(player.x, player.y, worldMouseX, worldMouseY);
+  const ad = angleDiff(player.angle, aimAngle);
+  player.angle += clamp(ad, -6 * dt, 6 * dt);
+
+  // Shield
+  if (keys['Space'] && game.state.shield > 0) {
+    game.state.shield = Math.max(0, game.state.shield - 15 * dt);
+    if (game.state.shield > 0 && Math.random() < 0.3) {
+      audio.shieldUp();
+    }
+  } else if (game.state.shield < game.state.maxShield) {
+    game.state.shield = Math.min(game.state.maxShield, game.state.shield + 8 * dt);
+  }
+
+  // Auto-fire if holding
+  if (mouse.down && player.weaponCd <= 0) {
+    player.fire(game.projectiles, audio);
+  }
+
+  // Enemies
+  for (const enemy of sector.enemies) {
+    if (!enemy.alive) continue;
+    enemy.update(dt, player, game.projectiles, particles, audio);
+  }
+
+  // Projectiles
+  for (const p of game.projectiles) p.update(dt, game.state);
+  game.projectiles = game.projectiles.filter(p => !p.isDead());
+
+  // Collision detection
+  checkCollisions();
+
+  // Asteroids
+  for (const ast of sector.asteroids) {
+    if (!ast.alive) continue;
+    ast.update(dt);
+  }
+
+  // Stations
+  for (const station of sector.stations) {
+    station.update(dt);
+  }
+
+  // Particles
+  particles.update(dt);
+
+  // Camera
+  camX = lerp(camX, player.x - screenW / 2, 5 * dt);
+  camY = lerp(camY, player.y - screenH / 2, 5 * dt);
+
+  // Message fade
+  if (messageTimer > 0) {
+    messageTimer -= dt;
+    if (messageTimer <= 0) {
+      document.getElementById('message').style.opacity = 0;
+    }
+  }
+
+  // Find nearest station
+  nearestStation = null;
+  let nearestDist = Infinity;
+  for (const station of sector.stations) {
+    const d = dist(player.x, player.y, station.x, station.y);
+    if (d < nearestDist) {
+      nearestDist = d;
+      nearestStation = station;
+    }
+  }
+
+  // Check sector clear
+  if (sector.enemies.every(e => !e.alive)) {
+    // Advance to next sector
+    if (game.state.sector < SECTOR_COUNT) {
+      showMessage('SECTOR CLEAR — JUMPING TO NEXT SECTOR', 3);
+      setTimeout(() => {
+        if (game && game.player.alive) loadSector(game.state.sector + 1);
+      }, 3000);
+    } else {
+      showMessage('VICTORY — ALL SECTORS CLEARED', 5);
+    }
+  }
+
+  // Death check
+  if (!player.alive) {
+    showMessage('SHIP DESTROYED — Press R to restart', 999);
+  }
+
+  // Engine particles
+  if (keys['KeyW'] || keys['ArrowUp']) {
+    const ex = player.x - Math.cos(player.angle) * 14;
+    const ey = player.y - Math.sin(player.angle) * 14;
+    particles.emit(ex, ey, 1, () => `hsl(${rnd(20, 50)}, 100%, 70%)`, 80, 0.4, 3);
+  }
+
+  updateHUD();
+}
+
+function checkCollisions() {
+  const player = game.player;
+  if (!player.alive) return;
+
+  // Player vs asteroids
+  for (const ast of sector.asteroids) {
+    if (!ast.alive) continue;
+    if (dist(player.x, player.y, ast.x, ast.y) < ast.radius + SHIP_RADIUS) {
+      player.takeDamage(5, game);
+      ast.alive = false;
+      particles.emit(ast.x, ast.y, 20, () => '#556677', 150, 1, 3);
+      audio.explode(0.5);
+      showMessage('ASTEROID COLLISION!', 1);
+    }
+  }
+
+  // Projectiles vs player
+  for (const proj of game.projectiles) {
+    if (proj.owner !== 'enemy') continue;
+    if (dist(proj.x, proj.y, player.x, player.y) < SHIP_RADIUS + proj.size) {
+      player.takeDamage(10, game);
+      proj.life = 0;
+      particles.emit(proj.x, proj.y, 8, () => '#f44', 100, 0.5, 2);
+    }
+  }
+
+  // Player shots vs enemies
+  for (const proj of game.projectiles) {
+    if (proj.owner !== 'player') continue;
+    for (const enemy of sector.enemies) {
+      if (!enemy.alive) continue;
+      if (dist(proj.x, proj.y, enemy.x, enemy.y) < SHIP_RADIUS + proj.size) {
+        enemy.takeDamage(proj.isMissile ? 40 : 12, particles, audio);
+        proj.life = 0;
+        if (!enemy.alive) {
+          game.state.credits += enemy.bounty;
+          game.state.kills++;
+          game.state.score += enemy.bounty * 2;
+          showMessage(`+${enemy.bounty} Cr`, 1);
+        }
+        break;
+      }
+    }
+  }
+
+  // Player vs enemies (ramming)
+  for (const enemy of sector.enemies) {
+    if (!enemy.alive) continue;
+    if (dist(player.x, player.y, enemy.x, enemy.y) < SHIP_RADIUS * 2 + 5) {
+      player.takeDamage(15, game);
+      enemy.takeDamage(20, particles, audio);
+      if (!enemy.alive) {
+        game.state.credits += enemy.bounty;
+        game.state.kills++;
+        game.state.score += enemy.bounty * 2;
+        showMessage(`+${enemy.bounty} Cr`, 1);
+      }
+    }
+  }
+
+  // Mining (E key near asteroid)
+  if (keys['KeyE']) {
+    for (const ast of sector.asteroids) {
+      if (!ast.alive) continue;
+      if (dist(player.x, player.y, ast.x, ast.y) < ast.radius + SHIP_RADIUS + 30) {
+        if (game.state.cargoCount() < game.state.maxCargo) {
+          // Give random ore
+          const good = GOODS[rndInt(0, 2)];
+          game.state.addItem(good, ast.ore);
+          showMessage(`+${ast.ore} ${good.name}`, 1);
+          audio.pickup();
+          ast.alive = false;
+          particles.emit(ast.x, ast.y, 15, () => good.color, 120, 0.8, 3);
+        }
+        break;
+      }
+    }
+  }
+
+  // Station docking (auto show trade prompt)
+  if (nearestStation && dist(player.x, player.y, nearestStation.x, nearestStation.y) < nearestStation.radius + SHIP_RADIUS + 30) {
+    if (!trading) {
+      // silently allow trade
+    }
+  }
+}
+
+function updateHUD() {
+  if (!game) return;
+  const s = game.state;
+  document.getElementById('hull-val').textContent = Math.max(0, Math.round(s.hull));
+  document.getElementById('shield-val').textContent = Math.max(0, Math.round(s.shield));
+  document.getElementById('credits-val').textContent = s.credits;
+  document.getElementById('cargo-val').textContent = `${s.cargoCount()}/${s.maxCargo}`;
+  document.getElementById('sector-val').textContent = s.sector;
+  document.getElementById('depth-val').textContent = Math.round((s.sector - 1) * 50);
+  document.getElementById('enemy-count').textContent = sector ? sector.enemies.filter(e => e.alive).length : 0;
+  document.getElementById('asteroid-count').textContent = sector ? sector.asteroids.filter(a => a.alive).length : 0;
+  document.getElementById('station-count').textContent = sector ? sector.stations.length : 0;
+  document.getElementById('missile-ammo').textContent = game.player.missiles;
+  document.getElementById('cannon-ammo').textContent = '∞';
+  document.getElementById('weapon-status').textContent = game.player.weaponCd > 0 ? 'RECHARGING' : 'READY';
+
+  // Alert text
+  const alert = document.getElementById('alert-text');
+  if (nearestStation && dist(game.player.x, game.player.y, nearestStation.x, nearestStation.y) < nearestStation.radius + 60) {
+    alert.textContent = '[E] DOCK';
+    alert.style.color = '#0f0';
+  } else {
+    alert.textContent = '';
+  }
+}
+
+function render() {
+  if (!game) {
+    // Menu background — animated starfield
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, screenW, screenH);
+    renderStars(0, 0);
+    return;
+  }
+
+  const cx = camX;
+  const cy = camY;
+
+  // Background
+  ctx.fillStyle = '#05050f';
+  ctx.fillRect(0, 0, screenW, screenH);
+
+  // Stars
+  renderStars(cx, cy);
+
+  // Grid
+  renderGrid(cx, cy);
+
+  // Sector objects
+  if (sector) {
+    for (const station of sector.stations) station.draw(ctx, cx, cy);
+    for (const ast of sector.asteroids) if (ast.alive) ast.draw(ctx, cx, cy);
+    for (const enemy of sector.enemies) if (enemy.alive) enemy.draw(ctx, cx, cy);
+  }
+
+  // Particles
+  particles.draw(ctx, cx, cy);
+
+  // Projectiles
+  for (const p of game.projectiles) {
+    const sx = p.x - cx;
+    const sy = p.y - cy;
+    if (sx < -50 || sx > screenW + 50 || sy < -50 || sy > screenH + 50) continue;
+    ctx.beginPath();
+    ctx.arc(sx, sy, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.shadowColor = p.color;
+    ctx.shadowBlur = p.isMissile ? 20 : 10;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  // Player
+  if (game.player.alive) {
+    const shieldPct = game.state.shield / game.state.maxShield;
+    game.player.draw(ctx, cx, cy, true, shieldPct);
+  }
+
+  // Crosshair
+  const ca = Math.atan2(mouse.y - screenH / 2, mouse.x - screenW / 2);
+  ctx.save();
+  ctx.translate(mouse.x, mouse.y);
+  ctx.strokeStyle = '#0ff8';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.arc(0, 0, 20, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(Math.cos(ca) * 15, Math.sin(ca) * 15);
+  ctx.lineTo(Math.cos(ca) * 25, Math.sin(ca) * 25);
+  ctx.stroke();
+  ctx.restore();
+
+  // Minimap
+  renderMinimap();
+
+  // Death overlay
+  if (game && !game.player.alive) {
+    ctx.fillStyle = 'rgba(255,0,0,0.15)';
+    ctx.fillRect(0, 0, screenW, screenH);
+    ctx.fillStyle = '#f44';
+    ctx.font = 'bold 32px Courier New';
+    ctx.textAlign = 'center';
+    ctx.shadowColor = '#f00';
+    ctx.shadowBlur = 30;
+    ctx.fillText('SHIP DESTROYED', screenW / 2, screenH / 2 - 30);
+    ctx.shadowBlur = 0;
+    ctx.font = '16px Courier New';
+    ctx.fillStyle = '#aaa';
+    ctx.fillText(`Score: ${game.state.score} | Kills: ${game.state.kills}`, screenW / 2, screenH / 2 + 10);
+    ctx.fillStyle = '#0ff';
+    ctx.fillText('Press R to restart', screenW / 2, screenH / 2 + 40);
+    ctx.textAlign = 'left';
+  }
+}
+
+function renderStars(cx, cy) {
+  for (const star of starField) {
+    const sx = (star.x - cx * 0.3) % screenW;
+    const sy = (star.y - cy * 0.3) % screenH;
+    const x = sx < 0 ? sx + screenW : sx;
+    const y = sy < 0 ? sy + screenH : sy;
+    const twinkle = 0.5 + 0.5 * Math.sin(performance.now() / 1000 + star.twinkle);
+    ctx.globalAlpha = star.bright * twinkle;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(x, y, star.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function renderGrid(cx, cy) {
+  const gridSize = 200;
+  const offsetX = -cx % gridSize;
+  const offsetY = -cy % gridSize;
+  ctx.strokeStyle = '#ffffff08';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let x = offsetX; x < screenW; x += gridSize) {
+    ctx.moveTo(x, 0); ctx.lineTo(x, screenH);
+  }
+  for (let y = offsetY; y < screenH; y += gridSize) {
+    ctx.moveTo(0, y); ctx.lineTo(screenW, y);
+  }
+  ctx.stroke();
+}
+
+function renderMinimap() {
+  miniCtx.fillStyle = '#0009';
+  miniCtx.fillRect(0, 0, 140, 140);
+
+  const scale = 140 / WORLD_SIZE;
+  const px = game.player.x * scale;
+  const py = game.player.y * scale;
+
+  // Asteroids
+  if (sector) {
+    for (const ast of sector.asteroids) {
+      if (!ast.alive) continue;
+      const ax = ast.x * scale;
+      const ay = ast.y * scale;
+      miniCtx.fillStyle = '#556';
+      miniCtx.fillRect(ax - 1, ay - 1, 2, 2);
+    }
+    // Stations
+    for (const station of sector.stations) {
+      const sx = station.x * scale;
+      const sy = station.y * scale;
+      miniCtx.fillStyle = '#0af';
+      miniCtx.fillRect(sx - 2, sy - 2, 4, 4);
+    }
+    // Enemies
+    for (const enemy of sector.enemies) {
+      if (!enemy.alive) continue;
+      const ex = enemy.x * scale;
+      const ey = enemy.y * scale;
+      miniCtx.fillStyle = '#f44';
+      miniCtx.fillRect(ex - 1, ey - 1, 2, 2);
+    }
+  }
+
+  // Player
+  miniCtx.fillStyle = '#0ff';
+  miniCtx.fillRect(px - 2, py - 2, 4, 4);
+}
+
+function restartGame() {
+  initGame();
+  document.getElementById('menu-overlay').style.display = 'none';
+  trading = false;
+  document.getElementById('trade-panel').style.display = 'none';
+}
+
+// Initial render
+ctx.fillStyle = '#05050f';
+ctx.fillRect(0, 0, screenW, screenH);
+</script>
+</body>
+</html>

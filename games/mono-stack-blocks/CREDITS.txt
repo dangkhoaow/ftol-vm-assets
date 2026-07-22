@@ -1,0 +1,9 @@
+Mono Stack Blocks
+Adapted from flancast90/cursor-arcade-games blocks module (MIT, Copyright 2026 flancast90).
+https://github.com/flancast90/cursor-arcade-games
+
+Site adapt (freetoolonline.com):
+- VS Code acquireVsCodeApi stubbed to localStorage ftol:monostackblocks:storage
+- Single-game extract (blocks only); auto-start stack blocks
+- Rebranded Mono Stack Blocks / Stack Blocks; noindex iframe document
+- Fire126 2026-07-18

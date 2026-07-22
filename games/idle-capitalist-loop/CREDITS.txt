@@ -1,0 +1,9 @@
+Idle Capitalist Loop
+Adapted from flancast90/cursor-arcade-games capitalist module (MIT, Copyright 2026 flancast90).
+https://github.com/flancast90/cursor-arcade-games
+
+Site adapt (freetoolonline.com):
+- VS Code acquireVsCodeApi stubbed to localStorage ftol:idlecapitalistloop:storage
+- Single-game extract (capitalist only); auto-start idle tycoon
+- Rebranded Idle Capitalist Loop / Idle Empire; noindex iframe document
+- Fire125 2026-07-18

@@ -1,0 +1,5 @@
+out/
+scripts/node_modules/
+scripts/package.json
+scripts/package-lock.json
+scripts/*.bin

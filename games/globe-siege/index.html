@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="noindex" />
+  <meta name="referrer" content="no-referrer" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EARTH DEFENSE</title>
+  <style>
+    :root {
+      --cyan: #22d3ee;
+      --cyan-dim: rgba(34, 211, 238, 0.45);
+      --cyan-faint: rgba(34, 211, 238, 0.18);
+      --rose: #f43f5e;
+      --amber: #fbbf24;
+      --bg: #050810;
+      --panel-bg: rgba(7, 16, 28, 0.78);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); }
+    body {
+      font-family: "Cascadia Mono", "JetBrains Mono", Consolas, "Courier New", monospace;
+      color: var(--cyan);
+      user-select: none;
+    }
+    #app { position: fixed; inset: 0; }
+    canvas { display: block; }
+
+    .hud { position: fixed; z-index: 10; pointer-events: none; }
+
+    /* ===== 切角面板通用样式 ===== */
+    .panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--cyan-dim);
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      box-shadow: inset 0 0 18px rgba(34, 211, 238, 0.07);
+      padding: 14px 18px;
+      position: relative;
+    }
+    .panel::before {
+      content: ""; position: absolute; left: 0; top: 0; width: 100%; height: 1px;
+      background: linear-gradient(90deg, var(--cyan), transparent 60%);
+      opacity: 0.5;
+    }
+    .hud.panel { position: fixed; }  /* .panel 的 relative 不得覆盖 HUD 定位 */
+    .p-label {
+      font-size: 11px; letter-spacing: 3px; color: var(--cyan-dim); margin-bottom: 6px;
+    }
+
+    /* ===== 顶部左：标题 ===== */
+    #hud-top { top: 36px; left: 44px; }
+    #hud-title {
+      font-size: 26px; letter-spacing: 8px; font-weight: 600;
+      text-shadow: 0 0 14px rgba(34, 211, 238, 0.65);
+    }
+    #hud-title .en { color: var(--cyan-dim); font-size: 13px; letter-spacing: 3px; }
+    #hud-sub {
+      margin-top: 8px; font-size: 12px; letter-spacing: 2px; color: var(--cyan-dim);
+      border-left: 2px solid var(--cyan-dim); padding-left: 10px;
+    }
+    #hud-sub .ok { color: var(--amber); }
+
+    /* ===== 顶部右：资源与Wave ===== */
+    #hud-res { top: 36px; right: 44px; display: flex; gap: 12px; }
+    .res-box { min-width: 156px; text-align: right; }
+    .res-val { font-size: 30px; letter-spacing: 1px; text-shadow: 0 0 10px currentColor; }
+    .res-sub { font-size: 11px; letter-spacing: 1px; color: rgba(251, 191, 36, 0.65); margin-top: 2px; }
+    #energy-val { color: var(--amber); }
+    #wave-val { color: var(--cyan); }
+
+    /* ===== 右侧：City状态 ===== */
+    #hud-cities { top: 152px; right: 44px; width: 236px; }
+    .city-row { display: flex; align-items: center; gap: 10px; margin: 9px 0; font-size: 12px; letter-spacing: 1px; }
+    .city-name { width: 78px; color: var(--cyan-dim); }
+    .city-row.dead .city-name { color: rgba(244, 63, 94, 0.5); text-decoration: line-through; }
+    .city-bar { flex: 1; height: 7px; background: rgba(34, 211, 238, 0.12); position: relative; overflow: hidden; }
+    .city-bar i {
+      position: absolute; inset: 0; transform-origin: left;
+      background: linear-gradient(90deg, var(--amber), #fde68a);
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+      transition: transform 0.3s ease;
+    }
+    .city-row.hurt .city-bar i { background: linear-gradient(90deg, var(--rose), #fda4af); }
+
+    /* ===== 悬停信息（右下） ===== */
+    #hud-cell {
+      right: 44px; bottom: 120px; text-align: right;
+      font-size: 12px; letter-spacing: 2px; line-height: 1.9; color: rgba(34, 211, 238, 0.7);
+      opacity: 0; transition: opacity 0.2s ease;
+    }
+    #hud-cell.show { opacity: 1; }
+    #hud-cell .k { color: var(--cyan-faint); }
+    #hud-cell .v-land { color: var(--amber); }
+
+    /* ===== 底部中：建造栏 ===== */
+    #hud-build {
+      bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 10px; align-items: flex-end; pointer-events: auto;
+    }
+
+    /* ===== Ship tide ===== */
+    #tide-clock { color: rgba(244, 63, 94, 0.7); }
+    #tide-clock.soon { color: var(--rose); text-shadow: 0 0 10px rgba(244, 63, 94, 0.6); }
+    #tide-flash {
+      position: fixed; inset: 0; z-index: 8; pointer-events: none; opacity: 0;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(244, 63, 94, 0.28));
+    }
+    #tide-flash.go { animation: tideFlash 3.2s ease-out; }
+    @keyframes tideFlash {
+      0% { opacity: 0; }
+      12% { opacity: 1; }
+      30% { opacity: 0.35; }
+      45% { opacity: 0.85; }
+      100% { opacity: 0; }
+    }
+
+    /* ===== STREAK计数 ===== */
+    #streak {
+      position: fixed; right: 64px; top: 40%; z-index: 11;
+      font-size: 36px; color: var(--amber); text-align: right;
+      letter-spacing: 2px; pointer-events: none;
+      text-shadow: 0 0 20px rgba(251, 191, 36, 0.75);
+      opacity: 0; transition: opacity 0.25s;
+      transform-origin: right center;
+    }
+    #streak.show { opacity: 1; }
+    #streak .lab {
+      display: block; font-size: 11px; letter-spacing: 5px;
+      color: rgba(251, 191, 36, 0.6); margin-bottom: 2px;
+    }
+    .tower-card {
+      width: 122px; padding: 10px 12px; cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    }
+    .tower-card:hover { transform: translateY(-2px); }
+    .tower-card.selected {
+      border-color: var(--amber);
+      box-shadow: inset 0 0 18px rgba(251, 191, 36, 0.12), 0 0 14px rgba(251, 191, 36, 0.25);
+    }
+    .tower-card.selected::before { background: linear-gradient(90deg, var(--amber), transparent 60%); }
+    .tower-card.poor { opacity: 0.45; cursor: not-allowed; }
+    .tc-icon { font-size: 22px; text-shadow: 0 0 10px var(--cyan); }
+    .tc-name { font-size: 14px; letter-spacing: 2px; margin-top: 4px; }
+    .tc-sub { font-size: 9px; letter-spacing: 2px; color: var(--cyan-dim); }
+    .tc-cost { margin-top: 6px; font-size: 13px; color: var(--amber); letter-spacing: 1px; }
+    .tc-key {
+      position: absolute; top: 7px; right: 10px; font-size: 11px; color: var(--cyan-dim);
+      border: 1px solid var(--cyan-faint); padding: 1px 5px;
+    }
+    /* ===== 塔信息面板 ===== */
+    #hud-tower {
+      bottom: 36px; right: 44px; width: 236px; display: none; pointer-events: auto;
+    }
+    #hud-tower.show { display: block; }
+    .tw-stats { font-size: 11px; letter-spacing: 1px; line-height: 1.9; color: rgba(34, 211, 238, 0.75); }
+    .tw-stats b { color: var(--amber); font-weight: 400; }
+    .tw-btns { display: flex; gap: 8px; margin-top: 10px; }
+    .tw-btn {
+      flex: 1; padding: 7px 0; cursor: pointer;
+      font-family: inherit; font-size: 11px; letter-spacing: 2px;
+      color: var(--amber); background: rgba(251, 191, 36, 0.08);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+      transition: all 0.15s;
+    }
+    .tw-btn:hover { background: rgba(251, 191, 36, 0.18); }
+    .tw-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .tw-btn.sell { color: var(--cyan); border-color: var(--cyan-dim); background: rgba(34, 211, 238, 0.06); }
+    .tw-btn.sell:hover { background: rgba(34, 211, 238, 0.14); }
+
+    /* ===== 迷你地球仪 ===== */
+    #minimap { bottom: 36px; left: 44px; }
+    #mm-canvas { width: 168px; height: 168px; }
+    #mm-canvas canvas { width: 100% !important; height: 100% !important; }
+
+    #build-hint {
+      position: fixed; bottom: 132px; left: 50%; transform: translateX(-50%);
+      font-size: 12px; letter-spacing: 3px; color: var(--amber);
+      text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+      opacity: 0; transition: opacity 0.2s; pointer-events: none;
+    }
+    #build-hint.show { opacity: 1; }
+
+    /* ===== 中央横幅（Wave警报） ===== */
+    #banner {
+      top: 20%; left: 50%; transform: translateX(-50%);
+      text-align: center; opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    #banner.show { opacity: 1; }
+    #banner .b-main {
+      font-size: 30px; letter-spacing: 14px; color: var(--rose);
+      text-shadow: 0 0 22px rgba(244, 63, 94, 0.8);
+      animation: flicker 1.4s infinite;
+    }
+    #banner .b-sub { margin-top: 8px; font-size: 11px; letter-spacing: 5px; color: rgba(244, 63, 94, 0.7); }
+    #banner.friendly .b-main { color: var(--cyan); text-shadow: 0 0 22px rgba(34, 211, 238, 0.8); animation: none; }
+    #banner.friendly .b-sub { color: var(--cyan-dim); }
+    @keyframes flicker {
+      0%, 100% { opacity: 1; } 88% { opacity: 1; } 90% { opacity: 0.55; }
+      92% { opacity: 1; } 95% { opacity: 0.7; } 97% { opacity: 1; }
+    }
+
+    /* ===== 倒计时 ===== */
+    #countdown {
+      top: 13%; left: 50%; transform: translateX(-50%);
+      font-size: 15px; letter-spacing: 4px; color: var(--cyan-dim);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    #countdown.show { opacity: 1; }
+    #countdown b { color: var(--amber); font-weight: 400; }
+
+    /* ===== 通用大Press钮 ===== */
+    .big-btn {
+      padding: 11px 34px; cursor: pointer;
+      font-family: inherit; font-size: 13px; letter-spacing: 5px;
+      color: var(--cyan); background: transparent; border: 1px solid var(--cyan-dim);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      transition: all 0.2s;
+    }
+    .big-btn:hover { background: rgba(34, 211, 238, 0.1); box-shadow: 0 0 18px rgba(34, 211, 238, 0.3); }
+    .big-btn.primary { color: var(--amber); border-color: rgba(251, 191, 36, 0.5); }
+    .big-btn.primary:hover { background: rgba(251, 191, 36, 0.1); box-shadow: 0 0 18px rgba(251, 191, 36, 0.3); }
+    .big-btn:disabled { opacity: 0.3; cursor: not-allowed; box-shadow: none !important; background: transparent !important; }
+
+    /* ===== 结算遮罩 ===== */
+    #overlay {
+      position: fixed; inset: 0; z-index: 20; display: none;
+      align-items: center; justify-content: center; flex-direction: column;
+      background: radial-gradient(ellipse at center, rgba(5, 8, 16, 0.55), rgba(5, 8, 16, 0.94));
+      pointer-events: auto;
+    }
+    #overlay.show { display: flex; }
+    #ov-title { font-size: 42px; letter-spacing: 16px; text-shadow: 0 0 30px currentColor; }
+    #overlay.win #ov-title { color: var(--cyan); }
+    #overlay.lose #ov-title { color: var(--rose); }
+    #ov-sub { margin-top: 12px; font-size: 12px; letter-spacing: 6px; color: var(--cyan-dim); }
+    #ov-stars { margin-top: 20px; font-size: 30px; letter-spacing: 14px; color: var(--amber); text-shadow: 0 0 16px rgba(251, 191, 36, 0.6); }
+    #ov-stats {
+      margin-top: 26px; display: grid; grid-template-columns: auto auto; gap: 8px 34px;
+      font-size: 12px; letter-spacing: 2px; color: rgba(34, 211, 238, 0.75);
+    }
+    #ov-stats b { color: var(--amber); font-weight: 400; text-align: right; }
+    #ov-btns { margin-top: 40px; display: flex; gap: 16px; }
+
+    /* ===== 主菜单 ===== */
+    #menu {
+      position: fixed; inset: 0; z-index: 25; display: none;
+      align-items: center; justify-content: center; flex-direction: column;
+      background: radial-gradient(ellipse at center, rgba(5, 8, 16, 0.35), rgba(5, 8, 16, 0.88));
+      pointer-events: auto;
+    }
+    #menu.show { display: flex; }
+    #menu-title {
+      font-size: 52px; letter-spacing: 22px; color: var(--cyan);
+      text-shadow: 0 0 34px rgba(34, 211, 238, 0.7);
+    }
+    #menu-sub { margin-top: 12px; font-size: 13px; letter-spacing: 8px; color: var(--cyan-dim); }
+    #menu-flavor { margin-top: 30px; font-size: 12px; letter-spacing: 3px; color: rgba(251, 191, 36, 0.75); min-height: 18px; }
+    #chapter-tabs { margin-top: 20px; display: flex; gap: 12px; }
+    .ch-tab {
+      padding: 8px 22px; cursor: pointer; font-family: inherit;
+      font-size: 12px; letter-spacing: 4px; color: var(--cyan-dim);
+      background: transparent; border: 1px solid var(--cyan-faint);
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+      transition: all 0.15s;
+    }
+    .ch-tab:hover { color: var(--cyan); }
+    .ch-tab.active { color: var(--amber); border-color: rgba(251, 191, 36, 0.5); box-shadow: 0 0 12px rgba(251, 191, 36, 0.2); }
+    #level-grid {
+      margin-top: 22px; display: grid; grid-template-columns: repeat(4, 148px); gap: 12px;
+    }
+    .lv-card {
+      padding: 13px 14px; cursor: pointer; text-align: left;
+      background: var(--panel-bg); border: 1px solid var(--cyan-dim);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      transition: all 0.15s;
+    }
+    .lv-card:hover { border-color: var(--cyan); box-shadow: 0 0 14px rgba(34, 211, 238, 0.25); }
+    .lv-card.locked { opacity: 0.35; cursor: not-allowed; }
+    .lv-card.locked:hover { border-color: var(--cyan-dim); box-shadow: none; }
+    .lv-num { font-size: 10px; letter-spacing: 2px; color: var(--cyan-dim); }
+    .lv-name { font-size: 15px; letter-spacing: 3px; margin-top: 4px; }
+    .lv-stars { font-size: 11px; margin-top: 5px; color: var(--amber); letter-spacing: 3px; min-height: 14px; }
+    #endless-best { color: var(--amber); font-size: 11px; }
+
+    /* ===== Endless mode开局设置 ===== */
+    #endless-cfg {
+      display: none; margin-top: 22px; padding: 18px 22px;
+      background: var(--panel-bg); border: 1px solid var(--cyan-dim);
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      text-align: left; min-width: 480px;
+    }
+    #endless-cfg.show { display: block; }
+    .ec-row { margin-bottom: 14px; }
+    .ec-label { font-size: 11px; letter-spacing: 3px; color: var(--cyan-dim); margin-bottom: 8px; }
+    .ec-opts { display: flex; gap: 10px; }
+    .ec-opt {
+      flex: 1; padding: 9px 12px; cursor: pointer; font-family: inherit; text-align: center;
+      font-size: 13px; letter-spacing: 2px; color: var(--cyan-dim);
+      background: transparent; border: 1px solid var(--cyan-faint);
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+      transition: all 0.15s;
+    }
+    .ec-opt:hover { color: var(--cyan); }
+    .ec-opt.sel { color: var(--amber); border-color: rgba(251, 191, 36, 0.55); box-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
+    #ec-desc { font-size: 11px; letter-spacing: 1px; color: rgba(251, 191, 36, 0.7); min-height: 15px; margin-bottom: 14px; }
+    #ec-start { width: 100%; }
+
+    /* ===== Pre-deployment ===== */
+    #prep {
+      display: none; margin-top: 20px; padding: 20px 24px;
+      background: var(--panel-bg); border: 1px solid var(--cyan-dim);
+      clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+      width: 680px; text-align: left;
+    }
+    #prep.show { display: block; }
+    #prep-head { display: flex; justify-content: space-between; gap: 24px; }
+    #prep-name { font-size: 22px; letter-spacing: 5px; margin-top: 2px; }
+    #prep-name span { font-size: 11px; letter-spacing: 3px; color: var(--cyan-dim); }
+    #prep-obj { margin-top: 6px; font-size: 11px; letter-spacing: 2px; color: rgba(251, 191, 36, 0.75); }
+    #prep-intel { max-width: 300px; text-align: right; }
+    #intel-chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; }
+    .intel-chip {
+      font-size: 10px; letter-spacing: 1px; padding: 3px 8px;
+      color: rgba(34, 211, 238, 0.8); border: 1px solid var(--cyan-faint);
+    }
+    .intel-chip.air { color: rgba(244, 63, 94, 0.85); border-color: rgba(244, 63, 94, 0.3); }
+    .intel-chip.warn {
+      color: var(--rose); border-color: rgba(244, 63, 94, 0.55);
+      text-shadow: 0 0 8px rgba(244, 63, 94, 0.5);
+    }
+    #prep-loadout-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-top: 18px; border-top: 1px solid var(--cyan-faint); padding-top: 12px;
+    }
+    #prep-loadout-row .p-label { margin-bottom: 0; }
+    #prep-count { font-size: 13px; letter-spacing: 2px; color: var(--amber); }
+    #prep-count.full { text-shadow: 0 0 8px rgba(251, 191, 36, 0.6); }
+    #prep-grid {
+      margin-top: 10px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+    }
+    .prep-card {
+      position: relative; padding: 9px 10px; cursor: pointer;
+      background: rgba(34, 211, 238, 0.04); border: 1px solid var(--cyan-faint);
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+      transition: all 0.15s;
+    }
+    .prep-card:hover { border-color: var(--cyan-dim); background: rgba(34, 211, 238, 0.09); }
+    .prep-card.sel {
+      border-color: rgba(251, 191, 36, 0.6);
+      background: rgba(251, 191, 36, 0.07);
+      box-shadow: inset 0 0 14px rgba(251, 191, 36, 0.1);
+    }
+    .prep-card.locked { opacity: 0.35; cursor: not-allowed; }
+    .prep-card.locked:hover { border-color: var(--cyan-faint); background: rgba(34, 211, 238, 0.04); }
+    .pc-top { display: flex; align-items: baseline; gap: 7px; }
+    .pc-icon { font-size: 16px; text-shadow: 0 0 8px var(--cyan); }
+    .prep-card.sel .pc-icon { color: var(--amber); text-shadow: 0 0 8px var(--amber); }
+    .pc-name { font-size: 12px; letter-spacing: 1px; }
+    .pc-cost {
+      margin-top: 5px; font-size: 11px; color: var(--amber); letter-spacing: 1px;
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .pc-lock { margin-top: 5px; font-size: 10px; color: var(--cyan-dim); letter-spacing: 1px; }
+    .pc-check {
+      position: absolute; top: 5px; right: 8px; font-size: 11px;
+      color: var(--amber); opacity: 0; transition: opacity 0.15s;
+    }
+    .prep-card.sel .pc-check { opacity: 1; }
+    /* 兵种角标（Pre-deployment卡 + 局内建造卡通用） */
+    .kind-tag { font-size: 9px; letter-spacing: 1px; padding: 1px 4px; border: 1px solid; }
+    .kind-tag.ground { color: rgba(251, 191, 36, 0.85); border-color: rgba(251, 191, 36, 0.35); }
+    .kind-tag.air { color: rgba(34, 211, 238, 0.9); border-color: rgba(34, 211, 238, 0.35); }
+    .kind-tag.support { color: rgba(163, 230, 53, 0.85); border-color: rgba(163, 230, 53, 0.3); }
+    #prep-desc {
+      margin-top: 10px; font-size: 11px; letter-spacing: 1px;
+      color: rgba(251, 191, 36, 0.75); min-height: 15px;
+    }
+    #prep-btns { margin-top: 16px; display: flex; gap: 14px; }
+    #prep-start { flex: 1; }
+
+    /* ===== 教学提示 ===== */
+    #tutorial {
+      position: fixed; bottom: 190px; left: 50%; transform: translateX(-50%);
+      z-index: 15; max-width: 520px; text-align: center;
+      padding: 12px 26px; font-size: 13px; letter-spacing: 2px; line-height: 1.8;
+      color: var(--amber); background: var(--panel-bg);
+      border: 1px solid rgba(251, 191, 36, 0.45);
+      clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    #tutorial.show { opacity: 1; }
+
+    /* ===== MutePress钮 ===== */
+    #mute-btn {
+      position: fixed; top: 36px; right: 372px; z-index: 12;
+      width: 40px; height: 40px; cursor: pointer;
+      font-size: 16px; color: var(--cyan-dim);
+      background: var(--panel-bg); border: 1px solid var(--cyan-dim);
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+    #mute-btn:hover { color: var(--cyan); }
+    #mute-btn.muted { color: rgba(244, 63, 94, 0.7); }
+
+    /* ===== SpeedPress钮 ===== */
+    #speed-btn {
+      position: fixed; top: 36px; right: 420px; z-index: 12;
+      width: 40px; height: 40px; cursor: pointer;
+      font-family: inherit; font-size: 13px; letter-spacing: 1px;
+      color: var(--cyan-dim);
+      background: var(--panel-bg); border: 1px solid var(--cyan-dim);
+      clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    }
+    #speed-btn:hover { color: var(--cyan); }
+    #speed-btn.boost {
+      color: var(--amber); border-color: rgba(251, 191, 36, 0.5);
+      box-shadow: 0 0 10px rgba(251, 191, 36, 0.25);
+    }
+
+    /* ===== Pause指示 ===== */
+    #paused {
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-size: 16px; letter-spacing: 10px; color: var(--cyan);
+      text-shadow: 0 0 16px rgba(34, 211, 238, 0.7);
+      border: 1px solid var(--cyan-dim); padding: 12px 30px;
+      background: var(--panel-bg); display: none;
+    }
+    #paused.show { display: block; }
+
+    /* ===== 底部提示 ===== */
+    #hud-bottom {
+      bottom: 16px; left: 44px;
+      font-size: 11px; letter-spacing: 2px; color: rgba(34, 211, 238, 0.35);
+    }
+    #hud-build .tower-card { width: 104px; padding: 10px 11px; }
+    #hud-build .tc-icon { font-size: 18px; }
+    #hud-build .tc-name { font-size: 12px; }
+    #hud-build .tc-cost {
+      font-size: 12px; display: flex; justify-content: space-between; align-items: baseline;
+    }
+
+    /* ===== 装饰 ===== */
+    .corner { position: fixed; width: 26px; height: 26px; z-index: 10; pointer-events: none;
+      border-color: var(--cyan-dim); border-style: solid; border-width: 0; }
+    #c-tl { top: 12px; left: 12px; border-top-width: 1px; border-left-width: 1px; }
+    #c-tr { top: 12px; right: 12px; border-top-width: 1px; border-right-width: 1px; }
+    #c-bl { bottom: 12px; left: 12px; border-bottom-width: 1px; border-left-width: 1px; }
+    #c-br { bottom: 12px; right: 12px; border-bottom-width: 1px; border-right-width: 1px; }
+    #scanline {
+      position: fixed; inset: 0; z-index: 9; pointer-events: none;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0, 0, 0, 0.12) 4px);
+      mix-blend-mode: multiply;
+    }
+    /* 受击红闪 */
+    #dmg-flash {
+      position: fixed; inset: 0; z-index: 8; pointer-events: none;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(244, 63, 94, 0.35));
+      opacity: 0; transition: opacity 0.6s ease-out;
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index-82PzP7BU.js"></script>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="scanline"></div>
+  <div id="dmg-flash"></div>
+
+  <div class="hud" id="hud-top">
+    <div id="hud-title"><span class="en">EARTH DEFENSE</span></div>
+    <div id="hud-sub">Orbital defense grid <span class="ok" id="status-text">ONLINE</span></div>
+  </div>
+
+  <div class="hud" id="hud-res">
+    <div class="panel res-box">
+      <div class="p-label">ENERGY</div>
+      <div class="res-val" id="energy-val">0</div>
+      <div class="res-sub" id="income-val">+0.0/s</div>
+    </div>
+    <div class="panel res-box">
+      <div class="p-label">WAVE</div>
+      <div class="res-val" id="wave-val">—</div>
+      <div class="res-sub" id="tide-clock"></div>
+    </div>
+  </div>
+
+  <div class="hud panel" id="hud-cities">
+    <div class="p-label" id="city-label">CITY GRID</div>
+    <div id="city-list"></div>
+  </div>
+
+  <div class="hud" id="hud-cell">
+    <div><span class="k">SECTOR</span> <span id="cell-id">—</span></div>
+    <div><span class="k">TERRAIN</span> <span id="cell-terrain">—</span></div>
+  </div>
+
+  <div class="hud" id="hud-build"></div>
+  <div id="build-hint">Build mode // 点击格子建造 · 右键取消</div>
+
+  <div class="hud panel" id="hud-tower">
+    <div class="p-label" id="tw-name">—</div>
+    <div class="tw-stats" id="tw-stats"></div>
+    <div class="tw-btns">
+      <button class="tw-btn" id="tw-upgrade">Upgrade ⚡<span id="tw-upcost">0</span></button>
+      <button class="tw-btn sell" id="tw-sell">Sell +<span id="tw-sellval">0</span></button>
+    </div>
+  </div>
+
+  <div class="hud panel" id="minimap">
+    <div class="p-label">GLOBAL THREATS</div>
+    <div id="mm-canvas"></div>
+  </div>
+
+  <div class="hud" id="countdown">Enemy landing pods enter orbit <b id="cd-val">10</b>s</div>
+
+  <div class="hud" id="banner">
+    <div class="b-main" id="banner-main">WAVE 1</div>
+    <div class="b-sub" id="banner-sub">HOSTILE INBOUND</div>
+  </div>
+
+  <div id="paused">PAUSED</div>
+
+  <div id="overlay">
+    <div id="ov-title">The line held</div>
+    <div id="ov-sub">EARTH DEFENSE GRID HOLDS</div>
+    <div id="ov-stars"></div>
+    <div id="ov-stats"></div>
+    <div id="ov-btns">
+      <button class="big-btn" id="ov-retry">Redeploy</button>
+      <button class="big-btn primary" id="ov-next">Next level ▸</button>
+      <button class="big-btn" id="ov-menu">Return to base</button>
+    </div>
+  </div>
+
+  <div id="menu">
+    <div id="menu-title">EARTH DEFENSE</div>
+    <div id="menu-sub">EARTH DEFENSE // ORBITAL COMMAND</div>
+    <div id="menu-flavor"></div>
+    <div id="chapter-tabs">
+      <button class="ch-tab active" data-ch="1">Chapter 1 · Resistance</button>
+      <button class="ch-tab" data-ch="2">Chapter 2 · Tides</button>
+    </div>
+    <div id="level-grid"></div>
+    <div id="menu-btns" style="display:flex; gap:14px; margin-top:34px;">
+      <button class="big-btn primary" id="menu-start">ENGAGE</button>
+      <button class="big-btn" id="menu-endless">Endless mode <span id="endless-best"></span></button>
+    </div>
+
+    <!-- Pre-deployment：Mission intel + loadout selection -->
+    <div id="prep">
+      <div id="prep-head">
+        <div>
+          <div id="prep-mission" class="p-label">MISSION 01</div>
+          <div id="prep-name">First Stand <span id="prep-sub">FIRST CONTACT</span></div>
+          <div id="prep-obj"></div>
+        </div>
+        <div id="prep-intel">
+          <div class="p-label">THREAT INTEL</div>
+          <div id="intel-chips"></div>
+        </div>
+      </div>
+      <div id="prep-loadout-row">
+        <span class="p-label">LOADOUT</span>
+        <span id="prep-count">0 / 8</span>
+      </div>
+      <div id="prep-grid"></div>
+      <div id="prep-desc"></div>
+      <div id="prep-btns">
+        <button class="big-btn" id="prep-back">◂ Back</button>
+        <button class="big-btn primary" id="prep-start">ENGAGE</button>
+      </div>
+    </div>
+
+    <div id="endless-cfg">
+      <div class="ec-row">
+        <div class="ec-label">DIFFICULTY</div>
+        <div class="ec-opts" id="ec-diff"></div>
+      </div>
+      <div class="ec-row">
+        <div class="ec-label">SWARM SCALE</div>
+        <div class="ec-opts" id="ec-swarm"></div>
+      </div>
+      <div id="ec-desc"></div>
+      <button class="big-btn primary" id="ec-start">LAUNCH</button>
+    </div>
+  </div>
+
+  <div id="tutorial"></div>
+  <button id="mute-btn" title="[M] Mute">♪</button>
+  <button id="speed-btn" title="[F] Speed">1×</button>
+  <div id="streak"></div>
+  <div id="tide-flash"></div>
+
+  <div class="hud" id="hud-bottom">Drag to rotate · scroll to zoom（zoom fully in then scroll = surface look-up） · [1-9] select tower · [Space] Pause · [F] Speed</div>
+
+  <div class="corner" id="c-tl"></div>
+  <div class="corner" id="c-tr"></div>
+  <div class="corner" id="c-bl"></div>
+  <div class="corner" id="c-br"></div>
+
+</body>
+</html>

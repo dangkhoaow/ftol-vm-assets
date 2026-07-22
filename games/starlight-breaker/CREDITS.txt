@@ -1,0 +1,4 @@
+Starlight Breaker
+Adapted from ChanMeng666/html-brick-game (MIT License).
+Upstream: https://github.com/ChanMeng666/html-brick-game
+Geo-analytics stripped; localStorage namespaced to ftol:starlightbreaker:*; developer promo chrome removed from iframe.

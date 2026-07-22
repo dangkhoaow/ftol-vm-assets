@@ -1,0 +1,8 @@
+Bangbang Artillery
+Upstream: https://github.com/victorqribeiro/bangBang
+Author: Victor Ribeiro
+License: MIT (see LICENSE)
+Adapted for FreeToolOnline iframe embed 2026-07-20:
+- stripped OG social metas pointing at external URLs
+- removed screenshot.png
+- added robots noindex; retitled page

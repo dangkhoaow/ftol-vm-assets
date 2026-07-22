@@ -1,0 +1,10 @@
+Violence Town
+Adapted from Violencetown by Caelan Gander (RussellDangerr/violencetown)
+License: MIT (see LICENSE)
+Copyright (c) 2026 Caelan Gander
+
+Site adapt (FreeToolOnline):
+- Removed service worker / PWA offline shell for iframe hosting
+- Excluded particles.html (Google Fonts CDN demo)
+- Namespaced localStorage keys to ftol:violencetown:*
+- noindex meta; Omnitrix trademark phrasing removed from meta/comments

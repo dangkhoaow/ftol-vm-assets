@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Head Soccer Arena</title>
+    <link rel="stylesheet" href="arcade.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <button id="btnMenu" class="link" aria-label="Back to menu" title="Back to menu (Esc)">
+          <span class="brand">Head Soccer Arena</span>
+        </button>
+        <nav class="stats" id="stats" aria-live="polite"></nav>
+        <div class="actions">
+          <button id="btnPause" class="link hidden" title="Pause (Space)">Pause</button>
+          <button id="btnRestart" class="link hidden" title="Restart (R)">Restart</button>
+          <button id="btnSettings" class="link" aria-label="Settings" title="Settings">Settings</button>
+        </div>
+      </header>
+
+      <section id="menu" class="menu">
+        <div class="menu-inner">
+          <h1 class="hero">Pitch duel.</h1>
+          <p class="hero-sub">Keyboard head-soccer. 1P vs CPU or hotseat 2P. Power-ups, match timer, local bests.</p>
+          <div class="game-grid" id="gameGrid" role="list"></div>
+          <p class="menu-tip">Press <kbd>1</kbd> to start. <kbd>Esc</kbd> returns here. <kbd>R</kbd> restarts. <kbd>Space</kbd> pauses.</p>
+        </div>
+      </section>
+
+      <section id="stage" class="stage hidden" aria-label="Game stage">
+        <div id="gameHost" class="game-host"></div>
+        <div id="overlay" class="overlay hidden">
+          <div class="overlay-inner">
+            <h2 id="overlayTitle">Paused</h2>
+            <p id="overlaySub">Press Space to resume.</p>
+            <div id="overlayActions" class="overlay-actions">
+              <button id="overlayPrimary" class="btn">Resume</button>
+              <button id="overlaySecondary" class="btn ghost">Back to menu</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside id="settings" class="settings hidden" aria-hidden="true">
+        <div class="settings-inner">
+          <header class="settings-head">
+            <h2>Settings</h2>
+            <button id="btnCloseSettings" class="link">Close</button>
+          </header>
+          <div id="settingsBody" class="settings-body"></div>
+          <footer class="settings-foot">
+            <button id="btnResetHS" class="link danger">Reset all high scores</button>
+          </footer>
+        </div>
+      </aside>
+    </div>
+
+    <script src="games/soccer.js"></script>
+    <script src="arcade.js"></script>
+  </body>
+</html>

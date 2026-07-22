@@ -1,0 +1,2 @@
+Schematic Factory Line adapted from Real-Fruit-Snacks/Blueprint (MIT, Copyright 2026 Real-Fruit-Snacks).
+Original engineering-schematic incremental factory game: mine, smelt, assemble, prestige Schematics, publish Patents.

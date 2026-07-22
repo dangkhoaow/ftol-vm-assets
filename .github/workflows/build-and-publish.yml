@@ -1,0 +1,188 @@
+# Builds the Linux Online VM images + the Retro FPS Online engine/game data
+# and publishes them to this repo's GitHub Pages site (deploy-from-artifact -
+# the large binaries never enter git). Pages is the browser-facing CDN because
+# it sends CORS (ACAO *) + Range; GitHub Releases do NOT send CORS headers and
+# cannot be fetched by browsers. Failed runs upload step logs to the
+# vm-assets-debug prerelease.
+#
+# The VM images (~1h docker + headless-boot snapshots) are cached on the hash
+# of their inputs, so retro-fps iterations republish the whole site in minutes
+# without rebuilding the VMs. Every deploy carries BOTH asset sets - Pages
+# deploy-from-artifact replaces the entire site each time.
+name: build-and-publish
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+permissions:
+  contents: write # debug-log release channel
+  pages: write
+  id-token: write
+concurrency:
+  group: build-and-publish
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # ---------- Linux Online VM images (cached on input hash) ----------
+      - name: Restore VM release cache
+        id: vm-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: out/vm-release
+          key: vm-release-${{ hashFiles('terminal/**', 'desktop/**', 'common/**', 'scripts/**', 'VERSION') }}
+      - name: Build images (docker linux/386 -> raw ext4 + kernel)
+        if: steps.vm-cache.outputs.cache-hit != 'true'
+        run: |
+          set -o pipefail
+          sudo bash scripts/build-image.sh terminal 2>&1 | tee build-terminal.log
+          sudo bash scripts/build-image.sh desktop 2>&1 | tee build-desktop.log
+          sudo chown -R "$USER" out
+      - name: Fetch pinned v86 runtime + BIOS
+        if: steps.vm-cache.outputs.cache-hit != 'true'
+        working-directory: scripts
+        run: |
+          npm init -y >/dev/null
+          npm i v86@0.5.424 --no-audit --no-fund
+          V86_COMMIT=2f1346b0e7d88d4cbbbcc05fe15b4e369c3de23f
+          curl -sL -o seabios.bin  "https://raw.githubusercontent.com/copy/v86/$V86_COMMIT/bios/seabios.bin"
+          curl -sL -o vgabios.bin "https://raw.githubusercontent.com/copy/v86/$V86_COMMIT/bios/vgabios.bin"
+          echo "73e3f359102e3a9982c35fce98eb7cd08f18303ac7f1ba6ebfbe6cdc1c244d98  seabios.bin" | sha256sum -c -
+          echo "a4bc0d80cc3ca028c73dafa8fee396b8d054ce87ebd8abfbd31b06b437607880  vgabios.bin" | sha256sum -c -
+      - name: Snapshot boot state (terminal)
+        if: steps.vm-cache.outputs.cache-hit != 'true'
+        working-directory: scripts
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          set -o pipefail
+          node snapshot.mjs terminal ../out/terminal 2>&1 | tee ../snapshot-terminal.log
+      - name: Snapshot boot state (desktop)
+        if: steps.vm-cache.outputs.cache-hit != 'true'
+        working-directory: scripts
+        env:
+          NODE_OPTIONS: --max-old-space-size=4096
+        run: |
+          set -o pipefail
+          node snapshot.mjs desktop ../out/desktop 2>&1 | tee ../snapshot-desktop.log
+      - name: Package VM release
+        if: steps.vm-cache.outputs.cache-hit != 'true'
+        run: |
+          set -o pipefail
+          bash scripts/package-release.sh 2>&1 | tee package.log
+          mv out/release out/vm-release
+      - name: Save VM release cache
+        if: steps.vm-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: out/vm-release
+          key: vm-release-${{ hashFiles('terminal/**', 'desktop/**', 'common/**', 'scripts/**', 'VERSION') }}
+
+      # ---------- Retro FPS Online (Dwasm engine + Freedoom data) ----------
+      - name: Install native build deps (prboomx.wad generation)
+        run: sudo apt-get update -q && sudo apt-get install -y -q libsdl2-dev
+      - name: Setup emsdk (pinned)
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 5.0.7
+      - name: Build retro-fps assets
+        run: |
+          set -o pipefail
+          bash retro-fps/build-retro-fps.sh 2>&1 | tee build-retro-fps.log
+
+      # ---------- Space-3D visualizer assets (real datasets; procedural-first) ----------
+      # Most /space-3d pages render 100% procedurally and need nothing here.
+      # This builds the minority that use a large real dataset (seed: the Mars
+      # MOLA elevation heightmap). Cached on space-3d/** so it only rebuilds when
+      # the pipeline changes - the ~2.1 GB MOLA source is re-fetched only then.
+      - name: Restore space-3d cache
+        id: s3d-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: out/space-3d
+          key: space-3d-${{ hashFiles('space-3d/**') }}
+      - name: Install GDAL (space-3d raster processing)
+        if: steps.s3d-cache.outputs.cache-hit != 'true'
+        run: sudo apt-get update -q && sudo apt-get install -y -q gdal-bin
+      - name: Build space-3d assets
+        if: steps.s3d-cache.outputs.cache-hit != 'true'
+        run: |
+          set -o pipefail
+          bash space-3d/build-space-3d.sh mars-terrain 2>&1 | tee build-space-3d.log
+      - name: Save space-3d cache
+        if: steps.s3d-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: out/space-3d
+          key: space-3d-${{ hashFiles('space-3d/**') }}
+
+      # ---------- Assemble + publish the combined Pages site ----------
+      - name: Assemble site
+        run: |
+          set -o pipefail
+          mkdir -p out/site
+          cp -a out/vm-release/. out/site/
+          mkdir -p out/site/retro-fps
+          cp -a out/retro-fps/. out/site/retro-fps/
+          mkdir -p out/site/space-3d
+          cp -a out/space-3d/. out/site/space-3d/
+          # dinosaur-3d/ ships as-is: tiny CC0 glTF models committed to git
+          # (same rationale as vendor/ - ~0.3 MB each, license-clean), served
+          # with CORS for the /dinosaur-3d viewer pages' optional photoreal layer.
+          cp -a dinosaur-3d out/site/dinosaur-3d
+          # vendor/ ships as-is: version-pinned third-party browser libraries
+          # (small enough to live in git - only the VM/engine binaries stay
+          # out). Consumed cross-origin by freetoolonline.com via <script src>
+          # so the site repos never carry the bytes.
+          cp -a vendor out/site/vendor
+          # games/ ships as-is: the vendored FOSS game bundles the /games/*
+          # pages iframe cross-origin (operator decision 2026-07-21: game
+          # static bundles NEVER live in the site repos - they bloated the
+          # staging repo to ~750 MB before this migration). Committed to git
+          # (small self-contained bundles); Pages serves them; each bundle
+          # keeps its upstream LICENSE alongside.
+          cp -a games out/site/games
+          bash scripts/make-index.sh out/site
+      - name: Upload step logs on failure (public debug channel)
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view vm-assets-debug --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
+            gh release create vm-assets-debug --repo "$GITHUB_REPOSITORY" --prerelease \
+              --title "vm-images debug logs" --notes "Step logs from failed runs. Safe to delete."
+          for f in build-terminal.log build-desktop.log snapshot-terminal.log snapshot-desktop.log package.log build-retro-fps.log build-space-3d.log; do
+            [ -s "$f" ] && gh release upload vm-assets-debug "$f" --repo "$GITHUB_REPOSITORY" --clobber || true
+          done
+          for f in out/retro-fps-work/dwasm/build_native/cmake-native.log \
+                   out/retro-fps-work/dwasm/build_native/make-native.log \
+                   out/retro-fps-work/dwasm/build_phase1/cmake-phase1.log \
+                   out/retro-fps-work/dwasm/build_phase1/make-phase1.log \
+                   out/retro-fps-work/dwasm/build_phase2/cmake-phase2.log \
+                   out/retro-fps-work/dwasm/build_phase2/make-phase2.log; do
+            [ -s "$f" ] && gh release upload vm-assets-debug "$f" --repo "$GITHUB_REPOSITORY" --clobber || true
+          done
+      - name: Configure Pages (auto-enable)
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out/site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

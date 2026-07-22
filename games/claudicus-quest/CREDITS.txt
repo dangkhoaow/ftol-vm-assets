@@ -1,0 +1,9 @@
+Claudicus Quest
+Adapted from Claudicus by Brian Benzinger (brian-benzinger/claudicus)
+License: MIT (see LICENSE)
+Copyright (c) 2026 Brian Benzinger
+
+Site adapt (FreeToolOnline):
+- esbuild production bundle (dist/game.js flattened to game.js)
+- localStorage key namespaced to ftol:claudicusquest:save
+- noindex meta for iframe hosting

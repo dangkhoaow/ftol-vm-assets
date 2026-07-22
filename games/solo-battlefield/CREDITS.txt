@@ -1,0 +1,5 @@
+Solo Battlefield
+Adapted from "Only One" by Cemal Gonultas (cemalgnlts/only-one-js13k).
+js13kGames 2023 entry. MIT License - see LICENSE.
+Site adaptations: robots noindex meta on the iframe document.
+ZzFX sounds are embedded in the competition build (KilledByAPixel/ZzFX).

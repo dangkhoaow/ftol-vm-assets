@@ -1,0 +1,6 @@
+Ritual Catacombs
+Upstream: dkozhukhar/cat-shooter (GitHub, Director's Cut)
+Author: Dmytro Kozhukhar
+License: MIT (see LICENSE)
+JS13K 2025 entry - WebGL2 horror shooter in cursed catacombs.
+Adapted for FreeToolOnline: noindex meta, preserveDrawingBuffer for verify, pointer-lock swallow.

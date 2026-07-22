@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+      <meta name="description" content="An incremental factory game. Mine, smelt, craft, assemble, forge, refine, prestige, publish, exhibit.">
+  <meta name="theme-color" content="#0d3b4f">
+              <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
+    <title>Schematic Factory Line</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+
+    <header class="topbar">
+      <div class="logo">SCHEMATIC FACTORY</div>
+      <div class="res-bar" id="res-bar"></div>
+      <div class="tabs">
+        <div class="tab on" data-tab="factory"><span class="tab-full">FACTORY</span><span class="tab-short">FCT</span></div>
+        <div class="tab hidden" data-tab="tree" id="tab-tree"><span class="tab-full">RESEARCH</span><span class="tab-short">RES</span><span class="tab-badge" id="tree-tab-badge" style="display:none"></span></div>
+        <div class="tab hidden" data-tab="mastery" id="tab-mastery"><span class="tab-full">MASTERY</span><span class="tab-short">MST</span></div>
+        <div class="tab hidden" data-tab="exhibitions" id="tab-exhibitions"><span class="tab-full">EXHIBITIONS</span><span class="tab-short">EXH</span><span class="tab-badge" id="exh-tab-badge" style="display:none"></span></div>
+        <div class="tab" data-tab="achievements" id="tab-achievements"><span class="tab-full">ACHIEVEMENTS</span><span class="tab-short">ACH</span><span class="tab-badge" id="ach-tab-badge" style="display:none"></span></div>
+        <div class="tab hidden" data-tab="stats" id="tab-stats"><span class="tab-full">STATS</span><span class="tab-short">STA</span></div>
+      </div>
+      <button class="btn btn-icon topbar-settings" id="btn-settings" title="Settings" aria-label="Settings"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/><circle cx="5" cy="4" r="1.6"/><circle cx="11" cy="8" r="1.6"/><circle cx="6" cy="12" r="1.6"/></svg></button>
+    </header>
+
+    <main class="main-area" id="main">
+      <div class="view factory-view active" id="view-factory">
+        <div class="factory" id="factory"></div>
+        <aside class="sidebar" id="sidebar"></aside>
+      </div>
+      <div class="view tree-view" id="view-tree">
+        <div class="tree-header">
+          <div class="tree-title">RESEARCH · PARALLEL TRACKS</div>
+          <div class="tree-rp">
+            <span class="rp-big"><span id="rp-value">0</span> SCHEMATICS</span>
+            <span class="rp-rate" id="rp-rate">prestige # <b id="prestige-count">0</b></span>
+          </div>
+          <div class="tree-prestige" id="tree-prestige" style="display:none">
+            <span class="tp-gain">+<b id="tree-prestige-gain">0</b> schematics</span>
+            <button class="prestige-btn" id="tree-prestige-btn">◆ PRESTIGE</button>
+          </div>
+        </div>
+        <div class="rails-scroll">
+          <div class="rails-sheet" id="rails-sheet"></div>
+        </div>
+      </div>
+      <div class="view mastery-view" id="view-mastery">
+        <div class="mastery-body" id="mastery-body"></div>
+      </div>
+      <div class="view exhibitions-view" id="view-exhibitions">
+        <div class="exhibitions-body" id="exhibitions-body"></div>
+      </div>
+      <div class="view achievements-view" id="view-achievements">
+        <div class="achievements-body" id="achievements-body"></div>
+      </div>
+      <div class="view stats-view" id="view-stats">
+        <div class="stats-body" id="stats-body"></div>
+      </div>
+    </main>
+    <div class="tree-tooltip" id="tree-tip" style="display:none"></div>
+    <div class="toast-stack" id="toast-stack"></div>
+
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

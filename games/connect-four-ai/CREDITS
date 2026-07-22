@@ -1,0 +1,8 @@
+Connect Four AI - adapted from kenrick95/c4
+Upstream: https://github.com/kenrick95/c4
+License: MIT (Copyright (c) Kenrick)
+Adaptation for FreeToolOnline CDN (2026-07-21):
+- Absolute kenrick95.github.io asset URLs rewritten to relative paths
+- Online human-vs-human mode (wss://c4-server.fly.dev/) removed from UI and gated offline-only
+- noindex robots meta; title set to Connect Four AI
+- Attribution footer retained for Kenrick95

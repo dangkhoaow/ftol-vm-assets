@@ -1,0 +1,39 @@
+{
+    "tiles": {
+        "0": "assets/tiles/pared_dungeon_verde.png",
+        "1": "assets/tiles/suelo_dungeon_verde.png",
+        "2": "assets/tiles/pared_puerta_dungeon_verde.png",
+        "3": "assets/tiles/suelo_dungeon_verde_fuente_regenerativa.png",
+        "5": "assets/tiles/suelo_dungeon_verde.png"
+    },
+    "collisions": {
+        "0": { "type": "air" },
+        "1": { "type": "solid" },
+        "2": {
+            "type": "door",
+            "target_map": "map12",
+            "target_tile": { "x": 10, "y": 4 }
+        },
+        "4": {
+            "type": "heal",
+            "infinity": true,
+            "heals": 14,
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterInteractText": "El agua fluye desde las grietas del viejo fuente... +14 HP."
+        },
+        "5": { "type": "entity_spawn", "entity": "bat_elite", "floorCollision": 0 }
+    },
+    "entities": {
+        "bat_elite": {
+            "sprite": "assets/sprites/enemy/bat.png",
+            "health": 7,
+            "damage": 3,
+            "speed": 2.5,
+            "behavior": "chase",
+            "chaseRadius": 6,
+            "exp_drop": 45
+        }
+    }
+}

@@ -1,0 +1,2 @@
+Space Grid Puzzle adapted from Quinten/black-hole-square (MIT, js13k 2021).
+Original space-themed grid puzzle: tap squares, swipe to skip or reset levels.

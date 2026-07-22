@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Starlight Breaker - HTML5 Canvas Brick Breaking Game</title>
+    <meta name="description" content="A modern HTML5 Canvas brick breaking game with starlight theme, particle effects, and pure vanilla JavaScript. Play instantly in browser or explore the source code.">
+    <meta name="keywords" content="HTML5 game, Canvas programming, JavaScript game development, particle effects, web game, brick breaker, open source game">
+    <meta name="author" content="Chan Meng">
+
+    <!-- Open Graph / social share -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chanmeng666.github.io/html-brick-game/">
+    <meta property="og:title" content="Starlight Breaker">
+    <meta property="og:description" content="An artistic brick-breaking game in pure vanilla JavaScript.">
+    <meta property="og:image" content="https://chanmeng666.github.io/html-brick-game/og-cover.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Starlight Breaker">
+    <meta name="twitter:description" content="An artistic brick-breaking game in pure vanilla JavaScript.">
+    <meta name="twitter:image" content="https://chanmeng666.github.io/html-brick-game/og-cover.png">
+
+    <!-- AI-friendly metadata -->
+    <meta name="ai-content-type" content="interactive-web-application">
+    <meta name="ai-primary-value" content="educational-resource, technical-showcase, entertainment">
+    <meta name="ai-target-audience" content="web-developers, javascript-learners, game-developers">
+    <meta name="ai-technology-stack" content="HTML5, CSS3, JavaScript, Canvas-API, Web-Audio-API">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
+    
+    </head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <!-- 开始菜单 -->
+    <div id="startMenu" class="menu active">
+        <div class="menu-content">
+            <h1>🌟 STARLIGHT BREAKER</h1>
+            <p class="subtitle">An Artistic Brick Breaking Experience</p>
+            <button id="startGameBtn" class="menu-button">START GAME</button>
+            <button id="instructionsBtn" class="menu-button">INSTRUCTIONS</button>
+            <button id="highScoreBtn" class="menu-button">HIGH SCORES</button>
+            
+            
+    </div>
+
+    <!-- 游戏中菜单 -->
+    <div id="gameMenu">
+        <div class="game-ui">
+            <button id="pauseBtn" class="ui-button">⏸️ PAUSE</button>
+            <button id="menuBtn" class="ui-button">🏠 MENU</button>
+        </div>
+    </div>
+
+    <!-- 说明页面 -->
+    <div id="instructionsMenu" class="menu">
+        <div class="menu-content">
+            <h2>🎮 HOW TO PLAY</h2>
+            <div class="instructions">
+                <p>🖱️ Move your mouse to control the deer paddle</p>
+                <p>📱 On mobile: Touch and drag to move the paddle</p>
+                <p>⭐ Bounce the star ball to break all bricks</p>
+                <p>💖 You have 3 lives - don't let the ball fall!</p>
+                <p>🎯 Clear all bricks to win the game</p>
+                <p>⌨️ Press ESC to pause/resume the game</p>
+            </div>
+            <button id="backToMenuBtn" class="menu-button">BACK TO MENU</button>
+        </div>
+    </div>
+
+    <!-- 高分榜 -->
+    <div id="highScoreMenu" class="menu">
+        <div class="menu-content">
+            <h2>🏆 HIGH SCORES</h2>
+            <div id="highScoreList" class="high-score-list">
+                <!-- 高分记录将在这里显示 -->
+            </div>
+            <button id="clearScoresBtn" class="menu-button secondary">CLEAR SCORES</button>
+            <button id="backToMenuFromScoresBtn" class="menu-button">BACK TO MENU</button>
+        </div>
+    </div>
+
+    <!-- 暂停菜单 -->
+    <div id="pauseMenu" class="menu">
+        <div class="menu-content">
+            <h2>⏸️ GAME PAUSED</h2>
+            <button id="resumeBtn" class="menu-button">RESUME</button>
+            <button id="restartBtn" class="menu-button">RESTART</button>
+            <button id="backToMainMenuBtn" class="menu-button">MAIN MENU</button>
+        </div>
+    </div>
+
+    <!-- pop-up window alert -->
+    <div id="messageBox" class="hidden">
+        <div id="messageContent">
+            <p id="messageText"></p>
+            <button id="messageButton">Yes</button>
+        </div>
+    </div>
+
+    <!-- 横屏提示 -->
+    <div id="orientationWarning" class="orientation-warning hidden">
+        <div class="orientation-content">
+            <div class="orientation-icon">📱 ↻</div>
+            <h3>Please Rotate Your Device</h3>
+            <p>For the best gaming experience, please use landscape mode</p>
+        </div>
+    </div>
+
+    <!-- 触摸指引（首次游戏） -->
+    <div id="touchGuide" class="touch-guide hidden">
+        <div class="touch-guide-content">
+            <h3>👆 Touch Controls</h3>
+            <p>Touch and drag anywhere on the screen to move the paddle</p>
+            <button id="touchGuideBtn" class="menu-button">Got it!</button>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

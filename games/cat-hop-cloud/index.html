@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>Cat Hop Cloud</title>
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: #87CEEB;
+    overflow: hidden;
+    font-family: monospace;
+}
+canvas {
+    display: block;
+    margin: 0 auto;
+}
+#info {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #fff;
+    font-size: 18px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+#menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: 400px;
+}
+#menu h2 {
+    margin-top: 0;
+    color: #333;
+}
+#menu p {
+    margin: 10px 0;
+    color: #555;
+    line-height: 1.6;
+}
+#menu button {
+    background: #CC88FF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: monospace;
+}
+#menu button:hover {
+    background: #AA66DD;
+}
+.cloud-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 15px 0;
+}
+.cloud-example {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+</style>
+</head>
+<body>
+<div id="info">Luck: <span id="energy">100</span></div>
+<canvas id="c"></canvas>
+<div id="menu">
+    <h2>Cat Hop Cloud</h2>
+    <p><strong>Help your cat return home!</strong></p>
+    <p>Your black cat is lost in the clouds and needs to use its luck energy to hop back to cloud 0.</p>
+    
+    <div class="cloud-info" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 14px;">
+        <div class="cloud-example">
+            <span style="color: #A8E6CF;">●</span> Safe
+        </div>
+        <div class="cloud-example">
+            <span style="color: #FF6B9D;">●</span> Thunder (-2)
+        </div>
+        <div class="cloud-example">
+            <span style="color: #5ECFFF;">●</span> Wind (+1)
+        </div>
+        <div class="cloud-example">
+            <span style="color: #FFE066;">●</span> Lucky (+5)
+        </div>
+        <div class="cloud-example">
+            <span style="color: #B19CD9;">●</span> Checkpoint
+        </div>
+        <div class="cloud-example">
+            <span style="color: #FF9F43;">●</span> One-way
+        </div>
+    </div>
+    
+    <p><strong>Controls:</strong></p>
+    <p>🎮 Press 1-9 to jump that many clouds forward<br>
+    Each jump costs luck equal to the distance<br>
+    📍 Press R to reset the game<br>
+    💡 Press I to toggle instructions</p>
+    
+    <p><strong>Goal:</strong> Visit all checkpoints (!) then return to cloud 0 with luck remaining!</p>
+    
+    <div id="versionInfo" style="text-align: center; margin: 15px 0; padding: 10px; background: rgba(0,0,0,0.1); border-radius: 5px;">
+        <div style="font-weight: bold;">Cat Hop Cloud v<span id="currentVersion">2.0.0</span></div>
+        <div style="font-size: 12px;">Strategic Puzzle Mode</div>
+        <div id="versionButtons" style="margin-top: 10px;">
+            <button onclick="showVersionArchive()" style="font-size: 12px; padding: 5px 10px;">View Archive</button>
+        </div>
+    </div>
+
+    <div id="levelSelect" style="margin-top: 20px;">
+        <h3>Select Level</h3>
+        <div id="levelGrid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0;"></div>
+    </div>
+    
+    <div id="scoreboard" style="margin-top: 20px; display: none;">
+        <h3 id="scoreboardTitle">Best Scores</h3>
+        <div id="scoreList"></div>
+        <div style="margin-top: 10px;">
+            <button onclick="backToLevels()" style="margin-right: 10px;">Back to Levels</button>
+            <button onclick="showVersionArchive()" style="font-size: 12px;">Archive</button>
+        </div>
+    </div>
+
+    <div id="versionArchive" style="margin-top: 20px; display: none;">
+        <h3>Version Archive</h3>
+        <div id="versionList"></div>
+        <button onclick="backToLevels()" style="margin-top: 10px;">Back to Current</button>
+    </div>
+</div>
+<script>
+// Game constants
+const GAME_VERSION = "2.0.0"; // Strategic Puzzle Version
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const energyDisplay = document.getElementById('energy');
+
+// Set canvas size
+canvas.width = 800;
+canvas.height = 600;
+
+// Level definitions
+const levels = [
+    // Tutorial - Simple introduction
+    {c:[0,0,1,0,0,0], e:120, name:"Tutorial"},
+    
+    // Checkpoint introduction
+    {c:[0,0,4,1,0,0], e:100, checkpoints:[2], name:"First Checkpoint"},
+    {c:[0,1,0,4,0,1,4,0], e:90, checkpoints:[3,6], name:"Dual Checkpoints"},
+    
+    // Strategic routing required
+    {c:[0,4,1,1,4,3,0,1,0], e:85, checkpoints:[1,4], name:"Thunder Maze"},
+    {c:[0,1,4,0,1,4,1,0,4,0], e:80, checkpoints:[2,5,8], name:"Triple Challenge"},
+    
+    // Wind mechanics + checkpoints  
+    {c:[0,2,4,1,0,2,0], e:75, checkpoints:[2], name:"Wind Route"},
+    {c:[0,4,2,1,4,3,1,0], e:70, checkpoints:[1,4], name:"Wind Puzzle"},
+    
+    // One-way clouds
+    {c:[0,5,1,0,4,1,0], e:70, checkpoints:[4], name:"One Way Street"},
+    {c:[0,1,5,4,5,1,4,0,0], e:65, checkpoints:[3,6], name:"Arrow Maze"},
+    
+    // Master level - all mechanics
+    {c:[0,4,1,5,3,4,1,2,0,1], e:60, checkpoints:[1,5], name:"Grand Finale"}
+];
+
+// Game state
+let gameState = {
+    energy: 100,
+    position: 0,
+    clouds: [0, 0, 1, 0, 1, 1, 0, 0], // 0 = safe, 1 = thunder, 2 = wind, 3 = lucky, 4 = checkpoint, 5 = one-way
+    numClouds: 8,
+    gameOver: false,
+    gameWon: false,
+    showMenu: true,
+    currentLevel: 0,
+    windBoost: 0, // For wind cloud effect
+    moves: 0, // Track if player has moved
+    visitedCheckpoints: new Set(), // Track visited checkpoints
+    requiredCheckpoints: new Set(), // Checkpoints needed for this level
+    turnCounter: 0, // Track turns for energy drain
+    oneWayJump: 0 // Forced jump from one-way cloud
+};
+
+// Version management
+function getCurrentVersionKey() {
+    return `ftol:cathopcloud:scores_v${GAME_VERSION}`;
+}
+
+function getAvailableVersions() {
+    return Object.keys(localStorage)
+        .filter(k => k.startsWith('ftol:cathopcloud:scores_v'))
+        .map(k => k.split('_v')[1])
+        .sort((a, b) => b.localeCompare(a, undefined, {numeric: true})); // Newest first
+}
+
+function migrateOldScores() {
+    // Check for old scores without version
+    const oldAllScores = localStorage.getItem('ftol:cathopcloud:allScores');
+    const oldUnlocked = localStorage.getItem('ftol:cathopcloud:unlocked');
+    
+    if (oldAllScores && !localStorage.getItem('ftol:cathopcloud:scores_v1.2.0')) {
+        // Migrate to v1.2.0 (last simple version)
+        const migrationData = {
+            version: "1.2.0",
+            releaseDate: new Date().toISOString().split('T')[0],
+            gameMode: "Simple Mode",
+            levels: JSON.parse(oldAllScores),
+            unlocked: parseInt(oldUnlocked || '0'),
+            archived: true
+        };
+        localStorage.setItem('ftol:cathopcloud:scores_v1.2.0', JSON.stringify(migrationData));
+        
+        // Clean up old format
+        localStorage.removeItem('ftol:cathopcloud:allScores');
+        localStorage.removeItem('ftol:cathopcloud:scores'); // Also remove this if it exists
+    }
+}
+
+// Load scores for current version
+function loadScores() {
+    migrateOldScores(); // Auto-migrate on load
+    
+    const currentData = localStorage.getItem(getCurrentVersionKey());
+    if (currentData) {
+        return JSON.parse(currentData);
+    }
+    
+    // Initialize new version data
+    const newVersionData = {
+        version: GAME_VERSION,
+        releaseDate: new Date().toISOString().split('T')[0],
+        gameMode: "Strategic Puzzle Mode",
+        levels: {},
+        unlocked: 0
+    };
+    localStorage.setItem(getCurrentVersionKey(), JSON.stringify(newVersionData));
+    return newVersionData;
+}
+
+// Save score for specific level
+function saveScore(score, level) {
+    const versionData = loadScores();
+    
+    if (!versionData.levels[level]) {
+        versionData.levels[level] = [];
+    }
+    
+    versionData.levels[level].push({
+        score: score,
+        date: new Date().toLocaleDateString(),
+        turns: gameState.turnCounter,
+        version: GAME_VERSION
+    });
+    
+    // Keep only top 3 scores per level
+    versionData.levels[level].sort((a, b) => b.score - a.score);
+    versionData.levels[level] = versionData.levels[level].slice(0, 3);
+    
+    localStorage.setItem(getCurrentVersionKey(), JSON.stringify(versionData));
+    return versionData.levels[level];
+}
+
+// Get unlocked levels for current version
+function getUnlockedLevels() {
+    const versionData = loadScores();
+    return versionData.unlocked || 0;
+}
+
+// Unlock next level for current version
+function unlockLevel(level) {
+    const versionData = loadScores();
+    const current = versionData.unlocked || 0;
+    
+    if (level > current) {
+        versionData.unlocked = level;
+        localStorage.setItem(getCurrentVersionKey(), JSON.stringify(versionData));
+    }
+}
+
+// Load specific level
+function loadLevel(levelIndex) {
+    if (levelIndex >= levels.length) return false;
+    
+    const level = levels[levelIndex];
+    gameState.currentLevel = levelIndex;
+    gameState.clouds = [...level.c]; // Copy array
+    gameState.numClouds = level.c.length;
+    gameState.energy = level.e;
+    gameState.position = 0;
+    gameState.gameOver = false;
+    gameState.gameWon = false;
+    gameState.windBoost = 0;
+    gameState.moves = 0;
+    gameState.turnCounter = 0;
+    gameState.oneWayJump = 0;
+    gameState.visitedCheckpoints = new Set();
+    gameState.requiredCheckpoints = new Set(level.checkpoints || []);
+    
+    return true;
+}
+
+// Cloud positions (circular arrangement)
+function getCloudPosition(index) {
+    const angle = (index * Math.PI * 2 / gameState.numClouds) - Math.PI / 2;
+    const radius = 200;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    
+    return {
+        x: centerX + radius * Math.cos(angle),
+        y: centerY + radius * Math.sin(angle)
+    };
+}
+
+// Draw cloud
+function drawCloud(x, y, cloudType, number) {
+    // Cloud shape
+    ctx.save();
+    
+    // Set color based on cloud type (summer palette)
+    switch(cloudType) {
+        case 1: // Thunder
+            ctx.fillStyle = '#FF6B9D'; // Bright pink
+            break;
+        case 2: // Wind
+            ctx.fillStyle = '#5ECFFF'; // Cyan blue
+            break;
+        case 3: // Lucky
+            ctx.fillStyle = '#FFE066'; // Sunny yellow
+            break;
+        case 4: // Checkpoint
+            ctx.fillStyle = '#B19CD9'; // Purple
+            break;
+        case 5: // One-way
+            ctx.fillStyle = '#FF9F43'; // Orange
+            break;
+        default: // Safe
+            ctx.fillStyle = '#A8E6CF'; // Mint green
+    }
+    
+    // Simple cloud shape with circles
+    ctx.beginPath();
+    ctx.arc(x - 20, y, 20, 0, Math.PI * 2);
+    ctx.arc(x + 20, y, 20, 0, Math.PI * 2);
+    ctx.arc(x, y - 10, 25, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Cloud number
+    ctx.fillStyle = '#000';
+    ctx.font = 'bold 24px monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(number, x, y);
+    
+    // Special symbols for cloud types
+    ctx.font = '16px monospace';
+    switch(cloudType) {
+        case 1: // Lightning for thunder
+            ctx.strokeStyle = '#FFFF00';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(x, y + 25);
+            ctx.lineTo(x - 5, y + 35);
+            ctx.lineTo(x + 5, y + 35);
+            ctx.lineTo(x, y + 45);
+            ctx.stroke();
+            break;
+        case 2: // Wind arrows
+            ctx.fillStyle = '#FFF';
+            ctx.fillText('≫', x, y + 35);
+            break;
+        case 3: // Star for lucky
+            ctx.fillStyle = '#FFF';
+            ctx.fillText('★', x, y + 35);
+            break;
+        case 4: // Checkpoint
+            const visited = gameState.visitedCheckpoints.has(number);
+            ctx.fillStyle = visited ? '#00FF00' : '#FFF';
+            ctx.fillText(visited ? '✓' : '!', x, y + 35);
+            break;
+        case 5: // One-way arrow
+            ctx.fillStyle = '#FFF';
+            ctx.fillText('→', x, y + 35);
+            break;
+    }
+    
+    ctx.restore();
+}
+
+// Draw cat
+function drawCat(x, y) {
+    ctx.save();
+    ctx.fillStyle = '#000';
+    
+    // Body
+    ctx.fillRect(x - 10, y - 10, 20, 15);
+    
+    // Head
+    ctx.beginPath();
+    ctx.arc(x, y - 15, 8, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Ears
+    ctx.beginPath();
+    ctx.moveTo(x - 8, y - 18);
+    ctx.lineTo(x - 5, y - 25);
+    ctx.lineTo(x - 2, y - 18);
+    ctx.moveTo(x + 2, y - 18);
+    ctx.lineTo(x + 5, y - 25);
+    ctx.lineTo(x + 8, y - 18);
+    ctx.fill();
+    
+    // Tail
+    ctx.beginPath();
+    ctx.moveTo(x + 10, y);
+    ctx.quadraticCurveTo(x + 20, y - 10, x + 15, y - 20);
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    ctx.restore();
+}
+
+// Jump to new cloud
+function jump(k) {
+    if (gameState.gameOver || gameState.gameWon) return;
+    
+    // Check if forced to use one-way jump
+    if (gameState.oneWayJump > 0) {
+        k = gameState.oneWayJump;
+        gameState.oneWayJump = 0;
+    }
+    
+    // Apply wind boost if any
+    const actualJump = k + gameState.windBoost;
+    gameState.windBoost = 0; // Reset wind boost
+    
+    if (gameState.energy >= k) {
+        // Increment turn counter and apply turn penalty
+        gameState.turnCounter += 1;
+        const turnPenalty = gameState.turnCounter > 5 ? 1 : 0;
+        
+        // Deduct energy for jump + turn penalty
+        gameState.energy -= (k + turnPenalty);
+        gameState.moves += 1;
+        
+        // Move to new position (circular)
+        gameState.position = (gameState.position + actualJump) % gameState.numClouds;
+        
+        // Handle different cloud types
+        const cloudType = gameState.clouds[gameState.position];
+        switch(cloudType) {
+            case 1: // Thunder
+                gameState.energy -= 2;
+                break;
+            case 2: // Wind
+                gameState.windBoost = 1; // Next jump gets +1 distance
+                break;
+            case 3: // Lucky
+                gameState.energy += 5; // Bonus energy!
+                break;
+            case 4: // Checkpoint
+                gameState.visitedCheckpoints.add(gameState.position);
+                break;
+            case 5: // One-way
+                gameState.oneWayJump = 2; // Force next jump to be 2
+                break;
+        }
+        
+        // Update energy display
+        energyDisplay.textContent = gameState.energy;
+        
+        // Check win/lose conditions
+        const allCheckpointsVisited = [...gameState.requiredCheckpoints].every(
+            cp => gameState.visitedCheckpoints.has(cp)
+        );
+        
+        if (gameState.position === 0 && gameState.energy > 0 && gameState.moves > 1 && allCheckpointsVisited) {
+            gameState.gameWon = true;
+            saveScore(gameState.energy, gameState.currentLevel);
+            unlockLevel(gameState.currentLevel + 1);
+        } else if (gameState.energy <= 0) {
+            gameState.gameOver = true;
+        }
+        
+        draw();
+    }
+}
+
+// Handle keyboard input
+document.addEventListener('keydown', (e) => {
+    const key = e.key;
+    
+    // Don't process game controls if menu is showing
+    if (gameState.showMenu && key.toLowerCase() !== 'i') return;
+    
+    // Number keys for jumping
+    if (key >= '1' && key <= '9') {
+        jump(parseInt(key));
+    }
+    
+    // Other controls
+    switch(key.toLowerCase()) {
+        case 'i': // Toggle instructions
+            toggleMenu();
+            break;
+        case 'r': // Reset game
+            resetGame();
+            break;
+        case 'h': // Hint - show optimal path
+            showHint();
+            break;
+    }
+});
+
+// Show hint (optimal path calculation)
+function showHint() {
+    // Simple hint: show which jumps are safe
+    console.log('Hint: Try to avoid red clouds!');
+}
+
+// Reset game
+function resetGame() {
+    loadLevel(gameState.currentLevel);
+    energyDisplay.textContent = gameState.energy;
+    draw();
+}
+
+// Main draw function
+function draw() {
+    // Clear canvas
+    ctx.fillStyle = '#87CEEB';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw all clouds
+    for (let i = 0; i < gameState.numClouds; i++) {
+        const pos = getCloudPosition(i);
+        drawCloud(pos.x, pos.y, gameState.clouds[i], i);
+    }
+    
+    // Draw cat at current position
+    const catPos = getCloudPosition(gameState.position);
+    drawCat(catPos.x, catPos.y);
+    
+    // Draw game status
+    if (gameState.gameWon) {
+        ctx.fillStyle = '#00FF00';
+        ctx.font = 'bold 48px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('You Win!', canvas.width / 2, canvas.height / 2);
+        ctx.font = '24px monospace';
+        ctx.fillText(`Final Luck: ${gameState.energy}`, canvas.width / 2, canvas.height / 2 + 40);
+        if (gameState.currentLevel < levels.length - 1) {
+            ctx.fillStyle = '#FFD700';
+            ctx.fillText(`"${levels[gameState.currentLevel + 1].name}" unlocked!`, canvas.width / 2, canvas.height / 2 + 70);
+            ctx.fillStyle = '#00FF00';
+            ctx.font = '18px monospace';
+            ctx.fillText('Press I to select new level', canvas.width / 2, canvas.height / 2 + 100);
+        } else {
+            ctx.fillText('All levels complete!', canvas.width / 2, canvas.height / 2 + 70);
+        }
+    } else if (gameState.gameOver) {
+        ctx.fillStyle = '#FF0000';
+        ctx.font = 'bold 48px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2);
+        ctx.font = '24px monospace';
+        ctx.fillText('Out of luck!', canvas.width / 2, canvas.height / 2 + 40);
+    }
+    
+    // Draw level name
+    ctx.fillStyle = '#000';
+    ctx.font = '18px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(levels[gameState.currentLevel].name, canvas.width / 2, 30);
+    
+    // Draw instructions
+    ctx.fillStyle = '#000';
+    ctx.font = '14px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('Press 1-9 to jump clouds | R to reset | I for instructions', 10, canvas.height - 10);
+    
+    // Show game status indicators
+    ctx.font = '16px monospace';
+    ctx.textAlign = 'right';
+    
+    // Turn counter with penalty warning
+    if (gameState.turnCounter > 5) {
+        ctx.fillStyle = '#FF6B9D';
+        ctx.fillText(`Turn: ${gameState.turnCounter} (+1 energy cost)`, canvas.width - 10, 60);
+    } else {
+        ctx.fillStyle = '#000';
+        ctx.fillText(`Turn: ${gameState.turnCounter}`, canvas.width - 10, 60);
+    }
+    
+    // Checkpoint progress
+    if (gameState.requiredCheckpoints.size > 0) {
+        const visited = gameState.visitedCheckpoints.size;
+        const total = gameState.requiredCheckpoints.size;
+        ctx.fillStyle = visited === total ? '#00FF00' : '#FF6B9D';
+        ctx.fillText(`Checkpoints: ${visited}/${total}`, canvas.width - 10, 85);
+    }
+    
+    // Wind boost indicator
+    if (gameState.windBoost > 0) {
+        ctx.fillStyle = '#5ECFFF';
+        ctx.fillText('Wind Boost: +1', canvas.width - 10, 110);
+    }
+    
+    // One-way forced jump indicator
+    if (gameState.oneWayJump > 0) {
+        ctx.fillStyle = '#FF9F43';
+        ctx.fillText(`Next jump: ${gameState.oneWayJump}`, canvas.width - 10, 135);
+    }
+}
+
+// Toggle menu visibility
+function toggleMenu() {
+    gameState.showMenu = !gameState.showMenu;
+    document.getElementById('menu').style.display = gameState.showMenu ? 'block' : 'none';
+    if (gameState.showMenu) {
+        // Make sure level select is visible and scoreboard is hidden
+        document.getElementById('levelSelect').style.display = 'block';
+        document.getElementById('scoreboard').style.display = 'none';
+        updateLevelGrid(); // Refresh level grid to show newly unlocked levels
+    } else {
+        draw();
+    }
+}
+
+// Update scoreboard display
+function updateScoreboard() {
+    const scores = loadScores();
+    const scoreList = document.getElementById('scoreList');
+    
+    if (scores.length === 0) {
+        scoreList.innerHTML = '<p style="color: #888;">No scores yet!</p>';
+    } else {
+        scoreList.innerHTML = scores.map((s, i) => 
+            `<div style="margin: 5px 0;">${i + 1}. Luck: ${s.score} - ${s.date}</div>`
+        ).join('');
+    }
+}
+
+// Start game from menu
+function startGame(levelIndex) {
+    gameState.showMenu = false;
+    document.getElementById('menu').style.display = 'none';
+    loadLevel(levelIndex);
+    energyDisplay.textContent = gameState.energy;
+    draw();
+}
+
+// Back to level selection
+function backToLevels() {
+    document.getElementById('scoreboard').style.display = 'none';
+    document.getElementById('versionArchive').style.display = 'none';
+    document.getElementById('levelSelect').style.display = 'block';
+    document.getElementById('scoreboardTitle').textContent = 'Best Scores'; // Reset title
+    updateLevelGrid();
+}
+
+// Show version archive
+function showVersionArchive() {
+    document.getElementById('levelSelect').style.display = 'none';
+    document.getElementById('scoreboard').style.display = 'none';
+    document.getElementById('versionArchive').style.display = 'block';
+    
+    const versions = getAvailableVersions();
+    const versionList = document.getElementById('versionList');
+    
+    if (versions.length <= 1) {
+        versionList.innerHTML = '<p style="color: #888;">No archived versions yet.</p>';
+        return;
+    }
+    
+    versionList.innerHTML = versions.map(version => {
+        const versionKey = `ftol:cathopcloud:scores_v${version}`;
+        const versionData = JSON.parse(localStorage.getItem(versionKey) || '{}');
+        const isCurrent = version === GAME_VERSION;
+        
+        return `<div style="margin: 10px 0; padding: 15px; background: ${isCurrent ? 'rgba(168, 230, 207, 0.3)' : 'rgba(0,0,0,0.1)'}; border-radius: 5px;">
+            <div style="font-weight: bold;">
+                v${version} ${isCurrent ? '(Current)' : ''}
+                <span style="float: right; font-size: 12px;">${versionData.releaseDate || 'Unknown'}</span>
+            </div>
+            <div style="font-size: 14px; color: #666;">${versionData.gameMode || 'Unknown Mode'}</div>
+            <div style="margin-top: 5px;">
+                ${!isCurrent ? `<button onclick="viewVersionScores('${version}')" style="font-size: 12px; padding: 5px 10px;">View Scores</button>` : ''}
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// View scores for specific version
+function viewVersionScores(version) {
+    const versionKey = `ftol:cathopcloud:scores_v${version}`;
+    const versionData = JSON.parse(localStorage.getItem(versionKey) || '{}');
+    
+    document.getElementById('versionArchive').style.display = 'none';
+    document.getElementById('scoreboard').style.display = 'block';
+    document.getElementById('scoreboardTitle').textContent = `v${version} - ${versionData.gameMode || 'Archived Scores'}`;
+    
+    const scoreList = document.getElementById('scoreList');
+    const levels = versionData.levels || {};
+    
+    if (Object.keys(levels).length === 0) {
+        scoreList.innerHTML = '<p style="color: #888;">No scores recorded for this version.</p>';
+        return;
+    }
+    
+    scoreList.innerHTML = Object.entries(levels).map(([levelIndex, scores]) => {
+        const levelName = `Level ${parseInt(levelIndex) + 1}`;
+        const topScore = scores[0];
+        
+        return `<div style="margin: 10px 0; padding: 10px; background: rgba(0,0,0,0.1); border-radius: 5px;">
+            <div style="font-weight: bold;">${levelName}</div>
+            <div style="font-size: 14px;">Best: ${topScore.score} ${topScore.turns ? `(${topScore.turns} turns)` : ''} - ${topScore.date}</div>
+        </div>`;
+    }).join('');
+}
+
+// Update level grid display
+function updateLevelGrid() {
+    const grid = document.getElementById('levelGrid');
+    const unlocked = getUnlockedLevels();
+    const versionData = loadScores();
+    
+    grid.innerHTML = levels.map((level, i) => {
+        const levelScores = versionData.levels[i] || [];
+        const bestScore = levelScores.length > 0 ? levelScores[0].score : '-';
+        const bestTurns = levelScores.length > 0 ? levelScores[0].turns : '';
+        const isLocked = i > unlocked;
+        
+        return `<button 
+            onclick="${isLocked ? '' : `startGame(${i})`}" 
+            style="
+                padding: 10px;
+                background: ${isLocked ? '#999' : '#CC88FF'};
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: ${isLocked ? 'not-allowed' : 'pointer'};
+                opacity: ${isLocked ? '0.5' : '1'};
+            ">
+            <div>${level.name}</div>
+            <div style="font-size: 12px;">${isLocked ? '🔒' : `Best: ${bestScore}${bestTurns ? ` (${bestTurns}t)` : ''}`}</div>
+        </button>`;
+    }).join('');
+}
+
+// Initialize
+draw();
+if (gameState.showMenu) {
+    document.getElementById('menu').style.display = 'block';
+    updateLevelGrid();
+}
+</script>
+</body>
+</html>

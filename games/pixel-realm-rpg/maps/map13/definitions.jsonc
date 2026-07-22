@@ -1,0 +1,39 @@
+{
+    "tiles": {
+        "0": "assets/tiles/pared_dungeon_verde.png",
+        "1": "assets/tiles/suelo_dungeon_verde.png",
+        "2": "assets/tiles/pared_puerta_dungeon_verde.png",
+        "3": "assets/tiles/suelo_dungeon_verde_fuente_regenerativa.png",
+        "5": "assets/tiles/suelo_dungeon_verde.png"
+    },
+    "collisions": {
+        "0": { "type": "air" },
+        "1": { "type": "solid" },
+        "2": {
+            "type": "door",
+            "target_map": "map10",
+            "target_tile": { "x": 6, "y": 4 }
+        },
+        "4": {
+            "type": "heal",
+            "infinity": true,
+            "heals": 12,
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterInteractText": "La fuente brilla con una luz azulada... +12 HP."
+        },
+        "5": { "type": "entity_spawn", "entity": "bat_grande", "floorCollision": 0 }
+    },
+    "entities": {
+        "bat_grande": {
+            "sprite": "assets/sprites/enemy/bat.png",
+            "health": 6,
+            "damage": 2,
+            "speed": 1.5,
+            "behavior": "chase",
+            "chaseRadius": 5,
+            "exp_drop": 30
+        }
+    }
+}

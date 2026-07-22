@@ -1,0 +1,2 @@
+Globe Siege - vendored from TaoweNlin/EarthDefense (https://github.com/TaoweNlin/EarthDefense), MIT (c) 2026 TaoweNlin.
+Adaptation (freetoolonline.com): Chinese UI rebranded to English, localStorage namespaced ftol:globesiege:*, noindex meta added, built with base ./ for iframe subpath. Original game (c) TaoweNlin under MIT (see LICENSE).

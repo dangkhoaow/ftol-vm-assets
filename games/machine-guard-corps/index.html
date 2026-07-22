@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>Machine Guard Corps</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app" id="app">
+    <section class="topbar">
+      <div class="brand">Machine Guard Corps</div>
+      <div class="stat">Energy<b id="energyText">0 / 0</b></div>
+      <div class="stat">Alien Energy<b id="enemyEnergyText">0 / 0</b></div>
+      <div class="stat">Scrap<b id="scrapText">0</b></div>
+      <div class="stat">Base HP<b id="baseText">0</b></div>
+      <div class="stat">Hive HP<b id="hiveText">0</b></div>
+      <div class="stat">Threat<b id="waveText">Ready</b></div>
+      <div class="stat">Status<b id="statusText">Standby</b></div>
+    </section>
+
+    <section class="stage-wrap" id="stageWrap">
+      <canvas id="gameCanvas" width="960" height="540" aria-label="Machine Guard Corps battlefield"></canvas>
+
+      <div class="overlay visible" id="tutorialOverlay">
+        <div class="panel">
+          <h1>Machine Guard Corps</h1>
+          <p>Deploy machines from the left lane, outplay the alien economy, and keep the command base online.</p>
+          <ul>
+            <li>Both sides gain energy, summon units, and upgrade their base during the fight.</li>
+            <li>Scrap from kills buys player upgrades. Alien tech improves itself over time.</li>
+            <li>Machine attacks build heat. At 100 heat, a unit shuts down for 2 seconds.</li>
+            <li>Both main towers fire automatically, but turret upgrades matter as pressure rises.</li>
+            <li>Fortresses slowly repair after 8 seconds without damage. Command Tower improves repair speed.</li>
+            <li>Boss kills award major Energy and Scrap, but the hive only falls when its core HP reaches zero.</li>
+            <li>Each machine line can buy one permanent evolution with Scrap; stronger evolutions cost more.</li>
+          </ul>
+          <div class="hint-grid" aria-label="Keyboard shortcuts">
+            <span>1-5 Summon</span>
+            <span>Cmd/Ctrl+1-0 Evolve</span>
+            <span>Z/X/C/V Upgrade</span>
+            <span>Q Missile</span>
+            <span>W EMP</span>
+            <span>E Repair</span>
+            <span>Space Pause</span>
+          </div>
+          <div class="panel-actions">
+            <button class="primary" id="startButton">Start Defense</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="overlay" id="endOverlay">
+        <div class="panel">
+          <h2 id="endTitle">Mission Complete</h2>
+          <p id="endBody">The battlefield is secure.</p>
+          <div class="panel-actions">
+            <button class="primary" id="endRestartButton">Restart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="controls">
+      <div class="control-group">
+        <p class="control-title">Summon Machines <span>1-5 Summon · Cmd/Ctrl+1-0 Evolve</span></p>
+        <div class="button-row" id="summonButtons"></div>
+      </div>
+      <div class="control-group skills">
+        <p class="control-title">Skills <span>Q W E</span></p>
+        <div class="button-row" id="skillButtons"></div>
+      </div>
+      <div class="control-group upgrades">
+        <p class="control-title">Upgrades <span>Z X C V</span></p>
+        <div class="button-row" id="upgradeButtons"></div>
+      </div>
+      <div class="system-buttons">
+        <button id="pauseButton">Pause</button>
+        <button id="restartButton" class="danger">Restart</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>

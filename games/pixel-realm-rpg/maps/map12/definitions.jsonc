@@ -1,0 +1,64 @@
+{
+    "tiles": {
+        "0": "assets/tiles/pared_dungeon_verde.png",
+        "1": "assets/tiles/suelo_dungeon_verde.png",
+        "2": "assets/tiles/pared_puerta_dungeon_verde.png",
+        "3": "assets/tiles/suelo_dungeon_verde_pinchos.png",
+        "4": "assets/tiles/suelo_dungeon_verde_fuente_regenerativa.png",
+        "5": "assets/tiles/chest.png"
+    },
+    "collisions": {
+        "0": { "type": "air" },
+        "1": { "type": "solid" },
+        "3": {
+            "type": "door",
+            "target_map": "map9",
+            "target_tile": { "x": 12, "y": 4 }
+        },
+        "4": { "type": "player_damage", "damage": 1 },
+        "5": {
+            "type": "heal",
+            "infinity": true,
+            "heals": 10,
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterInteractText": "El agua del final te restaura. +10 HP."
+        },
+        "6": {
+            "type": "chest",
+            "contains": "titaniumSword",
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterOpeningCollision": "0",
+            "afterOpeningTile": "1"
+        },
+        "7": {
+            "type": "chest",
+            "contains": "stainlessSteelShield",
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterOpeningCollision": "0",
+            "afterOpeningTile": "1"
+        },
+        "8": { "type": "entity_spawn", "entity": "bat", "floorCollision": 0 },
+        "9": {
+            "type": "door",
+            "target_map": "map15",
+            "target_tile": { "x": 2, "y": 3 }
+        }
+    },
+    "entities": {
+        "bat": {
+            "sprite": "assets/sprites/enemy/bat.png",
+            "health": 3,
+            "damage": 1,
+            "speed": 1.5,
+            "behavior": "patrol",
+            "chaseRadius": 3,
+            "exp_drop": 15
+        }
+    }
+}

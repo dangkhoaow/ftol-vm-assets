@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex,nofollow">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orbital Order</title>
+    <!-- Inline SVG favicon to avoid 404 -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3e%3ccircle cx='16' cy='16' r='12' fill='%23064e3b' stroke='%2369f' stroke-width='2'/%3e%3ccircle cx='16' cy='16' r='6' fill='%23fff' opacity='0.2'/%3e%3ccircle cx='22' cy='10' r='3' fill='%234a90e2'/%3e%3ccircle cx='10' cy='22' r='3' fill='%23ff6b35'/%3e%3c/svg%3e"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: #020408;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: "Courier New", monospace;
+      }
+
+      #gameContainer {
+        position: relative;
+        display: inline-block;
+        width: 1000px;
+        height: 750px;
+        background: #020408;
+        border: 1px solid rgba(100, 150, 255, 0.2);
+      }
+
+      canvas {
+        border: 1px solid rgba(100, 150, 255, 0.2); /* Subtle blue glow */
+        cursor: none;
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      /* Fixed UI zones */
+      .ui-zone {
+        position: absolute;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      /* Top left - Title and timing */
+      #topLeft {
+        top: 15px;
+        left: 15px;
+        color: #96c8ff;
+        font-size: 14px;
+        opacity: 0.9;
+        line-height: 1.4;
+      }
+
+      /* Top right - Element symbol */
+      #topRight {
+        top: 15px;
+        right: 15px;
+        color: #96c8ff;
+        font-size: 12px;
+        text-align: right;
+      }
+
+      /* Bottom left - Controls */
+      #bottomLeft {
+        bottom: 15px;
+        left: 15px;
+        color: rgba(150, 200, 255, 0.8);
+        font-size: 13px;
+        line-height: 1.3;
+      }
+
+      /* Bottom right - Level */
+      #bottomRight {
+        bottom: 15px;
+        right: 15px;
+        color: rgba(150, 200, 255, 0.8);
+        font-size: 13px;
+        text-align: right;
+      }
+
+      /* Responsive scaling for different screen sizes */
+      @media (max-width: 1100px) {
+        #gameContainer {
+          width: 90vw;
+          height: calc(90vw * 0.75);
+        }
+      }
+
+      @media (max-width: 900px) {
+        #gameContainer {
+          width: 95vw;
+          height: calc(95vw * 0.75);
+        }
+      }
+
+      @media (max-width: 700px) {
+        #gameContainer {
+          width: 98vw;
+          height: calc(98vw * 0.75);
+        }
+      }
+
+      /* Mobile warning overlay */
+      #mobile-warning {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      #mobile-warning .content {
+        background: rgba(20, 30, 50, 0.95);
+        border: 2px solid rgba(100, 150, 255, 0.8);
+        border-radius: 8px;
+        padding: 30px;
+        max-width: 400px;
+        color: #96c8ff;
+      }
+
+      #mobile-warning h2 {
+        color: #ff6b35;
+        margin-top: 0;
+        font-size: 24px;
+      }
+
+      #mobile-warning p {
+        line-height: 1.5;
+        margin: 15px 0;
+        font-size: 16px;
+      }
+
+      #mobile-warning .icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      /* Show warning only on very small screens */
+      /* FTOL adapt: keep canvas playable in narrow iframes (no hard block). */
+      @media (max-width: 600px), (max-height: 450px) {
+        #mobile-warning {
+          display: none;
+        }
+
+        canvas,
+        #info {
+          display: block;
+        }
+      }
+
+      /* Additional styles for very small screens */
+      @media (max-width: 480px) {
+        #mobile-warning .content {
+          padding: 20px;
+          margin: 10px;
+        }
+
+        #mobile-warning h2 {
+          font-size: 20px;
+        }
+
+        #mobile-warning p {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Mobile/Small Screen Warning -->
+    <div id="mobile-warning">
+      <div class="content">
+        <div class="icon">🖥️</div>
+        <h2>Desktop Required</h2>
+        <p>
+          This atomic physics game is designed for desktop browsers with mouse
+          control.
+        </p>
+        <p><strong>Minimum screen size:</strong><br />850×650 pixels</p>
+        <p>
+          Please switch to a desktop computer or expand your browser window to
+          play.
+        </p>
+        <p
+          style="
+            font-size: 14px;
+            color: rgba(150, 200, 255, 0.7);
+            margin-top: 25px;
+          "
+        >
+          Part of the JS13K 2024 competition
+        </p>
+      </div>
+    </div>
+
+    <div id="gameContainer">
+      <canvas id="gameCanvas" width="1000" height="750"></canvas>
+
+      <!-- UI Zones -->
+      <div id="topLeft" class="ui-zone">
+        <div id="gameTitle">Orbital Order (Aufbau)</div>
+        <div id="gameSubtitle">
+          Guide electrons to matching colored orbitals
+        </div>
+        <div id="timingInfo"></div>
+      </div>
+
+      <div id="topRight" class="ui-zone">
+        <!-- Element card will be positioned here by the game -->
+      </div>
+
+      <div id="bottomLeft" class="ui-zone">
+        <div>Esc | Rules</div>
+        <div>M | Mute</div>
+      </div>
+
+      <div id="bottomRight" class="ui-zone">
+        <div id="levelInfo"></div>
+      </div>
+    </div>
+
+    <!-- All Combined & Minified JavaScript -->
+  <script>
+class t{constructor(t,s,i,h){this.x=t,this.y=s,this.type=i,this.t=0,this.i=0,this.r=8,this.h=0,this.o=0,this.l=0,this.a=h,this.u=0,this.p=0}m(t,s,i){if(this.h)return;if(!s||!Array.isArray(s))return;if(this.o>0)return this.o-=1/60,this.l=this.o,void(this.o>0||(this.o=0,this.l=0));let h=t.x-this.x,e=t.y-this.y,a=Math.sqrt(h*h+e*e);if(120>a){this.p=1;let t=.3*(120-a)/120,s=h/a*t,i=e/a*t;0===this.type?(this.t+=.5*s,this.i+=.5*i):(this.t-=.5*s,this.i-=.5*i)}else this.p=0;for(let t of s){let s=t.x-this.x,h=t.y-this.y,e=Math.sqrt(s*s+h*h);if(.1>=t.M&&60>e){let i=.1*(60-e)/60,a=s/e*i,r=h/e*i;this.type===t.type?(this.t+=a,this.i+=r):(this.t-=.5*a,this.i-=.5*r)}if(25>e){if(!t.$&&.1>=t.M&&this.type===t.type){if(i.v.S(t))return t.$=1,this.h=1,t.C=0,i.L&&(i.L.T(),0===this.type&&i.L.F()),void(this.a?.c&&this.a.H(1,.5));{i.L&&i.L.B();let s=8,h=(this.x-t.x)/e*s,a=(this.y-t.y)/e*s;this.t=h,this.i=a;let r=30;return this.x=t.x+(this.x-t.x)/e*r,this.y=t.y+(this.y-t.y)/e*r,this.o=.3,this.l=.3,this.a?.c&&this.a.H(3,.3),void i.D(t,!1)}}if(!t.$&&this.type!==t.type){let s=12,h=(this.x-t.x)/e*s,a=(this.y-t.y)/e*s;this.t=h,this.i=a;let r=30;return this.x=t.x+(this.x-t.x)/e*r,this.y=t.y+(this.y-t.y)/e*r,this.o=.3,this.l=.3,this.a?.c&&this.a.H(3,.3),void i.D(t,!1)}if(t.$){let s=12,h=(this.x-t.x)/e*s,a=(this.y-t.y)/e*s;this.t=h,this.i=a;let r=30;return this.x=t.x+(this.x-t.x)/e*r,this.y=t.y+(this.y-t.y)/e*r,this.o=.3,this.l=.3,void i.k(t)}}}this.x+=this.t,this.y+=this.i,this.t*=.98,this.i*=.98;let r=Math.sqrt(this.t*this.t+this.i*this.i),o=Date.now(),l=this.r;this.x<l&&(this.x=l,this.t=.8*-this.t,this.A(r,o)),this.x>1e3-l&&(this.x=1e3-l,this.t=.8*-this.t,this.A(r,o)),this.y<l&&(this.y=l,this.i=.8*-this.i,this.A(r,o)),this.y>750-l&&(this.y=750-l,this.i=.8*-this.i,this.A(r,o)),220>this.x&&120>this.y&&(this.y>110&&(this.y=120,this.i=Math.abs(this.i)),this.x>210&&(this.x=220,this.t=Math.abs(this.t))),this.y>550&&(this.y=550,this.i=-Math.abs(this.i)),this.x>580&&100>this.y&&(this.y>90&&(this.y=100,this.i=Math.abs(this.i)),590>this.x&&(this.x=580,this.t=-Math.abs(this.t)))}A(t,s){this.a?.c&&this.a?.H&&s-this.u>30&&(this.a.H(0,Math.min(.6,t/6)),this.u=s)}d(t){if(this.h)return;t.save();let s=[["rgba(100,150,255,.8)","rgb(150,200,255)","rgb(100,150,255)"],["rgba(255,150,100,.8)","rgb(255,200,150)","rgb(255,150,100)"]][this.type]||["rgba(128,128,128,.8)","rgb(180,180,180)","rgb(120,120,120)"];this.p&&!this.o&&(t.shadowColor=s[0],t.shadowBlur=15);let i=t.createRadialGradient(this.x,this.y,0,this.x,this.y,this.r);if(this.o&&this.l>0){let t=.5+.3*Math.sin(.01*Date.now());i.addColorStop(0,`rgba(180,180,180,${t})`),i.addColorStop(1,`rgba(120,120,120,${.7*t})`)}else i.addColorStop(0,s[1]),i.addColorStop(1,s[2]);t.fillStyle=i,t.beginPath(),t.arc(this.x,this.y,this.r,0,6.28),t.fill(),this.o||(t.fillStyle=s[1],t.font="10px monospace",t.textAlign="center",t.fillText(this.type?"p":"s",this.x,this.y+3)),t.restore()}}class s{constructor(t){this.g=t,this.completed="1"===localStorage.getItem("ftol:orbitalorder:tutorialDone"),this.text={blue:"Blue s-electrons are attracted to your cursor. Guide one into the 1s orbital.",O:"Orange p-electrons are repelled by your cursor. Nudge them carefully.",P:"Follow Aufbau principle: fill lower energy orbitals first.",I:"Hitting an occupied orbital twice will eject its electron as a penalty.",N:"Storms push electrons around! Navigate them carefully.",j:["• Blue s-electrons are attracted to cursor","• Orange p-electrons are repelled by cursor","• Follow Aufbau principle: fill lower energy orbitals first","• Hitting occupied orbitals twice ejects electrons (penalty)","• Wrong color electrons bounce off target orbitals","• Storms create navigation challenges"]},this.hint=null,this.R=0,this.U="",this.G=0,this.W=!1,this.q=!1,this.events={J:!1,K:!1,V:!1,X:!1,Y:!1,Z:!1},this._=!1,this.elements=[{tt:"H",name:"Hydrogen",st:"The most abundant element in the universe",color:[100,200,255]},{tt:"He",name:"Helium",st:"Second lightest element, first noble gas",color:[255,200,100]},{tt:"Li",name:"Lithium",st:"Lightest metal, used in batteries",color:[200,100,255]},{tt:"Be",name:"Beryllium",st:"One of the rarest elements on Earth",color:[100,255,200]},{tt:"B",name:"Boron",st:"Essential for plant growth",color:[255,100,200]},{tt:"C",name:"Carbon",st:"Foundation of all organic life",color:[200,255,100]}]}it(t){this.completed||(this.hint=t)}T(){this.hint=null}F(){this.events.Y||this.completed||(this.events.Y=!0,this.hint&&this.hint.includes("Blue electrons")&&(this._=!0,this.T()))}ht(){return this.g?.v?.et>0}rt(t){this.U=t,this.G=6}ot(){this.W=!this.W,this.g&&this.g.lt&&(this.W?this.g.lt.g.gain.value=0:this.g.lt.g.gain.value=this.g.lt.muted?0:.3)}nt(){this.q=!this.q,this.g&&this.g.lt&&(this.q?this.g.lt.g.gain.value=0:this.g.lt.g.gain.value=this.g.lt.muted?0:.3)}complete(){this.completed=!0,localStorage.setItem("ftol:orbitalorder:tutorialDone","1")}ct(){return this.W||this.q}ft(){this.ut=[];for(let t=0;20>t;t++)this.ut.push({x:300+200*Math.random(),y:150+100*Math.random(),t:2*(Math.random()-.5),i:2*(Math.random()-.5)-1,gt:1,bt:1+.5*Math.random(),size:1+2*Math.random()})}Mt(){this.events.J||this.completed||(this.it(this.text.blue),this.events.J=!0)}dt(){this.events.K||this.completed||(this.events.K=!0,this.events.Y||!this.events.J?(this.it(this.text.O),this._=!1):this._=!0)}B(){this.events.V||this.completed||(this.it(this.text.P),this.events.V=!0)}$t(){this.events.X||this.completed||(this.it(this.text.I),this.events.X=!0)}yt(){this.events.Z||this.completed||(this.it(this.text.N),this.events.Z=!0)}update(){this._&&!this.hint&&this.events.K&&(this.it(this.text.O),this._=!1),this.G>0&&(this.G-=1/60,this.G>0||(this.U=""))}xt(t){if(this.hint){t.save();let s=500;t.font="16px monospace",t.textAlign="center";let i=t.measureText(this.hint).width,h=12,e=500-i/2-h,a=s-18,r=i+2*h,o=24;t.fillStyle="rgba(0, 0, 0, 0.7)",t.fillRect(e,a,r,o),t.fillStyle="rgba(200, 220, 255, 0.95)",t.fillText(this.hint,500,s),t.restore()}if(this.U){t.save(),t.font="11px monospace";let s=Math.min(450,t.measureText(this.U).width+30);t.fillStyle="rgba(40,20,60,0.85)",t.fillRect(20,545,s,25),t.strokeStyle="rgba(255,170,0,0.9)",t.lineWidth=1,t.strokeRect(20,545,s,25),t.fillStyle="rgba(255,170,0,0.95)",t.fillText(this.U,30,560),t.restore()}if(this.W){t.save(),t.fillStyle="rgba(0,0,0,0.9)",t.fillRect(0,0,1200,900);let s=450,i=320,h=275,e=215;t.fillStyle="rgba(20,30,50,0.95)",t.fillRect(h,e,s,i),t.strokeStyle="rgba(105,159,255,1)",t.lineWidth=2,t.strokeRect(h,e,s,i),t.fillStyle="rgba(255,200,100,1)",t.font="16px monospace",t.textAlign="center",t.fillText("Game Rules",h+s/2,e+30),t.font="12px monospace",t.textAlign="left",t.fillStyle="rgba(255,200,100,0.8)",t.fillText("Tutorial Progress:",h+20,e+60),[{text:"Blue s-electrons attracted to cursor",completed:this.events.J},{text:"Orange p-electrons repelled by cursor",completed:this.events.K},{text:"Follow Aufbau principle: fill lower energy first",completed:this.events.V},{text:"Hit occupied orbitals twice to eject electrons",completed:this.events.X},{text:"Storms create navigation challenges",completed:this.events.Z}].forEach((s,i)=>{t.fillStyle=s.completed?"rgba(100,255,100,0.9)":"rgba(120,120,120,0.6)";let a=s.completed?"✓":"○";t.fillText(`${a} ${s.text}`,h+30,e+85+18*i)}),t.fillStyle="rgba(200,200,200,0.9)",t.fillText("Controls:",h+20,e+185),["• Press M to Mute","• Press L for Log","• Press Esc for Rules"].forEach((s,i)=>{t.fillText(s,h+30,e+205+16*i)}),t.fillStyle="rgba(100,200,255,0.8)",t.textAlign="center",t.fillText("Press ESC to close",h+s/2,e+i-20),t.restore()}if(this.q){t.save(),t.fillStyle="rgba(0,0,0,0.85)",t.fillRect(0,0,1e3,750),t.fillStyle="rgba(255,200,100,1)",t.font="24px monospace",t.textAlign="center",t.fillText("Element Log",500,80);let s=(this.g?.v?.wt||0)+1;this.g?.v?.St>0&&(s=6);let i=200,h=120,e=40,a=(1e3-(3*i+2*e))/2,r=120;this.elements.forEach((o,l)=>{let n=a+l%3*(i+e),c=r+Math.floor(l/3)*(h+1.5*e),f=s>l,u=f?1:.3;if(t.fillStyle=`rgba(20,30,50,${.9*u})`,t.fillRect(n,c,i,h),f?(t.strokeStyle=`rgba(${o.color[0]},${o.color[1]},${o.color[2]},0.8)`,t.lineWidth=2,t.strokeRect(n,c,i,h),t.shadowColor=`rgba(${o.color[0]},${o.color[1]},${o.color[2]},0.6)`,t.shadowBlur=10,t.strokeRect(n,c,i,h),t.shadowBlur=0):(t.strokeStyle="rgba(80,80,80,0.5)",t.lineWidth=1,t.strokeRect(n,c,i,h)),t.font="36px monospace",t.textAlign="center",t.fillStyle=`rgba(${o.color[0]},${o.color[1]},${o.color[2]},${u})`,t.fillText(o.tt,n+i/2,c+45),t.font="14px monospace",t.fillStyle=`rgba(255,255,255,${.9*u})`,t.fillText(o.name,n+i/2,c+70),f){t.font="10px monospace",t.fillStyle=`rgba(200,200,200,${.8*u})`;let s=o.st.split(" "),h="",e=12,a=i-20,r=c+90;for(let o of s){let s=h+o+" ";t.measureText(s).width>a&&""!==h?(t.fillText(h.trim(),n+i/2,r),h=o+" ",r+=e):h=s}t.fillText(h.trim(),n+i/2,r)}else t.font="12px monospace",t.fillStyle="rgba(120,120,120,0.6)",t.fillText("Locked",n+i/2,c+95)}),t.fillStyle="rgba(100,200,255,0.8)",t.font="14px monospace",t.textAlign="center",t.fillText("Press L or ESC to close",500,700),t.restore()}}}class i{constructor(t,s,i){this.BLUE="rgba(100,150,255,",this.vt="rgba(255,150,100,",this.Ct="rgba(20,30,50,.95)",this.Lt="rgba(0,0,0,.9)",this.Et=6.28,this.Tt=()=>Math.random(),this.e=[],this.Ft=t,this.lt=s,this.Ht=i,this.Bt=[["Hydrogen",1,1.008,"H",[80],[[580,375,0,80]]],["Helium",2,4.003,"He",[80],[[580,375,0,80],[420,375,0,80]]],["Lithium",3,6.941,"Li",[80,140],[[580,375,0,80],[420,375,0,80],[640,375,0,140]]],["Carbon",6,12.011,"C",[80,140],[[580,375,0,80],[420,375,0,80],[640,375,0,140],[360,375,0,140],[500,515,1,140],[500,235,1,140]]],["Nitrogen",7,14.007,"N",[80,140],[[580,375,0,80],[420,375,0,80],[640,375,0,140],[360,375,0,140],[500,515,1,140],[500,235,1,140],[599,474,1,140]]],["Oxygen",8,15.999,"O",[80,140],[[580,375,0,80],[420,375,0,80],[640,375,0,140],[360,375,0,140],[500,515,1,140],[500,235,1,140],[599,474,1,140],[401,474,1,140]]]],this.Dt=["Simplest atom\nMakes up 75% of universe","Noble gas - never reacts\nUsed in balloons & diving","Lightest metal\nUsed in phone batteries","Forms 4 bonds\nBase of all life on Earth","Essential for DNA\nMakes up 78% of air","Supports combustion\n21% of Earth's atmosphere"],this.wt=0,this.St=0,this.N=[],this.startTime=Date.now(),this.kt=0,this.At=0,this.Ot=0,this.et=0,this.Pt=null,this.r()}It(t,s,i,h,e,a=this.vt+"1)",r=3){t.fillStyle=this.Lt,t.fillRect(0,0,1e3,750),t.fillStyle=this.Ct,t.fillRect(s,i,h,e),t.strokeStyle=a,t.lineWidth=r,t.strokeRect(s,i,h,e),t.textAlign="center"}Nt(t,s,i,h,e,a,r,o){t.font=e,t.fillStyle=a,r&&(t.shadowColor=r,t.shadowBlur=o),t.fillText(s,i,h),r&&(t.shadowBlur=0)}r(){let t=this.Bt[this.wt];this.v=[];for(let s=0;s<t[5].length;s++){let i=t[5][s];this.v.push({x:i[0],y:i[1],type:i[2],jt:i[3],$:0,M:0,Rt:0,Ut:0,Gt:0})}0===this.St&&(this.N=[],this.startTime=Date.now())}m(){let t=this.Ht&&this.Ht.L&&this.Ht.L.ct();if(this.zt())return this.St>0?void this.Wt():(this.et=4,this.Pt=this.Bt[this.wt],3>this.wt||this.Ht.L.complete(),void setTimeout(()=>{this.Wt()},800));if(this.et>0&&(this.et-=1/60,this.et>0||(this.et=0,this.Pt=null)),this.At>0&&(this.At-=1/60,0>this.At&&(this.At=0)),!t){this.kt=.001*Date.now();for(let t of this.v)t.$&&(t.Rt+=.05),t.M>0&&(t.M-=1/60,0>t.M&&(t.M=0)),t.Gt>0&&(t.Gt-=1/60);this.St>0&&(this.qt(),.02>this.Tt()&&3>this.N.length&&this.Jt())}}zt(){return this.v.filter(t=>t.$).length===this.v.length}Kt(){return this.et>0&&(this.et=0,this.Pt=null,!0)}S(t){let s={Qt:this.v.filter(t=>80===t.jt),Vt:this.v.filter(t=>140===t.jt&&0===t.type),p2:this.v.filter(t=>140===t.jt&&1===t.type)},i=s.Qt.filter(t=>t.$).length;if(s.Vt.filter(t=>t.$).length,s.p2.filter(t=>t.$).length,80===t.jt)return 1;if(140===t.jt){if(0===t.type)return i>=s.Qt.length;if(1===t.type)return!(i<s.Qt.length||t.$&&0!==s.p2.filter(t=>!t.$).length)}return!0}D(t,s=!0){t.C=(t.C||0)+1;let i=3+1.5*(t.C-1);t.M=Math.min(i,8),s&&this.a?.c&&this.a.H(4,.4)}k(t){if(t.Ut=(t.Ut||0)+1,2>t.Ut)t.Gt=.3,this.a?.c&&this.a.H(4,.4);else{this.Ht&&this.Ht.L&&this.Ht.L.$t();let s=this.Ht?this.Ht.Xt:null;if(s){let i=null;for(let h of s)if(h.h&&h.type===t.type){i=h;break}if(i){let s=this.Tt()*this.Et,h=60+20*this.Tt(),e=t.x+Math.cos(s)*h,a=t.y+Math.sin(s)*h;e=Math.max(50,Math.min(750,e)),a=Math.max(50,Math.min(550,a)),i.x=e,i.y=a;let r=2+1.5*this.Tt();i.t=Math.cos(s)*r,i.i=Math.sin(s)*r,i.o=.5,i.l=.5,i.h=0,t.$=0}else this.Ht&&this.Ht.Yt&&this.Ht.Yt(t.type),t.$=0}else t.$=0;t.Ut=0,t.Gt=0,t.M=1.5,this.a?.c&&this.a.H(2,.5)}}Jt(){this.N.push({x:200+400*Math.random(),y:150+300*Math.random(),r:40,Zt:100+60*Math.random(),gt:5+4*Math.random(),bt:5+4*Math.random(),_t:1.2+.6*Math.random(),pulse:this.Tt()*this.Et}),this.Ht&&this.Ht.L&&this.St>0&&this.Ht.L.yt()}qt(){for(let t=this.N.length-1;t>=0;t--){let s=this.N[t];s.gt-=1/60,s.pulse+=.1;let i=Math.max(0,Math.min(1,1-s.gt/s.bt));s.r=Math.max(10,30+(s.Zt-30)*Math.sin(3.14*i)),s.gt>0||this.N.splice(t,1)}}ts(t){if(this.N.length&&!t.h&&0>=t.o)for(let s of this.N){let i=t.x-s.x,h=t.y-s.y,e=Math.sqrt(i*i+h*h);if(e<s.r&&e>5){let a=.7+.3*Math.sin(s.pulse),r=s._t*a*(s.r-e)/s.r,o=i/e*r*.8,l=h/e*r*.8;t.t+=o,t.i+=l}}}Wt(){if(this.zt()){if(this.wt++,this.wt>=this.Bt.length){let t=(Date.now()-this.startTime)/1e3,s=localStorage.getItem("ftol:orbitalorder:fastestTime");s&&t>=parseFloat(s)||(localStorage.setItem("ftol:orbitalorder:fastestTime",t.toString()),this.At=4,this.Ot=t),this.St++,this.wt=0,this.N=[],this.startTime=Date.now()}return this.r(),this.Ht&&this.Ht.ss&&this.Ht.ss(),1}return 0}d(t){let s=this.Ht&&this.Ht.L&&this.Ht.L.ct(),i=[[this.BLUE,"rgb(100,150,255)"],[this.vt,"rgb(255,150,100)"]],h=this.Bt[this.wt],e=this.v.filter(t=>t.$).length,a=this.v.length,r=new Set;for(let t of this.v)r.add(t.jt);if(!s){t.save(),t.strokeStyle="rgba(100,150,200,.3)",t.lineWidth=1,t.setLineDash([3,3]),[...r].map(s=>{t.beginPath(),t.arc(500,375,s,0,6.28),t.stroke()}),t.setLineDash([]),t.restore(),t.save();let s=a>0?e/a:0,o=h[1],l=o+Math.round(h[2]-h[1]);for(let s=0;8>s;s++){let i=s/8*6.28+.3*this.kt,h=18+6*Math.sin(2*this.kt+s),e=500+Math.cos(i)*h,a=375+Math.sin(i)*h,r=.1+.15*Math.sin(3*this.kt+1.5*s);t.fillStyle=`rgba(255,255,200,${r})`,t.beginPath(),t.arc(e,a,.8,0,6.28),t.fill()}for(let i=0;l>i;i++){let h=i/l*6.28+.08*this.kt,e=2+3*Math.sin(.4*this.kt+i),a=500+Math.cos(h)*e,r=375+Math.sin(h)*e,n=1+.08*s*Math.sin(1.5*this.kt+i),c=(3.5+.5*Math.sin(1.2*this.kt+i))*n,f=.4+.3*Math.sin(.8*this.kt+2*i);if(o>i){let i=.5+.2*s;t.fillStyle=`rgba(255,${60*i},${60*i},${f})`}else{let i=.5+.2*s;t.fillStyle=`rgba(${60*i},${100*i},255,${f})`}t.beginPath(),t.arc(a,r,c,0,6.28),t.fill()}t.restore();for(let s of this.v){t.save();let h=i[s.type],e=s.M>.1,a=0,r=0;if(s.Gt>0){let t=6*s.Gt;a=(Math.random()-.5)*t,r=(Math.random()-.5)*t}if(e){t.save();let i=.3+.4*Math.sin(6*this.kt);t.strokeStyle=`rgba(255,50,50,${i})`,t.lineWidth=3,t.setLineDash([5,5]),t.beginPath(),t.arc(s.x+a,s.y+r,28,0,6.28),t.stroke(),t.setLineDash([]),t.restore()}if(t.strokeStyle=e?"rgba(80,80,80,.4)":h[0]+"0.8)",t.lineWidth=2,t.beginPath(),t.arc(s.x+a,s.y+r,20,0,6.28),t.stroke(),s.$){let i=s.x+a+18*Math.cos(s.Rt),e=s.y+r+18*Math.sin(s.Rt),o=t.createRadialGradient(i,e,0,i,e,8);o.addColorStop(0,h[1]),o.addColorStop(1,h[1].replace("rgb","rgba").replace(")",",0)")),t.fillStyle=o,t.beginPath(),t.arc(i,e,8,0,6.28),t.fill()}else if(e){let i=.2+.3*Math.sin(4*this.kt);t.fillStyle=`rgba(100,40,40,${i})`,t.beginPath(),t.arc(s.x+a,s.y+r,6,0,6.28),t.fill(),t.strokeStyle=`rgba(255,80,80,${i})`,t.lineWidth=2,t.beginPath(),t.moveTo(s.x+a-4,s.y+r-4),t.lineTo(s.x+a+4,s.y+r+4),t.moveTo(s.x+a+4,s.y+r-4),t.lineTo(s.x+a-4,s.y+r+4),t.stroke()}else{let i=.4+.4*Math.sin(3*this.kt);t.fillStyle=h[0]+(i+")"),t.beginPath(),t.arc(s.x+a,s.y+r,4,0,6.28),t.fill()}t.restore()}for(let s of this.v)t.save(),t.font="10px monospace",t.fillStyle="rgba(200,200,200,0.7)",t.textAlign="center",80===s.jt?t.fillText("1s",s.x,s.y-35):140===s.jt&&(0===s.type?t.fillText("2s",s.x,s.y-35):t.fillText("2p",s.x,s.y-35)),t.restore();for(let s of this.N){t.save();let i=s.gt/s.bt,h=Math.min(.8,1.5*i),e=.6+.4*Math.sin(s.pulse),a=Math.max(5,s.r);t.strokeStyle=`rgba(255,100,255,${.3*h})`,t.lineWidth=3,t.setLineDash([5,5]),t.beginPath(),t.arc(s.x,s.y,a,0,6.28),t.stroke(),t.fillStyle=`rgba(255,150,255,${h*e*.5})`,t.beginPath(),t.arc(s.x,s.y,Math.max(3,.3*a*e),0,6.28),t.fill(),t.restore()}t.save();let n=900,c=15,f=80,u=80;if(t.fillStyle="rgba(20,30,50,.9)",t.fillRect(n,c,f,u),t.strokeStyle="rgba(100,200,255,.8)",t.lineWidth=2,t.strokeRect(n,c,f,u),t.fillStyle="rgba(100,200,255,.8)",t.font="11px monospace",t.textAlign="left",t.fillText(h[1],n+5,c+14),t.textAlign="center",t.font="26px monospace",t.fillStyle="white",t.shadowColor="rgba(100,200,255,.8)",t.shadowBlur=10,t.fillText(h[3],n+f/2,c+40),t.shadowBlur=0,t.font="9px monospace",t.fillStyle="rgba(255,255,255,0.8)",t.fillText(h[0],n+f/2,c+55),t.font="10px monospace",t.fillStyle="rgba(255,255,255,0.7)",t.fillText(h[2].toFixed(3),n+f/2,c+70),t.restore(),t.save(),this.hs(h),this.At>0){t.save();let s=.5,i=1;this.At<s?i=this.At/s:this.At>4-s&&(i=(4-this.At)/s);let h=300,e=15,a=200,r=50;t.fillStyle=`rgba(20,30,50,${.95*i})`,t.fillRect(h,e,a,r),t.strokeStyle=`rgba(100,200,255,${.8*i})`,t.lineWidth=2,t.strokeRect(h,e,a,r),t.font="12px monospace",t.fillStyle=`rgba(255,255,255,${.9*i})`,t.textAlign="center",t.fillText("⚡ NEW BEST TIME ⚡",h+a/2,e+20),t.font="14px monospace",t.fillStyle=`rgba(100,200,255,${i})`,t.fillText(this.Ot.toFixed(1)+"s",h+a/2,e+37),t.restore()}}if(this.et>0&&this.Pt){t.save();let s=.5,i=1;this.et<s?i=this.et/s:this.et>4-s&&(i=(4-this.et)/s),t.fillStyle=`rgba(0, 0, 0, ${.7*i})`,t.fillRect(0,0,1e3,750),t.textAlign="center",t.font="120px monospace",t.fillStyle=`rgba(255,255,255,${.9*i})`,t.shadowColor=`rgba(100,200,255,${.8*i})`,t.shadowBlur=20,t.fillText(this.Pt[3],500,350),t.shadowBlur=0,t.font="32px monospace",t.fillStyle=`rgba(255,200,100,${.9*i})`,t.fillText(this.Pt[0]+" Complete!",500,400),t.font="18px monospace",t.fillStyle=`rgba(200,220,255,${.8*i})`,this.Dt[this.wt].split("\n").forEach((s,i)=>{t.fillText(s,500,440+22*i)}),t.restore()}}hs(t){const s=document.getElementById("topLeft");if(s){const i=s.querySelector("#gameTitle"),h=s.querySelector("#gameSubtitle"),e=s.querySelector("#timingInfo");if(i&&(i.textContent=t[0],i.style.fontWeight="bold",i.style.fontSize="24px",i.style.textShadow="0 0 8px #4FC3F7, 0 0 16px #4FC3F7"),h&&(h.textContent=`Element ${t[3]} - Atomic #${t[1]}`),e){let t=`Run Time: ${((Date.now()-this.startTime)/1e3).toFixed(1)}s`,s=localStorage.getItem("ftol:orbitalorder:fastestTime");s?(t+="\n",e.innerHTML=t+`<span style="color: #ff8800; display: block;">Best Time: ${parseFloat(s).toFixed(1)}s</span>`):e.textContent=t,this.St>0&&(s?e.innerHTML+=`<span style="display: block;">Cycle: ${this.St}</span>`:(t+="\nCycle: "+this.St,e.textContent=t))}}}}class h{constructor(){this.c=null,this.g=null,this.muted=0,this.s=[]}async es(){this.c||(this.c=new(AudioContext||webkitAudioContext),this.g=this.c.createGain(),this.g.gain.value=.3,this.g.connect(this.c.destination),this.delay=this.c.createDelay(.5),this.delay.delayTime.value=.15,this.rs=this.c.createGain(),this.rs.gain.value=.25,this.delay.connect(this.rs),this.rs.connect(this.delay),this.delay.connect(this.g),this.s=[this.b([1,800,.3,.3,.002,.2]),this.b([1,659,.35,.4,.005,.25]),this.b([2,311,.25,.3,.002,.15]),this.b([1,440,.25,.2,.01,.3]),this.b([1,247,.2,.25,.002,.12]),this.b([1,1175,.12,.15,.001,.08]),this.b([1,698,.35,.4,.003,.25]),this.b([1,523,.5,.5,.01,.3]),this.b([1,1318,.4,.3,.002,.3])])}b(t){const s=this.c.sampleRate*t[2],i=this.c.createBuffer(1,s,this.c.sampleRate),h=i.getChannelData(0),e=t[4]*this.c.sampleRate,a=(t[2]-t[5])*this.c.sampleRate;for(let i=0;s>i;i++){let r;r=1==t[0]?Math.sin(i*t[1]*6.28/this.c.sampleRate):2==t[0]?2*Math.random()-1:i*t[1]*4/this.c.sampleRate%2-1;let o=1;e>i?o=i/e:i>a&&(o=(s-i)/(s-a)),h[i]=r*o*t[3]}return i}H(t,s,i){if(!this.c||this.muted)return;"suspended"===this.c.state&&this.c.resume();const h=Date.now();if(this.ls=this.ls||{},1!==t&&this.ls[t]&&25>h-this.ls[t])return;this.ls[t]=h;const e=this.c.createBufferSource(),a=this.c.createGain();e.buffer=this.s[t],a.gain.value=isFinite(s)?.44*s:.22,e.connect(a),a.connect(this.g),i&&this.delay&&a.connect(this.delay),e.start(),1===t&&setTimeout(()=>this.H(8,.6,!0),100)}ns(){if(!this.c)return;const t=[[220,264,330],[175,220,262],[196,247,294],[196,247,294]],s=[440,392,349,330,294,330,349,392,440,523,494,440,392,349,330,294];let i=0,h=0;const e=this.c.createOscillator(),a=this.c.createGain();e.type="sine",e.frequency.value=110,a.gain.setValueAtTime(0,this.c.currentTime),a.gain.linearRampToValueAtTime(.03,this.c.currentTime+4),e.connect(a),a.connect(this.g),e.start();const r=[];for(let t=0;3>t;t++){const s=this.c.createOscillator(),i=this.c.createGain(),h=this.c.createBiquadFilter();s.type="triangle",h.type="lowpass",h.frequency.value=600,h.Q.value=.7,i.gain.setValueAtTime(0,this.c.currentTime),i.gain.linearRampToValueAtTime(.04,this.c.currentTime+3+t),s.connect(h),h.connect(i),i.connect(this.g),s.start(),r.push({cs:s,gain:i})}const o=this.c.createOscillator(),l=this.c.createGain(),n=this.c.createBiquadFilter();o.type="sine",n.type="lowpass",n.frequency.value=1200,l.gain.setValueAtTime(0,this.c.currentTime),o.connect(n),n.connect(l),l.connect(this.g),this.delay&&l.connect(this.delay),o.start();const c=()=>{const s=t[i];if(e.frequency){const t=s[0]/2;e.frequency.exponentialRampToValueAtTime(t,this.c.currentTime+1)}r.forEach((t,i)=>{t.cs.frequency&&t.cs.frequency.exponentialRampToValueAtTime(s[i],this.c.currentTime+1.5)}),i=(i+1)%t.length,setTimeout(c,8e3)},f=()=>{const t=s[h];o.frequency&&(l.gain.cancelScheduledValues(this.c.currentTime),l.gain.setValueAtTime(0,this.c.currentTime),l.gain.linearRampToValueAtTime(.02,this.c.currentTime+.3),l.gain.linearRampToValueAtTime(.008,this.c.currentTime+2),o.frequency.exponentialRampToValueAtTime(t,this.c.currentTime+.1)),h=(h+1)%s.length,setTimeout(f,2500+1e3*Math.random())};setTimeout(c,4e3),setTimeout(f,6e3)}kt(){return this.muted=!this.muted,this.g.gain.value=this.muted?0:.3,this.muted}}class e{constructor(){this.c=document.getElementById("gameCanvas"),this.Ft=this.c.getContext("2d"),this.lt=new h,this.input={fs:{x:400,y:300}},this.c.addEventListener("mousemove",async t=>{let s=this.c.getBoundingClientRect();if(this.input.fs.x=t.clientX-s.left,this.input.fs.y=t.clientY-s.top,!this.lt.c)try{await this.lt.es(),this.lt.ns()}catch(t){}}),this.c.addEventListener("mousedown",async()=>{this.lt.c||(await this.lt.es(),this.lt.ns())}),this.v=new i(this.c,this.lt,this),this.L=new s(this),this.Xt=[],this.ut=[],this.ss(),this.us(),this.c.addEventListener("click",async t=>{this.v.Kt()||this.v.zt()&&(this.v.Wt(),this.ss())}),document.addEventListener("keydown",t=>{"m"===t.key||"M"===t.key?this.lt.kt():"i"===t.key||"I"===t.key||"?"===t.key?this.L.ot():"Escape"===t.key?this.L.q?this.L.nt():this.L.ot():"l"!==t.key&&"L"!==t.key||this.L.nt()}),this.loop()}ss(){this.Xt=[];let s=!1,i=!1;[0,1].forEach(h=>{let e=this.v.v.filter(t=>t.type===h).length;e>0&&(0===h&&(s=!0),1===h&&(i=!0));for(let s=0;e>s;s++){let s,i,e=0;do{s=Math.random()*(this.c.width-200)+100,i=Math.random()*(this.c.height-200)+100,e++}while(10>e&&this.gs(s,i,60));this.Xt.push(new t(s,i,h,this.lt))}}),s&&this.L.Mt(),i&&this.L.dt()}Yt(s){let i,h,e=0;do{i=Math.random()*(this.c.width-200)+100,h=Math.random()*(this.c.height-200)+100,e++}while(10>e&&this.gs(i,h,60));let a=new t(i,h,s,this.lt);a.t=3*(Math.random()-.5),a.i=3*(Math.random()-.5),this.Xt.push(a)}gs(t,s,i){return this.v.v.some(h=>{let e=t-h.x,a=s-h.y;return i>Math.sqrt(e*e+a*a)})}us(){this.ut=[];for(let t=0;20>t;t++)this.ut.push({x:Math.random()*this.c.width,y:Math.random()*this.c.height,t:.3*(Math.random()-.5),i:.3*(Math.random()-.5),alpha:.4*Math.random()+.1,ps:6.28*Math.random(),size:1.5*Math.random()+.5})}update(){if(this.v.m(),this.L.update(),!this.L.ct()){for(let t of this.ut)t.x+=t.t,t.y+=t.i,t.ps+=.02,0>t.x&&(t.x=this.c.width),t.x>this.c.width&&(t.x=0),0>t.y&&(t.y=this.c.height),t.y>this.c.height&&(t.y=0);for(let t of this.Xt)t.m(this.input.fs,this.v.v,this),this.v.ts(t)}}draw(){this.Ft.fillStyle="rgb(10,10,20)",this.Ft.fillRect(0,0,this.c.width,this.c.height),this.Ft.save();for(let t of this.ut){let s=.3+.7*(.5+.5*Math.sin(t.ps));this.Ft.fillStyle=`rgba(200,220,255,${t.alpha*s})`,this.Ft.beginPath(),this.Ft.arc(t.x,t.y,t.size,0,6.28),this.Ft.fill()}if(this.Ft.restore(),!this.L.ct()){let t=this.Ft;t.save(),t.translate(this.input.fs.x,this.input.fs.y);let s=.003*Date.now();t.shadowColor="rgba(0,255,255,0.9)",t.shadowBlur=12,t.fillStyle="rgba(255,255,255,0.95)",t.beginPath(),t.arc(0,0,5+.8*Math.sin(s),0,6.28),t.fill(),t.shadowBlur=0,t.strokeStyle="rgba(0,255,255,0.8)",t.lineWidth=1.5;for(let i=0;8>i;i++){let h=(.5*s+1.3*i)%6.28+.8*Math.sin(3*s+2.7*i)+1.2*(Math.random()-.5),e=4+6*Math.random()+2*Math.sin(2*s+i);t.beginPath(),t.moveTo(0,0);let a=2+Math.floor(2*Math.random()),r=0,o=0;for(let s=0;a>s;s++){let s=e/a,i=h+.4*(Math.random()-.5);r+=Math.cos(i)*s,o+=Math.sin(i)*s,t.lineTo(r,o)}t.stroke()}t.restore()}if(this.v.d(this.Ft),!this.L.ct()&&!this.L.ht())for(let t of this.Xt)t.d(this.Ft);this.L.xt(this.Ft),this.hs()}hs(){const t=document.getElementById("levelInfo");if(t){let s=this.v.St*this.v.Bt.length+this.v.wt+1;this.v.St>0?t.textContent="Level: "+s:t.textContent=`Level: ${this.v.wt+1}/${this.v.Bt.length}`}}loop(){this.update(),this.draw(),requestAnimationFrame(()=>this.loop())}k(t){this.v.Ht=this,this.v.k(t)}D(t,s){this.v.D(t,s)}}
+
+// Initialize the golfed game
+window.game = new e();
+window.tutorial = window.game.tutorial; // Make tutorial globally accessible
+  </script>
+    <script>
+      // Only initialize game if screen is large enough
+      function isDesktopSize() {
+        return window.innerWidth >= 600 && window.innerHeight >= 450;
+      }
+
+      if (isDesktopSize()) {
+        window.game = new e();
+        window.tutorial = window.game.tutorial;
+      }
+
+      // Check on resize
+      window.addEventListener("resize", () => {
+        if (isDesktopSize() && !window.game) {
+          // Initialize game if resized to desktop size
+          window.game = new e();
+          window.tutorial = window.game.tutorial;
+        }
+      });
+    </script>
+  </body>
+</html>

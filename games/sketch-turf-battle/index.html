@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#f0efe9">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<title>Sketch Turf Battle</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="game"></canvas>
+
+<!-- ===== In-match HUD ===== -->
+<div id="hud" class="hidden">
+  <div id="coverage-panel" class="card">
+    <div id="panel-title" class="panel-title">COVERAGE</div>
+    <div class="cov-rows"></div>
+  </div>
+
+  <div id="timer" class="card">3:00</div>
+
+  <div id="feed"></div>
+
+  <div id="status-panel" class="card">
+    <div class="bar-row"><span class="bar-label">HP</span><div class="bar"><div id="hp-fill" class="bar-fill hp"></div></div></div>
+    <div class="bar-row"><span class="bar-label">INK</span><div class="bar"><div id="ink-fill" class="bar-fill ink"></div></div></div>
+    <div id="bomb-hint" class="dashed-box">PAINT BOMB &times;<span id="bomb-count">0</span> &mdash; right-click to throw!</div>
+    <div id="skill-hint" class="dashed-box skill">Q &middot; <span id="skill-name">Skill</span> &middot; <span id="skill-count">OK</span></div>
+    <div id="objective-note" class="dashed-box objective hidden"></div>
+    <div id="weapon-note" class="weapon-note"><b>SketchBlaster</b> &mdash; move faster and refill ink on your own paint</div>
+  </div>
+
+  <canvas id="minimap" width="352" height="236"></canvas>
+
+  <button id="leave-btn" class="pill-btn" data-i18n="LEAVE MATCH"></button>
+  <button id="browse-btn" class="pill-btn">BROWSE MAP</button>
+
+  <div id="hurt-flash"></div>
+  <div id="slam-banner">SLAM TIME!</div>
+
+  <!-- touch controls (shown only on touch devices) -->
+  <div id="stick-base"><div id="stick-knob"></div></div>
+  <button id="btn-bomb" class="touch-btn">💣</button>
+  <button id="btn-skill" class="touch-btn">Q</button>
+</div>
+
+<!-- ===== Title screen ===== -->
+<div id="screen-title" class="screen">
+  <div class="menu-blobs"></div>
+  <div class="logo-wrap">
+    <canvas id="logo-splat" width="720" height="420"></canvas>
+    <h1 class="logo" aria-label="Sketch Turf Battle">
+      <span class="logo-line"><span class="ch" style="--i:0">D</span><span class="ch" style="--i:1">O</span><span class="ch" style="--i:2">O</span><span class="ch" style="--i:3">D</span><span class="ch" style="--i:4">L</span><span class="ch" style="--i:5">E</span></span>
+      <span class="logo-line"><span class="ch" style="--i:6">S</span><span class="ch" style="--i:7">L</span><span class="ch" style="--i:8">A</span><span class="ch" style="--i:9">M</span><span class="ch" style="--i:10">!</span></span>
+    </h1>
+  </div>
+  <p class="tagline" data-i18n="Splat the town. Own the turf. 3 minutes on the clock."></p>
+  <div class="swatches" aria-hidden="true"><i style="--c:#2f66e0"></i><i style="--c:#e6392a"></i><i style="--c:#f0b41c"></i><i style="--c:#3ba24f"></i></div>
+  <div id="title-record"></div>
+  <!-- the lying-down "!" : play bar + mode dot that fans open -->
+  <div id="play-bang" class="mode-career">
+    <button id="play-btn" class="big-btn" data-i18n="PLAY"></button>
+    <button class="fan-opt fan-career selected" data-home="career" data-i18n="CAREER"></button>
+    <button class="fan-opt fan-adventure" data-home="adventure" data-i18n="ADVENTURE"></button>
+    <button id="mode-dot" aria-label="Pick a mode"></button>
+  </div>
+  <button id="daily-btn" class="pill-btn">DAILY RUN</button>
+  <div class="corner-btns">
+    <button id="badges-btn" class="pill-btn" aria-label="Badges" data-i18n="badgesBtn"></button>
+    <button id="settings-btn" class="pill-btn" aria-label="Settings" data-i18n="settingsBtn"></button>
+  </div>
+  <div class="controls-hint" data-i18n="controlsHint"></div>
+  <div class="footnote" data-i18n="Fan project inspired by Splatoon. Not affiliated with Nintendo."></div>
+</div>
+
+<!-- ===== Settings overlay ===== -->
+<div id="settings-panel" class="hidden">
+  <div class="settings-card card">
+    <div id="settings-title" class="panel-title big">SETTINGS</div>
+    <div class="set-row"><span data-i18n="Background music"></span><button class="tgl" data-key="music">ON</button></div>
+    <div class="set-row"><span data-i18n="Sound effects"></span><button class="tgl" data-key="sfx">ON</button></div>
+    <div class="set-row"><span data-i18n="Screen shake"></span><button class="tgl" data-key="shake">ON</button></div>
+    <div class="set-row"><span data-i18n="Ambient particles"></span><button class="tgl" data-key="ambient">ON</button></div>
+    <div class="set-row"><span data-i18n="Language"></span><button id="lang-tgl" class="tgl on">EN</button></div>
+    <button id="unlock-all-btn" class="pill-btn danger hidden">UNLOCK ALL STAGES</button>
+    <button id="settings-close" class="pill-btn gray">CLOSE</button>
+  </div>
+</div>
+
+<!-- ===== Badge wall overlay ===== -->
+<div id="badges-panel" class="hidden">
+  <div class="badges-card card">
+    <div class="panel-title big" data-i18n="BADGE WALL"></div>
+    <div id="badge-count"></div>
+    <div id="badge-grid"></div>
+    <button id="badges-close" class="pill-btn gray" data-i18n="CLOSE"></button>
+  </div>
+</div>
+
+<!-- ===== Pause / leave confirm ===== -->
+<div id="pause-panel" class="hidden">
+  <div class="pause-card card">
+    <div class="panel-title big" data-i18n="PAUSED"></div>
+    <button id="pause-resume" class="big-btn" data-i18n="RESUME"></button>
+    <button id="pause-restart" class="pill-btn" data-i18n="RESTART MATCH"></button>
+    <button id="pause-quit" class="pill-btn gray" data-i18n="BACK TO MENU"></button>
+  </div>
+</div>
+
+<!-- ===== Adventure (story) select ===== -->
+<div id="screen-adventure" class="screen hidden">
+  <div class="menu-blobs"></div>
+  <h2 class="select-title" data-i18n="ADVENTURE"></h2>
+  <p class="adv-blurb" data-i18n="advBlurb"></p>
+  <div id="worldmap-wrap">
+    <canvas id="worldmap"></canvas>
+  </div>
+  <div class="adv-btns">
+    <button id="adv-hero" class="pill-btn"></button>
+    <button id="adv-continue" class="big-btn"></button>
+    <button id="adv-restart" class="pill-btn" data-i18n="RESTART STORY"></button>
+    <button id="adv-coop" class="pill-btn" disabled data-i18n="CO-OP — COMING SOON"></button>
+    <button id="adv-back" class="pill-btn gray" data-i18n="BACK"></button>
+  </div>
+</div>
+
+<!-- ===== Adventure story card ===== -->
+<div id="story-panel" class="hidden">
+  <div class="story-card card">
+    <div id="story-title" class="panel-title big"></div>
+    <canvas id="story-portrait" width="200" height="180"></canvas>
+    <div id="story-text"></div>
+    <button id="story-start" class="big-btn" data-i18n="GO!"></button>
+    <button id="story-back" class="pill-btn gray" data-i18n="BACK"></button>
+  </div>
+</div>
+
+<!-- ===== Adventure level end ===== -->
+<div id="level-end-panel" class="hidden">
+  <div class="story-card card">
+    <div id="level-end-title" class="panel-title big"></div>
+    <div id="level-end-story"></div>
+    <button id="level-next" class="big-btn" data-i18n="NEXT LEVEL"></button>
+    <button id="level-retry" class="big-btn" data-i18n="RETRY"></button>
+    <button id="level-menu" class="pill-btn gray" data-i18n="BACK TO MENU"></button>
+  </div>
+</div>
+
+<!-- ===== Stage select ===== -->
+<div id="screen-stages" class="screen hidden">
+  <div class="menu-blobs"></div>
+  <h2 class="select-title" data-i18n="Pick Your Stage"></h2>
+  <div id="stage-path">
+    <div id="stage-track">
+      <div class="path-line"></div>
+      <div id="stage-cards"></div>
+    </div>
+  </div>
+  <button id="stages-back-btn" class="pill-btn gray" data-i18n="BACK"></button>
+  <div class="hint-line" data-i18n="Tip: click the blank paper."></div>
+</div>
+
+<!-- ===== Map select ===== -->
+<div id="screen-maps" class="screen hidden">
+  <div class="menu-blobs"></div>
+  <h2 class="select-title" data-i18n="Pick Your Turf"></h2>
+  <div id="map-cards"></div>
+  <button id="maps-back-btn" class="pill-btn gray" data-i18n="BACK"></button>
+</div>
+
+<!-- ===== Character select ===== -->
+<div id="screen-select" class="screen hidden">
+  <div class="menu-blobs"></div>
+  <h2 class="select-title" data-i18n="Pick Your Fighter"></h2>
+  <div id="fighter-cards"></div>
+  <div id="difficulty-row">
+    <span class="diff-label" data-i18n="BOT DIFFICULTY"></span>
+    <button class="diff-pill" data-diff="easy" data-i18n="EASY"></button>
+    <button class="diff-pill selected" data-diff="normal" data-i18n="NORMAL"></button>
+    <button class="diff-pill" data-diff="hard" data-i18n="HARD"></button>
+  </div>
+  <button id="back-btn" class="pill-btn gray" data-i18n="BACK"></button>
+</div>
+
+<!-- ===== Results ===== -->
+<div id="screen-results" class="screen hidden">
+  <div class="menu-blobs"></div>
+  <h2 class="select-title" data-i18n="TIME'S UP!"></h2>
+  <div id="winner-line"></div>
+  <div id="star-earned"></div>
+  <div id="replay-box">
+    <div class="replay-label" data-i18n="TURF REPLAY"></div>
+    <canvas id="replay-canvas" width="660" height="440"></canvas>
+  </div>
+  <div id="result-rows"></div>
+  <div class="result-btns">
+    <button id="again-btn" class="big-btn" data-i18n="PLAY AGAIN"></button>
+    <button id="share-btn" class="pill-btn" data-i18n="SHARE CARD"></button>
+    <button id="export-btn" class="pill-btn" data-i18n="EXPORT WEBM"></button>
+    <button id="menu-btn" class="pill-btn gray" data-i18n="BACK TO MENU"></button>
+  </div>
+</div>
+
+<!-- classic scripts share one global scope; load order matters:
+     core -> maps (registry first) -> world -> systems -> ui -> game -->
+<script src="js/core/util.js"></script>
+<script src="js/core/i18n.js"></script>
+<script src="js/core/teams.js"></script>
+<script src="js/core/sketch.js"></script>
+<script src="js/maps/registry.js"></script>
+<script src="js/maps/downtown.js"></script>
+<script src="js/maps/riverside.js"></script>
+<script src="js/maps/pinecamp.js"></script>
+<script src="js/maps/fernhollow.js"></script>
+<script src="js/maps/sunnyshore.js"></script>
+<script src="js/maps/thedeep.js"></script>
+<script src="js/maps/powderpeaks.js"></script>
+<script src="js/maps/midnightfair.js"></script>
+<script src="js/maps/messydesk.js"></script>
+<script src="js/maps/craterfield.js"></script>
+<script src="js/maps/cinderbasin.js"></script>
+<script src="js/maps/goojunction.js"></script>
+<script src="js/maps/theothertown.js"></script>
+<script src="js/maps/pencilcaseworld.js"></script>
+<script src="js/world/render.js"></script>
+<script src="js/world/themes/common.js"></script>
+<script src="js/world/themes/city.js"></script>
+<script src="js/world/themes/wilds.js"></script>
+<script src="js/world/themes/desk.js"></script>
+<script src="js/world/themes/moon.js"></script>
+<script src="js/world/themes/shore.js"></script>
+<script src="js/world/themes/peaks.js"></script>
+<script src="js/world/themes/fair.js"></script>
+<script src="js/world/themes/deep.js"></script>
+<script src="js/world/themes/volcano.js"></script>
+<script src="js/world/themes/sewer.js"></script>
+<script src="js/world/themes/othertown.js"></script>
+<script src="js/world/themes/pencilcase.js"></script>
+<script src="js/world/collision.js"></script>
+<script src="js/systems/audio.js"></script>
+<script src="js/systems/paint.js"></script>
+<script src="js/systems/replay.js"></script>
+<script src="js/systems/records.js"></script>
+<script src="js/systems/modes.js"></script>
+<script src="js/systems/skills.js"></script>
+<script src="js/systems/challenges.js"></script>
+<script src="js/systems/achievements.js"></script>
+<script src="js/systems/daily.js"></script>
+<script src="js/adventure/data.js"></script>
+<script src="js/adventure/enemies.js"></script>
+<script src="js/adventure/run.js"></script>
+<script src="js/adventure/worldmap.js"></script>
+<script src="js/systems/sharecard.js"></script>
+<script src="js/systems/ambient.js"></script>
+<script src="js/systems/touch.js"></script>
+<script src="js/systems/music.js"></script>
+<script src="js/systems/settings.js"></script>
+<script src="js/systems/entities.js"></script>
+<script src="js/ui/hud.js"></script>
+<script src="js/ui/vignettes.js"></script>
+<script src="js/ui/screens.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

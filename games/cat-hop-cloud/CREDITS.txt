@@ -1,0 +1,8 @@
+Cat Hop Cloud
+Original game: helmedeiros/Cat-Hop-Cloud
+Author: Helio Medeiros
+License: MIT, Copyright (c) 2025 Helio Medeiros
+JS13K-style luck/cloud hop puzzle
+
+FreeToolOnline adaptations: noindex meta on iframe document, localStorage keys namespaced to ftol:cathopcloud:*,
+LICENSE shipped next to engine.

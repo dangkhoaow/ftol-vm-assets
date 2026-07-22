@@ -1,0 +1,36 @@
+{
+    "tiles": {
+        "0": "assets/tiles/pared_dungeon_verde.png",
+        "1": "assets/tiles/suelo_dungeon_verde.png",
+        "2": "assets/tiles/pared_puerta_dungeon_verde.png",
+        "3": "assets/tiles/suelo_dungeon_verde_pinchos.png"
+    },
+    "collisions": {
+        "0": { "type": "air" },
+        "1": { "type": "solid" },
+        "3": {
+            "type": "door",
+            "target_map": "map5",
+            "target_tile": { "x": 12, "y": 4 }
+        },
+        "4": { "type": "player_damage", "damage": 1 },
+        "5": { "type": "entity_spawn", "entity": "bat", "floorCollision": 0 },
+        "6": { "type": "entity_spawn", "entity": "bat", "floorCollision": 0 },
+        "7": {
+            "type": "door",
+            "target_map": "map11",
+            "target_tile": { "x": 7, "y": 2 }
+        }
+    },
+    "entities": {
+        "bat": {
+            "sprite": "assets/sprites/enemy/bat.png",
+            "health": 4,
+            "damage": 1,
+            "speed": 1.5,
+            "behavior": "chase",
+            "chaseRadius": 5,
+            "exp_drop": 20
+        }
+    }
+}

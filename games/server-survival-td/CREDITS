@@ -1,0 +1,17 @@
+Server Survival TD
+Upstream: pshenok/server-survival (https://github.com/pshenok/server-survival)
+License: MIT (Copyright (c) 2025 Kostyantyn Pshenychnyy) - see LICENSE
+
+Original 3D cloud-architecture tower-defense sim by Kostyantyn Pshenychnyy.
+Play as a cloud architect: place CDN, database, firewall, and related services
+to survive rising traffic and DDoS pressure.
+
+Vendored runtime libraries:
+- three.js r128 (local vendor/three.min.js)
+- Tailwind CSS utilities prebuilt (local vendor/tailwind.min.css; zero runtime CDN)
+
+FreeToolOnline adaptations (2026-07-21, game-discovery-loop fire180):
+- robots noindex on iframe document
+- dropped assets/gameplay.gif preview
+- localStorage namespaced to ftol:serversurvivaltd:*
+- title "Server Survival TD"

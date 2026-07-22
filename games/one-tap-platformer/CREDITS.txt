@@ -1,0 +1,1 @@
+Adapted from chiaogu/stolen-sword (MIT, Copyright 2020 Ian Chiao). Rebranded One Tap Platformer; localStorage namespaced ftol:onetapplatformer:*; noindex meta added at build.

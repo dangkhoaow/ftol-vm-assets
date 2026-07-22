@@ -1,0 +1,3 @@
+Vim Motion Academy adapted from error311/vimmonsters-academy (MIT, Copyright 2026 VimMonsters Academy contributors).
+Browser canvas RPG that teaches Vim motions through overworld exploration, drills, and turn-based creature battles.
+Not affiliated with Vim or any Vim trademark holder.

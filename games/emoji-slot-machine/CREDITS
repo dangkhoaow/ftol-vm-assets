@@ -1,0 +1,10 @@
+Emoji Slot Machine
+Upstream: Danziger/slotjs (https://github.com/Danziger/slotjs)
+License: MIT (Copyright (c) 2018-2020 Daniel Gamez Franco) - see LICENSE
+
+FreeToolOnline adaptations:
+- robots noindex on iframe document
+- stripped Plausible, Google Fonts, social meta, screenshots
+- localStorage namespaced to ftol:emojislot:*
+- title rebrand to Emoji Slot Machine
+- system monospace font fallback (no CDN fonts)

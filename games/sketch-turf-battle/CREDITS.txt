@@ -1,0 +1,2 @@
+Sketch Turf Battle adapted from qxbyte/doodle-slam (MIT, Copyright 2026 Qiang Xue).
+Original doodle turf battle implementation - generic paint-war genre.

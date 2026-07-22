@@ -1,0 +1,18 @@
+Machine Guard Corps
+Original author: Mars723 (https://github.com/Mars723)
+Source: https://github.com/Mars723/Machine-Guard-Corps
+License: MIT (Copyright (c) 2026 Mars) - see LICENSE in this directory.
+
+Vendored files:
+- index.html, game.js, style.css - copied verbatim from the upstream
+  repository. No build step in the original project; these are the actual
+  source files, not a compiled/minified bundle.
+
+Adaptation for freetoolonline.com:
+- Added <meta name="robots" content="noindex"> to index.html.
+- No other changes. The game has zero CDN calls, zero fetch/XHR/WebSocket
+  requests, and zero localStorage/sessionStorage usage anywhere in the
+  source (verified directly - game.js is plain, unminified, greppable
+  JavaScript, unlike several other recent js13k vendors in this catalog
+  whose shipped bundles are minifier/packer output). No progress or score
+  is persisted; each session starts fresh.

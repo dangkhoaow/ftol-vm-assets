@@ -1,0 +1,9 @@
+Mono Grid Duel
+Adapted from flancast90/cursor-arcade-games tictactoe module (MIT, Copyright 2026 flancast90).
+https://github.com/flancast90/cursor-arcade-games
+
+Site adapt (freetoolonline.com):
+- VS Code acquireVsCodeApi stubbed to localStorage ftol:monogridduel:storage
+- Single-game extract (tictactoe only); auto-start grid duel
+- Rebranded Mono Grid Duel / Grid Duel; noindex iframe document
+- Fire127 2026-07-18

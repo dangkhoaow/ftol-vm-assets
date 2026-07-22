@@ -1,0 +1,2 @@
+Nova Star Barrage adapted from WXFffff666/stg-game (MIT, Copyright 2026).
+Original HTML5 Canvas bullet-hell shmup with factions, talents, and weapon fusion.

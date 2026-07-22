@@ -1,0 +1,4 @@
+#!/bin/sh
+# Linux Online desktop image - X session entry point.
+xset s off
+exec startxfce4

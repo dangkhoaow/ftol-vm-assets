@@ -1,0 +1,7 @@
+Potion Brew Shop
+Upstream: sebadorn/js13k-2025-black-cat (GitHub)
+Author: Sebastian Dorn
+License: MIT (see LICENSE)
+JS13K 2025 entry - point-and-click potion shop puzzle.
+Audio: kitten meow by AlexMurphy53 (freesound.org, embedded in build); ZzFX synth.
+Adapted for FreeToolOnline: noindex meta, English iframe title.

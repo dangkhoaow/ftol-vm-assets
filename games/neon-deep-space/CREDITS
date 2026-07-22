@@ -1,0 +1,10 @@
+Neon Deep Space (upstream: Neon Deep Space: Geometric War)
+Copyright (c) 2025 ou178
+License: MIT (see LICENSE)
+Source: https://github.com/ou178/neon-deep-space
+
+Vendored for FreeToolOnline:
+- Screenshot PNGs omitted (not runtime)
+- localStorage namespaced to ftol:neondeepspace:*
+- robots noindex on engine iframe document
+- English title Neon Deep Space

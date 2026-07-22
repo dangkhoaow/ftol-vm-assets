@@ -1,0 +1,44 @@
+{
+    "tiles": {
+        "0": "assets/tiles/pared_dungeon_verde.png",
+        "1": "assets/tiles/suelo_dungeon_verde.png",
+        "2": "assets/tiles/pared_puerta_dungeon_verde.png",
+        "4": "assets/tiles/chest.png"
+    },
+    "collisions": {
+        "0": { "type": "air" },
+        "1": { "type": "solid" },
+        "3": {
+            "type": "door",
+            "target_map": "map4",
+            "target_tile": { "x": 5, "y": 6 }
+        },
+        "5": { "type": "entity_spawn", "entity": "bat", "floorCollision": 0 },
+        "6": { "type": "entity_spawn", "entity": "bat", "floorCollision": 0 },
+        "7": {
+            "type": "door",
+            "target_map": "map10",
+            "target_tile": { "x": 2, "y": 5 }
+        },
+        "8": {
+            "type": "chest",
+            "contains": "rustyIronSword",
+            "solid": true,
+            "interactType": "click",
+            "interactRequirements": { "player_in_radius": 1, "diagonal": false },
+            "afterOpeningCollision": "0",
+            "afterOpeningTile": "1"
+        }
+    },
+    "entities": {
+        "bat": {
+            "sprite": "assets/sprites/enemy/bat.png",
+            "health": 3,
+            "damage": 1,
+            "speed": 1.5,
+            "behavior": "patrol",
+            "chaseRadius": 5,
+            "exp_drop": 15
+        }
+    }
+}

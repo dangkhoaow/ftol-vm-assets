@@ -1,0 +1,940 @@
+{
+  "schema": "ftol-dinosaur-3d/1",
+  "version": "1.50.2",
+  "category": "dinosaur-3d",
+  "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
+  "models": {
+    "wendiceratops": {
+      "file": "wendiceratops.glb",
+      "bytes": 1027088,
+      "sha256": "ada98e46bb4426dec1109db1c403d5c680f38692d235a3b167c64cafb38dca73",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Wendiceratops model by Pan Wolodyjowski (CC-BY 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/651498-wendiceratops"
+    },
+    "pinacosaurus": {
+      "file": "pinacosaurus.glb",
+      "bytes": 1027188,
+      "sha256": "6fb50965a730487bb271dd981ffc7b81240e76a152c38fd30cc3a8dbe04dfc39",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Pinacosaurus model by Pan Wolodyjowski (CC-BY 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/643281-pinacosaurus"
+    },
+    "becklespinax": {
+      "file": "becklespinax.glb",
+      "bytes": 208456,
+      "sha256": "60a183a0a03b21b71f8b1f59cc11f3eabb0169a5a18462d685bcdb53a7c71d50",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Becklespinax model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/1051754-becklespinax"
+    },
+    "kentrosaurus": {
+      "file": "kentrosaurus.glb",
+      "bytes": 1200904,
+      "sha256": "7bdfabe7589a7e3024fd673a983a71a150748bb2feaa7418b1ef6b3f97d94626",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Kentrosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757272-kentrosaurus"
+    },
+    "pentaceratops": {
+      "file": "pentaceratops.glb",
+      "bytes": 123224,
+      "sha256": "944e1d35ebd4546dc4a297b5c8335a69d56dedd35285198e4c9fe8d4a8bc12e9",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Pentaceratops model by Manicaeks (CC0, via OpenGameArt)",
+      "source_url": "https://opengameart.org/content/pentaceratops"
+    },
+    "albertosaurus": {
+      "file": "albertosaurus.glb",
+      "bytes": 297232,
+      "sha256": "842904741889befabe1f7a92aac05d5f851148553982473e89a429a6ce8c35bf",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Albertosaurus model by Manicaeks (CC0, via OpenGameArt)",
+      "source_url": "https://opengameart.org/content/albertosaurus"
+    },
+    "tyrannosaurus-rex": {
+      "file": "tyrannosaurus-rex.glb",
+      "bytes": 336568,
+      "sha256": "e1c9862deef89f096c7d85dacf62aa9ce48089e5867d2bf632ed1e1733013349",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "T. rex model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/UYtneO5FpF"
+    },
+    "velociraptor": {
+      "file": "velociraptor.glb",
+      "bytes": 285828,
+      "sha256": "1d9ecad0a65c0c858a216ff25f224d02b18ce86fa0ed4df8f9ecece43f3a745c",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Velociraptor model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/cnlGH2UcDd"
+    },
+    "triceratops": {
+      "file": "triceratops.glb",
+      "bytes": 309684,
+      "sha256": "79ade346de5e778a58ce8c253c7e6dbd505499176a616583d1a29fa4624f498c",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Triceratops model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/IGvrUqGrRM"
+    },
+    "stegosaurus": {
+      "file": "stegosaurus.glb",
+      "bytes": 423036,
+      "sha256": "a3dff577342e98f847d1ec4985f28d594c47d2e7d9b05cab78ae8aecf2272f35",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Stegosaurus model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/eFcNbOlpvl"
+    },
+    "apatosaurus": {
+      "file": "apatosaurus.glb",
+      "bytes": 380776,
+      "sha256": "b0fc50a2d7c973c2a14b7889156ff8e63b02e5c352af3728981d77c29c6f7b31",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Apatosaurus model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/fvo0x8Zk3z"
+    },
+    "parasaurolophus": {
+      "file": "parasaurolophus.glb",
+      "bytes": 291016,
+      "sha256": "163d80abed38e380f7e799d0d040c77fdd86abad7da50cd8292f3f8a98ffbbd7",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Parasaurolophus model by Quaternius (CC0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/KeeQrrouRK"
+    },
+    "diplodocus": {
+      "file": "diplodocus.glb",
+      "bytes": 48440,
+      "sha256": "0a7788471ba64f1a2d7d0c0c73d8808422e3249386ce7ea2dde6e94a9688b641",
+      "kind": "fleshed",
+      "targetLenUnits": 17,
+      "license": "CC-BY 3.0",
+      "credit": "Diplodocus model by Poly by Google (CC-BY 3.0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/12n6ICAVpYB"
+    },
+    "spinosaurus": {
+      "file": "spinosaurus.glb",
+      "bytes": 1973968,
+      "sha256": "7ad8c7a6708e027e3c2c3832f32d5f832d0db2741e43c851f27c5b20653ab90d",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC-BY-SA 3.0",
+      "credit": "Spinosaurus model by Tuomo Untinen (CC-BY-SA 3.0, via OpenGameArt; decimated glTF conversion, same license)",
+      "source_url": "https://opengameart.org/content/spinosaurus"
+    },
+    "pteranodon": {
+      "file": "pteranodon.glb",
+      "bytes": 94452,
+      "sha256": "603f0e6510f54ca50ede9c8d51c7c0a374d59342c47d182db0a0e43dc8fc2c8c",
+      "kind": "fleshed",
+      "targetLenUnits": 10,
+      "license": "CC0 1.0",
+      "credit": "Pterosaur model by pistachio (CC0, via OpenGameArt; glide-pose glTF conversion)",
+      "source_url": "https://opengameart.org/content/low-spec-pterosaur"
+    },
+    "ground-sloth": {
+      "file": "ground-sloth.glb",
+      "bytes": 1831568,
+      "sha256": "9d1cc4c285041cfd0403e69a974d31754049a1bcfc1de173443de8737472b9b6",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 3.0",
+      "credit": "Ground Sloth (Megatherium) model by Poly by Google (CC-BY 3.0, via Poly Pizza)",
+      "source_url": "https://poly.pizza/m/34WS63awSqJ"
+    },
+    "pachyrhinosaurus": {
+      "file": "pachyrhinosaurus.glb",
+      "bytes": 66420,
+      "sha256": "4ba3dd4539c68435c012e903c4454f129bf330371d483b34eb7596c32567a415",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Pachyrhinosaurus model by SUMO STUDIOS (CC-BY 4.0, via OpenGameArt; decimated glTF conversion)",
+      "source_url": "https://opengameart.org/content/low-poly-pachy-dinosaur"
+    },
+    "deinonychus": {
+      "file": "deinonychus.glb",
+      "bytes": 1158864,
+      "sha256": "7ca5a26419e036dfe515e075233076fb93bf27a684d37f9fb6e1f5b1193d4a2f",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Deinonychus model by Animaniac888 (CC0, via OpenGameArt 'Dromaeosaur'; textured glTF conversion)",
+      "source_url": "https://opengameart.org/content/dromaeosaur-dinosaur"
+    },
+    "utahraptor": {
+      "file": "utahraptor.glb",
+      "bytes": 1158864,
+      "sha256": "7ca5a26419e036dfe515e075233076fb93bf27a684d37f9fb6e1f5b1193d4a2f",
+      "kind": "fleshed",
+      "targetLenUnits": 16,
+      "license": "CC0 1.0",
+      "credit": "Dromaeosaurid model by Animaniac888 (CC0, via OpenGameArt 'Dromaeosaur'; shown for Utahraptor, the largest known dromaeosaurid, at species scale)",
+      "source_url": "https://opengameart.org/content/dromaeosaur-dinosaur"
+    },
+    "ankylosaurus": {
+      "file": "ankylosaurus.glb",
+      "bytes": 101940,
+      "sha256": "d87ae3c930d96d8c23390ad19bc061ef1ce7a73e758f889209d71b5fad8c4611",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Ankylosaurus model by Manicaeks (CC0, via OpenGameArt; textured glTF conversion)",
+      "source_url": "https://opengameart.org/content/anklyosaurus"
+    },
+    "carnotaurus": {
+      "file": "carnotaurus.glb",
+      "bytes": 113224,
+      "sha256": "5280a0009c8f6cb5f5a5639237d1bc52f07eb0114b2e00b345c77bd4a9a09d37",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 3.0",
+      "credit": "Carnotaurus model by Mike Carey (CC-BY 3.0, via OpenGameArt; diffuse-color glTF conversion)",
+      "source_url": "https://opengameart.org/content/carnotaurus"
+    },
+    "allosaurus": {
+      "file": "allosaurus.glb",
+      "bytes": 601800,
+      "sha256": "4c8befbbf817a3a1ba8b40a0e372d68474efc9bece7a12860fc1ee869d3d162a",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Allosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate posed sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/345833-allosaurus-figurine"
+    },
+    "dilophosaurus": {
+      "file": "dilophosaurus.glb",
+      "bytes": 602560,
+      "sha256": "365fba921ffaae07f3593e5c4db56652fbdea04287ec861d4e03bd55328fcead",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Dilophosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate posed sculpt with scale + feather detail, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/413711-scientifically-accurate-dilophosaurus-statue"
+    },
+    "baryonyx": {
+      "file": "baryonyx.glb",
+      "bytes": 506656,
+      "sha256": "b0979de4d7b152ba962f5f6b9ca565f476bb3b77d2b763195a9ddb9965d3a663",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Baryonyx model by seth the yutyrannus (CC-BY 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/747399-baryonyx"
+    },
+    "plesiosaurus": {
+      "file": "plesiosaurus.glb",
+      "bytes": 556268,
+      "sha256": "7e11982a0e6d9030bc382a8a94f8ec1e1c73acc822b8404a275b7588a2b0afc4",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Plesiosaurus model by MZ4250 (CC-BY 4.0, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/39379-plesiosaurus-updated"
+    },
+    "gallimimus": {
+      "file": "gallimimus.glb",
+      "bytes": 602292,
+      "sha256": "1612ede9bc5e2fb34b7c37500d7ee5e5425d6c180323a0d0f70a4915aeffb025",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Gallimimus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate feathered sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/343962-galimimus-figurine"
+    },
+    "mosasaurus": {
+      "file": "mosasaurus.glb",
+      "bytes": 594556,
+      "sha256": "e4b88d85917112ef4f1ad83e74718ad4420818a459e426fa607bfb5b8a32dee7",
+      "kind": "fleshed",
+      "targetLenUnits": 15,
+      "license": "CC-BY 4.0",
+      "credit": "Mosasaurus model by MZ4250 (CC-BY 4.0, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/1534756-mosasaur"
+    },
+    "pachycephalosaurus": {
+      "file": "pachycephalosaurus.glb",
+      "bytes": 602884,
+      "sha256": "741916053bc9a9021509818bca42567701dbbf80dca33b009d0df952a5c2b6d2",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Pachycephalosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate posed sculpt with scale + skin detail, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/400375-pachycephalosaurus-figurine"
+    },
+    "brachiosaurus": {
+      "file": "brachiosaurus.glb",
+      "bytes": 601376,
+      "sha256": "d0c1c51ec0c0cd28c25eb40694c0bd595f697493530e9c7f9a6d8d4d099ebf96",
+      "kind": "fleshed",
+      "targetLenUnits": 16,
+      "license": "CC0 1.0",
+      "credit": "Brachiosaurus model by gabi123 (CC0, via Printables; decimated STL->glTF with applied countershading)",
+      "source_url": "https://www.printables.com/model/1553840-brachiosaurus-dinosaur"
+    },
+    "ichthyosaurus": {
+      "file": "ichthyosaurus.glb",
+      "bytes": 396252,
+      "sha256": "cc3723d935d6dc24cab2135e9d6d704bd9371f936253879fbbeca8d1cb813f15",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ichthyosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757285-ichthyosaurus"
+    },
+    "edmontosaurus": {
+      "file": "edmontosaurus.glb",
+      "bytes": 364544,
+      "sha256": "dc3ad0cdee37c1a9dda8401bcba6ae7971df55a2c74b12b33fe97a84ef22d053",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Edmontosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/747427-edmontosaurus"
+    },
+    "protoceratops": {
+      "file": "protoceratops.glb",
+      "bytes": 327404,
+      "sha256": "65e28d950327f7a52f8f2ddb9e45830e46832a659624acde639335fce466027e",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Protoceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 218k->16k tris)",
+      "source_url": "https://www.printables.com/model/752983-protoceratops"
+    },
+    "ceratosaurus": {
+      "file": "ceratosaurus.glb",
+      "bytes": 390936,
+      "sha256": "fdd2d0966bb7eed50be61a47da4c53cebca2e74b8ac6adb87bf5bae613c69ec0",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ceratosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated 79k->16k tris)",
+      "source_url": "https://www.printables.com/model/757229-ceratosaurus"
+    },
+    "chasmosaurus": {
+      "file": "chasmosaurus.glb",
+      "bytes": 320936,
+      "sha256": "61a734a756b01c74e423f4338c2749b52704d6a0f26571d27878db8b9e9261dd",
+      "kind": "fleshed",
+      "targetLenUnits": 13,
+      "license": "CC0 1.0",
+      "credit": "Chasmosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Chasmosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1766773-dinosaur-art-chasmosaurus"
+    },
+    "therizinosaurus": {
+      "file": "therizinosaurus.glb",
+      "bytes": 320568,
+      "sha256": "7c751d1657e2ad8fa566def3b4e469b34a0df189cf081b089487b2ecd78b724c",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Therizinosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Therizinosaurus'; STL->glTF with applied countershading, decimated ~950k->16k tris)",
+      "source_url": "https://www.printables.com/model/1750761-dinosaur-art-therizinosaurus"
+    },
+    "giganotosaurus": {
+      "file": "giganotosaurus.glb",
+      "bytes": 321028,
+      "sha256": "81adb8bdf4b8b3a35d48cc6e6fbe3ae7e8d54b747c7b8b92a814fdfc18124ebb",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC0 1.0",
+      "credit": "Giganotosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Giganotosaurus'; STL->glTF with applied countershading, decimated ~948k->16k tris)",
+      "source_url": "https://www.printables.com/model/1763153-dinosaur-art-giganotosaurus"
+    },
+    "iguanodon": {
+      "file": "iguanodon.glb",
+      "bytes": 321028,
+      "sha256": "01f5ee04914c666445861473e78a1672ed25644d170a26632ef3d7ddf208c2c8",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Iguanodon model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Iguanodon'; STL->glTF with applied countershading, decimated ~992k->16k tris)",
+      "source_url": "https://www.printables.com/model/1761369-dinosaur-art-iguanodon"
+    },
+    "brontosaurus": {
+      "file": "brontosaurus.glb",
+      "bytes": 157448,
+      "sha256": "4626c17079d585d66e0e754b2393974567a92c37c057b35386d25d3b5a34f65d",
+      "kind": "fleshed",
+      "targetLenUnits": 17,
+      "license": "CC0 1.0",
+      "credit": "Brontosaurus model by WeaponGuy (CC0, via OpenGameArt; .blend->glTF conversion with applied countershading)",
+      "source_url": "https://opengameart.org/content/brontosaurus"
+    },
+    "megalosaurus": {
+      "file": "megalosaurus.glb",
+      "bytes": 320860,
+      "sha256": "906e32cabc166d7279d414ce348c7790795f1e78d874730f05dbe832fa751649",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0 (Public Domain dedication via Printables)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
+    },
+    "microraptor": {
+      "file": "microraptor.glb",
+      "bytes": 351420,
+      "sha256": "31ff26f38601573e9c0210f6d670449c1f727befc020f95cff83696a2fc68498",
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Microraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/757274-microraptor"
+    },
+    "majungasaurus": {
+      "file": "majungasaurus.glb",
+      "bytes": 344284,
+      "sha256": "4895c2f3c090e6aca51f99479241dcd30c0f38ac4ea71253f15b5d40325e4663",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Majungasaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/757208-majungasaurus"
+    },
+    "cryolophosaurus": {
+      "file": "cryolophosaurus.glb",
+      "bytes": 333656,
+      "sha256": "197e0b57231622b7cead7051f0fb6a7a31d00fcd207182030ae6b8170da5ea8a",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Cryolophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~22k->16k tris)",
+      "source_url": "https://www.printables.com/model/764466-cryolophosaurus"
+    },
+    "concavenator": {
+      "file": "concavenator.glb",
+      "bytes": 316292,
+      "sha256": "4c0452424301a20add7ea4646aae98c51383a885727fd1d9f574985a7710b2d3",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Concavenator model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~1.1M->15k tris)",
+      "source_url": "https://www.printables.com/model/916830-concavenator"
+    },
+    "albertaceratops": {
+      "file": "albertaceratops.glb",
+      "bytes": 340952,
+      "sha256": "a63d9167db9a221ce1a69a9e4c12644ebdca3148769a58c55f1501f1ad1675ad",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Albertaceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~115k->16k tris)",
+      "source_url": "https://www.printables.com/model/757230-albertaceratops"
+    },
+    "tsintaosaurus": {
+      "file": "tsintaosaurus.glb",
+      "bytes": 564968,
+      "sha256": "32be8f0c1235b93d71b7f4fc2468c1d7b92098433aac46ac1617eb6909646089",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Tsintaosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading, decimated ~18k->16k tris; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/939323-tsintaosaurus"
+    },
+    "ornithomimus": {
+      "file": "ornithomimus.glb",
+      "bytes": 591668,
+      "sha256": "f4ab0d711bc44f48b0442670dad4f1fc3b958259b404423fb1de68c0c7da5ca2",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ornithomimus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/939337-ornithomimus"
+    },
+    "tylosaurus": {
+      "file": "tylosaurus.glb",
+      "bytes": 456608,
+      "sha256": "2bb6d2ffd19db2f7aba4a281948114ab0fc3093beebe6e2f53be014e5f1ebe77",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Tylosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1494027-tylosaurus"
+    },
+    "gorgosaurus": {
+      "file": "gorgosaurus.glb",
+      "bytes": 255600,
+      "sha256": "3692cf3a2c1402e871cf882b99b00fb93ef862cdcd6c41c2e7aa18d2c88d1314",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Gorgosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1023407-gorgosaurus"
+    },
+    "dimetrodon": {
+      "file": "dimetrodon.glb",
+      "bytes": 725612,
+      "sha256": "95eabd5480f4ba3115dc604c705962d7b28098ec6b7347c0712fa90b71305fd8",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Dimetrodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/939330-dimetrodon"
+    },
+    "ichthyovenator": {
+      "file": "ichthyovenator.glb",
+      "bytes": 1179568,
+      "sha256": "385c57b2b24c20e8aa85b07a60a96b3f3b22213e5d40df1e316a35047376acad",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ichthyovenator model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1053711-ichthyovenator"
+    },
+    "amargasaurus": {
+      "file": "amargasaurus.glb",
+      "bytes": 320772,
+      "sha256": "4b4a732461eee9f01b44b9d25003b856e7f2c3ddbc482a33296651f1c4b67722",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC0 1.0",
+      "credit": "Amargasaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Amargasaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~950k->16k tris)",
+      "source_url": "https://www.printables.com/model/1771127-dinosaur-art-amargasaurus"
+    },
+    "acrocanthosaurus": {
+      "file": "acrocanthosaurus.glb",
+      "bytes": 320884,
+      "sha256": "9d3be7e8095b5c1d8d3906e6c136352d3258bb9390b20685f36395dee33761ef",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC0 1.0",
+      "credit": "Acrocanthosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Acrocanthosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1768652-dinosaur-art-acrocanthosaurus"
+    },
+    "ampelosaurus": {
+      "file": "ampelosaurus.glb",
+      "bytes": 409176,
+      "sha256": "d2adcd5c153aa13f2abf8c3a02c2fef5081bd3375a6eacf5a9659dd56734f3f1",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ampelosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1023457-ampelosaurus"
+    },
+    "seismosaurus": {
+      "file": "seismosaurus.glb",
+      "bytes": 402848,
+      "sha256": "6ac9eb71c76a440101d64f577f549a2743a894a0115b064959c8cea88fbc47ff",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Seismosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/936475-seismosaurus"
+    },
+    "stygimoloch": {
+      "file": "stygimoloch.glb",
+      "bytes": 18880,
+      "sha256": "2114da4cff206c19bae215af091056f055ce5c4bbcddc90fd9718824f3024fcd",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Stygimoloch model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1001311-stygimoloch"
+    },
+    "avaceratops": {
+      "file": "avaceratops.glb",
+      "bytes": 413020,
+      "sha256": "1afa525f22c02d37345bc4715556c33461bd98cf63904164e713f317a9162769",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Avaceratops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1058140-avaceratops"
+    },
+    "titanoboa": {
+      "file": "titanoboa.glb",
+      "bytes": 684440,
+      "sha256": "31329ea351c138971f71bbeb4f076c4b749f17364455fff0f552710aae54053a",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Titanoboa model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/940459-titanoboa"
+    },
+    "moropus": {
+      "file": "moropus.glb",
+      "bytes": 660476,
+      "sha256": "3c9c274cb468bbe4953e057840ca779bfb65b5d332aa029af751a1ba46202380",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Moropus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1023454-moropus"
+    },
+    "gryponyx": {
+      "file": "gryponyx.glb",
+      "bytes": 714264,
+      "sha256": "92e67db306ed211fa66a755cc847695d9c45c5a7a9f5495718cb040b51f3abdc",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Gryponyx model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/994967-gryponyx"
+    },
+    "brontotherium": {
+      "file": "brontotherium.glb",
+      "bytes": 712008,
+      "sha256": "afc28703f61230d370189409d011c3e720a57cf4a6443d43fa3ba94f37367164",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Brontotherium model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/995855-brontotherium"
+    },
+    "hybodus": {
+      "file": "hybodus.glb",
+      "bytes": 70076,
+      "sha256": "0ec62a7549877221ee46a590a5e2dd963d8dc3f7af7f0624121764921f6393cf",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Hybodus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/1494021-hybodus"
+    },
+    "coelophysis": {
+      "file": "coelophysis.glb",
+      "bytes": 933908,
+      "sha256": "74cc14484c3d66f7361c19398f575e307afabdf468e529d8618328fa6e5a5ab9",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Coelophysis model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF with applied countershading; reoriented length-along-X)",
+      "source_url": "https://www.printables.com/model/757231-coelophysis"
+    },
+    "titanosaurus": {
+      "file": "titanosaurus.glb",
+      "bytes": 408872,
+      "sha256": "cf0d7c05863ddb4c37cb53647cd9573136d7507f8139b0480e87363a7d966d87",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "source_url": "https://www.printables.com/model/757201-titanosaurus"
+    },
+    "dracovenator": {
+      "file": "dracovenator.glb",
+      "bytes": 417240,
+      "sha256": "337ed4faf61148b9e7e7669f3377b96279e51ed36b8593a825eee1e644883e7d",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "source_url": "https://www.printables.com/model/757212-dracovenator"
+    },
+    "sauropelta": {
+      "file": "sauropelta.glb",
+      "bytes": 364748,
+      "sha256": "0d09b7ed5f8165a3996fe7d3ddf58af056a961e368397179400b91f601e27caa",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Sauropelta model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757224-sauropelta"
+    },
+    "tarbosaurus": {
+      "file": "tarbosaurus.glb",
+      "bytes": 411088,
+      "sha256": "273d73b6ce22f8b3ed107c0eab4fef6c780840685b47c17bba5414041270087f",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Tarbosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757281-tarbosaurus"
+    },
+    "quetzalcoatlus": {
+      "file": "quetzalcoatlus.glb",
+      "bytes": 33768,
+      "sha256": "4bcac41dec3ea4ae76749e43c2c2f44f2802062ff4090e6ca4aa3ccfa1cf1b2b",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Quetzalcoatlus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757267-quetzalcoatlus"
+    },
+    "gigantoraptor": {
+      "file": "gigantoraptor.glb",
+      "bytes": 415952,
+      "sha256": "775d326551564728585f67e16af3f58f5e38c36b6c17f8a4c6072cbfc9df1a7f",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Gigantoraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757269-gigantoraptor"
+    },
+    "brachylophosaurus": {
+      "file": "brachylophosaurus.glb",
+      "bytes": 398708,
+      "sha256": "2feddbe6d1ad603364a50ba0942fd450b348dcf39de1935e9ed8aa3820be75a7",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Brachylophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757228-brachylophosaurus"
+    },
+    "shuangmiaosaurus": {
+      "file": "shuangmiaosaurus.glb",
+      "bytes": 403116,
+      "sha256": "f9a90cdc71f47a4b27ce58a70ec5b0db0f24257eb2a71cef566e4fae8a16bfdf",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Shuangmiaosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757287-shuangmiaosaurus"
+    },
+    "alioramus": {
+      "file": "alioramus.glb",
+      "bytes": 403108,
+      "sha256": "47a4707aa1fead1b8c395868ec6d625ff6e970492424e3d272233cdc34410598",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Alioramus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757289-alioramus"
+    },
+    "doliosauriscus": {
+      "file": "doliosauriscus.glb",
+      "bytes": 403960,
+      "sha256": "01e0faf5fe9903d4e217435baab0b802e36cee90afc0d0627201fd8f79b8ca25",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Doliosauriscus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/757291-doliosauriscus"
+    },
+    "mamenchisaurus": {
+      "file": "mamenchisaurus.glb",
+      "bytes": 422820,
+      "sha256": "218de13c8d2d239782fbaf4f8d991f2f7fa3969b52be497274c55c0767a1b25a",
+      "kind": "fleshed",
+      "targetLenUnits": 25,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Mamenchisaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; STL->glTF conversion, neutral countershading applied)",
+      "source_url": "https://www.printables.com/model/747424-mamenchisaurus",
+      "yaw": 1.5707963267948966
+    },
+    "compsognathus": {
+      "file": "compsognathus.glb",
+      "bytes": 48392,
+      "sha256": "5e1b4b5da367a4f384a96c5aa8d7503331ce147ae92384aab639dfdf070017c9",
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Compsognathus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
+      "source_url": "https://www.printables.com/model/747520-compsognathus"
+    },
+    "troodon": {
+      "file": "troodon.glb",
+      "bytes": 388128,
+      "sha256": "32100bab2e9acda19d5371ec8617e8151d967b3f40f01e0e66ec3cff8152f6ba",
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Troodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
+      "source_url": "https://www.printables.com/model/747521-troodon"
+    },
+    "deinocheirus": {
+      "file": "deinocheirus.glb",
+      "bytes": 447224,
+      "sha256": "60a6a9856e7855d05a45bee94355a309b0b8794ccb5fda4ff08d8d1f7ca6c7b8",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Deinocheirus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/774263-deinocheirus"
+    },
+    "barosaurus": {
+      "file": "barosaurus.glb",
+      "bytes": 1935976,
+      "sha256": "59525e176cf2742719341e28ed37f0d67efd5321230babc043feb480baf6b825",
+      "kind": "fleshed",
+      "targetLenUnits": 25,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Barosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, Z-up to Y-up axis correction applied, neutral olive-tan countershading applied)",
+      "source_url": "https://www.printables.com/model/885614-barosaurus"
+    },
+    "ostafrikasaurus": {
+      "file": "ostafrikasaurus.glb",
+      "bytes": 180652,
+      "sha256": "57b92ae8db7766e2cd4416b44796e9fefde670054d3998b7394f3a7ceeed349d",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ostafrikasaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/1023409-ostafrikasaurus"
+    },
+    "torvosaurus": {
+      "file": "torvosaurus.glb",
+      "bytes": 1920752,
+      "sha256": "97e444b2c3ad912d9c61475cef7f57e7c16f3203c4610c621605ae5d0c43e5f6",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Torvosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/774270-torvosaurus"
+    },
+    "sarcosuchus": {
+      "file": "sarcosuchus.glb",
+      "bytes": 894632,
+      "sha256": "1b8479502d201f16c27d9ec5b638f14e9a2bd75ceab2cc9c90a33919f892f3a6",
+      "kind": "fleshed",
+      "targetLenUnits": 14,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Sarcosuchus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/764457-sarcosuchus"
+    },
+    "postosuchus": {
+      "file": "postosuchus.glb",
+      "bytes": 75536,
+      "sha256": "46e8758f89007a22a2b62ff7e9e8c1025ddbd772ab9ade0280a03d8b25190fc2",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Postosuchus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/764414-postosuchus"
+    },
+    "abelisaurus": {
+      "file": "abelisaurus.glb",
+      "bytes": 320772,
+      "sha256": "f74ceb9be12548c8208bfd3dd4df2fcecb2e04e9bb5be4dfa7bcba687f97e136",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Abelisaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Abelisaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1767713-dinosaur-art-abelisaurus"
+    },
+    "psittacosaurus": {
+      "file": "psittacosaurus.glb",
+      "bytes": 320436,
+      "sha256": "30eb7e66da70deb50dbe3a1760b4ec6513d99c26402ce89a9b9be6ed90bd3b12",
+      "kind": "fleshed",
+      "targetLenUnits": 7,
+      "license": "CC0 1.0",
+      "credit": "Psittacosaurus model by Model Magic (Public Domain / CC0, via Printables 'Dinosaur Art - Psittacosaurus'; STL->glTF with applied countershading, display base stripped, Z-up to Y-up, decimated ~16k tris)",
+      "source_url": "https://www.printables.com/model/1753562-dinosaur-art-psittacosaurus"
+    },
+    "lambeosaurus": {
+      "file": "lambeosaurus.glb",
+      "bytes": 321992,
+      "sha256": "a77dcb43f90979cd0ba812f961c1e75d185aa401cbead415833ec077c8a9d647",
+      "kind": "fleshed",
+      "targetLenUnits": 13,
+      "license": "CC0 1.0 (Public Domain)",
+      "credit": "Lambeosaurus model by Model Magic (CC0 1.0 Public Domain, via Printables)",
+      "source_url": "https://www.printables.com/model/1759419-dinosaur-art-lambeosaurus"
+    },
+    "monolophosaurus": {
+      "file": "monolophosaurus.glb",
+      "bytes": 410504,
+      "sha256": "d7f7e4f0b9c07d3615bd5fb55dbe7a27d6bae3176ca62946d4a96e5a4b24100f",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Monolophosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/764471-monolophosaurus"
+    },
+    "panoplosaurus": {
+      "file": "panoplosaurus.glb",
+      "bytes": 1243176,
+      "sha256": "f7f6dbb2495723c15dabe90f847ad9fcef1e378f49ebaa0dcf37d1be142d4589",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Panoplosaurus model by Pan Wolodyjowski (CC-BY 4.0, via Printables 'Panoplosaurus Mirus'; OBJ decimated 1,178,960 -> 9,000 tris in Blender, vertex-color countershading applied, Z-up to Y-up)",
+      "source_url": "https://www.printables.com/model/643341-panoplosaurus-mirus"
+    },
+    "oviraptor": {
+      "file": "oviraptor.glb",
+      "bytes": 1026688,
+      "sha256": "01a397eae64d5c7aa3103b4721d5e5d7240d27d047c74d86e019c80000473870",
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "license": "CC0 1.0 (Public Domain)",
+      "credit": "Oviraptor model by Model Magic (CC0 1.0 Public Domain, via Printables 'Dinosaur Art - Oviraptor')",
+      "source_url": "https://www.printables.com/model/1757494-dinosaur-art-oviraptor"
+    },
+    "suchomimus": {
+      "file": "suchomimus.glb",
+      "bytes": 667408,
+      "sha256": "cf2bfdcd14b084891bbad78bf999890199a8084d44ca9dfaf4c3b947616525ef",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Suchomimus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/747445-suchomimus"
+    },
+    "ouranosaurus": {
+      "file": "ouranosaurus.glb",
+      "bytes": 38944,
+      "sha256": "7c30dc898426cfde95cd1a2583fe9796064a3e7c4684382f8e07c6eb29697fea",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Ouranosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/761732-ouranosaurus"
+    },
+    "archaeopteryx": {
+      "file": "archaeopteryx.glb",
+      "bytes": 1632748,
+      "sha256": "3df9c4c80fc5eecc10b7751ef3179ed946f5513b1e3d6fde83ae6bf5b418ddbe",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Archaeopteryx model by Model Magic (CC0 / Public Domain, via Printables)",
+      "source_url": "https://www.printables.com/model/1772799-dinosaur-art-archaeopteryx"
+    },
+    "corythosaurus": {
+      "file": "corythosaurus.glb",
+      "bytes": 1632400,
+      "sha256": "b4a07e69d51bac79c983b8d669728f5b8c11c14c1cbc73729446b2fba36eeddb",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC0 1.0",
+      "credit": "Corythosaurus model by Model Magic (CC0 / Public Domain, via Printables)",
+      "source_url": "https://www.printables.com/model/1777347-dinosaur-art-corythosaurus",
+      "pitch": 1.5707963267948966
+    },
+    "daspletosaurus": {
+      "file": "daspletosaurus.glb",
+      "bytes": 3000704,
+      "sha256": "d434926371a829cebfa37494f3d12b1e5d170564f91ecf805223daac8f9b1cfe",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Daspletosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate unposed sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/311875-despletosaurus-figurine",
+      "pitch": 1.5707963267948966
+    },
+    "maiasaura": {
+      "file": "maiasaura.glb",
+      "bytes": 3000604,
+      "sha256": "fc1216245f32f251ac6b808f8586bf2964f1ec5fbde61c9f11fdd7f767a49086",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Maiasaura model by Pan Wolodyjowski (CC-BY 4.0, via Printables; STL->glTF with applied countershading)",
+      "source_url": "https://www.printables.com/model/672379-maiasaura",
+      "pitch": 1.5707963267948966
+    }
+  }
+}

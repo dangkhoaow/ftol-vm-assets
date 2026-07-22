@@ -1,0 +1,7 @@
+Rune Keeper
+Adapted from arikwex/runekeeper (Runekeeper)
+MIT License - Copyright (c) 2023 Ariel Wexler
+https://github.com/arikwex/runekeeper
+
+Draw symbols to move the runestone and clear enemies.
+Site adaptation: robots noindex on the iframe document.

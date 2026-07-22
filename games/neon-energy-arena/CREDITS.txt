@@ -1,0 +1,9 @@
+Neon Energy Arena
+Adapted from ou178/neon-deep-space (MIT, Copyright 2025 ou178).
+https://github.com/ou178/neon-deep-space
+
+Site adapt (freetoolonline.com):
+- English UI rebrand (removed Chinese chrome + Geometry War phrasing)
+- localStorage keys namespaced to ftol:neonenergyarena:*
+- noindex on engine HTML; screenshot PNGs excluded from runtime bundle
+- LICENSE + this CREDITS ship beside the game files

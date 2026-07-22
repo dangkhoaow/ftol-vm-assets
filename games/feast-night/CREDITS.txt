@@ -1,0 +1,7 @@
+Feast Night
+Adapted from wololoa/js13k2023 (js13kGames 2023 entry "FEAST NIGHT")
+MIT License - Copyright (c) 2023 Almar
+https://github.com/wololoa/js13k2023
+
+Uses ZzFX (KilledByAPixel) and lightgl.js (evanw) as vendored/inlined in the competition build.
+Site adaptation: robots noindex on the iframe document; pointer-lock promise rejections swallowed for iframe/headless hosts.

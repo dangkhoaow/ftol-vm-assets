@@ -1,0 +1,65 @@
+{
+    "redApple": {
+        "id": "redApple",
+        "texture": "assets/items/apple.png",
+        "display_name": "Manzana Roja",
+        "description": "Una manzana roja jugosa. Restaura un poco de salud.",
+        "type": "consumable",
+        "use": { "action": "heal", "amount": 2 },
+        "heals": 2
+    },
+    "rustyIronSword": {
+        "id": "rustyIronSword",
+        "texture": "assets/items/rusty_iron_sword.png",
+        "display_name": "Espada Oxidada",
+        "description": "Una espada vieja y oxidada. Aún sirve.",
+        "type": "equipment",
+        "slot": "weapon",
+        "stats": { "attack": 1 }
+    },
+    "ironSword": {
+        "id": "ironSword",
+        "texture": "assets/items/iron_sword.png",
+        "display_name": "Espada de Hierro",
+        "description": "Una espada de hierro sólida y confiable.",
+        "type": "equipment",
+        "slot": "weapon",
+        "stats": { "attack": 2 }
+    },
+    "bronzeSword": {
+        "id": "bronzeSword",
+        "texture": "assets/items/bronze_sword.png",
+        "display_name": "Espada de Bronce",
+        "description": "Más ligera que el hierro, igual de letal.",
+        "type": "equipment",
+        "slot": "weapon",
+        "stats": { "attack": 3 }
+    },
+    "titaniumSword": {
+        "id": "titaniumSword",
+        "texture": "assets/items/titanium_sword.png",
+        "display_name": "Espada de Titanio",
+        "description": "La más poderosa de todas. Corta el aire.",
+        "type": "equipment",
+        "slot": "weapon",
+        "stats": { "attack": 5 }
+    },
+    "leatherArmour": {
+        "id": "leatherArmour",
+        "texture": "assets/items/leather_armour.png",
+        "display_name": "Armadura de Cuero",
+        "description": "Protección básica pero efectiva.",
+        "type": "equipment",
+        "slot": "armor",
+        "stats": { "defense": 1 }
+    },
+    "stainlessSteelShield": {
+        "id": "stainlessSteelShield",
+        "texture": "assets/items/stainless_steel_shield.png",
+        "display_name": "Escudo de Acero",
+        "description": "Un escudo resistente que absorbe golpes.",
+        "type": "equipment",
+        "slot": "offhand",
+        "stats": { "defense": 1 }
+    }
+}

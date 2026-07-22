@@ -1,0 +1,9 @@
+Mono Paddle Duel
+Adapted from flancast90/cursor-arcade-games pong module (MIT, Copyright 2026 flancast90).
+https://github.com/flancast90/cursor-arcade-games
+
+Site adapt (freetoolonline.com):
+- VS Code acquireVsCodeApi stubbed to localStorage ftol:monopaddleduel:storage
+- Single-game extract (pong only); auto-start paddle duel
+- Rebranded Mono Paddle Duel / Paddle Duel; noindex iframe document
+- Fire123 2026-07-17

@@ -1,0 +1,2 @@
+Orbital Radius Shooter adapted from jackrugile/radius-raid-js13k (MIT, Copyright 2014 Jack Rugile).
+Audio: jsfxr (MIT). js13kGames 2013 entry.
