@@ -1311,16 +1311,19 @@ styracosaurus.glb
             stls{name} - no getDownloadLink mutation needed this time.
             Blender headless hangs at 0% CPU indefinitely on this machine
             (re-confirmed a third time) - converted via plain Python 3 +
-            trimesh 4.12.2, no Blender dependency. Raw OBJ is Y-up but
-            assembled upside down (frill/horns near Y-min, legs near
-            Y-max) - fixed via manifest pitch=pi (180deg about X, applied
-            before normalize/center/ground, same mechanism as the
-            corythosaurus/daspletosaurus/maiasaura convention). No baked
-            texture in the source (single bare usemtl, no .mtl file) -
-            applied height-based vertex-color countershading (warm dark
-            brown at the dorsal/frill end fading to pale cream at the
-            ventral/leg end). No decimation needed (23,538 faces already
-            compact). Render-verified via matplotlib scatter-projection
-            checks before and after simulating the runtime pitch
-            transform: legs plant on the ground, frill and horns rise
-            correctly overhead, tail trails back at mid-height.
+            trimesh 4.12.2, no Blender dependency. No baked texture in the
+            source (single bare usemtl, no .mtl file). SELF-CORRECTED (v2,
+            same fire): an initial pass misread an ambiguous scatter plot
+            as upside down and shipped a manifest pitch=pi "fix" - this was
+            WRONG and broke a model that was already standing correctly; a
+            live headless render screenshot showed the swapped-in model on
+            its head. Re-diagnosed with a proper triangulated-mesh render:
+            the raw OBJ is ALREADY Y-up and correctly posed (legs at
+            raw-y-min, head/frill/horn at raw-y-max). Removed the pitch
+            field entirely and corrected the countershading direction to
+            match (dark warm brown at the head/dorsal end, pale cream at
+            the legs/ventral end - the v1 GLB had this backwards too). No
+            decimation needed (23,538 faces already compact). Re-verified
+            against a live headless render screenshot of the corrected
+            model: legs planted on the ground, frill and horns correctly
+            overhead, tail trailing back at mid-height.
