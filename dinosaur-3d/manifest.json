@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.50.2",
+  "version": "1.51.0",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -391,7 +391,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
     "microraptor": {
@@ -911,8 +911,7 @@
       "targetLenUnits": 12,
       "license": "CC0 1.0",
       "credit": "Corythosaurus model by Model Magic (CC0 / Public Domain, via Printables)",
-      "source_url": "https://www.printables.com/model/1777347-dinosaur-art-corythosaurus",
-      "pitch": 1.5707963267948966
+      "source_url": "https://www.printables.com/model/1777347-dinosaur-art-corythosaurus"
     },
     "daspletosaurus": {
       "file": "daspletosaurus.glb",
@@ -922,8 +921,7 @@
       "targetLenUnits": 12,
       "license": "CC-BY-SA 4.0",
       "credit": "Daspletosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate unposed sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
-      "source_url": "https://www.printables.com/model/311875-despletosaurus-figurine",
-      "pitch": 1.5707963267948966
+      "source_url": "https://www.printables.com/model/311875-despletosaurus-figurine"
     },
     "maiasaura": {
       "file": "maiasaura.glb",
@@ -933,8 +931,17 @@
       "targetLenUnits": 12,
       "license": "CC-BY 4.0",
       "credit": "Maiasaura model by Pan Wolodyjowski (CC-BY 4.0, via Printables; STL->glTF with applied countershading)",
-      "source_url": "https://www.printables.com/model/672379-maiasaura",
-      "pitch": 1.5707963267948966
+      "source_url": "https://www.printables.com/model/672379-maiasaura"
+    },
+    "dakotaraptor": {
+      "file": "dakotaraptor.glb",
+      "bytes": 423668,
+      "sha256": "1cb214a468e60fbd898f2e50b9b3b144fe9ec895149ef5d29ad8a8fd81f05589",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Dakotaraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/764473-dakotaraptor"
     }
   }
 }

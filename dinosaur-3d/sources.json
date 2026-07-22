@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.50.2",
+  "version": "1.51.0",
   "models": {
     "wendiceratops": {
       "slug": "wendiceratops",
@@ -987,6 +987,19 @@
       "notes": "dino3d-discovery-loop-runbook fire243 (2026-07-21). Printables 672379 Maiasaura by Pan Wolodyjowski, license id 1 CC-BY. STL id 2828114 via getDownloadLink (137,676,884 bytes). Binary STL 'daz' byte hit is float false-positive (no Genesis/jurassic/dinoraul ASCII). Single loose part. Rejected NC Revised Maiasaura 995273 and Daz-patterned seth tyrannotitan 1331397. Blender 4.5.11: identity Y-up (Z=length), ground Y=0, decimate 2.75M->25k tris, height countershading, GLB no Draco (~3.0MB sha256 af92ebf1.../reexport). NHM: length 9.0 m, weight 2500 kg, Late Cretaceous 80-75 Mya, USA, herbivore.",
       "discovered": "2026-07-21-fire243",
       "model_search_checked_iso": "2026-07-21T15:20:00.000Z"
+    },
+    "dakotaraptor": {
+      "slug": "dakotaraptor",
+      "file": "dakotaraptor.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/764473-dakotaraptor",
+      "origin_download": "https://files.printables.com/media/prints/764473/stls/5955045_5476fcaf-d64f-4103-976b-c35b97cdd5ee_fa4dee02-1295-49ee-9666-4e947409c567/hd_dakotaraptor_adult.obj",
+      "printables_id": 764473,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Dakotaraptor model by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "notes": "dino3d-discovery-loop-runbook LEAN one-off fire (2026-07-22). Sourced via printables.com/search/models?q=dakotaraptor -> 2 candidates: id 720998 'Dakotaraptor Figurine' by DragonArtist15 REJECTED (CC-BY-NC-SA, noncommercial not admissible); id 764473 'dakotaraptor' by seth the yutyrannus ACCEPTED (CC-BY-SA 4.0, confirmed via GraphQL query{print(id:764473){license{name}}}). Rip-check: same creator's carcharodontosaurus upload (id 752989) was REJECTED this fire for an overt franchise-rip filename ('jurassic_world_facts_carcharodontosaurus_hbx39.obj'); this dakotaraptor file's OBJ (hd_dakotaraptor_adult.obj, byte-exact 2,193,994 bytes vs GraphQL fileSize) has a generic Aspose.3D-exporter header (tool credit only, not a franchise signature) and material name 'Dakotaraptor' (matches species, not a rip token) - grepped for daz/jurassic/dino_raul/lmx3d/mattel/citipati/sammy, none found. Geometry already Y-up with feet near Y=0 (extents X=3.20/Y=3.50/Z=9.67, min Y=-0.0048) - a natural standing pose, NOT a print-posed lying/upright-on-spine STL like prior conversions, so NO yaw/pitch rotation was applied. Converted via pure-Python trimesh (Blender was unavailable in this environment session - repeated hangs on `blender --version` itself, an infra issue, not a model issue): OBJ load + merge_vertices (13634->13606 verts, 17074 faces, no decimation library available in this session so shipped at native ~17k tris, within the precedent range of prior unshipped conversions e.g. becklespinax 9606 faces), Y-height-based vertex-color countershading (dark-olive-back RGB 0.22/0.27/0.15 to pale-tan-belly RGB 0.75/0.66/0.47), exported Y-up GLB (no Draco - site GLTFLoader has no DRACOLoader wired). Render-verified via matplotlib tri-surface plots (3/4, side, top-down): clean bipedal feathered-raptor silhouette, head up, legs planted, arms/wings extended to the sides, tail trailing back - matches the shipped Dromaeosaur family precedent (deinonychus, utahraptor, velociraptor). NOT YET WIRED to a page this fire (model-sourcing + vendoring only, matching the fire225/236/237 precedent of vendoring-only fires under time-boxing) - added to _model_available_backlog.ready in the wrapper ledger for the next fire that finds the lock free."
     }
   }
 }

@@ -1213,3 +1213,29 @@ corythosaurus.glb
             getDownloadLink. Flat display-base island stripped. Blender 4.5.11
             headless (-90 X Y-up, countershading, ~16k faces, no Draco).
             Render-verified crested hadrosaur silhouette.
+
+dakotaraptor.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/764473-dakotaraptor
+  Origin:   https://files.printables.com/media/prints/764473/stls/5955045_5476fcaf-d64f-4103-976b-c35b97cdd5ee_fa4dee02-1295-49ee-9666-4e947409c567/hd_dakotaraptor_adult.obj
+  Note:     dino3d-discovery-loop-runbook LEAN one-off fire (2026-07-22). CC-BY-SA
+            4.0 confirmed via GraphQL query{print(id:764473){license{name}}}.
+            Sibling candidate id 720998 "Dakotaraptor Figurine" (DragonArtist15)
+            REJECTED - CC-BY-NC-SA, noncommercial not admissible. Same creator's
+            carcharodontosaurus upload (id 752989) REJECTED this fire for an overt
+            franchise-rip filename ("jurassic_world_facts_carcharodontosaurus_
+            hbx39.obj"); this OBJ's filename/material name ("Dakotaraptor") and a
+            grep for daz/jurassic/dino_raul/lmx3d/mattel/citipati/sammy showed no
+            rip signature (only a generic Aspose.3D exporter tool-credit header).
+            OBJ 2,193,994 bytes byte-exact vs GraphQL fileSize. Geometry already
+            Y-up, feet near Y=0 (natural standing pose, not a print-posed lying
+            STL) - no yaw/pitch rotation applied. Converted via pure-Python
+            trimesh (Blender hung on `blender --version` itself this session -
+            infra issue, not a model issue): merge_vertices (13634->13606 verts,
+            17074 faces, no decimation lib available so shipped at native ~17k
+            tris), Y-height vertex-color countershading (dark-olive-back RGB
+            0.22/0.27/0.15 to pale-tan-belly RGB 0.75/0.66/0.47), Y-up GLB export,
+            no Draco. Render-verified via matplotlib tri-surface plots (3/4, side,
+            top-down): clean bipedal feathered-raptor silhouette, head up, legs
+            planted, arms/wings out, tail trailing back.
