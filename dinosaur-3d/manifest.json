@@ -391,7 +391,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
     "microraptor": {
@@ -911,7 +911,8 @@
       "targetLenUnits": 12,
       "license": "CC0 1.0",
       "credit": "Corythosaurus model by Model Magic (CC0 / Public Domain, via Printables)",
-      "source_url": "https://www.printables.com/model/1777347-dinosaur-art-corythosaurus"
+      "source_url": "https://www.printables.com/model/1777347-dinosaur-art-corythosaurus",
+      "pitch": 1.5707963267948966
     },
     "daspletosaurus": {
       "file": "daspletosaurus.glb",
@@ -921,7 +922,8 @@
       "targetLenUnits": 12,
       "license": "CC-BY-SA 4.0",
       "credit": "Daspletosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate unposed sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
-      "source_url": "https://www.printables.com/model/311875-despletosaurus-figurine"
+      "source_url": "https://www.printables.com/model/311875-despletosaurus-figurine",
+      "pitch": 1.5707963267948966
     },
     "maiasaura": {
       "file": "maiasaura.glb",
@@ -931,7 +933,8 @@
       "targetLenUnits": 12,
       "license": "CC-BY 4.0",
       "credit": "Maiasaura model by Pan Wolodyjowski (CC-BY 4.0, via Printables; STL->glTF with applied countershading)",
-      "source_url": "https://www.printables.com/model/672379-maiasaura"
+      "source_url": "https://www.printables.com/model/672379-maiasaura",
+      "pitch": 1.5707963267948966
     }
   }
 }
