@@ -952,6 +952,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Gorgonops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; re-hosted derivative stays under the same ShareAlike license)",
       "source_url": "https://www.printables.com/model/761847-gorgonops"
+    },
+    "woolly-mammoth": {
+      "file": "woolly-mammoth.glb",
+      "bytes": 442328,
+      "sha256": "b86c46cbd9b74463828b40e81880ebcf83e6fd4bf606f1be5b7cec1bc861e134",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Woolly Mammoth model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with height-based countershading)",
+      "source_url": "https://www.printables.com/model/764411-woolly-mammoth"
     }
   }
 }

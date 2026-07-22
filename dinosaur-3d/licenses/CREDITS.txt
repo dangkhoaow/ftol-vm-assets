@@ -1268,3 +1268,31 @@ gorgonops.glb
             0.68/0.58/0.42), binary glTF export (191,348 bytes). Render-verified a
             third time on the final colored+decimated GLB: clean, correctly
             proportioned, unmistakably a saber-toothed gorgonopsid silhouette.
+
+woolly-mammoth.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/764411-woolly-mammoth
+  Origin:   https://media.printables.com/media/prints/764411/stls/5954710_6de69e95-a702-4ea2-bbb9-c924bbeddee2_562b995f-d084-439d-aa9e-679583884b7a/woolly_mammoth_2.obj
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-22/23).
+            CC-BY-SA 4.0 (license id 2) confirmed via curl-fetched Printables
+            page JSON. OBJ (Aspose.3D exporter) 2,872,465 bytes byte-exact vs
+            anonymous GraphQL print(id:764411){stls{fileSize}}; anonymous HTTP
+            200 from the media.printables.com GCS bucket (flat filePreviewPath
+            heuristic, no getDownloadLink mutation needed). Rip-check clean
+            (no daz/dinoraul/jurassic/turbosquid/cgtrader substrings; generic
+            Object_4/Material.003 naming). Blender headless hangs at 0% CPU
+            indefinitely on this machine (re-confirmed, same as dakotaraptor +
+            gorgonops) - converted via plain Python 3 + trimesh 4.12.2, no
+            Blender dependency. Merged 22 print-optimized sub-parts (trunk,
+            tusks, legs, ears, toenail pairs) into one mesh; NO rotation
+            needed - the raw OBJ was ALREADY Y-up with feet at y~0.02.
+            Centered X/Z, grounded min-Y at 0, height-based vertex-color
+            countershading (dark reddish-brown fur RGB 0.32/0.20/0.11 at the
+            back/hump to paler tan-brown RGB 0.55/0.42/0.28 at the legs/
+            underside). No decimation needed (21,232 faces already compact).
+            Render-verified via 2 independent matplotlib Poly3DCollection
+            silhouette renders (side profile, front view): unmistakable
+            woolly mammoth - domed head, curved crossing tusks, hanging
+            trunk, humped shoulder, short tail, 4 legs planted, correctly
+            proportioned, not inverted.
