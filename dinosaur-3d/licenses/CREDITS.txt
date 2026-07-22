@@ -1296,3 +1296,31 @@ woolly-mammoth.glb
             woolly mammoth - domed head, curved crossing tusks, hanging
             trunk, humped shoulder, short tail, 4 legs planted, correctly
             proportioned, not inverted.
+
+styracosaurus.glb
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/747501-styracosaurus
+  Origin:   https://media.printables.com/media/prints/747501/stls/5836122_1c478a51-1250-49a8-aac6-f463a9f7b39a_9971241f-b06f-4006-aa1f-3314b9b2542c/styracosaurus.obj
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN fire (2026-07-22/23).
+            License CC-BY-SA 4.0 (id 2) cross-referenced against the
+            becklespinax/kentrosaurus id=2 precedent. File is a Wavefront
+            OBJ (Aspose.3D exporter, byte-exact 3,496,550 bytes vs GraphQL
+            fileSize), found by pattern-matching the GraphQL-supplied
+            previewFile.filePreviewPath folder with the real filename from
+            stls{name} - no getDownloadLink mutation needed this time.
+            Blender headless hangs at 0% CPU indefinitely on this machine
+            (re-confirmed a third time) - converted via plain Python 3 +
+            trimesh 4.12.2, no Blender dependency. Raw OBJ is Y-up but
+            assembled upside down (frill/horns near Y-min, legs near
+            Y-max) - fixed via manifest pitch=pi (180deg about X, applied
+            before normalize/center/ground, same mechanism as the
+            corythosaurus/daspletosaurus/maiasaura convention). No baked
+            texture in the source (single bare usemtl, no .mtl file) -
+            applied height-based vertex-color countershading (warm dark
+            brown at the dorsal/frill end fading to pale cream at the
+            ventral/leg end). No decimation needed (23,538 faces already
+            compact). Render-verified via matplotlib scatter-projection
+            checks before and after simulating the runtime pitch
+            transform: legs plant on the ground, frill and horns rise
+            correctly overhead, tail trails back at mid-height.

@@ -953,6 +953,17 @@
       "credit": "Gorgonops model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; re-hosted derivative stays under the same ShareAlike license)",
       "source_url": "https://www.printables.com/model/761847-gorgonops"
     },
+    "styracosaurus": {
+      "file": "styracosaurus.glb",
+      "bytes": 502816,
+      "sha256": "4e5bffd581d538c49daea9bd8af091f044484369f5a31cfc0b35e10f70d0a677",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Styracosaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; re-hosted derivative stays under the same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/747501-styracosaurus",
+      "pitch": 3.141592653589793
+    },
     "woolly-mammoth": {
       "file": "woolly-mammoth.glb",
       "bytes": 442328,
