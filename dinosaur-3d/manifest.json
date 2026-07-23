@@ -972,6 +972,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Woolly Mammoth model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with height-based countershading)",
       "source_url": "https://www.printables.com/model/764411-woolly-mammoth"
+    },
+    "estemmenosuchus": {
+      "file": "estemmenosuchus.glb",
+      "bytes": 240884,
+      "sha256": "0285ebd248ab932f4d48e183e1a1edd992fc676e82819e434439fa85517d437c",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Estemmenosuchus Mirabilis model by Pan Wolodyjowski (CC-BY 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/664469-estemmenosuchus-mirabilis"
     }
   }
 }

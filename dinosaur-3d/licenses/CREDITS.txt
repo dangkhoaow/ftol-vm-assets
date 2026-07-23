@@ -1327,3 +1327,32 @@ styracosaurus.glb
             against a live headless render screenshot of the corrected
             model: legs planted on the ground, frill and horns correctly
             overhead, tail trailing back at mid-height.
+
+estemmenosuchus.glb
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0
+  Via:      Printables - https://www.printables.com/model/664469-estemmenosuchus-mirabilis
+  Origin:   https://media.printables.com/media/prints/664469/stls/5231536_ecb33f77-5b6e-470b-8b77-4873856d0946_ac710651-d03b-4931-85de-eacf061eb98c/estemmenosuchus.stl
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-23).
+            License confirmed via anonymous GraphQL query{print(id:664469)
+            {license{id name}}} -> id 1 = "Creative Commons - Attribution"
+            (no NC/SA restriction). Creator already has multiple clean
+            CC-BY/CC-BY-SA entries in this manifest (wendiceratops,
+            pinacosaurus, panoplosaurus) - not a suspected-rip account;
+            description/tags match the real animal, category "Animals"
+            (not Games/Movies). Single binary STL (1,780,800 triangles,
+            89,040,084 bytes, byte-exact vs GraphQL fileSize), downloaded
+            anonymously via the flat filePreviewPath-folder + lowercased-
+            filename heuristic. ORIENTATION: raw STL is ALREADY Y-up and
+            correctly posed for standing - confirmed quantitatively (horn-
+            boss vertices cluster at one Z extreme, tail at the other) AND
+            visually via a full Poly3DCollection triangulated render at
+            multiple angles (legs planted, horned head at one end, tail
+            tapering at the other, no inversion). NO pitch/yaw needed.
+            Converted via Python 3 + open3d 0.19.0 (Blender hangs on this
+            machine) - quadric-decimated 1,780,800 -> 12,000 triangles,
+            recentered X/Z, grounded min-Y at 0, scaled to 12 scene units,
+            height-based countershading (dark warm brown dorsal to pale tan
+            ventral), binary glTF export (240,884 bytes). Render-verified a
+            second time on the final GLB - clean, correctly-proportioned,
+            unmistakable Estemmenosuchus silhouette, feet at y=0.
