@@ -1470,3 +1470,44 @@ dunkleosteus.glb
             bytes). Render-verified a second time on the final GLB reloaded
             from disk - clean, unmistakable Dunkleosteus silhouette,
             countershading correct, fin-base at y=0, not inverted.
+
+denversaurus.glb
+  Title:    Denversaurus Schlessmani
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0
+  Via:      Printables - https://www.printables.com/model/643348-denversaurus-schlessmani
+  Origin:   https://media.printables.com/media/prints/643348/stls/5079539_4af1bf10-24a7-4546-8868-e740ee98f5fc_06b18b8e-d406-4ef9-9845-2cf32d09900c/denversaurus.stl
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-23,
+            second ship this session). License confirmed via anonymous
+            GraphQL query{print(id:643348){license{name}}} -> "Creative
+            Commons - Attribution" (no NC/SA/ND restriction). Same trusted
+            creator already vendored for estemmenosuchus/placodus in prior
+            fires - not a suspected-rip account. Rejected this fire on
+            license or provenance grounds: smilodon 1227440 (3DPau,
+            CC-BY-NC-ND), smilodon 764470 + carcharodontosaurus 752989
+            (both "seth the yutyrannus", already flagged risky in a prior
+            fire's rip-check sweep), meglodon 532996 (Public Domain but
+            generic "articulated shark" remix, empty description, no
+            stls[] returned - inconclusive), Land Shark Megalo Rex 484470 +
+            Sea of Thieves Megalodon 303991 (both CC-BY-NC, latter also a
+            video-game-IP derivative). Single binary STL (4,715,840
+            triangles, 235,792,084 bytes, byte-exact vs GraphQL fileSize).
+            ORIENTATION: raw STL is Z-up with Y as the head-tail length axis
+            (same layout as dunkleosteus) - head end determined via
+            cross-sectional-width binning along Y (short 15-unit taper on
+            +Y = skull/snout; long 46-unit taper on -Y = tapering tail),
+            confirmed visually against the Printables preview thumbnail.
+            Applied rotation (x,y,z)->(x,z,-y) [-90 deg about X] baked into
+            the exported geometry. Converted via Python 3 + open3d 0.19.0 -
+            quadric-decimated 4,715,840 -> 12,000 triangles, recentered
+            X/Z, grounded min-Y at 0, scaled to 12 scene units,
+            height-based countershading (dark olive-brown armor dorsal
+            fading to pale bony ventral), binary glTF export (385,252
+            bytes). Render-verified via 2D axis-pair scatter projections of
+            the final GLB reloaded from disk (a first-attempt 3D
+            Poly3DCollection render produced a misleading artifact from
+            mpl's lack of depth-sorting and was discarded) - side view
+            shows a standing quadruped with legs at y=0 and an arched
+            armored back, top view shows the expected shield-shaped
+            nodosaur silhouette tapering to a tail point. Not inverted, not
+            standing on its tail.
