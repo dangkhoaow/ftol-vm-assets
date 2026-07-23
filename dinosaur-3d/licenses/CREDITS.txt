@@ -1598,3 +1598,27 @@ saurosuchus.glb
             mosasaurus/deinosuchus. Re-hosted derivative stays under the
             same ShareAlike license (CC-BY-SA 4.0). ShareAlike: re-hosted
             derivative remains under CC-BY-SA 4.0.
+
+Anchiornis (anchiornis.glb)
+  Title:    Anchiornis figurine
+  Author:   DragonArtist15 (Printables)
+  License:  Creative Commons - Attribution - Share Alike (CC-BY-SA 4.0)
+  Source:   https://www.printables.com/model/260666-anchiornis-figurine
+  Origin:   https://media.printables.com/media/prints/260666/stls/2329511_4828d5a1-f5b3-4b13-a3b9-6b09042369dc/anchornis1.stl
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN fire (2026-07-23/24).
+            Found via a Printables creator-catalogue sweep (same creator
+            supplied the already-vendored CC0 psittacosaurus). Picked
+            Anchornis1.stl (one of 5 posed variants, all CC-BY-SA 4.0),
+            a leaping/gliding pose with wings spread and tail trailing.
+            Rip-check clean (no material names in the STL; generic
+            filenames; creator's catalogue reads as original ZBrush
+            sculpts). Decimated 3,427,532 -> 15,000 triangles via
+            open3d quadric decimation (fast_simplification is broken
+            under this machine's Python 3.9; open3d used directly).
+            Orientation resolved empirically via a headless
+            Playwright+swiftshader render test against 4 candidate
+            pitch values using the SAME vendored three.js/GLTFLoader
+            the live viewer uses - pitch=-pi/2 (Z-up STL -> Y-up)
+            renders correctly grounded and recognizable; 0/+pi/pi all
+            stood it on its head or tail. Re-hosted derivative stays
+            under the same ShareAlike license (CC-BY-SA 4.0).
