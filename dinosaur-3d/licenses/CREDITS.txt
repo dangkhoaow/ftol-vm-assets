@@ -8,6 +8,18 @@ uploader applied, because the underlying studio copyright is not the uploader's
 to relicense.
 
 -----------------------------------------------------------------------------
+smilodon.glb
+  Title:    Low Poly Ice Age - Saber-tooth tiger (Smilodon)
+  Author:   Riley (https://rkuhlf-assets.itch.io)
+  License:  CC0 1.0 Universal (public domain dedication) - no attribution required
+  Via:      itch.io - https://rkuhlf-assets.itch.io/ice-age
+  Origin:   IceAge.zip / ToExport/blend/SabreTooth.blend
+  Note:     Pack labelled "Saber-tooth tiger" - the standard vernacular for
+            Smilodon, same pack already vendored for woolly-mammoth.glb and
+            ground-sloth.glb (the La Brea Ice Age trio). Credit given
+            voluntarily.
+
+-----------------------------------------------------------------------------
 tyrannosaurus-rex.glb
   Title:    T-Rex
   Author:   Quaternius (https://quaternius.com)

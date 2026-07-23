@@ -4,6 +4,16 @@
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
+    "smilodon": {
+      "file": "smilodon.glb",
+      "bytes": 111152,
+      "sha256": "14afedab86c9711bcb2b411e6ac05d7aa94b6ce57075ae29bdc5bceaabaafdac",
+      "kind": "fleshed",
+      "targetLenUnits": 8,
+      "license": "CC0 1.0",
+      "credit": "Saber-tooth cat model by Riley (CC0 1.0 Universal, via itch.io 'Low Poly Ice Age' asset pack - no attribution required, credit given voluntarily)",
+      "source_url": "https://rkuhlf-assets.itch.io/ice-age"
+    },
     "sinosauropteryx": {
       "file": "sinosauropteryx.glb",
       "bytes": 2940852,
