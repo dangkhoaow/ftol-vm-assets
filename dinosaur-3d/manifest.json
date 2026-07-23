@@ -4,6 +4,16 @@
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
+    "sinosauropteryx": {
+      "file": "sinosauropteryx.glb",
+      "bytes": 2940852,
+      "sha256": "c350661740a60b395f79e300cb27d818017390a2ace8f566dddc917c97e69cbc",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Sinosauropteryx Figurine model by DragonArtist15 (CC-BY-SA 4.0, via Printables; STL sculpt decimated 6.5M->35k tris, ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0)",
+      "source_url": "https://www.printables.com/model/324349-sinosauropteryx-figurine"
+    },
     "denversaurus": {
       "file": "denversaurus.glb",
       "bytes": 385252,

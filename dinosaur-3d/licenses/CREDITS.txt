@@ -1511,3 +1511,44 @@ denversaurus.glb
             armored back, top view shows the expected shield-shaped
             nodosaur silhouette tapering to a tail point. Not inverted, not
             standing on its tail.
+
+sinosauropteryx.glb
+  Title:    Sinosauropteryx Figurine
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/324349-sinosauropteryx-figurine
+  Origin:   https://files.printables.com/media/prints/324349/stls/2796334_720acf19-330d-474e-9401-c3dc8fc3f386/sinosauropteryxfigurine.stl
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-23).
+            License confirmed via anonymous GraphQL
+            query{print(id:324349){license{name}}} -> "Creative Commons -
+            Attribution - Share Alike" (ShareAlike required: this re-hosted
+            derivative remains CC-BY-SA 4.0). Author DragonArtist15 states
+            the model is their own original sculpt (not a franchise rip;
+            no Dinoraul/DR_ or JWE/JWE2 naming-signature match). Single
+            binary STL fetched via GraphQL getDownloadLink (source:
+            model_detail), file id 1444156 "SinosauropteryxFigurine.stl"
+            (6,507,028 triangles pre-decimation, 325,351,984 bytes).
+            Converted headlessly via Blender 4.5 CLI (--background
+            --python, bpy is Blender's own module - no separate bpy pip
+            env was available on this machine): imported STL, recentered
+            on the combined bounding box (X/Y centered, min-Z grounded),
+            single Principled BSDF material (skin-tone base color, since
+            STL carries no color/texture), Decimate modifier (collapse,
+            ratio 0.00922, 6.5M -> 35,000 triangles), exported Y-up binary
+            glTF (2,940,852 bytes). Render-verified with two independent
+            headless Blender EEVEE renders (front 3/4 view + side profile,
+            grey world background, dual sun lights): confirms a
+            two-legged feathered theropod silhouette with visibly
+            clawed feet, thin legs, long tapering tail, and a
+            forward-held head - not a blob, not inverted, not standing
+            on its tail. (An earlier single-sun black-background test
+            render made the thin legs look like disconnected floating
+            dots purely from grazing-angle lighting on cylindrical
+            geometry - a lighting artifact, not a mesh defect; the
+            dual-light grey-background re-render resolved it and the
+            mesh.separate(type="LOOSE") check confirmed the whole body
+            is one connected component, no stray print-support
+            fragments.) glb-orientation-audit.py: 0 suspects (Y is not
+            the dominant bounding-box axis - length runs along the
+            model's Y-forward axis pre-export, matching the manifest's
+            no-pitch/no-yaw default).

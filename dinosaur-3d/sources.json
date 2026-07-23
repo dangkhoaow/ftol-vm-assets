@@ -2,6 +2,18 @@
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
   "version": "1.55.0",
   "models": {
+    "sinosauropteryx": {
+      "slug": "sinosauropteryx",
+      "file": "sinosauropteryx.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "DragonArtist15",
+      "source_url": "https://www.printables.com/model/324349-sinosauropteryx-figurine",
+      "origin_download": "https://files.printables.com/media/prints/324349/stls/2796334_720acf19-330d-474e-9401-c3dc8fc3f386/sinosauropteryxfigurine.stl",
+      "printables_id": 324349,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Sinosauropteryx Figurine model by DragonArtist15 (CC-BY-SA 4.0, via Printables; STL sculpt decimated 6.5M->35k tris, ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0)"
+    },
     "denversaurus": {
       "slug": "denversaurus",
       "file": "denversaurus.glb",
