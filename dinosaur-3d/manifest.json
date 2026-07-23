@@ -1,9 +1,19 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.52.0",
+  "version": "1.53.0",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
+    "placodus": {
+      "file": "placodus.glb",
+      "bytes": 117448,
+      "sha256": "7f61a5ef08ce47acc3a9713049e1dad5046b15e44a0196e8296825691a998750",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Placodus model by Pan Wolodyjowski (CC-BY 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/664415-placodus"
+    },
     "wendiceratops": {
       "file": "wendiceratops.glb",
       "bytes": 1027088,

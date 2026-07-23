@@ -1356,3 +1356,34 @@ estemmenosuchus.glb
             ventral), binary glTF export (240,884 bytes). Render-verified a
             second time on the final GLB - clean, correctly-proportioned,
             unmistakable Estemmenosuchus silhouette, feet at y=0.
+
+placodus.glb
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0
+  Via:      Printables - https://www.printables.com/model/664415-placodus
+  Origin:   https://media.printables.com/media/prints/664415/stls/5231185_473294f3-3e40-45cd-bdf0-c2fcc6d3b66f_444658bf-d597-43fe-a48e-21b76fa511f2/placodus.stl
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-23).
+            License confirmed via anonymous GraphQL query{print(id:664415)
+            {license{id name}}} -> id 1 = "Creative Commons - Attribution"
+            (no NC/SA restriction). Same trusted creator already vendored
+            cleanly for estemmenosuchus/wendiceratops/pinacosaurus - not a
+            suspected-rip account; model id numerically adjacent to the
+            verified estemmenosuchus upload batch, title/tags match the
+            real animal, category "Animals". Single binary STL (4,055,104
+            triangles, 202,755,284 bytes, byte-exact vs GraphQL fileSize),
+            downloaded anonymously via the flat filePreviewPath-folder +
+            lowercased-filename heuristic. ORIENTATION: raw STL is ALREADY
+            correctly posed, no rotation needed - confirmed via a bilateral
+            mirror nearest-neighbor test (STL-X is the left-right symmetry
+            axis, STL-Y is dorsal-ventral/up, STL-Z is the head-tail length
+            axis) AND visually via a shaded render showing feet planted,
+            head with visible mouth at one end, tail tapering at the other.
+            NO pitch/yaw needed. Converted via Python 3 + open3d 0.19.0 +
+            trimesh 4.12.2 (quadric decimation produced holes on this mesh;
+            simplify_vertex_clustering at voxel=diag/60 succeeded cleanly
+            at 6,081 triangles) - recentered X/Z, grounded min-Y at 0,
+            scaled to 12 scene units, height-based countershading (dark
+            warm brown dorsal to pale tan ventral), binary glTF export
+            (117,448 bytes). Render-verified on the final GLB - clean,
+            correctly-proportioned, stocky placodont silhouette, feet at
+            y=0, not inverted.
