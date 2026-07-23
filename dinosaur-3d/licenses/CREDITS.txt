@@ -1574,3 +1574,27 @@ Yi Qi Figurine
   glb-orientation-audit.py, SIGN NOT YET LIVE-VERIFIED (see sources.json
   notes for the yi-qi entry) - re-check with a real render probe before
   the /dinosaur-3d/yi-qi.html page ships.
+
+-----------------------------------------------------------------------------
+saurosuchus.glb
+  Title:    saurosuchus
+  Author:   seth the yutyrannus (Printables)
+  License:  Creative Commons - Attribution - Share Alike (CC-BY-SA 4.0)
+  Source:   https://www.printables.com/model/764459-saurosuchus
+  Origin:   https://files.printables.com/media/prints/764459/stls/5954986_7ebcabbf-2cbb-4917-a2f5-6bb3780629d4_d10061d1-e008-4963-889d-13655dde4fb5/saurosuchus1.obj
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN fire (2026-07-23/24).
+            Resolved a previously-stuck flat-filePreviewPath lead via the
+            getDownloadLink GraphQL mutation (byte-exact 672,095 bytes).
+            Rip-check clean (only the Aspose.3D exporter's own copyright
+            banner; generic Object_4/Material naming). OBJ already Y-up
+            with feet near y=0, no rotation needed. Converted via trimesh:
+            recentered X/Z, grounded min-Y to 0, height-based vertex-color
+            countershading (pale tan belly to dark olive-brown back).
+            Render-verified via 3 orthographic projections + a colored
+            side-profile render: correct quadrupedal archosaur silhouette
+            (long tail, 4 legs planted, elongated crocodile-like head with
+            visible teeth). NOT a dinosaur - a Late Triassic loricatan
+            pseudosuchian (dinosaur relative), same framing category as
+            mosasaurus/deinosuchus. Re-hosted derivative stays under the
+            same ShareAlike license (CC-BY-SA 4.0). ShareAlike: re-hosted
+            derivative remains under CC-BY-SA 4.0.
