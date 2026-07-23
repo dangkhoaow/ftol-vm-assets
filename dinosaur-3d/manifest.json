@@ -1002,6 +1002,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Beipiaosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate posed feathered sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
       "source_url": "https://www.printables.com/model/424475-beipiaosaurus-figurine"
+    },
+    "dunkleosteus": {
+      "file": "dunkleosteus.glb",
+      "bytes": 241000,
+      "sha256": "587423474da6be5e4cf0f95e5e8d3c5e536b5e1b78bb2f726d3262b7998ea4c2",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "Creative Commons - Attribution",
+      "credit": "Dunkleosteus model by StormCrow 13 (CC-BY, via Printables)",
+      "source_url": "https://www.printables.com/model/342483-dunkleosteus"
     }
   }
 }

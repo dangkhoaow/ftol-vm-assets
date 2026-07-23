@@ -1431,3 +1431,42 @@ beipiaosaurus.glb
             correctly-posed feathered theropod silhouette: head with
             visible beak/snout facing one end, legs planted, long
             feathered tail and arms clearly visible, not inverted.
+
+dunkleosteus.glb
+  Author:   StormCrow 13
+  License:  Creative Commons - Attribution
+  Via:      Printables - https://www.printables.com/model/342483-dunkleosteus
+  Origin:   https://media.printables.com/media/prints/342483/stls/2920823_3156d0db-ef5f-44ed-8fab-d9f990ed88a6/dunkleosteous.stl
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN one-off fire
+            (2026-07-23). NEW candidate, sourced+built+shipped same fire.
+            Three named "Dunkleosteus" listings found on Printables; picked
+            id 342483 (StormCrow 13) over two same-named listings by
+            "Brutus1717" (ids 1543972/1610872) whose single STL files are
+            named "Frantic Fulffy-2.stl" / "single_color-5.stl" - generic
+            filenames with zero connection to the subject, a
+            mislabel/rip-farm signature - REJECTED despite also being
+            nominally CC-BY. License CONFIRMED CC-BY (id 1, "Creative Commons
+            - Attribution") via anonymous GraphQL
+            query{print(id:342483){license{id name}}}; description "I wanted
+            a dunkleosteus mini so I made one" (personal creator, Patreon
+            link, no franchise/game tokens). Used the primary
+            "dunkleosteous.stl" file (not "_base", the separate
+            print-pedestal file) - confirmed via trimesh connected-component
+            analysis that this file is the fish alone with no pedestal disc.
+            ORIENTATION: raw STL is Z-up with Y as the head-tail length axis
+            (extent Y=106.6 >> X=40, Z=35.7), NOT already Y-up unlike
+            estemmenosuchus - applied a proper rotation (x,y,z)->(x,z,-y)
+            [-90 deg about X] baked into the exported geometry, verified
+            visually before/after via multi-angle Poly3DCollection renders
+            (post-rotation side profile shows a level-swimming fish: boxy
+            armored head with open jaw at one end, tapering tail with dorsal
+            fin at the other, pectoral fins hanging below, not inverted).
+            Converted via Python 3 + open3d 0.19.0 + trimesh 4.12.2 -
+            quadric-decimated 120,026 -> 12,000 triangles, recentered X/Z,
+            grounded min-Y at 0, scaled to 12 scene units, fix_normals for
+            consistent winding (mesh watertight post-export, positive
+            volume), height-based countershading (dark slate-grey armor
+            dorsal fading to pale bony ventral), binary glTF export (241,000
+            bytes). Render-verified a second time on the final GLB reloaded
+            from disk - clean, unmistakable Dunkleosteus silhouette,
+            countershading correct, fin-base at y=0, not inverted.
