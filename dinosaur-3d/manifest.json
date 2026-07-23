@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.55.0",
+  "version": "1.55.1",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -1041,8 +1041,7 @@
       "targetLenUnits": 12,
       "license": "Creative Commons - Attribution - Share Alike",
       "credit": "Yi Qi Figurine model by DragonArtist15 (CC-BY-SA 4.0, via Printables)",
-      "source_url": "https://www.printables.com/model/334211-yi-qi-figurine",
-      "pitch": 1.5707963267948966
+      "source_url": "https://www.printables.com/model/334211-yi-qi-figurine"
     }
   }
 }
