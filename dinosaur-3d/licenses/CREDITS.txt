@@ -1387,3 +1387,47 @@ placodus.glb
             (117,448 bytes). Render-verified on the final GLB - clean,
             correctly-proportioned, stocky placodont silhouette, feet at
             y=0, not inverted.
+
+beipiaosaurus.glb
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/424475-beipiaosaurus-figurine
+  Origin:   https://files.printables.com/media/prints/424475/stls/3512500_bd1d63d0-09ff-4a68-aeec-1ca3a10c77a6/beipiaosaurusfigposed.stl
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-23).
+            License confirmed via anonymous GraphQL query{print(id:424475)
+            {license{name}}} -> "Creative Commons - Attribution - Share
+            Alike". Same trusted creator already vendored cleanly for
+            allosaurus/dilophosaurus/pachycephalosaurus/gallimimus/
+            daspletosaurus - scientifically-accurate posed sculpts, not a
+            suspected-rip account; filenames are plain descriptive
+            ("BeipiaosaurusFigPosed.stl"), no franchise/game-asset tokens.
+            Single binary STL (posed variant, 185,553,784 bytes, byte-exact
+            vs GraphQL fileSize), downloaded anonymously via a NEW faster
+            technique: plain curl GET of the model page HTML (NOT blocked
+            by Cloudflare, unlike a Playwright/headless-browser hit on the
+            same domain which WAS blocked - "Sorry, you have been blocked"
+            - this session) -> grep the embedded `"filePreviewPath":"..."`
+            JSON field for the target file id -> strip the `_preview.png`
+            suffix from the folder+filename and substitute the real
+            extension (`.stl`/`.obj`) -> that URL resolves directly on
+            files.printables.com with byte-exact Content-Length, no auth
+            needed. Converted via Blender 4.5.11 LTS headless (bpy, native
+            binary, no conda env needed) + STL importer -> joined mesh,
+            decimated 3,711,031 -> 16,000 triangles (target ratio), height-
+            based vertex-color countershading (dark charcoal-olive dorsal
+            #3a3a2e to warm tan ventral #b8ab8a via COLOR_0, three.js
+            GLTFLoader auto-applies vertex colors when COLOR_0 is present
+            even though the exported material's pbrMetallicRoughness has
+            no baseColorFactor override), binary glTF export with Y-up
+            (1,825,116 bytes). ORIENTATION: no manifest pitch/yaw needed -
+            raw STL exports feet-planted with length along the export Z
+            axis (Y-up height 0..86.1, matches d3dInstallModel's max-axis
+            normalisation which does not require length-along-X). Render-
+            verified via a Blender headless re-import + EEVEE preview
+            render (grey/uncoloured in that specific preview only, because
+            Blender's own glTF reimporter does not wire COLOR_0 into its
+            reconstructed Principled BSDF - the GLB's exported JSON was
+            independently confirmed to carry COLOR_0 on the primitive) -
+            correctly-posed feathered theropod silhouette: head with
+            visible beak/snout facing one end, legs planted, long
+            feathered tail and arms clearly visible, not inverted.

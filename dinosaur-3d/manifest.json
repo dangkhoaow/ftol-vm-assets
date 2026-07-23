@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.53.0",
+  "version": "1.54.0",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -992,6 +992,16 @@
       "license": "CC-BY 4.0",
       "credit": "Estemmenosuchus Mirabilis model by Pan Wolodyjowski (CC-BY 4.0, via Printables)",
       "source_url": "https://www.printables.com/model/664469-estemmenosuchus-mirabilis"
+    },
+    "beipiaosaurus": {
+      "file": "beipiaosaurus.glb",
+      "bytes": 1825116,
+      "sha256": "832c0f7208357d964ab77847e7f410e13720da2045ec1d6de99febc290a761b3",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Beipiaosaurus model by DragonArtist15 (CC-BY-SA 4.0, via Printables; scientifically-accurate posed feathered sculpt, decimated STL->glTF with applied countershading, same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/424475-beipiaosaurus-figurine"
     }
   }
 }
