@@ -1032,6 +1032,17 @@
       "license": "Creative Commons - Attribution",
       "credit": "Dunkleosteus model by StormCrow 13 (CC-BY, via Printables)",
       "source_url": "https://www.printables.com/model/342483-dunkleosteus"
+    },
+    "yi-qi": {
+      "file": "yi-qi.glb",
+      "bytes": 2530020,
+      "sha256": "307bdb6a3392b9251eeb37041eae99a237be3b8c8cbe398c864f5c7b7f290a4c",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "Creative Commons - Attribution - Share Alike",
+      "credit": "Yi Qi Figurine model by DragonArtist15 (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/334211-yi-qi-figurine",
+      "pitch": 1.5707963267948966
     }
   }
 }

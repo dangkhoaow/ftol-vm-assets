@@ -1552,3 +1552,13 @@ sinosauropteryx.glb
             the dominant bounding-box axis - length runs along the
             model's Y-forward axis pre-export, matching the manifest's
             no-pitch/no-yaw default).
+
+Yi Qi Figurine
+  Author: DragonArtist15 (Printables)
+  License: Creative Commons - Attribution - Share Alike (CC-BY-SA 4.0)
+  Source: https://www.printables.com/model/334211-yi-qi-figurine
+  Notes: Posed variant (file id 1483793); decimated 7.9M -> 100k triangles
+  via open3d quadric decimation; orientation pitch=+pi/2 applied per
+  glb-orientation-audit.py, SIGN NOT YET LIVE-VERIFIED (see sources.json
+  notes for the yi-qi entry) - re-check with a real render probe before
+  the /dinosaur-3d/yi-qi.html page ships.
