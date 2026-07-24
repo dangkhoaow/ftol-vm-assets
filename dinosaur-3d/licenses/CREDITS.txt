@@ -1865,3 +1865,18 @@ magyarosaurus.glb
             time - vendored + added to _model_available_backlog.ready for
             this same fire's page-build step (model-first doctrine: model
             vendored BEFORE the page is authored).
+
+  UPDATE (same fire, post-vendor render probe): the two-step baked
+  rotation put the model's LENGTH axis on glTF X (bbox x=12.17 vs
+  z=4.07), but the shared /dinosaur-3d camera preset assumes length
+  on Z (matching the procedural body convention) - the model rendered
+  foreshortened end-on ("standing on end") through the live page's
+  default camera angle, caught only by an actual rendered Playwright
+  probe of the live page (not by the Blender-side render-proof, which
+  used a camera aimed at the model rather than the page's fixed
+  camera preset). Fixed by adding yaw=PI/2 to the manifest entry -
+  d3dInstallModel applies it before scale/center/ground, rotating the
+  model so length lands on Z. Verified via a network-mocked Playwright
+  render before/after (before: bbox size x=12.17/y=7.87/z=4.07 -
+  length on X; after: x=4.07/y=7.87/z=12.17 - length on Z, correctly-
+  standing side profile with dermal armor visible along the back).
