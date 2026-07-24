@@ -1813,3 +1813,55 @@ austroraptor.glb
             re-hosted derivative remains under CC-BY-SA 4.0. Not yet
             wired to a page - vendored only, added to
             _model_available_backlog.ready for the next fire.
+
+magyarosaurus.glb
+  Title:    Magyarosaurus
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0 (Creative Commons Attribution)
+  Via:      Printables - https://www.printables.com/model/643372-magyarosaurus
+  Origin:   https://files.printables.com/media/prints/643372/stls/5079747_44bb99f5-2f44-4107-bf9b-c63e224c6d17_4c141c24-7001-4a85-ba0c-fdcd8e8e7658/yourmesh-13.stl
+  Notes:    dinosaur-3d-discovery-loop-runbook LEAN fire (2026-07-25).
+            License confirmed via anonymous GraphQL query{print(id:643372)
+            {license{id name}}} -> id 1 = "Creative Commons - Attribution"
+            (no NC/SA/ND restriction) - a DIFFERENT print by the same
+            uploader than the "Revised Magyarosaurus" (id 1006294, CC-BY-NC,
+            rejected) and the Telmatosaurus print (id 1236500, CC-BY-NC-ND,
+            rejected) checked the same fire; this creator's catalogue is
+            license-mixed, not uniformly NC as a prior fire's note assumed -
+            each print's license was independently GraphQL-verified.
+            Magyarosaurus dacus, dwarf sauropod (insular dwarfism), Hateg
+            Island, Maastrichtian (~71-66 Mya), one of the smallest known
+            adult sauropods (~2.16-6m length across sources, ~660-972kg -
+            wide source disagreement disclosed, no single number invented).
+            Single binary STL (2,953,408 triangles, 147,670,484 bytes,
+            byte-exact vs HTTP content-length). Header carried no Aspose/Daz
+            rip signature; single connected mesh; category "Animals" per
+            Printables, description matches the real taxon - not a
+            suspected-rip account (creator already has multiple clean CC-BY
+            entries in this manifest: pinacosaurus/wendiceratops/
+            estemmenosuchus/placodus/denversaurus/elasmotherium).
+            ORIENTATION: raw STL is print-posed with its length axis
+            vertical (minimized support material) - resolved via a
+            two-step baked rotation (Y+90deg then X+90deg, NOT a single
+            combined Euler - order matters and was empirically verified,
+            not derived analytically) - confirmed via headless Blender
+            orthographic renders from three angles (front elevation,
+            plan/top-down, and the original 4-candidate sweep) before
+            finalizing: front view shows correct standing profile (4 legs
+            planted at z=0, raised neck with head at one end facing
+            forward/down, dermal-armor scutes along the back and hip - an
+            unusual feature genuinely documented for this genus, tapering
+            tail with a long thin whip-tip trailing near ground level at
+            the other end); plan view independently confirms Z is the true
+            up-axis (shows a believable elongated dorsal-armor silhouette,
+            not a side profile, when viewed from directly above).
+            Re-verified a second time on the final GLB reloaded fresh from
+            disk (clean reimport, same standing silhouette, minz=0.0).
+            Converted via Blender 4.5 headless bpy (stl_import + two-step
+            rotation bake + quadric decimate 2,953,408 -> 20,000 triangles +
+            flat Principled-BSDF skin tone, no vertex color pass this
+            fire), binary glTF Y-up export, export_apply=True. Final GLB
+            1,560,856 bytes. Not yet wired to a page as of manifest-write
+            time - vendored + added to _model_available_backlog.ready for
+            this same fire's page-build step (model-first doctrine: model
+            vendored BEFORE the page is authored).

@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.56.1",
+  "version": "1.56.2",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -1133,6 +1133,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Austroraptor model by DragonArtist15 (CC-BY-SA 4.0, via Printables; STL->glTF conversion, flat material applied; re-hosted derivative stays under the same ShareAlike license)",
       "source_url": "https://www.printables.com/model/397237-austroraptor-figurine"
+    },
+    "magyarosaurus": {
+      "file": "magyarosaurus.glb",
+      "bytes": 1560856,
+      "sha256": "7dfa334b76c30b637572fe99e0ea9e69465dbe15e4e378aa1ddc4e3df3cb2770",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0 (Creative Commons Attribution)",
+      "credit": "Pan Wolodyjowski",
+      "source_url": "https://www.printables.com/model/643372-magyarosaurus"
     }
   }
 }
