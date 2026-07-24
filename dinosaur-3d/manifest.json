@@ -1123,6 +1123,16 @@
       "license": "CC-BY 4.0",
       "credit": "Elasmotherium model by Pan Wolodyjowski (CC-BY 4.0, via Printables; STL->glTF conversion, flat material applied)",
       "source_url": "https://www.printables.com/model/659261-updated-elasmotherium"
+    },
+    "austroraptor": {
+      "file": "austroraptor.glb",
+      "bytes": 2016808,
+      "sha256": "bcbb15f61d6621c1a7877793a25e6ab7bf0d45ba3adba9ecc9a0d29cbac2be33",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Austroraptor model by DragonArtist15 (CC-BY-SA 4.0, via Printables; STL->glTF conversion, flat material applied; re-hosted derivative stays under the same ShareAlike license)",
+      "source_url": "https://www.printables.com/model/397237-austroraptor-figurine"
     }
   }
 }

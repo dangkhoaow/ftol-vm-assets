@@ -1790,3 +1790,26 @@ elasmotherium.glb
             GLB 1,560,944 bytes / 20,000 triangles, Y-up export,
             no manifest pitch/yaw correction needed. Wired to a
             page this same fire.
+
+austroraptor.glb
+  Author:   DragonArtist15
+  License:  CC-BY-SA 4.0
+  Via:      Printables - https://www.printables.com/model/397237-austroraptor-figurine
+  Origin:   https://files.printables.com/media/prints/397237/stls/3313174_2bc2c7b6-352d-4ae8-88ea-e3fc6c17338b/austroraptorfigunposed.stl
+  Note:     dinosaur-3d-discovery-loop-runbook LEAN fire (2026-07-25).
+            License CC-BY-SA 4.0 (id 2) GraphQL-confirmed, matching the
+            established id=2 precedent (becklespinax/kentrosaurus/
+            styracosaurus). Bare STL, no material/UV - converted via
+            headless Blender 4.5.11 (bpy.ops.wm.stl_import + single-pass
+            DECIMATE, 3,697,955 -> ~24,000 tris) with a flat warm-tan
+            Principled BSDF applied (skin/color are an artistic
+            reconstruction - no fossil preserves either). Reads as a
+            crouching/resting bird-like theropod (curved neck, tapering
+            feathered tail, no legs clearly visible - both Unposed and
+            Posed source variants use the same low stance); this is the
+            source sculpt's own pose, not a conversion defect - flagged
+            for the future page-build fire. Final GLB 2,016,808 bytes,
+            Y-up export, no pitch/yaw correction needed. ShareAlike:
+            re-hosted derivative remains under CC-BY-SA 4.0. Not yet
+            wired to a page - vendored only, added to
+            _model_available_backlog.ready for the next fire.
