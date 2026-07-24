@@ -8,6 +8,30 @@ uploader applied, because the underlying studio copyright is not the uploader's
 to relicense.
 
 -----------------------------------------------------------------------------
+mapusaurus.glb
+  Title:    mapusaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/747504-mapusaurus
+  Origin:   https://files.printables.com/media/prints/747504/stls/5836141_72e3d9f0-5319-49f4-b6d3-beb6a75860f4_f750e6af-2e78-4b36-8558-549a18266356/mapusaurus.obj
+  Notes:    dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-24).
+            Mapusaurus roseae, giant carcharodontosaurid theropod (Coria and
+            Currie 2006, Huincul Formation, Argentina), ~10.2-12.2 m,
+            ~3-4 tonnes - known from a multi-individual bonebed. License
+            GraphQL-confirmed (license.id=2, Attribution-ShareAlike). Rip-check
+            CLEAN (plain "mapusaurus.obj" filename, amateur description, no
+            marketplace/franchise naming markers - unlike the same uploader's
+            companion carcharodontosaurus print, REJECTED this same fire for a
+            "jurassic_world_facts_carcharodontosaurus_hbx39.obj" Mattel
+            toy-line rip signature). Source OBJ already Y-up/Z-length, no
+            rotation needed; decimated 167,620 -> 15,999 triangles (open3d
+            quadric decimation); height-based countershading applied (no
+            baked material color in source). Render-verified via matplotlib
+            silhouette re-render of the exported+reloaded glb: unmistakable
+            standing bipedal theropod, tail raised/level, feet planted. NOT
+            YET WIRED to a page this fire (model-sourcing only) - queued in
+            _model_available_backlog.ready for the next fire's page build.
+-----------------------------------------------------------------------------
 smilodon.glb
   Title:    Low Poly Ice Age - Saber-tooth tiger (Smilodon)
   Author:   Riley (https://rkuhlf-assets.itch.io)
