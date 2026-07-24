@@ -1,6 +1,6 @@
 {
   "schema": "ftol-dinosaur-3d/1",
-  "version": "1.56.0",
+  "version": "1.56.1",
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
@@ -1113,6 +1113,16 @@
       "license": "CC-BY 4.0",
       "credit": "Ophthalmosaurus model by chrism1994 (CC-BY 4.0, via Printables; STL->glTF conversion with cleanup and applied countershading)",
       "source_url": "https://www.printables.com/model/1174146-ophthalmosaurus"
+    },
+    "elasmotherium": {
+      "file": "elasmotherium.glb",
+      "bytes": 1560944,
+      "sha256": "604a9964e18ccbdd0bd614db6ad465537d41b8876827cd37e1acba350b4e6e07",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Elasmotherium model by Pan Wolodyjowski (CC-BY 4.0, via Printables; STL->glTF conversion, flat material applied)",
+      "source_url": "https://www.printables.com/model/659261-updated-elasmotherium"
     }
   }
 }

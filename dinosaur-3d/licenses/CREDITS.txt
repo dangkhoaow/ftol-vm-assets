@@ -1743,3 +1743,50 @@ ophthalmosaurus.glb
             vertex-color countershading applied (dark teal-grey dorsal to
             pale cream-grey ventral; source had no baked material color).
             Final GLB 601,212 bytes / 15,014 verts / 29,999 faces.
+-----------------------------------------------------------------------------
+elasmotherium.glb
+  Title:    Updated Elasmotherium
+  Author:   Pan Wolodyjowski
+  License:  CC-BY 4.0 (Creative Commons Attribution)
+  Via:      Printables - https://www.printables.com/model/659261-updated-elasmotherium
+  Origin:   https://files.printables.com/media/prints/659261/stls/5194741_19f2b64c-a302-4bc2-81d0-5c6b76754906_c438b374-9b63-4d2c-bec4-16cb144e174c/updated-elasmotherium.stl
+  Notes:    dinosaur-3d-discovery-loop-runbook LEAN fire (2026-07-24).
+            Elasmotherium sibiricum, the giant Pleistocene
+            rhinoceros ('Siberian unicorn'), ~2.6 Mya to ~39,000
+            years ago (Kosintsev et al. 2019 direct AMS-dated).
+            NOT a dinosaur and not even Mesozoic - viewer copy
+            states this explicitly, same as the marine-
+            reptile/pterosaur pages. Figures: length ~4.5m,
+            shoulder height ~2m, mass estimates 3.5-9t across
+            sources (recent skeletal-scaling converges ~3.6-4.5t);
+            single large nasal boss, NOT a preserved keratin horn
+            - shape of any soft-tissue structure is
+            unknown/debated. Model: 'Updated Elasmotherium' (id
+            659261) by Pan Wolodyjowski, the same repeat-uploader
+            already trusted for the ankylosaur/nodosaur series;
+            'updated' reflects the creator's own revision toward
+            the shorter boss reconstruction vs an outdated giant-
+            single-horn depiction. License CC-BY 4.0 GraphQL-
+            confirmed (license.id=1, plain Attribution).
+            Downloaded anonymously (STL CDN path resolved from the
+            model page HTML), byte-exact 98,252,084 bytes matching
+            the GraphQL stls[] record. Rip-check CLEAN: plain
+            filename, no franchise/game-asset naming. Source is a
+            bare STL (no material/UV) - new conversion path beyond
+            blend2glb.py: Blender 4.5.11 headless STL import;
+            orientation solved by rendering 4 candidate axis views
+            (raw import: length along native Z, legs toward native
+            +Y) - a +90deg rotation about X renders a correctly
+            standing quadruped, feet planted, dorsal up, tail
+            trailing, nasal boss forward; confirmed on both the
+            pre-decimation mesh and the exported+reimported final
+            GLB. Decimated 1,965,028 -> 20,000 triangles, single
+            connected body, no fragmentation. No baked color on
+            the source STL - applied a flat matte grey-brown
+            Principled BSDF (0.42/0.37/0.33, roughness 0.9)
+            matching published thick-hided rhino-type
+            reconstructions (skin/color are an artistic
+            reconstruction - no fossil preserves either). Final
+            GLB 1,560,944 bytes / 20,000 triangles, Y-up export,
+            no manifest pitch/yaw correction needed. Wired to a
+            page this same fire.
