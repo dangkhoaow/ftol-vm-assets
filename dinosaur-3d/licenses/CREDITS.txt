@@ -1715,3 +1715,31 @@ tyrannotitan.glb
             WIRED to a page this fire (model-sourcing + vendoring only) -
             added to _model_available_backlog.ready for the next fire to
             author the full viewer page.
+
+-----------------------------------------------------------------------------
+ophthalmosaurus.glb
+  Title:    Ophthalmosaurus
+  Author:   chrism1994
+  License:  CC-BY 4.0 (Creative Commons Attribution)
+  Via:      Printables - https://www.printables.com/model/1174146-ophthalmosaurus
+  Origin:   https://files.printables.com/media/prints/1174146/stls/8838368_82327961-a7e8-4acb-84b6-a2fe8ebac836_5937c301-7860-4401-8240-24d6e5c4fe71/opthalmosaurus.stl
+  Notes:    dinosaur-3d-discovery-loop-runbook LEAN fire (2026-07-24).
+            Resolves a prior fire's MODEL_FOUND_ORIENTATION_SOLVED_
+            DECIMATION_BLOCKED verdict. License GraphQL-confirmed
+            (license.id=1, plain Attribution). Rip-check CLEAN (plain
+            filename, generic "Category: Animals" description, Blender-
+            2.91.0 export header). DECIMATION FIX: split into connected
+            components first (155 total) - dropped 152 tiny sub-mm print-
+            support slivers (~4.2% of faces), kept the main body + 2
+            symmetric eye-bulge components (diagnostic for this huge-eyed
+            ichthyosaur) - decimation to 30,000 triangles then preserved
+            all 3 components intact with zero fragmentation, unlike the
+            whole-mesh single-pass decimation that destroyed thin
+            extremities in the prior fire. Orientation reused from the
+            prior fire's diagnosis (rotate new_y=-old_z, new_z=old_y),
+            independently re-verified via a true axis-labelled 2D side
+            view: correct dorsal-up, ventral-down, pointed jaw, dorsal
+            fin, front+rear flippers, semi-lunate tail fluke. Height-based
+            vertex-color countershading applied (dark teal-grey dorsal to
+            pale cream-grey ventral; source had no baked material color).
+            Final GLB 601,212 bytes / 15,014 verts / 29,999 faces.

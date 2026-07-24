@@ -1103,6 +1103,16 @@
       "license": "CC-BY-SA 4.0",
       "credit": "Mapusaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/747504-mapusaurus"
+    },
+    "ophthalmosaurus": {
+      "file": "ophthalmosaurus.glb",
+      "bytes": 601212,
+      "sha256": "421e29fdc391fb2425e30dee926d6cf14185960647f89325ddd45094e82b1a1d",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY 4.0",
+      "credit": "Ophthalmosaurus model by chrism1994 (CC-BY 4.0, via Printables; STL->glTF conversion with cleanup and applied countershading)",
+      "source_url": "https://www.printables.com/model/1174146-ophthalmosaurus"
     }
   }
 }
