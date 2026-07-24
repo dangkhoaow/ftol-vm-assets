@@ -1083,6 +1083,16 @@
       "credit": "Anchiornis figurine model by DragonArtist15 (CC-BY-SA 4.0, via Printables)",
       "source_url": "https://www.printables.com/model/260666-anchiornis-figurine",
       "pitch": -1.5707963267948966
+    },
+    "tyrannotitan": {
+      "file": "tyrannotitan.glb",
+      "bytes": 517776,
+      "sha256": "2b05565327eb418f72a14f60e7d543b6d5a3ce50cc4124dc59f6454358954912",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Tyrannotitan model originally by Sammy The Citipati (CC BY 4.0, via Sketchfab), reuploaded by seth the yutyrannus (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/1331397-tyrannotitan"
     }
   }
 }

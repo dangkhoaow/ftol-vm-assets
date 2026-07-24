@@ -1649,3 +1649,45 @@ qianzhousaurus.glb
             head/jaw forward with visible teeth, feet planted. Re-hosted
             derivative stays under the same ShareAlike license
             (CC-BY-SA 4.0).
+
+tyrannotitan.glb
+  Title:    tyrannotitan
+  Author:   seth the yutyrannus (reupload; original by Sammy The Citipati)
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike), derived
+            from an original CC BY 4.0 model by Sammy The Citipati (Sketchfab)
+  Via:      Printables - https://www.printables.com/model/1331397-tyrannotitan
+  Original: https://sketchfab.com/3d-models/tyrannotitan-5a4d495e93ad4810b29aba526209f4bf
+  Origin:   https://files.printables.com/media/prints/747f0d14-d4f8-4b67-8391-407c07807f47/stls/10044473_ab9fcca6-6ed7-476e-ae0b-811e59918a6c_008537fc-5cb5-49d4-adea-5e09c29df58c/untitled.obj
+  Notes:    dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-24).
+            Tyrannotitan chubutensis, giant carcharodontosaurid theropod,
+            Novas et al. 2005, Cerro Barcino Formation (Albian, Early
+            Cretaceous), Chubut Province, Argentina; ~11.6-12.2 m, ~6-7
+            tonnes. PROVENANCE CHECK: object names carry a
+            "DR_Tyrannotitan_56888" numeric-id pattern resembling a
+            marketplace-rip signature; independently verified via the
+            linked Sketchfab page that seth the yutyrannus explicitly
+            credits original creator Sammy The Citipati, whose upload is
+            CC BY 4.0 (no NC/ND) - legitimate reupload chain, both names
+            credited here. Distinct from the euoplocephalus lead REJECTED
+            the same fire (Printables 1023372, filename
+            "daz_originals__dinorauls_euoplocephalus.obj" - unattributed
+            commercial Daz Originals/Dinorauls marketplace asset, no
+            compatible license trail) and the Pan Wolodyjowski leads for
+            euoplocephalus (940406, CC-BY-NC) and elasmosaurus (1166192,
+            CC-BY-ND), also REJECTED (NC/ND incompatible with
+            redistribution). untitled.obj (Blender v3.6.21 export, 58,694
+            verts / 109,568 faces; materials skin/spikes/teeth/claws/
+            mouth/tongue/eyeball/eyelens/eye, no material.lib packaged so
+            flat colors assigned per material name). Converted via
+            Blender 4.5.11 bpy OBJ import, default forward/up axis (no
+            rotation needed) - bbox x=26.3 y=108.6(length) z=37.6(height),
+            length:height ~2.9:1 matching a standing bipedal theropod.
+            Decimated 109,568 -> ~20,000 triangles. Render-verified via a
+            Blender Eevee headless screenshot: unmistakable bipedal
+            theropod silhouette, feet planted, tail extended/raised,
+            head/jaw forward, tucked forearms - correct standing
+            orientation, no pitch/yaw needed. Re-hosted derivative stays
+            under the same ShareAlike license (CC-BY-SA 4.0). NOT YET
+            WIRED to a page this fire (model-sourcing + vendoring only) -
+            added to _model_available_backlog.ready for the next fire to
+            author the full viewer page.
