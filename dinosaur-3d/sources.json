@@ -2,6 +2,19 @@
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
   "version": "1.55.3",
   "models": {
+    "qianzhousaurus": {
+      "slug": "qianzhousaurus",
+      "file": "qianzhousaurus.glb",
+      "license": "CC-BY-SA 4.0",
+      "author": "seth the yutyrannus",
+      "source_url": "https://www.printables.com/model/784757-qianzhousaurus",
+      "origin_download": "https://files.printables.com/media/prints/784757/stls/6088404_7a47f9ad-753e-49e3-8f7f-58a149301519_2879d88e-8f0c-4911-b3a8-c785ab2963ce/qianzhousaurus.obj",
+      "printables_id": 784757,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Qianzhousaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "notes": "dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-24). Qianzhousaurus sinensis ('Pinocchio rex'), a long-snouted tyrannosaurid described by Lu et al. 2014 (Nature Communications) from the Nanxiong Formation (Maastrichtian, Late Cretaceous) near Ganzhou, China. License CC-BY-SA 4.0 GraphQL-confirmed against api.printables.com; same trusted uploader already vendored for saurosuchus + postosuchus (no Daz/franchise naming marker; distinct pose/species each time rules out a copy-paste stand-in). qianzhousaurus.obj: 17,590 verts / 24,946 faces, no material.lib (plain untextured mesh) - Aspose.3D Wavefront exporter output, native axes Z-up/length-along-Y (raw OBJ extents x=17.8 width, y=98.4 length, z=34.7 height). Converted headlessly via Blender 4.5.11 bpy (wm.obj_import): empirically resolved the up/forward axis pair against the shared glb-orientation-audit.py heuristic PLUS a direct Blender-Eevee render screenshot (the audit alone only catches the standing-on-tail defect, not a belly-up flip) - forward_axis='Y', up_axis='NEGATIVE_Z' is the correct combo for this uploader's OBJ convention (up_axis='Y' put the length axis vertical -> WRONG-UP per the audit; up_axis='Z' stood it up but upside-down/belly-up per the render; NEGATIVE_Z renders grounded feet-down, head-up, recognizable running-pose bipedal theropod silhouette with visible tooth row). Decimated 24,946 -> ~18,000 triangles (ratio 0.72). Applied height-based vertex-color countershading (warm tan #9a8262 belly to dark umber #45392a dorsal) since the source OBJ carried no baked color/material. Render-verified via a Blender Eevee headless screenshot of the reimported final GLB: unmistakable bipedal theropod silhouette, tail extended for balance, small tucked forearms, head/jaw with visible teeth forward, feet planted at ground level - matches the published tyrannosaurid body plan. Re-hosted derivative stays under the same ShareAlike license (CC-BY-SA 4.0)."
+    },
     "smilodon": {
       "slug": "smilodon",
       "file": "smilodon.glb",

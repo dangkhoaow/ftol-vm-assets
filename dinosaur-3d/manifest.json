@@ -4,6 +4,16 @@
   "category": "dinosaur-3d",
   "generated_note": "Procedural-first: every /dinosaur-3d viewer first-paints a procedural model (G16). These OPTIONAL free-licensed glTF assets are fetched post-paint and swapped in. A species with no entry here simply stays procedural.",
   "models": {
+    "qianzhousaurus": {
+      "file": "qianzhousaurus.glb",
+      "bytes": 701448,
+      "sha256": "00324a65d23147432ffcbfd78c5c7265759d0b59e13919d8e79b1090ed63d96e",
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "license": "CC-BY-SA 4.0",
+      "credit": "Qianzhousaurus model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion with applied countershading)",
+      "source_url": "https://www.printables.com/model/784757-qianzhousaurus"
+    },
     "smilodon": {
       "file": "smilodon.glb",
       "bytes": 111152,
@@ -431,7 +441,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
     "microraptor": {
@@ -1069,10 +1079,10 @@
       "sha256": "0afaa1fda3ed5a9c00e0d4c95ad21ab1dfec92b05a419c28f8f0a9fccd9eb5e1",
       "kind": "fleshed",
       "targetLenUnits": 8,
-      "pitch": -1.5707963267948966,
       "license": "CC-BY-SA 4.0",
-      "credit": "Anchiornis figurine model by DragonArtist15 (CC-BY-SA 4.0, via Printables), decimated ~15k tris; Z-up STL rotated to Y-up (pitch=-pi/2)",
-      "source_url": "https://www.printables.com/model/260666-anchiornis-figurine"
+      "credit": "Anchiornis figurine model by DragonArtist15 (CC-BY-SA 4.0, via Printables)",
+      "source_url": "https://www.printables.com/model/260666-anchiornis-figurine",
+      "pitch": -1.5707963267948966
     }
   }
 }

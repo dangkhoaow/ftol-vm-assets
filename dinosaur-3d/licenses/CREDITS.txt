@@ -1622,3 +1622,30 @@ Anchiornis (anchiornis.glb)
             renders correctly grounded and recognizable; 0/+pi/pi all
             stood it on its head or tail. Re-hosted derivative stays
             under the same ShareAlike license (CC-BY-SA 4.0).
+
+qianzhousaurus.glb
+  Title:    qianzhousaurus
+  Author:   seth the yutyrannus
+  License:  CC-BY-SA 4.0 (Creative Commons Attribution-ShareAlike)
+  Via:      Printables - https://www.printables.com/model/784757-qianzhousaurus
+  Origin:   https://files.printables.com/media/prints/784757/stls/6088404_7a47f9ad-753e-49e3-8f7f-58a149301519_2879d88e-8f0c-4911-b3a8-c785ab2963ce/qianzhousaurus.obj
+  Notes:    dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-24).
+            Qianzhousaurus sinensis ("Pinocchio rex"), long-snouted
+            tyrannosaurid, Lu et al. 2014 (Nature Communications).
+            Same trusted uploader as saurosuchus/postosuchus above
+            (distinct pose/species each time rules out a copy-paste
+            stand-in). 17,590 verts / 24,946 faces, no material.lib,
+            native axes Z-up/length-along-Y. Converted via Blender
+            4.5.11 bpy OBJ import (forward_axis=Y, up_axis=NEGATIVE_Z -
+            resolved empirically: up_axis=Y stood the length axis
+            vertical per glb-orientation-audit.py; up_axis=Z stood it
+            up but belly-up per a direct Eevee render check; NEGATIVE_Z
+            renders grounded feet-down, head-up). Decimated 24,946 ->
+            ~18,000 triangles. Height-based vertex-color countershading
+            (tan belly to dark umber dorsal) since the source carried
+            no baked color. Render-verified via a Blender Eevee headless
+            screenshot of the reimported final GLB: unmistakable
+            bipedal theropod silhouette, tail extended, tucked forearms,
+            head/jaw forward with visible teeth, feet planted. Re-hosted
+            derivative stays under the same ShareAlike license
+            (CC-BY-SA 4.0).
