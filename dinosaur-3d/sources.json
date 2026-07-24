@@ -1257,7 +1257,8 @@
       "credit": "Pan Wolodyjowski",
       "source_url": "https://www.printables.com/model/643372-magyarosaurus",
       "kind": "fleshed",
-      "targetLenUnits": 12
+      "targetLenUnits": 12,
+      "yaw": 1.5707963267948966
     }
   }
 }
