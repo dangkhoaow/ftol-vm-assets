@@ -1,6 +1,6 @@
 {
   "_comment": "Per-model metadata for the /dinosaur-3d cluster photoreal-asset layer. Hand-authored; make-dinosaur-3d-manifest.mjs hashes each .glb and emits manifest.json. Every entry MUST be freely redistributable (CC0 / CC-BY / CC-BY-SA / public-domain; SA entries: the re-hosted derivative stays under the same ShareAlike license - see CREDITS.txt), verified per-file (see licenses/CREDITS.txt). 'targetLenUnits' is the scene-unit length the viewer scales the model's longest axis to (12 matches the size-vs-human reference in the page). 'kind' = fleshed | skeleton (drives the honesty disclosure).",
-  "version": "1.56.2",
+  "version": "1.56.3",
   "models": {
     "qianzhousaurus": {
       "slug": "qianzhousaurus",
@@ -436,7 +436,7 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "license": "CC0 1.0 (Public Domain dedication via Printables)",
-      "credit": "Megalosaurus model by Model Magic (Creative Commons — Public Domain, via Printables; STL->glTF conversion with applied countershading)",
+      "credit": "Megalosaurus model by Model Magic (Creative Commons \u2014 Public Domain, via Printables; STL->glTF conversion with applied countershading)",
       "source_url": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus",
       "origin_download": "https://www.printables.com/model/1758607-dinosaur-art-megalosaurus"
     },
@@ -807,7 +807,7 @@
       "kind": "fleshed",
       "targetLenUnits": 8,
       "credit": "Troodon model by seth the yutyrannus (CC-BY-SA 4.0, via Printables; OBJ->glTF conversion, neutral countershading applied)",
-      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons — Attribution — Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
+      "notes": "Printables license id 2 = Creative Commons Attribution Share Alike (verified via anonymous GraphQL query: license.name=\"Creative Commons \u2014 Attribution \u2014 Share Alike\", user.publicUsername=\"seth the yutyrannus\"); description \"the troodon has a very large brain because it is the smartest dinosaur\" - no Daz/Dinoraul/Jurassic/franchise strings. Downloaded via filePreviewPath-derived folder (byte-count-verified: content-length 10087805 matches GraphQL fileSize exactly). Decimated 66,354 -> 17,999 tris via trimesh + Open3D quadric, reoriented length-along-X (90deg Y rotation from native length-along-Z), feet Y=0, neutral olive-brown/cream countershading vertex color applied (no known skin color - real troodon skin/feather color is unknown to science). ShareAlike: re-hosted derivative remains under CC-BY-SA 4.0. targetLenUnits=8 (troodon was small, ~2m/6.6ft total length, matching other small-theropod entries)."
     },
     "deinocheirus": {
       "slug": "deinocheirus",
@@ -1259,6 +1259,19 @@
       "kind": "fleshed",
       "targetLenUnits": 12,
       "yaw": 1.5707963267948966
+    },
+    "dacentrurus": {
+      "slug": "dacentrurus",
+      "file": "dacentrurus.glb",
+      "license": "CC-BY 4.0",
+      "author": "Pan Wolodyjowski",
+      "source_url": "https://www.printables.com/model/643357-dacentrurus",
+      "origin_download": "https://media.printables.com/media/prints/643357/stls/5079634_3e9e114e-a892-42cf-b0ab-17f9bedc7453_7fb94d02-091c-49fd-a0c6-9f4641f479a3/dacentrurus.stl",
+      "printables_id": 643357,
+      "kind": "fleshed",
+      "targetLenUnits": 12,
+      "credit": "Dacentrurus model by Pan Wolodyjowski (CC-BY 4.0, via Printables; STL->glTF conversion, flat material applied)",
+      "notes": "dinosaur-3d-discovery-loop-runbook LEAN one-off fire (2026-07-25/26). Dacentrurus armatus (formerly Omosaurus armatus, renamed 1902 - Omosaurus was already in use for a crocodilian) - a large Late Jurassic (~154-150 Mya) European stegosaur, the first stegosaur ever named from a European skeleton (England, 1875), with later material from France, Portugal and Spain. Published length/mass estimates disagree widely across sources (commonly cited ~7-8m/5t; some sources cite up to ~10m/8t; a 1.5m-wide pelvis find argues it was among the largest known stegosaurs despite older texts calling it small) - cited here as a RANGE per the argentinosaurus/patagotitan/sauroposeidon range-citing precedent, not a single invented number. Differentiation vs every already-shipped stegosaur (stegosaurus/kentrosaurus/miragaia/gigantspinosaurus/huayangosaurus/tuojiangosaurus/wuerhosaurus/chungkingosaurus): the ONLY European stegosaur in the cluster, taxonomically a dacentrurine (same subfamily as the shipped long-necked Miragaia) but built like a classic broad-plated/spiked stegosaur, with a genuinely open scientific size dispute (large vs small camp) as its own honest teaching point. GATE 1 factually-groundable: YES (Owen 1875 original description as Omosaurus armatus; renamed by Lydekker 1902; cross-checked via Wikipedia, Sauropedia, Paleontology World, Fossil Wiki, a 2019 PLOS ONE dacentrurine phylogenetic paper, and a ResearchGate skull-material paper from the Villar del Arzobispo Formation, Spain - all agree on the Late Jurassic European provenance and the wide size-estimate spread). GATE 2 viewer-not-game: YES (stegosaur archetype: plates+spikes feature flags, rotate/walk/size-vs-human/click-facts, no win/lose/score/timer). GATE 4 dedup: distinct slug/taxon, not a synonym of any shipped stegosaur; full L1/L2/G51 pre-build dedup deferred to build time per convention.\n\nMODEL SOURCING: found via WebSearch, Printables model id 643357 \"Dacentrurus\" by Pan Wolodyjowski, summary \"English Stegosaur\" (a real historical nickname - the first stegosaur skeleton described from England). License CC-BY 4.0 CONFIRMED via anonymous GraphQL query print(id:643357){license{id name} remixParents remixDescription} -> license id=1 name=\"Creative Commons - Attribution\", remixParents=[] and remixDescription=null (i.e. NOT a remix of another model - this uploader has a documented history of relabeling remixes as new species elsewhere in this backlog, e.g. the rejected navajoceratops Pentaceratops-remix; this specific upload cleared that check with an empty remix-parent list). Single STL file dacentrurus.stl, no franchise/rip filename signature. Anonymous download via the direct media.printables.com STL asset URL (no getDownloadLink mutation needed - file served directly).\n\nCONVERSION: headless Blender 4.5.11 (/usr/local/bin/blender --background --python stl2glb.py -- dacentrurus.stl out.glb 0 0 0 20000 0.45 0.40 0.35) worked directly on this machine, no bpy311 conda env needed. Source STL: 224,396,884 bytes / 4,487,936 raw triangles / 2,243,974 vertices, decimated ratio 0.004456 to 20,000 triangles. No material/UV/texture in source (bare print STL) - flat warm-tan Principled BSDF applied (skin/color is an artistic reconstruction; no fossil preserves either). export_yup=True.\n\nORIENTATION: rotation (0,0,0) verified CORRECT on the FIRST attempt (source STL already Z-up in Blender's native import convention, matching the print-bed=ground-plane assumption) - confirmed via a single headless Eevee-Next 3/4-profile render showing an unmistakable, correctly-standing quadrupedal stegosaur silhouette: four legs planted on the ground, body horizontal, thagomizer tail spikes trailing left with a graduated spike-to-plate row along the back, head/neck on the right. No pitch/yaw manifest correction needed. Final GLB 1,560,868 bytes / 20,000 triangles, Y-up export.\n\nNOT YET WIRED to a page this fire (model-sourcing and vendoring only, per the established time-boxing precedent of prior curate/vendor-only fires e.g. saurosuchus/austroraptor/elasmotherium-v1 in this loop) - added to _model_available_backlog.ready in the wrapper ledger for the next fire to author the full viewer page (BODYJS spec + 7 CMS fragments + JSP + truth-source + section-flow/reader-voice/truthful-claim/cluster-narrative gates + headless PROVE + staging/prod push)."
     }
   }
 }

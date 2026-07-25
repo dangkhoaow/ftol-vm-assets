@@ -1880,3 +1880,33 @@ magyarosaurus.glb
   render before/after (before: bbox size x=12.17/y=7.87/z=4.07 -
   length on X; after: x=4.07/y=7.87/z=12.17 - length on Z, correctly-
   standing side profile with dermal armor visible along the back).
+
+## Dacentrurus (2026-07-25/26, dinosaur-3d-discovery-loop-runbook LEAN fire)
+
+Model: "Dacentrurus" by Pan Wolodyjowski, Printables model id 643357
+  (https://www.printables.com/model/643357-dacentrurus), summary "English
+  Stegosaur". License CC-BY 4.0, GraphQL-confirmed
+  (print(id:643357){license{id name} remixParents remixDescription} ->
+  license id=1 "Creative Commons - Attribution", remixParents=[],
+  remixDescription=null - NOT a remix; this uploader has a documented
+  history elsewhere in this backlog of relabeling remixes as new species
+  (rejected navajoceratops = a relabeled Pentaceratops remix), so the empty
+  remix-parent list on THIS specific upload was checked deliberately before
+  vendoring). Single bare STL (dacentrurus.stl, 224,396,884 bytes,
+  4,487,936 raw triangles), no material/UV/texture - flat warm-tan
+  Principled BSDF applied (skin/color is an artistic reconstruction; no
+  fossil preserves either). Converted headlessly on this machine via
+  /usr/local/bin/blender --background --python stl2glb.py -- dacentrurus.stl
+  out.glb 0 0 0 20000 0.45 0.40 0.35 (no bpy311 conda env needed). Rotation
+  (0,0,0) verified correct on the first attempt via a single headless
+  Eevee-Next render - the source STL was already Z-up in Blender's native
+  import convention (print-bed=ground-plane assumption held); the render
+  shows an unmistakable, correctly-standing quadrupedal stegosaur silhouette
+  (four legs planted, body horizontal, graduated spike/plate row along the
+  back, thagomizer tail spikes trailing). No manifest pitch/yaw correction
+  needed. Final GLB 1,560,868 bytes / 20,000 triangles, Y-up export.
+
+  NOT YET WIRED to a page - vendored only. Added to
+  prompts/dinosaur-3d-discovery-loop-runbook/_ledger.json
+  _model_available_backlog.ready for a future fire to author the full
+  viewer page.
