@@ -242,8 +242,16 @@ define([
 			let result = { changes: [] };
 
 			result.worldGeneratorVersion = WorldConstants.version;
-			result.worldVersion = worldVO.version;
-			result.worldTemplateVersion = worldTemplateVO.version;
+			result.worldVersion = worldVO ? worldVO.version : null;
+			result.worldTemplateVersion = worldTemplateVO ? worldTemplateVO.version : null;
+
+			// FTOL fix (2026-08-01): worldTemplateVO is null on a brand-new game
+			// (no prior save to compare against), so there is nothing to detect
+			// changes against - upstream unconditionally read .levels/.version
+			// off it further down, crashing every first-time play. No gameplay
+			// change: "no template yet" correctly means "no changes to report",
+			// matching the existing null guard in getLevelChanges below.
+			if (!worldTemplateVO) return result;
 
 			let resultWorldTemplateVO = new WorldTemplateVO(worldVO);
 
