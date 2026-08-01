@@ -1,0 +1,894 @@
+// Reusable elements (unthemed)
+
+// SHARED VARS
+
+@item-slot-big-width: 55px;
+@item-slot-big-height: 70px;
+@item-div-size: 18px;
+@callout-arrow-size: 7px;
+
+
+// GENERAL IMAGES AND ICONS
+
+img {
+	transition: all 0.15s;
+}
+
+
+// BASE TEXT, LINKS AND HEADERS
+
+body {
+	font-family: Arial, sans-serif;
+	font-size: @font-size-default;
+	line-height: @line-height-default;
+}
+
+a {
+	border: none !important;
+	background: inherit !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Arial Narrow", Arial, sans-serif;
+	letter-spacing: 0.1pt;
+	text-transform: uppercase;
+}
+
+h3, h4 {
+	margin: 1em 0 0.5em 0;
+}
+
+h4 {
+	margin: 1em 0 0.5em 0;
+}
+
+.p-dense, .p-dense p {
+	margin: 0.25em 0;
+}
+
+p.nomargin {
+	margin: 0;
+}
+
+
+// DIVIDERS
+
+hr {
+	margin: 1em 5px;
+	height: 1px;
+}
+
+
+// COLLAPSIBLE CONTAINERS
+
+.collapsible-container {
+	margin: 5px 0px;
+}
+
+.collapsible-header {
+	cursor: pointer;
+	margin: 0px;
+	padding: 5px 30px 5px 10px;
+}
+
+.collapsible-header.collapsible-collapsed {
+	background-repeat: no-repeat;
+	background-position: right 8px center;
+}
+
+.collapsible-content {
+	margin: 5px 10px;
+	display: none;
+}
+
+
+// CALLOUTS
+
+div.container-btn-action:hover + div.btn-callout, div.btn-callout:hover, .info-callout-target:hover + div.info-callout, div.info-callout:hover,
+div.container-btn-action:focus + div.btn-callout, div.btn-callout:focus, .info-callout-target:focus + div.info-callout, div.info-callout:focus {
+	display: block;
+}
+
+.info-callout-target-side:hover + div.info-callout, .info-callout-target-side + div.info-callout:hover,
+.info-callout-target-side:focus + div.info-callout, .info-callout-target-side + div.info-callout:focus {
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+}
+
+div.btn-callout, div.info-callout {
+	text-align: left;
+	display: none;
+	position: absolute;
+	width: 100%;
+	min-width: 60pt;
+	max-width: 100pt;
+	z-index: 5;
+	text-transform: none;
+}
+
+div.btn-callout {
+	width: 100%;
+	text-align: center;
+	top: 37px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+	pointer-events: none;
+	opacity: 0.95;
+}
+
+div.info-callout {
+	width: auto;
+	min-width: 50%;
+	max-width: 100%;
+}
+
+.btn-callout-empty {
+	visibility: hidden;
+}
+
+.container-btn-action-disabled-reason .btn-callout-empty {
+	visibility: visible !important;
+}
+
+.info-callout-side + div.info-callout {
+	max-width: unset;
+}
+
+.info-callout-target {
+	border-width: 0px;
+	border-style: solid;
+	padding: 0px;
+	margin: 0px;
+	cursor: help;
+	display: inline-block;
+}
+
+.item div.info-callout-target, .res div.info-callout-target, .resultlist li div.info-callout-target, .itemlist div.info-callout-target {
+	border-width: 0px;
+	background-color: inherit;
+}
+
+.info-callout-target-small + div.info-callout {
+	width: auto !important;
+	max-width: none !important;
+	white-space: nowrap;
+}
+
+.layout-small .info-callout-target-small + div.info-callout {
+	white-space: normal;
+    min-width: 10em;
+}
+
+.info-callout-target-side + div.info-callout {
+	max-width: none;
+	width: auto;
+	height: 100%;
+	top: 0;
+	white-space: nowrap;
+}
+
+.btn-callout-content {
+	white-space: normal;
+}
+
+div.callout-container {
+	position: relative;
+	display: inline-block;
+}
+
+div.btn-callout-content, div.info-callout-content {
+	font-size: @font-size-small;
+	line-height: @line-height-condensed;
+	overflow-wrap: break-word;
+}
+
+div.btn-callout-content, div.info-callout-content {
+	padding: 4px;
+}
+
+.info-callout button, .npc-container button {
+	padding: 4px 8px;
+}
+
+.info-callout-content-section-long {
+	white-space: normal;
+}
+
+
+// CALLOUT ARROWS
+
+div.callout-arrow-up, div.callout-arrow-left {
+	width: 0;
+	height: 0;
+	z-index: 10;
+	position: relative;
+	margin: 0 0 0 calc(@callout-arrow-size/2);
+	margin: 0px auto;
+}
+
+div.callout-arrow-up {
+	top: 0px;
+	border-left: @callout-arrow-size solid transparent;
+	border-right: @callout-arrow-size solid transparent;
+	border-bottom: @callout-arrow-size solid;
+}
+
+div.callout-arrow-left {
+	left: 0px;
+	border-top: @callout-arrow-size solid transparent;
+  	border-bottom: @callout-arrow-size solid transparent;
+  	border-right: @callout-arrow-size solid;
+}
+
+.item div.callout-arrow-up {
+	margin: 0 0 0 (@item-div-size/2 - @callout-arrow-size);
+}
+
+.info-callout-target-small + div.info-callout .callout-arrow-up {
+	margin: 0 0 0 5px !important;
+}
+
+
+// POPUPS
+
+div.popup {
+	padding: 20px;
+	text-align: center;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin: 0;
+	min-width: 30%;
+	max-width: 60%;
+}
+
+div#popup-overlay {
+	position:fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	z-index:15;
+}
+
+div.popup-ingame {
+	z-index: 16;
+}
+
+div.popup-overlay-meta {
+	z-index: 25;
+}
+
+div.popup-meta {
+	z-index: 26;
+}
+
+// TAB OPTIONS
+
+.tab-options {
+	float: right;
+}
+
+// STEPPERS
+
+.stepper {
+	text-align: center;
+	min-width: 70px;
+	vertical-align: middle;
+	margin: 1px;
+	white-space: nowrap;
+}
+
+.stepper button {
+	margin: 0;
+}
+
+.stepper button[data-type="minus"] {
+	border-radius: 7px 0px 0px 7px;
+}
+
+.stepper button[data-type="plus"] {
+	border-radius: 0px 7px 7px 0px;
+}
+
+// HORIZONTAL SELECT
+
+.horizontal-select {
+	display: flex;
+	align-items: center;
+	margin: 2px 0;
+}
+
+.horizontal-select-title {
+	padding: 1px 8px;
+}
+
+.horizontal-select-list {
+	padding: 0;
+	margin: 0;
+}
+
+.horizontal-select-option {
+	padding: 1px 5px;
+	margin: 0 2px;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 3px;
+}
+
+
+// STAT INDICATORS
+
+.stat-indicator {
+	display: block;
+	white-space: nowrap;
+	padding-right: 5px;
+}
+
+.stat-indicator span {
+	display: inline-block;
+	margin: auto 0 auto 1px;
+}
+
+.stat-indicator span.label {
+	text-transform: lowercase;
+}
+
+.stat-indicator span.value {
+	text-align: center;
+	margin-left: 4px;
+}
+
+.stat-indicator .change, .stat-indicator .forecast {
+	font-size: @font-size-tiny;
+	vertical-align: middle;
+}
+
+.stat-indicator .progress {
+	height: 0.5em;
+	width: 35px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.stat-indicator .progress-wrap {
+	margin: auto 1px auto 3px;
+}
+
+
+// ITEM COMPARISON INDICATORS
+
+.item-comparison-indicator {
+	background-size: 100%;
+	border: none;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 10px;
+	height: 10px;
+}
+
+.item-comparison-badge {
+	top: -11px;
+	right: -11px;
+	position: absolute;
+	border-width: 1px;
+	border-style: solid;
+	padding: 2px;
+	border-radius: 6px;
+}
+
+
+// CHANGE INDICATORS
+
+.change-indicator {
+	width: 1em;
+	height: 1em;
+	display: inline-block;
+	background-size: 100%;
+	margin: 0px 2px;
+	opacity: 0.75;
+	vertical-align: middle;
+}
+
+
+// DIALOGUE INDICATORS
+
+.indicator-disabled {
+	display: none;
+}
+
+.indicator-urgent {
+	display: block;
+}
+
+
+// PROGRESS BARS
+
+.progress {
+	width: 100%;
+	max-width: 300px;
+	height: 1em;
+	border-width: 0px !important;
+	line-height: 1.3;
+}
+
+.progress-bar {
+	left: 0;
+	top: 0;
+	position: absolute;
+}
+
+.progress-label {
+	left: 0;
+	top: 0;
+	position: absolute;
+	width: 100%;
+	font-size: @font-size-small;
+	text-align: center;
+	vertical-align: text-top;
+}
+
+.progress.fullwidth, .progress.fullwidth .progress {
+	max-width: 100%;
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+.progress-wrap {
+	margin: 2px 0;
+	border: 0px;
+	overflow: hidden;
+	position: relative;
+}
+
+.progress-multibar-container {
+	display: flex;
+	margin: 5px 0;
+}
+
+.progress-multibar-container .progress-wrap {
+	display: inline-block !important;
+	margin: 0px;
+}
+
+
+// SCROLLABLE CANVASES AND CANVAS CONTAINERS
+
+.canvas-container {
+	text-align: center;
+	overflow: hidden;
+	position: relative;
+	border-width: 1px !important;
+}
+
+.scroll-position-container {
+	padding: 5px;
+	position: relative;
+	overflow: hidden;
+}
+
+.scroll-position-indicator {
+	position: absolute;
+}
+
+.scroll-position-indicator-vertical {
+	width: 100%;
+	height: 50%;
+	min-height: 10px;
+	min-width: 10px;
+	top: 10px;
+	left: 0;
+}
+
+.scroll-position-indicator-horizontal {
+	height: 100%;
+	width: 50%;
+	min-width: 10px;
+	min-height: 10px;
+	top: 0;
+	left: 10px;
+}
+
+.scrollable.scroll-enabled {
+	cursor: all-scroll;
+}
+
+.scrollable-container {
+	max-height: 100vh;
+    overflow-y: scroll;
+	border-radius: 3px;
+}
+
+
+// BUBBLES (content notifications)
+
+.bubble {
+	display: inline-block;
+	background-size: 12px;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 16px !important;
+	height: 16px !important;
+	text-align: center;
+	border-radius: 8px;
+	font-weight: bold;
+	font-size: @font-size-small;
+	line-height: 18px;
+}
+
+#switch .bubble {
+	position: absolute;
+	top: -6px;
+	right: -6px;
+}
+
+
+// LAYOUT CONTAINERS
+
+.container-relative {
+	position: relative;
+	display: inline-block;
+}
+
+.container-relative p {
+	margin: 0;
+}
+
+
+// INFO/ACTION/TEXT/DIVBOXES
+
+.actionbox, .infobox, .buttonbox {
+	margin: 6px 0px;
+}
+
+.infobox {
+	padding: 0px 0px 5px 0px;
+}
+
+.infobox-scrollable {
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
+	overflow-y: auto;
+	padding-left: 10px;
+	padding-right: 10px;
+	max-height: 12em;
+}
+
+.infobox-scrollable-header {
+	margin: 1.5em 0 0 0;
+}
+
+.actionbox {
+	padding: 3px 0px;
+}
+
+.textbox {
+	padding: 10px 0px;
+	max-width: 70em;
+}
+
+.divbox {
+	margin: 10px 0 10px 0;
+}
+
+
+// INVENTORYBOX
+
+.inventorybox {
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 10px;
+	padding: 5px 0px 2px 0px;
+	margin: 5px 0px;
+	min-height: 1em;
+	min-width: 1em;
+	vertical-align: top;
+}
+
+.inventorybox ul li {
+	background: inherit !important;
+	margin: 0px 2px 2px 0px;
+	padding: 0;
+	border-width: 1px;
+	border-style: solid;
+	display: inline-block;
+	position: relative;
+}
+
+.inventorydivision {
+	width: 49%;
+	display: table-cell;
+	position: relative;
+	vertical-align: top;
+	padding-top: 2.5em;
+	margin-top: -5px;
+}
+
+.inventorydivision-with-footer {
+	padding-bottom: 2em;
+}
+
+.inventorydivision .inventorybox-header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin: 0;
+	width: 100%;
+	padding: 5px 0;
+}
+
+.inventorydivision:first-child .inventorybox-header {
+	border-radius: 10px 0 0 0;
+	text-wrap: nowrap;
+}
+
+.inventorydivision:last-child .inventorybox-header {
+	border-radius: 0 10px 0 0;
+}
+
+.inventorydivision .inventorybox-footer {
+	position: absolute;
+	bottom: 3px;
+	left: 0;
+	margin: 0;
+	width: 100%;
+}
+
+.regular-layout #common-popup .inventorybox ul {
+	min-width: 380px;
+	width: 100%;
+}
+
+.inventorybox ul, .ul-horizontal {
+	padding: 0px;
+	margin: 0px;
+}
+
+.inventorybox-negative > li {
+	opacity: 80%;
+}
+
+.info-detail {
+	font-size: @font-size-small;
+    line-height: 1.15em;
+    display: block;
+}
+
+
+// BUTTON LISTS
+
+ul.buttonlist {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+
+// OTHER LISTS
+
+.text-list-entry {
+	display: block;
+}
+
+
+// ITEMS, EXPLORERS, ITEMSLOTS, EXPLORERSLOTS
+
+.item-slot {
+	background: inherit !important;
+	margin: 0px 2px 2px 0px;
+	padding: 0;
+	border-width: 1px;
+	border-style: solid;
+	display: inline-block;
+	position: relative;
+}
+
+.item-slot-type-empty, .explorer-slot-type-empty {
+	font-size: @font-size-small;
+	text-align: center;
+	display: inline-block;
+	opacity: 0.25;
+	width: 100%;
+	font-style: oblique;
+}
+
+.item-slot-type-equipped, .explorer-slot-type-selected {
+	font-size: @font-size-small;
+	text-align: center;
+	width: @item-slot-big-width;
+	height: @item-slot-big-height;
+	line-height: @item-slot-big-height;
+	display: inline-block;
+}
+
+.item-slot-type-equipped {
+	font-size: @font-size-small;
+	text-align: center;
+	display: inline-block;
+}
+
+.item-slot-type-equipped {
+	width: @item-slot-big-width;
+	height: @item-slot-big-height;
+	line-height: @item-slot-big-height;
+}
+
+.item-slot-big .item-slot-image {
+	left: calc(@item-slot-big-width / 2 - @item-div-size);
+	top: calc(@item-slot-big-height / 2 - @item-div-size + 10px);
+}
+
+.item-slot-effect {
+	display: none;
+}
+
+.item-slot-name {
+	bottom: 0px;
+	opacity: 0;
+}
+
+.item-slot-type-equipped, .explorer-slot-type-selected {
+	top: 0px;
+}
+
+.item-slot-simple {
+	border-width: 0px !important;
+}
+
+div.item-slot > div, div.item-slot > span {
+	position: absolute;
+	cursor: default;
+}
+
+#container-party-slots {
+	display: flex;
+	gap: 5px;
+}
+
+.explorer-slot-explorer {
+	width: 100%;
+	display: block;
+	text-align: center;
+}
+
+.explorer-slot {
+	display: inline-block;
+	min-width: 80px;
+}
+
+.item-slot-name, .item-slot-type-equipped, .explorer-slot-type-selected {
+	width: 100%;
+	text-align: center;
+	overflow: hidden;
+	line-height: 1.05em;
+	height: auto;
+	max-height: 1.9em;
+	padding: 0.35em 0;
+}
+
+ul.itemlist, ul.resultlist {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	display: inline-block;
+}
+
+.itemlist li {
+	display: inline-flex;
+}
+
+.item, .res {
+	vertical-align: middle;
+	display: inline-flex;
+	position: relative;
+	margin: 2px;
+	padding: 5px;
+	border-width: 2px;
+	border-style: solid;
+	border-radius: 50%;
+	width: @item-div-size;
+	height: @item-div-size;
+}
+
+.res {
+	border-radius: 0 !important;
+	margin: 8px 6px 6px 6px !important;
+	padding: 0px !important;
+	border-width: 1px;
+}
+
+.item img, .li-item-negative img, .li-item-positive img {
+	margin: auto;
+	vertical-align: middle;
+	height: 16px;
+	width: 16px;
+}
+
+.res img {
+	margin: -2px 1px 8px 1px;
+	vertical-align: middle;
+	height: 12px;
+	width: 12px;
+}
+
+li.item-with-count {
+	margin-bottom: 1em;
+}
+
+.item div.item-count, .res div.item-count {
+	background: transparent;
+	border-width: 1px;
+	font-size: @font-size-tiny;
+	position: absolute;
+	bottom: -0.9em;
+	left: -2px;
+	min-width: 100%;
+	max-height: 1em;
+	padding: 0 1px;
+	line-height: 1em;
+	text-align: center;
+	z-index: 3;
+    border-radius: 5px;
+}
+
+
+// RESULT LIST
+
+#resultlist-inventorymanagement-found ul li, #resultlist-loststuff-lost ul li {
+	border-width: 0px;
+	padding-bottom: 5px;
+}
+
+#resultlist-inventorymanagement .inventorybox {
+    margin: 3px auto;
+}
+
+.layout-regular #resultlist-inventorymanagement .inventorybox {
+	max-width: 25vw;
+}
+
+.layout-mobile #resultlist-inventorymanagement .inventorybox {
+	max-width: 90vw;
+}
+
+ul.resultlist li {
+	margin: 0px 3px;
+	background-color: transparent;
+}
+
+ul.resultlist-positive li:before {
+	content: "+ ";
+}
+
+div#resultlist-static-inventory ul {
+	padding: 0;
+	margin: 5px 0;
+}
+
+// CAMP EVENTS (AND PERKS)
+
+.event-starting {
+	animation: event-end 1.3s step-end infinite;
+	animation-timing-function: ease-in-out;
+}
+
+.event-ending {
+	animation: event-end 1.3s step-end infinite;
+	animation-timing-function: ease-in-out;
+}
+
+.event-no-timer .progress-bar {
+	opacity: 0.5 !important;
+}
+
+@keyframes event-end {
+	0%	{opacity: inherit}
+	50%	{opacity: 0.4}
+}
+
+

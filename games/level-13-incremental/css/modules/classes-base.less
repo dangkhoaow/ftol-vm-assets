@@ -1,0 +1,238 @@
+// Reusable utility classes meant to be as generic as possible (unthemed)
+
+// GENERAL
+
+.centered {
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+
+.hidden {
+	display: none !important;
+}
+
+.container-disabled {
+	pointer-events: none;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+.layout-regular .nowrap-on-regular-layout { 
+	white-space: nowrap;
+}
+
+.unselectable {
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+.noninteractive {
+	pointer-events: none;
+}
+
+.strike-through, .strike-through p {
+	text-decoration: line-through;
+	opacity: 0.9;
+}
+
+.container-dimmed .dimmable {
+	opacity: 0.5;
+}
+
+.info-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.info-icon img, img.inline-icon {
+	height: 1em;
+	width: 1em;
+	line-height: 1em;
+	vertical-align: middle;
+}
+
+img.inline-icon {
+	margin-left: 1px;
+	margin-right: 1px;
+}
+
+img.icon-ui-generic {
+	height: 1.5em;
+	width: 1.5em;
+}
+
+img.icon-centered, .block-centered {
+	display: block;
+	margin: auto;
+}
+
+span.hl-functionality {
+	font-weight: bold;
+}
+
+span.text-style-highlight {
+	font-weight: bold;
+}
+
+.container-nomargin {
+	margin: 0;
+}
+
+.status-badge {
+	float: right;
+	padding: 0 0.75em;
+	border-radius: 1em;
+	height: 1em
+}
+
+
+// COLUMNS LAYOUTS
+
+.columns-container {
+	display: flex;
+	gap: 5px;
+    margin: 0.5em 0;
+}
+
+.columns-container-vcenter {
+	align-items: center;
+}
+
+.columns-child {
+	flex: 1;
+}
+
+.columns-child-small {
+	flex: 0;
+}
+
+
+// TABLES
+
+table td {
+	padding: 0px 2px;
+}
+
+td > button, td > div.container-btn-action {
+	margin-left: 0px;
+}
+
+.fullwidth {
+	width: 100%;
+	margin: 0.5em 0;
+}
+
+td, th {
+	transition: all 0.15s;
+}
+
+.balancing-tab table {
+	font-size: @font-size-small;
+}
+
+table.spacious {
+	margin: 5px 0px;
+}
+
+table.spacious td {
+	padding: 2px 5px;
+}
+
+table.spacious td:last-child {
+	padding-right: 0px;
+}
+
+table.spacious td:first-child {
+	padding-left: 0px;
+}
+
+td.folded-table-cell, th.folded-table-cell {
+    min-width: 1px !important;
+    overflow: hidden;
+    text-overflow: clip;
+    max-width: 1px;
+    padding: 0;
+    color: transparent;
+	.unselectable();
+}
+
+td.nowidth {
+	width: 0%;
+}
+
+td.minwidth {
+	width: 5%;
+}
+
+td.maxwidth {
+	width: 95%;
+}
+
+td.textwidth {
+	width: 5%;
+	white-space: nowrap;
+}
+
+td.list-amount, td.list-storage {
+	min-width: 30pt;
+	text-align: center;
+}
+
+td.list-ordinal {
+	min-width: 10pt;
+	text-align: center;
+}
+
+td.list-icons {
+	min-width:5pt;
+	text-align: center;
+}
+
+td.list-description {
+	padding-left: 10px;
+}
+
+td.list-action {
+	text-align: center;
+	width: 100pt;
+}
+
+td.list-main {
+	text-align: center;
+}
+
+td.item-name {
+	min-width: 8em;
+}
+
+.layout-small td.item-name {
+	min-width: 6em;
+}
+
+td.text-overflow {
+	font-size: @font-size-tiny;
+	width: 6em;
+	max-width: 6em;
+	overflow: hidden;
+    white-space: nowrap;
+}
+
+td.text-overflow-wide {
+	font-size: @font-size-tiny;
+	width: 10em;
+	max-width: 10em;
+	overflow: hidden;
+    white-space: nowrap;
+}
+
+th.th-number {
+	text-align: center;
+}
+
+th.th-text {
+	text-align: left;
+}
