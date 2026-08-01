@@ -1,0 +1,4 @@
+Game: Space Huggers (js13k entry)
+Author: Frank Force
+License: GPL-3.0
+Attribution: https://github.com/KilledByAPixel/SpaceHuggers
