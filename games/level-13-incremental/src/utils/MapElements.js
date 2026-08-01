@@ -33,10 +33,16 @@ define([
 		},
 		
 		initIcon: function(key, name) {
+			// FTOL fix (2026-08-01): the upstream engine builds this path from
+			// location.origin, which is correct only when the game is hosted at
+			// the domain root. This CDN hosts every game under its own
+			// /games/<slug>/ subpath, so an origin-absolute URL 404s. Resolve
+			// relative to the document's own base instead.
+			var base = document.baseURI.replace(/\/[^\/]*$/, "/");
 			this.icons[key] = new Image();
-			this.icons[key].src = location.origin + "/img/map/" + name + ".png";
+			this.icons[key].src = base + "img/map/" + name + ".png";
 			this.icons[key + "-sunlit"] = new Image();
-			this.icons[key + "-sunlit"].src = location.origin + "/img/map/" + name + "-sunlit.png";
+			this.icons[key + "-sunlit"].src = base + "img/map/" + name + "-sunlit.png";
 		},
 
 		drawSectorShape: function (ctx, sectorXpx, sectorYpx, sectorSize, size, color, isKeySector) {
