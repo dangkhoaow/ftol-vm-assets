@@ -5,10 +5,11 @@ define(['ash', 'text/Text', 'game/GameGlobals', 'game/GlobalSignals', 'game/cons
             
             constructor: function () { },
 
+            // FTOL fix (2026-08-01): relative, not origin-root-absolute (subpath CDN hosting)
             textSources: {
-                default: { language: "default", source: "/strings/strings.json", name: "Default" },
-                EN_GB: { language: "EN_GB", source: "/strings/strings.json", name: "English" },
-                FI_FI: { language: "FI_FI", source: "/strings/strings-fi.json", name: "suomi" },
+                default: { language: "default", source: "strings/strings.json", name: "Default" },
+                EN_GB: { language: "EN_GB", source: "strings/strings.json", name: "English" },
+                FI_FI: { language: "FI_FI", source: "strings/strings-fi.json", name: "suomi" },
             },
     
             isSupportedLanguage: function (language) {
