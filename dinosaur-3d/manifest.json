@@ -1061,7 +1061,8 @@
       "targetLenUnits": 12,
       "license": "Creative Commons - Attribution - Share Alike",
       "credit": "Yi Qi Figurine model by DragonArtist15 (CC-BY-SA 4.0, via Printables)",
-      "source_url": "https://www.printables.com/model/334211-yi-qi-figurine"
+      "source_url": "https://www.printables.com/model/334211-yi-qi-figurine",
+      "pitch": -1.5707963267948966
     },
     "saurosuchus": {
       "file": "saurosuchus.glb",
