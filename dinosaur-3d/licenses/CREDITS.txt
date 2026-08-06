@@ -1594,10 +1594,20 @@ Yi Qi Figurine
   License: Creative Commons - Attribution - Share Alike (CC-BY-SA 4.0)
   Source: https://www.printables.com/model/334211-yi-qi-figurine
   Notes: Posed variant (file id 1483793); decimated 7.9M -> 100k triangles
-  via open3d quadric decimation; orientation pitch=+pi/2 applied per
-  glb-orientation-audit.py, SIGN NOT YET LIVE-VERIFIED (see sources.json
-  notes for the yi-qi entry) - re-check with a real render probe before
-  the /dinosaur-3d/yi-qi.html page ships.
+  via open3d quadric decimation. No manifest pitch/yaw (unset = 0).
+  2026-08-06 render-fix fire3: root-caused + fixed a genuine mesh defect
+  (not orientation) - 24 stray floating vertices at y~[94,99], a
+  decimation artifact referenced by only 8 of 100,000 triangles, inflated
+  the raw Y-extent to 132.7 and made Y falsely register as the longest
+  axis (true longest = X=66.7, the wingspan), causing the scale-by-
+  longest-axis logic to stretch the model into an unframeable sliver.
+  Removed those 8 triangles + orphaned vertices (54,030 -> 54,006 verts),
+  re-packed as a binary GLB with a real BIN chunk (1.90MB vs the original
+  2.53MB base64-data-URI-bloated file). Live-render-verified against the
+  real d3dInstallModel pipeline (Playwright route.fulfill swap, no CDN
+  push needed for the test) before vendoring - creature (head/body/tail/
+  wings) now clearly visible above the ground horizon at every rotation
+  angle. See sources.json notes for the full diagnostic trail.
 
 -----------------------------------------------------------------------------
 saurosuchus.glb
