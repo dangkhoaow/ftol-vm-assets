@@ -187,7 +187,7 @@ jobs:
           gh release view vm-assets-debug --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create vm-assets-debug --repo "$GITHUB_REPOSITORY" --prerelease \
               --title "vm-images debug logs" --notes "Step logs from failed runs. Safe to delete."
-          for f in build-terminal.log build-desktop.log snapshot-terminal.log snapshot-desktop.log package.log build-retro-fps.log build-space-3d.log; do
+          for f in build-terminal.log build-desktop.log snapshot-terminal.log snapshot-desktop.log package.log build-retro-fps.log build-space-3d.log build-places-3d.log; do
             [ -s "$f" ] && gh release upload vm-assets-debug "$f" --repo "$GITHUB_REPOSITORY" --clobber || true
           done
           for f in out/retro-fps-work/dwasm/build_native/cmake-native.log \
