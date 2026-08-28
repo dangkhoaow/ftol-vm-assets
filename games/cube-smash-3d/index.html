@@ -11,9 +11,14 @@
   #topbar{position:fixed;top:8px;left:0;right:0;text-align:center;pointer-events:none;}
   #lv{font-weight:800;font-size:16px;letter-spacing:1px;}
   #timer{font-weight:800;font-size:34px;line-height:1.05;}
-  #weapon{position:fixed;top:10px;left:12px;background:rgba(0,0,0,.45);border-radius:16px;padding:6px 14px;font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;}
-  #pips span{display:inline-block;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);margin-right:3px;}
-  #pips span.on{background:#ffd166;}
+  #bosswrap{width:300px;margin:6px auto 0 auto;display:none;}
+  #bossname{font-size:12px;font-weight:800;color:#ffd166;text-shadow:0 1px 3px #000;}
+  #bossbar{height:10px;background:rgba(0,0,0,.5);border:2px solid #222;border-radius:6px;overflow:hidden;}
+  #bossfill{height:100%;width:100%;background:linear-gradient(#c96bff,#7a1fd0);}
+  #weapons{position:fixed;top:10px;left:12px;display:flex;flex-direction:column;gap:6px;}
+  .wbadge{background:rgba(0,0,0,.45);border-radius:16px;padding:5px 12px;font-size:13px;font-weight:700;color:#fff;display:flex;align-items:center;gap:7px;}
+  .wpips span{display:inline-block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);margin-right:3px;}
+  .wpips span.on{background:#ffd166;}
   #counters{position:fixed;top:10px;right:14px;text-align:right;font-size:15px;font-weight:700;}
   #counters div{margin-bottom:4px;}
   #hpwrap{position:fixed;left:14px;bottom:34px;width:270px;}
@@ -22,6 +27,7 @@
   #hptxt{font-size:13px;font-weight:800;margin-top:3px;}
   #xpbar{height:9px;background:rgba(0,0,0,.4);border:2px solid #222;border-radius:6px;overflow:hidden;margin-top:6px;width:200px;}
   #xpfill{height:100%;width:0%;background:linear-gradient(#ffe27a,#f2b60a);}
+  #clock{position:fixed;right:14px;bottom:34px;font-size:13px;font-weight:800;}
   #footer{position:fixed;bottom:6px;left:0;right:0;text-align:center;font-size:13px;font-weight:600;color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.5);pointer-events:none;}
   .panel{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(20,30,12,.78);color:#fff;text-align:center;padding:18px;z-index:20;}
   .panel h1{font-size:32px;margin:0 0 8px 0;letter-spacing:2px;}
@@ -30,7 +36,7 @@
   .panel button:hover{background:#ffd166;}
   #upgrade{display:none;}
   .cardrow{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;justify-content:center;}
-  .upcard{width:170px;background:#28361c;border:2px solid #f2b60a;border-radius:10px;padding:14px 10px;cursor:pointer;}
+  .upcard{width:175px;background:#28361c;border:2px solid #f2b60a;border-radius:10px;padding:14px 10px;cursor:pointer;}
   .upcard:hover{background:#3a4d2a;}
   .upcard b{display:block;font-size:15px;margin-bottom:6px;color:#ffd166;}
   .upcard span{font-size:12.5px;color:#d8e4c4;}
@@ -38,14 +44,21 @@
 </style>
 </head>
 <body>
-<div id="topbar" class="hudtxt"><div id="lv">LV 1</div><div id="timer">0:00</div></div>
-<div id="weapon"><span>&#128296;</span> Smash Hammer <span id="pips"></span></div>
+<div id="topbar" class="hudtxt"><div id="lv">LV 1</div><div id="timer">0:00</div>
+  <div id="bosswrap"><div id="bossname">BIG BOSS BLOB</div><div id="bossbar"><div id="bossfill"></div></div></div>
+</div>
+<div id="weapons">
+  <div class="wbadge" id="wbHammer"><span>&#128296;</span> Smash Hammer <span class="wpips" id="pipsHammer"></span></div>
+  <div class="wbadge hidden" id="wbBlades"><span>&#128302;</span> Spin Blades <span class="wpips" id="pipsBlades"></span></div>
+  <div class="wbadge hidden" id="wbStones"><span>&#129704;</span> Boom Stones <span class="wpips" id="pipsStones"></span></div>
+</div>
 <div id="counters" class="hudtxt"><div>&#128121; <span id="kills">0</span></div><div>&#128176; <span id="coins">0</span></div></div>
 <div id="hpwrap" class="hudtxt"><div id="hpbar"><div id="hpfill"></div></div><div id="hptxt">100/100</div><div id="xpbar"><div id="xpfill"></div></div></div>
+<div id="clock" class="hudtxt">&#9728; Day</div>
 <div id="footer">WASD move &middot; SHIFT sprint &middot; SPACE jump &middot; drag mouse = camera &middot; scroll = zoom &middot; P pause &middot; M mute</div>
 <div id="overlay" class="panel">
   <h1>CUBE SMASH 3D</h1>
-  <p>A sunny meadow, one hammer, and endless waves of grumpy cube blobs. Your Smash Hammer swings on its own - walk into range, smash, scoop the gems they drop, and pick an upgrade every level. Survive as long as you can.</p>
+  <p>A sunny meadow, a hammer, and endless waves of grumpy cube blobs. Weapons swing on their own - position yourself, smash, scoop gems, and pick an upgrade every level: heavier hammers, orbiting Spin Blades, lobbed Boom Stones. A Boss Blob storms in every couple of minutes, and day rolls into firefly-lit night as you survive.</p>
   <p>WASD move, SHIFT sprint, SPACE jump. Drag the mouse to orbit the camera, scroll to zoom. P pauses, M mutes. On touch: drag to move, tap to jump.</p>
   <p id="bestLine"></p>
   <button id="startBtn" type="button">Play</button>
@@ -60,28 +73,31 @@
 (function(){
   'use strict';
   var LS_KEY = 'ftol:cubesmash3d:best';
-  var scene, camera, renderer, sun;
-  var player, hammer, hammerPivot;
-  var enemies = [], gems = [], shards = [], grassBits = [];
+  var scene, camera, renderer, sun, hemi;
+  var player, hammerPivot, legL, legR, armL;
+  var enemies = [], gems = [], shards = [], stonesFly = [], fireflies = [], butterflies = [], clouds = [];
+  var bladeGroup = null;
+  var boss = null, nextBossAt = 120, bossCount = 0;
   var keys = {};
   var running = false, over = false, paused = false, choosing = false, muted = false;
   var hp = 100, maxHp = 100, xp = 0, xpNeed = 6, level = 1;
   var kills = 0, coins = 0, elapsed = 0, score = 0;
-  var moveSpeed = 7.5, sprintMul = 1.55, dmg = 34, swingArc = 2.4, magnet = 3.5, regen = 0;
-  var weaponPips = 1;
-  var swingT = 0, swingCd = 0, hurtCd = 0;
-  var vy = 0, grounded = true;
+  var moveSpeed = 7.5, sprintMul = 1.55, magnet = 3.5, regen = 0;
+  var wHammer = { lvl: 1, dmg: 34, arc: 2.4, rate: 0.85 };
+  var wBlades = { lvl: 0, dmg: 14, count: 2, radius: 2.6, tick: 0.45 };
+  var wStones = { lvl: 0, dmg: 45, rate: 2.4, aoe: 2.4, cd: 0 };
+  var swingT = 0, swingCd = 0;
+  var vy = 0, grounded = true, walkT = 0, moving = false;
   var camYaw = 0.0, camPitch = 0.62, camDist = 18;
   var dragging = false, lastMx = 0, lastMy = 0;
   var touchMove = null;
   var lastT = 0, spawnTimer = 1.2;
-  var WORLD = 60;
+  var WORLD = 60, DAY_LEN = 150;
 
   var overlay = document.getElementById('overlay');
   var upgradeEl = document.getElementById('upgrade');
   var bestLine = document.getElementById('bestLine');
 
-  // ---------- tiny synth sfx (all original, WebAudio) ----------
   var AC = null;
   function sfx(freq, dur, type, vol){
     if (muted) return;
@@ -100,60 +116,88 @@
   function saveBest(v){ try { if (v > best()) localStorage.setItem(LS_KEY, String(v)); } catch(e){} }
   bestLine.textContent = best() ? ('Best score on this device: ' + best()) : 'Scores stay in this browser (ftol:cubesmash3d:best).';
 
-  // ---------- world ----------
-  function mat(c, rough){ return new THREE.MeshLambertMaterial({ color:c }); }
+  function mat(c){ return new THREE.MeshLambertMaterial({ color:c }); }
 
+  // ---------- world dressing ----------
   function makeTree(x, z, s){
     var g = new THREE.Group();
     var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.35*s, 0.5*s, 3.2*s, 6), mat(0x6b4226));
-    trunk.position.y = 1.6*s;
-    g.add(trunk);
+    trunk.position.y = 1.6*s; g.add(trunk);
     var crown = new THREE.Mesh(new THREE.IcosahedronGeometry(1.9*s, 0), mat(0x2f7d32));
-    crown.position.y = 4.1*s;
-    crown.rotation.y = Math.random()*3;
-    g.add(crown);
+    crown.position.y = 4.1*s; crown.rotation.y = Math.random()*3; g.add(crown);
     var crown2 = new THREE.Mesh(new THREE.IcosahedronGeometry(1.3*s, 0), mat(0x3c9440));
-    crown2.position.set(0.8*s, 3.2*s, 0.4*s);
-    g.add(crown2);
+    crown2.position.set(0.8*s, 3.2*s, 0.4*s); g.add(crown2);
     g.position.set(x, 0, z);
     return g;
   }
-
-  function makeGrassTuft(x, z){
-    var t = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.7, 4), mat(0x9ed65f));
-    t.position.set(x, 0.35, z);
-    t.rotation.y = Math.random()*3;
-    t.rotation.z = (Math.random()-0.5)*0.5;
-    return t;
+  function makeFlower(x, z){
+    var g = new THREE.Group();
+    var stem = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5, 4), mat(0x4a8a2a));
+    stem.position.y = 0.25; g.add(stem);
+    var cols = [0xffffff, 0xffd166, 0xff8bb0, 0xb08bff, 0xff6a4d];
+    var head = new THREE.Mesh(new THREE.SphereGeometry(0.14, 6, 5), mat(cols[Math.floor(Math.random()*cols.length)]));
+    head.position.y = 0.55; g.add(head);
+    g.position.set(x, 0, z);
+    return g;
+  }
+  function makeCloud(){
+    var g = new THREE.Group();
+    var m = new THREE.MeshLambertMaterial({ color:0xffffff, transparent:true, opacity:0.92 });
+    for (var i=0;i<3+Math.floor(Math.random()*3);i++){
+      var puff = new THREE.Mesh(new THREE.SphereGeometry(2.2+Math.random()*2.2, 8, 6), m);
+      puff.position.set(i*2.6 - 3, Math.random()*0.8, Math.random()*1.6);
+      puff.scale.y = 0.55;
+      g.add(puff);
+    }
+    g.position.set((Math.random()-0.5)*160, 26+Math.random()*10, (Math.random()-0.5)*160);
+    g.userData = { vx: 0.6 + Math.random()*0.8 };
+    return g;
+  }
+  function makeButterfly(){
+    var g = new THREE.Group();
+    var cols = [0xffffff, 0xffd166, 0xff8bb0];
+    var m = mat(cols[Math.floor(Math.random()*cols.length)]);
+    var w1 = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.32, 3), m); w1.rotation.z = Math.PI/2; w1.position.x = -0.12; g.add(w1);
+    var w2 = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.32, 3), m); w2.rotation.z = -Math.PI/2; w2.position.x = 0.12; g.add(w2);
+    g.userData = { a: Math.random()*Math.PI*2, r: 6+Math.random()*30, h: 1.2+Math.random()*1.8, sp: 0.3+Math.random()*0.5, ph: Math.random()*6 };
+    g.userData.w1 = w1; g.userData.w2 = w2;
+    return g;
+  }
+  function makeFirefly(){
+    var f = new THREE.Mesh(new THREE.SphereGeometry(0.09, 5, 4), new THREE.MeshBasicMaterial({ color:0xd9f26b }));
+    f.userData = { a: Math.random()*Math.PI*2, r: 4+Math.random()*34, h: 0.8+Math.random()*2.2, sp: 0.2+Math.random()*0.5, ph: Math.random()*6 };
+    return f;
   }
 
   function makePlayer(){
     var g = new THREE.Group();
-    var legs = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.8, 0.45), mat(0x2a3550));
-    legs.position.y = 0.4; g.add(legs);
+    legL = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.8, 0.35), mat(0x2a3550));
+    legL.position.set(-0.2, 0.4, 0); g.add(legL);
+    legR = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.8, 0.35), mat(0x2a3550));
+    legR.position.set(0.2, 0.4, 0); g.add(legR);
     var body = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.9, 0.6), mat(0xe6641e));
     body.position.y = 1.25; g.add(body);
+    var strap = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.92, 0.62), mat(0x8a5a2b));
+    strap.position.set(-0.22, 1.25, 0); g.add(strap);
     var head = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.6, 0.6), mat(0xf0b27a));
     head.position.y = 2.05; g.add(head);
+    var eye1 = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.09, 0.05), mat(0x222222));
+    eye1.position.set(-0.15, 2.1, 0.31); g.add(eye1);
+    var eye2 = eye1.clone(); eye2.position.x = 0.15; g.add(eye2);
     var hair = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.22, 0.65), mat(0x4a2c17));
     hair.position.y = 2.4; g.add(hair);
-    var armL = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.75, 0.25), mat(0xe6641e));
+    armL = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.75, 0.25), mat(0xe6641e));
     armL.position.set(-0.62, 1.25, 0); g.add(armL);
-    // hammer arm pivot (right)
     hammerPivot = new THREE.Group();
     hammerPivot.position.set(0.62, 1.6, 0);
     var armR = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.7, 0.25), mat(0xf0b27a));
-    armR.position.y = -0.3;
-    hammerPivot.add(armR);
-    hammer = new THREE.Group();
+    armR.position.y = -0.3; hammerPivot.add(armR);
     var handle = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 1.3, 6), mat(0x8a5a2b));
-    handle.position.y = -0.9;
-    handle.rotation.z = 0;
-    hammer.add(handle);
+    handle.position.y = -0.9; hammerPivot.add(handle);
     var headH = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.34, 0.34), mat(0xf2b60a));
-    headH.position.y = -1.5;
-    hammer.add(headH);
-    hammerPivot.add(hammer);
+    headH.position.y = -1.5; hammerPivot.add(headH);
+    var band = new THREE.Mesh(new THREE.BoxGeometry(0.67, 0.1, 0.36), mat(0x9a9a92));
+    band.position.y = -1.36; hammerPivot.add(band);
     g.add(hammerPivot);
     return g;
   }
@@ -163,21 +207,45 @@
     var size = tier === 2 ? 1.5 : 1.0;
     var bodyC = tier === 2 ? 0x1d6e2b : 0x3fae3f;
     var body = new THREE.Mesh(new THREE.BoxGeometry(size, size, size), mat(bodyC));
-    body.position.y = size/2 + 0.05;
-    g.add(body);
+    body.position.y = size/2 + 0.05; g.add(body);
+    var belly = new THREE.Mesh(new THREE.BoxGeometry(size*0.7, size*0.4, 0.04), mat(tier===2 ? 0x2f8a3c : 0x6fd06f));
+    belly.position.set(0, size*0.35, size/2+0.01); g.add(belly);
     var eyeGeo = new THREE.BoxGeometry(0.16*size, 0.16*size, 0.06);
     var eyeM = mat(0xd92b1e);
     var e1 = new THREE.Mesh(eyeGeo, eyeM); e1.position.set(-0.22*size, size*0.65, size/2+0.02); g.add(e1);
     var e2 = new THREE.Mesh(eyeGeo, eyeM); e2.position.set(0.22*size, size*0.65, size/2+0.02); g.add(e2);
+    var brow = new THREE.Mesh(new THREE.BoxGeometry(0.55*size, 0.08*size, 0.05), mat(0x14421c));
+    brow.position.set(0, size*0.8, size/2+0.02); brow.rotation.z = 0.15; g.add(brow);
     g.userData = {
-      hp: tier === 2 ? 90 : 40,
+      hp: tier === 2 ? 90 : 40, maxHp: tier === 2 ? 90 : 40,
       speed: (tier === 2 ? 2.0 : 2.8) + Math.random()*0.8 + Math.min(2.5, elapsed/90),
       dmg: tier === 2 ? 22 : 12,
-      size: size, tier: tier, hopT: Math.random()*3, hitCd: 0
+      size: size, tier: tier, hopT: Math.random()*3, hitCd: 0, boss: false
     };
     return g;
   }
 
+  function makeBoss(){
+    bossCount++;
+    var g = makeEnemy(2);
+    var s = 2.6 + bossCount*0.3;
+    g.scale.set(s/1.5, s/1.5, s/1.5);
+    // crown of spikes
+    for (var i=0;i<5;i++){
+      var spike = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.4, 4), mat(0xffd166));
+      spike.position.set(-0.5 + i*0.25, 1.7, 0);
+      g.add(spike);
+    }
+    g.userData.hp = g.userData.maxHp = 550 + bossCount*350;
+    g.userData.speed = 1.7;
+    g.userData.dmg = 34;
+    g.userData.size = s;
+    g.userData.boss = true;
+    g.userData.chargeCd = 5;
+    return g;
+  }
+
+  // ---------- init ----------
   function init(){
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x9ad0ec);
@@ -189,7 +257,8 @@
     renderer.shadowMap.enabled = true;
     document.body.appendChild(renderer.domElement);
 
-    scene.add(new THREE.HemisphereLight(0xdfF6ff, 0x59892f, 0.95));
+    hemi = new THREE.HemisphereLight(0xdfF6ff, 0x59892f, 0.95);
+    scene.add(hemi);
     sun = new THREE.DirectionalLight(0xfff3d6, 1.15);
     sun.position.set(24, 38, 18);
     sun.castShadow = true;
@@ -199,36 +268,72 @@
     scene.add(sun);
 
     var ground = new THREE.Mesh(new THREE.CircleGeometry(WORLD+30, 48), mat(0x5da33a));
-    ground.rotation.x = -Math.PI/2;
-    ground.receiveShadow = true;
+    ground.rotation.x = -Math.PI/2; ground.receiveShadow = true;
     scene.add(ground);
-    // gentle meadow bumps at the edge
+    // darker grass patches for texture
+    for (var pth=0;pth<26;pth++){
+      var patch = new THREE.Mesh(new THREE.CircleGeometry(1.5+Math.random()*3.5, 10), mat(Math.random()<0.5 ? 0x549734 : 0x66b143));
+      patch.rotation.x = -Math.PI/2;
+      var pa = Math.random()*Math.PI*2, pr = Math.sqrt(Math.random())*(WORLD+8);
+      patch.position.set(Math.cos(pa)*pr, 0.015 + pth*0.0004, Math.sin(pa)*pr);
+      scene.add(patch);
+    }
+    // dirt path rings
+    for (var dp=0;dp<3;dp++){
+      var dirt = new THREE.Mesh(new THREE.CircleGeometry(0.9+Math.random()*0.8, 8), mat(0xb08a5a));
+      dirt.rotation.x = -Math.PI/2;
+      var da = Math.random()*Math.PI*2, dr = 6+Math.random()*20;
+      dirt.position.set(Math.cos(da)*dr, 0.02, Math.sin(da)*dr);
+      scene.add(dirt);
+    }
     for (var b=0;b<10;b++){
-      var hill = new THREE.Mesh(new THREE.SphereGeometry(9+Math.random()*8, 10, 8), mat(0x6aa93a));
+      var hill = new THREE.Mesh(new THREE.SphereGeometry(9+Math.random()*8, 10, 8), mat(0x4f8e30));
       var ha = Math.random()*Math.PI*2;
       hill.position.set(Math.cos(ha)*(WORLD+10), -5.5, Math.sin(ha)*(WORLD+10));
       scene.add(hill);
     }
     for (var i=0;i<24;i++){
       var a = Math.random()*Math.PI*2, r = 20 + Math.random()*(WORLD+5);
-      scene.add(makeTree(Math.cos(a)*r, Math.sin(a)*r, 0.8 + Math.random()*0.8));
+      var tr = makeTree(Math.cos(a)*r, Math.sin(a)*r, 0.8 + Math.random()*0.8);
+      tr.traverse(function(o){ if (o.isMesh) o.castShadow = true; });
+      scene.add(tr);
     }
     for (var t=0;t<220;t++){
       var ga = Math.random()*Math.PI*2, gr = Math.sqrt(Math.random())*WORLD;
-      var tuft = makeGrassTuft(Math.cos(ga)*gr, Math.sin(ga)*gr);
-      grassBits.push(tuft);
+      var tuft = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.7, 4), mat(0x9ed65f));
+      tuft.position.set(Math.cos(ga)*gr, 0.35, Math.sin(ga)*gr);
+      tuft.rotation.y = Math.random()*3; tuft.rotation.z = (Math.random()-0.5)*0.5;
       scene.add(tuft);
+    }
+    for (var fl=0;fl<70;fl++){
+      var fa = Math.random()*Math.PI*2, fr = Math.sqrt(Math.random())*WORLD;
+      scene.add(makeFlower(Math.cos(fa)*fr, Math.sin(fa)*fr));
     }
     for (var rck=0;rck<14;rck++){
       var rr = new THREE.Mesh(new THREE.DodecahedronGeometry(0.4+Math.random()*0.5, 0), mat(0x9a9a92));
       var ra = Math.random()*Math.PI*2, rd = 8+Math.random()*WORLD;
       rr.position.set(Math.cos(ra)*rd, 0.25, Math.sin(ra)*rd);
+      rr.castShadow = true;
       scene.add(rr);
     }
+    // tree stumps
+    for (var st=0;st<5;st++){
+      var stp = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.6, 0.5, 8), mat(0x8a5a2b));
+      var sa = Math.random()*Math.PI*2, sr = 10+Math.random()*40;
+      stp.position.set(Math.cos(sa)*sr, 0.25, Math.sin(sa)*sr);
+      stp.castShadow = true;
+      scene.add(stp);
+    }
+    for (var c=0;c<7;c++){ var cl = makeCloud(); clouds.push(cl); scene.add(cl); }
+    for (var bf=0;bf<12;bf++){ var bfy = makeButterfly(); butterflies.push(bfy); scene.add(bfy); }
+    for (var ff=0;ff<26;ff++){ var f = makeFirefly(); f.visible = false; fireflies.push(f); scene.add(f); }
 
     player = makePlayer();
     player.traverse(function(o){ if (o.isMesh) o.castShadow = true; });
     scene.add(player);
+
+    bladeGroup = new THREE.Group();
+    scene.add(bladeGroup);
 
     addEventListener('resize', function(){
       camera.aspect = innerWidth/innerHeight;
@@ -252,7 +357,6 @@
       lastMx = e.clientX; lastMy = e.clientY;
     });
     addEventListener('wheel', function(e){ camDist = Math.max(8, Math.min(30, camDist + e.deltaY*0.02)); }, { passive:true });
-    // touch: drag = move direction, quick tap = jump
     var touchStart = null;
     renderer.domElement.addEventListener('touchstart', function(e){
       var t = e.touches[0];
@@ -270,14 +374,20 @@
     requestAnimationFrame(loop);
   }
 
-  // ---------- flow ----------
-  function pips(){
-    var el = document.getElementById('pips');
+  // ---------- HUD ----------
+  function pipsFor(id, lvl){
+    var el = document.getElementById(id);
     var h = '';
-    for (var i=0;i<8;i++) h += '<span class="' + (i<weaponPips?'on':'') + '"></span>';
+    for (var i=0;i<8;i++) h += '<span class="' + (i<lvl?'on':'') + '"></span>';
     el.innerHTML = h;
   }
-
+  function weaponsHud(){
+    pipsFor('pipsHammer', wHammer.lvl);
+    document.getElementById('wbBlades').classList.toggle('hidden', wBlades.lvl === 0);
+    document.getElementById('wbStones').classList.toggle('hidden', wStones.lvl === 0);
+    if (wBlades.lvl) pipsFor('pipsBlades', wBlades.lvl);
+    if (wStones.lvl) pipsFor('pipsStones', wStones.lvl);
+  }
   function hud(){
     var m = Math.floor(elapsed/60), s2 = Math.floor(elapsed%60);
     document.getElementById('timer').textContent = m + ':' + (s2<10?'0':'') + s2;
@@ -287,30 +397,87 @@
     document.getElementById('hpfill').style.width = Math.max(0, (hp/maxHp)*100) + '%';
     document.getElementById('hptxt').textContent = Math.ceil(hp) + '/' + maxHp;
     document.getElementById('xpfill').style.width = Math.min(100, (xp/xpNeed)*100) + '%';
+    var bw = document.getElementById('bosswrap');
+    if (boss){ bw.style.display = 'block'; document.getElementById('bossfill').style.width = Math.max(0,(boss.userData.hp/boss.userData.maxHp)*100) + '%'; }
+    else bw.style.display = 'none';
   }
 
-  var UPGRADES = [
-    { name: 'Heavier Hammer', desc: '+40% damage, wider swing', apply: function(){ dmg *= 1.4; swingArc = Math.min(3.6, swingArc + 0.25); weaponPips = Math.min(8, weaponPips+1); pips(); } },
-    { name: 'Swift Boots', desc: '+18% move speed', apply: function(){ moveSpeed *= 1.18; } },
-    { name: 'Hearty Meal', desc: '+30 max HP and full heal', apply: function(){ maxHp += 30; hp = maxHp; } },
-    { name: 'Gem Magnet', desc: 'Gems fly to you from farther away', apply: function(){ magnet += 2.5; } },
-    { name: 'Thick Skin', desc: 'Regenerate 1.5 HP per second', apply: function(){ regen += 1.5; } },
-    { name: 'Quick Swings', desc: 'Hammer swings 25% faster', apply: function(){ swingRate *= 0.75; weaponPips = Math.min(8, weaponPips+1); pips(); } }
+  // ---------- weapons ----------
+  function rebuildBlades(){
+    while (bladeGroup.children.length) bladeGroup.remove(bladeGroup.children[0]);
+    for (var i=0;i<wBlades.count;i++){
+      var bl = new THREE.Group();
+      var blade = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.7, 4), mat(0xcfd8e8));
+      blade.rotation.z = Math.PI/2;
+      bl.add(blade);
+      var hub = new THREE.Mesh(new THREE.SphereGeometry(0.1, 6, 5), mat(0x9a9a92));
+      bl.add(hub);
+      bl.userData = { off: (i/wBlades.count)*Math.PI*2 };
+      bladeGroup.add(bl);
+    }
+  }
+  function throwStone(target){
+    var st = new THREE.Mesh(new THREE.DodecahedronGeometry(0.28, 0), mat(0x8a7a5a));
+    st.position.copy(player.position).setY(1.6);
+    var to = target.position.clone().setY(0.2);
+    var dt2 = 0.7;
+    st.userData = {
+      v: new THREE.Vector3((to.x-st.position.x)/dt2, 7, (to.z-st.position.z)/dt2),
+      life: 2.5
+    };
+    st.castShadow = true;
+    scene.add(st);
+    stonesFly.push(st);
+    sfx(220,0.08,'triangle',0.04);
+  }
+  function damageEnemy(en, amount, idx){
+    en.userData.hp -= amount;
+    if (en.userData.hp <= 0){
+      burst(en.position.clone().setY(0.8), en.userData.boss ? 0x7a1fd0 : (en.userData.tier===2 ? 0x1d6e2b : 0x3fae3f), en.userData.boss ? 22 : 10);
+      var drops = en.userData.boss ? 12 : 1;
+      for (var d=0;d<drops;d++){
+        var dp = en.position.clone();
+        dp.x += (Math.random()-0.5)*3; dp.z += (Math.random()-0.5)*3;
+        dropGem(dp, en.userData.tier);
+      }
+      if (en.userData.boss){ coins += 5; boss = null; sfx(440,0.4,'triangle',0.08); sfx(660,0.5,'triangle',0.06); }
+      scene.remove(en);
+      if (idx !== undefined) enemies.splice(idx,1);
+      else { var k = enemies.indexOf(en); if (k>=0) enemies.splice(k,1); }
+      kills++;
+      score += en.userData.boss ? 200 : (en.userData.tier===2 ? 30 : 10);
+      sfx(520,0.1,'triangle',0.05);
+      return true;
+    }
+    return false;
+  }
+
+  var UPGRADE_POOL = [
+    { name: 'Heavier Hammer', desc: '+40% hammer damage, wider swing', can: function(){ return wHammer.lvl < 8; }, apply: function(){ wHammer.dmg *= 1.4; wHammer.arc = Math.min(3.6, wHammer.arc + 0.25); wHammer.lvl++; } },
+    { name: 'Quick Swings', desc: 'Hammer swings 25% faster', can: function(){ return wHammer.lvl < 8; }, apply: function(){ wHammer.rate *= 0.75; wHammer.lvl++; } },
+    { name: 'Spin Blades', desc: function(){ return wBlades.lvl ? '+1 orbiting blade, +damage' : 'NEW weapon: 2 orbiting blades'; }, can: function(){ return wBlades.lvl < 8; }, apply: function(){ if (wBlades.lvl){ wBlades.count++; wBlades.dmg += 7; } wBlades.lvl++; rebuildBlades(); } },
+    { name: 'Boom Stones', desc: function(){ return wStones.lvl ? 'Stones fall faster, bigger blast' : 'NEW weapon: lobbed splash stones'; }, can: function(){ return wStones.lvl < 8; }, apply: function(){ if (wStones.lvl){ wStones.rate *= 0.82; wStones.aoe += 0.35; wStones.dmg += 12; } wStones.lvl++; } },
+    { name: 'Swift Boots', desc: '+18% move speed', can: function(){ return true; }, apply: function(){ moveSpeed *= 1.18; } },
+    { name: 'Hearty Meal', desc: '+30 max HP and full heal', can: function(){ return true; }, apply: function(){ maxHp += 30; hp = maxHp; } },
+    { name: 'Gem Magnet', desc: 'Gems fly to you from farther away', can: function(){ return true; }, apply: function(){ magnet += 2.5; } },
+    { name: 'Thick Skin', desc: 'Regenerate 1.5 HP per second', can: function(){ return true; }, apply: function(){ regen += 1.5; } }
   ];
-  var swingRate = 0.85;
 
   function levelUp(){
     choosing = true;
     sfx(660,0.2,'triangle',0.06); sfx(880,0.25,'triangle',0.05);
-    var picks = UPGRADES.slice().sort(function(){ return Math.random()-0.5; }).slice(0,3);
+    var pool = UPGRADE_POOL.filter(function(u){ return u.can(); });
+    var picks = pool.sort(function(){ return Math.random()-0.5; }).slice(0,3);
     var row = document.getElementById('cards');
     row.innerHTML = '';
     picks.forEach(function(u){
       var d = document.createElement('div');
+      var desc = typeof u.desc === 'function' ? u.desc() : u.desc;
       d.className = 'upcard';
-      d.innerHTML = '<b>' + u.name + '</b><span>' + u.desc + '</span>';
+      d.innerHTML = '<b>' + u.name + '</b><span>' + desc + '</span>';
       d.addEventListener('click', function(){
         u.apply();
+        weaponsHud();
         upgradeEl.style.display = 'none';
         choosing = false;
       });
@@ -328,7 +495,6 @@
       shards.push(s);
     }
   }
-
   function dropGem(pos, tier){
     var isCoin = Math.random() < 0.12;
     var m = new THREE.Mesh(
@@ -340,7 +506,6 @@
     scene.add(m);
     gems.push(m);
   }
-
   function spawnEnemy(){
     var tier = elapsed > 75 && Math.random() < 0.22 ? 2 : 1;
     var e = makeEnemy(tier);
@@ -351,20 +516,73 @@
     scene.add(e);
     enemies.push(e);
   }
+  function spawnBoss(){
+    var e = makeBoss();
+    var a = Math.random()*Math.PI*2;
+    e.position.set(player.position.x + Math.cos(a)*30, 0, player.position.z + Math.sin(a)*30);
+    e.traverse(function(o){ if (o.isMesh) o.castShadow = true; });
+    scene.add(e);
+    enemies.push(e);
+    boss = e;
+    sfx(80,0.6,'sawtooth',0.09);
+  }
+
+  // ---------- day / night ----------
+  var skyDay = new THREE.Color(0x9ad0ec), skyNight = new THREE.Color(0x141d38);
+  var sunDay = new THREE.Color(0xfff3d6), sunNight = new THREE.Color(0x7a8ccf);
+  function updateDayNight(){
+    var t = (elapsed % DAY_LEN) / DAY_LEN;              // 0..1
+    var daylight = 0.5 + 0.5*Math.cos(t*Math.PI*2);    // 1 at start, 0 at half cycle
+    var k = Math.max(0.12, daylight);
+    scene.background.copy(skyNight).lerp(skyDay, k);
+    scene.fog.color.copy(scene.background);
+    sun.intensity = 0.18 + 0.97*daylight;
+    sun.color.copy(sunNight).lerp(sunDay, daylight);
+    hemi.intensity = 0.3 + 0.65*daylight;
+    var night = daylight < 0.35;
+    for (var i=0;i<fireflies.length;i++) fireflies[i].visible = night;
+    for (var j=0;j<butterflies.length;j++) butterflies[j].visible = !night;
+    var clk = document.getElementById('clock');
+    clk.innerHTML = night ? '&#127769; Night' : '&#9728; Day';
+    return night;
+  }
 
   // ---------- main loop ----------
   function loop(t){
     requestAnimationFrame(loop);
     var dt = Math.min(0.05, (t - lastT)/1000 || 0.016);
     lastT = t;
+
+    // ambient animation runs even on menu
+    for (var c=0;c<clouds.length;c++){
+      clouds[c].position.x += clouds[c].userData.vx*dt;
+      if (clouds[c].position.x > 90) clouds[c].position.x = -90;
+    }
+    var tt = t/1000;
+    for (var b=0;b<butterflies.length;b++){
+      var bu = butterflies[b], ud = bu.userData;
+      ud.a += ud.sp*dt;
+      bu.position.set(Math.cos(ud.a)*ud.r, ud.h + Math.sin(tt*2+ud.ph)*0.4, Math.sin(ud.a)*ud.r);
+      var flap = Math.sin(tt*14+ud.ph)*0.9;
+      ud.w1.rotation.y = flap; ud.w2.rotation.y = -flap;
+    }
+    for (var f2=0;f2<fireflies.length;f2++){
+      var fy = fireflies[f2], fu = fy.userData;
+      fu.a += fu.sp*dt;
+      fy.position.set(Math.cos(fu.a)*fu.r, fu.h + Math.sin(tt*3+fu.ph)*0.5, Math.sin(fu.a)*fu.r);
+      fy.material.color.setHSL(0.18, 0.9, 0.4 + 0.3*Math.sin(tt*5+fu.ph));
+    }
+
     if (running && !over && !paused && !choosing){
       elapsed += dt;
+      var night = updateDayNight();
       hp = Math.min(maxHp, hp + regen*dt);
       spawnTimer -= dt;
-      var interval = Math.max(0.25, 1.35 - elapsed/120);
+      var interval = Math.max(0.25, 1.35 - elapsed/120) * (night ? 0.8 : 1);
       if (spawnTimer <= 0){ spawnEnemy(); spawnTimer = interval; }
+      if (elapsed >= nextBossAt && !boss){ spawnBoss(); nextBossAt += 150; }
 
-      // movement relative to camera yaw
+      // movement
       var mx = 0, mz = 0;
       if (keys.KeyW || keys.ArrowUp) mz -= 1;
       if (keys.KeyS || keys.ArrowDown) mz += 1;
@@ -375,7 +593,8 @@
         var tl = Math.sqrt(mx*mx+mz*mz); if (tl>1){ mx/=tl; mz/=tl; }
       }
       var sp = moveSpeed * ((keys.ShiftLeft||keys.ShiftRight) ? sprintMul : 1);
-      if (mx || mz){
+      moving = !!(mx || mz);
+      if (moving){
         var cy = camYaw;
         var wx = (mx*Math.cos(cy) - mz*Math.sin(cy));
         var wz = (mx*Math.sin(cy) + mz*Math.cos(cy));
@@ -385,50 +604,100 @@
         player.rotation.y = Math.atan2(wx, wz);
         var rr2 = Math.sqrt(player.position.x*player.position.x + player.position.z*player.position.z);
         if (rr2 > WORLD){ player.position.x *= WORLD/rr2; player.position.z *= WORLD/rr2; }
+        walkT += dt * sp * 1.6;
+        legL.rotation.x = Math.sin(walkT)*0.7;
+        legR.rotation.x = -Math.sin(walkT)*0.7;
+        armL.rotation.x = -Math.sin(walkT)*0.5;
+      } else {
+        legL.rotation.x *= 0.8; legR.rotation.x *= 0.8; armL.rotation.x *= 0.8;
       }
-      // jump
       if (!grounded){ vy -= 24*dt; player.position.y += vy*dt; if (player.position.y <= 0){ player.position.y = 0; grounded = true; vy = 0; } }
 
-      // auto hammer swing
+      // hammer auto swing
       swingCd -= dt;
       var nearest = null, nd = 1e9;
       for (var q=0;q<enemies.length;q++){
         var dq = enemies[q].position.distanceTo(player.position);
         if (dq < nd){ nd = dq; nearest = enemies[q]; }
       }
-      if (swingCd <= 0 && nearest && nd < swingArc + 0.8){
-        swingCd = swingRate;
+      if (swingCd <= 0 && nearest && nd < wHammer.arc + 0.8 + nearest.userData.size/2){
+        swingCd = wHammer.rate;
         swingT = 0.28;
         sfx(120,0.09,'square',0.06);
-        // face target and hit everything in the arc radius
         player.rotation.y = Math.atan2(nearest.position.x - player.position.x, nearest.position.z - player.position.z);
         for (var h2=enemies.length-1;h2>=0;h2--){
           var en = enemies[h2];
-          if (en.position.distanceTo(player.position) <= swingArc + 0.8){
-            en.userData.hp -= dmg;
-            en.position.add(new THREE.Vector3().subVectors(en.position, player.position).setY(0).normalize().multiplyScalar(0.7));
-            if (en.userData.hp <= 0){
-              burst(en.position.clone().setY(0.8), en.userData.tier===2 ? 0x1d6e2b : 0x3fae3f, 10);
-              dropGem(en.position, en.userData.tier);
-              scene.remove(en); enemies.splice(h2,1);
-              kills++; score += en.userData.tier===2 ? 30 : 10;
-              sfx(520,0.1,'triangle',0.05);
-            }
+          if (en.position.distanceTo(player.position) <= wHammer.arc + 0.8 + en.userData.size/2){
+            en.position.add(new THREE.Vector3().subVectors(en.position, player.position).setY(0).normalize().multiplyScalar(en.userData.boss ? 0.15 : 0.7));
+            damageEnemy(en, wHammer.dmg, h2);
           }
         }
       }
       if (swingT > 0){ swingT -= dt; hammerPivot.rotation.x = -2.2 * Math.sin((0.28 - swingT)/0.28 * Math.PI); }
       else hammerPivot.rotation.x = 0;
 
-      // enemies chase + hop
-      hurtCd -= dt;
+      // spin blades
+      if (wBlades.lvl){
+        bladeGroup.position.copy(player.position);
+        bladeGroup.rotation.y += dt * 3.2;
+        for (var bl=0;bl<bladeGroup.children.length;bl++){
+          var bldGroup = bladeGroup.children[bl];
+          var ang = bladeGroup.rotation.y + bldGroup.userData.off;
+          bldGroup.position.set(Math.cos(ang)*wBlades.radius, 1.0, Math.sin(ang)*wBlades.radius);
+          bldGroup.rotation.y = -ang;
+        }
+        for (var eb=enemies.length-1;eb>=0;eb--){
+          var enb = enemies[eb];
+          enb.userData.bladeCd = (enb.userData.bladeCd || 0) - dt;
+          var dRing = Math.abs(enb.position.distanceTo(player.position) - wBlades.radius);
+          if (dRing < 0.7 + enb.userData.size/2 && enb.userData.bladeCd <= 0){
+            enb.userData.bladeCd = wBlades.tick;
+            burst(enb.position.clone().setY(1.0), 0xcfd8e8, 3);
+            damageEnemy(enb, wBlades.dmg, eb);
+          }
+        }
+      }
+
+      // boom stones
+      if (wStones.lvl){
+        wStones.cd -= dt;
+        if (wStones.cd <= 0 && nearest && nd < 22){
+          wStones.cd = wStones.rate;
+          throwStone(nearest);
+        }
+      }
+      for (var sf=stonesFly.length-1;sf>=0;sf--){
+        var stn = stonesFly[sf];
+        stn.userData.life -= dt;
+        stn.userData.v.y -= 14*dt;
+        stn.position.addScaledVector(stn.userData.v, dt);
+        stn.rotation.x += 6*dt;
+        if (stn.position.y <= 0.15 || stn.userData.life <= 0){
+          burst(stn.position.clone().setY(0.3), 0xffa04d, 12);
+          sfx(70,0.18,'sawtooth',0.07);
+          for (var ea=enemies.length-1;ea>=0;ea--){
+            if (enemies[ea].position.distanceTo(stn.position) <= wStones.aoe + enemies[ea].userData.size/2){
+              damageEnemy(enemies[ea], wStones.dmg, ea);
+            }
+          }
+          scene.remove(stn); stonesFly.splice(sf,1);
+        }
+      }
+
+      // enemies chase + hop + boss charge
       for (var i2=enemies.length-1;i2>=0;i2--){
         var e2 = enemies[i2];
         var dir = new THREE.Vector3().subVectors(player.position, e2.position); dir.y = 0;
         var dist = dir.length(); dir.normalize();
-        e2.position.addScaledVector(dir, e2.userData.speed*dt);
+        var spd = e2.userData.speed;
+        if (e2.userData.boss){
+          e2.userData.chargeCd -= dt;
+          if (e2.userData.chargeCd <= 0){ e2.userData.charging = 1.1; e2.userData.chargeCd = 5; sfx(150,0.3,'sawtooth',0.06); }
+          if (e2.userData.charging > 0){ e2.userData.charging -= dt; spd = 7.5; }
+        }
+        e2.position.addScaledVector(dir, spd*dt);
         e2.userData.hopT += dt*6;
-        e2.children[0].position.y = e2.userData.size/2 + 0.05 + Math.abs(Math.sin(e2.userData.hopT))*0.25;
+        e2.children[0].position.y = e2.userData.size/2/(e2.userData.boss?e2.scale.x:1) + 0.05 + Math.abs(Math.sin(e2.userData.hopT))*0.25;
         e2.rotation.y = Math.atan2(dir.x, dir.z);
         e2.userData.hitCd -= dt;
         if (dist < 1.0 + e2.userData.size/2 && e2.userData.hitCd <= 0 && grounded){
@@ -439,7 +708,7 @@
           if (hp <= 0){ hp = 0; gameOver(); }
         }
       }
-      // gems: magnet + collect
+      // gems
       for (var g2=gems.length-1;g2>=0;g2--){
         var gm = gems[g2];
         gm.rotation.y += 3*dt;
@@ -463,7 +732,6 @@
       score = Math.max(score, kills*10 + Math.floor(elapsed)*2 + coins*5);
       hud();
     }
-    // camera orbit follow
     var cx = player.position.x + Math.sin(camYaw)*Math.cos(camPitch)*camDist;
     var cz = player.position.z + Math.cos(camYaw)*Math.cos(camPitch)*camDist;
     var cyy = player.position.y + Math.sin(camPitch)*camDist;
@@ -477,7 +745,7 @@
     saveBest(score);
     sfx(160,0.5,'sawtooth',0.08);
     overlay.querySelector('h1').textContent = 'SMASHED!';
-    overlay.querySelectorAll('p')[0].textContent = 'Score ' + score + ' - LV ' + level + ', ' + kills + ' blobs bashed, ' + coins + ' coins, ' + Math.floor(elapsed) + 's survived.';
+    overlay.querySelectorAll('p')[0].textContent = 'Score ' + score + ' - LV ' + level + ', ' + kills + ' blobs bashed (' + bossCount + ' boss' + (bossCount===1?'':'es') + ' met), ' + coins + ' coins, ' + Math.floor(elapsed) + 's survived.';
     overlay.querySelectorAll('p')[1].textContent = 'Press Play (or Space / R) to run it back.';
     bestLine.textContent = 'Best score on this device: ' + best();
     document.getElementById('startBtn').textContent = 'Play again';
@@ -488,11 +756,17 @@
     for (var i=0;i<enemies.length;i++) scene.remove(enemies[i]);
     for (var j=0;j<gems.length;j++) scene.remove(gems[j]);
     for (var k=0;k<shards.length;k++) scene.remove(shards[k]);
-    enemies = []; gems = []; shards = [];
+    for (var s2=0;s2<stonesFly.length;s2++) scene.remove(stonesFly[s2]);
+    enemies = []; gems = []; shards = []; stonesFly = [];
+    boss = null; nextBossAt = 120; bossCount = 0;
     hp = 100; maxHp = 100; xp = 0; xpNeed = 6; level = 1;
     kills = 0; coins = 0; elapsed = 0; score = 0;
-    moveSpeed = 7.5; dmg = 34; swingArc = 2.4; magnet = 3.5; regen = 0; swingRate = 0.85;
-    weaponPips = 1; pips();
+    moveSpeed = 7.5; magnet = 3.5; regen = 0;
+    wHammer = { lvl: 1, dmg: 34, arc: 2.4, rate: 0.85 };
+    wBlades = { lvl: 0, dmg: 14, count: 2, radius: 2.6, tick: 0.45 };
+    wStones = { lvl: 0, dmg: 45, rate: 2.4, aoe: 2.4, cd: 0 };
+    rebuildBlades(); while (bladeGroup.children.length) bladeGroup.remove(bladeGroup.children[0]);
+    weaponsHud();
     player.position.set(0,0,0); vy = 0; grounded = true;
     over = false; running = true; paused = false; choosing = false;
     overlay.classList.add('hidden');
@@ -501,7 +775,7 @@
   }
 
   document.getElementById('startBtn').addEventListener('click', restart);
-  pips();
+  weaponsHud();
   init();
 })();
 </script>
