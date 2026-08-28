@@ -123,6 +123,33 @@ jobs:
           path: out/space-3d
           key: space-3d-${{ hashFiles('space-3d/**') }}
 
+      # ---------- Places-3D real-terrain datasets (detailed-render migration) ----------
+      # Terrarium DEM (Mapzen/AWS Open Data) + Sentinel-2 L2A true-color texture
+      # per place in places-3d/places.json. ~5-15 MB per place. Cached on
+      # places-3d/** so tiles/scenes are re-fetched only when the registry or
+      # pipeline changes. Runbook: site repo prompts/places-3d-detailed-terrain-runbook.md
+      - name: Restore places-3d cache
+        id: p3d-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: out/places-3d
+          key: places-3d-${{ hashFiles('places-3d/**') }}
+      - name: Install GDAL (places-3d Sentinel-2 texture warp)
+        if: steps.p3d-cache.outputs.cache-hit != 'true'
+        run: sudo apt-get update -q && sudo apt-get install -y -q gdal-bin
+      - name: Build places-3d terrain assets
+        if: steps.p3d-cache.outputs.cache-hit != 'true'
+        run: |
+          set -o pipefail
+          node places-3d/build-place-terrain.mjs --all 2>&1 | tee build-places-3d.log
+          node places-3d/make-places-3d-manifest.mjs out/places-3d
+      - name: Save places-3d cache
+        if: steps.p3d-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: out/places-3d
+          key: places-3d-${{ hashFiles('places-3d/**') }}
+
       # ---------- Assemble + publish the combined Pages site ----------
       - name: Assemble site
         run: |
@@ -133,6 +160,8 @@ jobs:
           cp -a out/retro-fps/. out/site/retro-fps/
           mkdir -p out/site/space-3d
           cp -a out/space-3d/. out/site/space-3d/
+          mkdir -p out/site/places-3d
+          cp -a out/places-3d/. out/site/places-3d/
           # dinosaur-3d/ ships as-is: tiny CC0 glTF models committed to git
           # (same rationale as vendor/ - ~0.3 MB each, license-clean), served
           # with CORS for the /dinosaur-3d viewer pages' optional photoreal layer.

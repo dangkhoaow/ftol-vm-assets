@@ -1,0 +1,32 @@
+{
+  "note": "Registry for build-place-terrain.mjs. bbox is [W,S,E,N] in degrees, sized ~15-30 km per side around the place's signature terrain. dem_zoom 13 = ~15-19 m/sample at temperate latitudes (~2-4 MB heights.bin); tex_zoom = dem_zoom+1 doubles texture resolution (~1-3 MB JPEG). Keep each place's total under ~20 MB (operator budget 2026-08-28). cloud_lt = max Sentinel-2 cloud cover percent accepted.",
+  "places": [
+    {
+      "slug": "grand-canyon",
+      "name": "Grand Canyon (South Rim + river core)",
+      "bbox": [-112.26, 36.02, -111.98, 36.15],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 8,
+      "notes": "Pilot 1. Window centered on Bright Angel / South Rim; river visible at ~750 m, rim ~2100 m - use these as decode sanity checks."
+    },
+    {
+      "slug": "mount-everest",
+      "name": "Mount Everest (Khumbu massif)",
+      "bbox": [86.85, 27.92, 87.05, 28.06],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 15,
+      "notes": "Pilot 2. Summit 86.9253E 27.9881N, 8849 m. Himalaya scenes are often cloudy/snowy - cloud_lt relaxed; prefer a post-monsoon (Oct-Dec) scene if the top STAC hit looks poor."
+    },
+    {
+      "slug": "mount-fuji",
+      "name": "Mount Fuji (stratovolcano + Fuji Five Lakes edge)",
+      "bbox": [138.62, 35.28, 138.85, 35.45],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 10,
+      "notes": "Pilot 3. Summit 138.7274E 35.3606N, 3776 m. Near-perfect radial cone - the strongest visual proof that real DEM beats procedural noise."
+    }
+  ]
+}
