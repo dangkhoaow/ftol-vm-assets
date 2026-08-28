@@ -1,0 +1,4 @@
+Sunset Soar - original engine written from scratch by the freetoolonline.com
+team (Claude Fable 5 assisted), 2026-08-24. MIT licensed. Clean-room
+genre-only inspiration: the momentum dive-and-soar gliding genre (no code,
+assets, or branding reused from any repo). Plain Canvas 2D, zero dependencies.

@@ -1,0 +1,5 @@
+Cube Smash 3D - original engine written from scratch by the freetoolonline.com
+team (Claude Fable 5 assisted), 2026-08-24. MIT licensed (see LICENSE).
+Clean-room genre-only inspiration: the arena-survival genre popularised by
+open showcase games (no code, assets, or branding reused from any repo).
+Uses three.js (MIT) from ../../vendor/three/.

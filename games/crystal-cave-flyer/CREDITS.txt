@@ -1,0 +1,5 @@
+Crystal Cave Flyer - original engine written from scratch by the
+freetoolonline.com team (Claude Fable 5 assisted), 2026-08-24. MIT licensed.
+Clean-room genre-only inspiration: the one-button flight genre (no code,
+assets, or branding reused from any repo). Uses three.js (MIT) from
+../../vendor/three/.

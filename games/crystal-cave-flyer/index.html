@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="robots" content="noindex">
+<title>Crystal Cave Flyer</title>
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;background:#060612;height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+  #hud{position:fixed;top:10px;left:12px;color:#fff;font-size:15px;text-shadow:0 1px 3px #000;user-select:none;}
+  #overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(4,4,12,.84);color:#fff;text-align:center;padding:18px;}
+  #overlay h1{font-size:30px;margin:0 0 8px 0;letter-spacing:2px;}
+  #overlay p{max-width:460px;font-size:14.5px;color:#cfd8ff;margin:6px 0;}
+  #overlay button{margin-top:14px;padding:12px 34px;font-size:17px;font-weight:700;border:0;border-radius:8px;background:#2fb8c9;color:#04222a;cursor:pointer;}
+  #overlay button:hover{background:#54d6e6;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<div id="hud">0 m &middot; 0 crystals</div>
+<div id="overlay">
+  <h1>CRYSTAL CAVE FLYER</h1>
+  <p>Glide through an endless glowing cavern. Hold Space, click, or touch to climb; release to sink. Thread the gaps in the rock walls and scoop up crystals - one wall clip ends the run, and the cave gets faster the deeper you fly.</p>
+  <p id="bestLine"></p>
+  <button id="startBtn" type="button">Play</button>
+</div>
+<script src="../../vendor/three/three.min.js"></script>
+<script>
+(function(){
+  'use strict';
+  var LS_KEY = 'ftol:crystalcaveflyer:best';
+  var scene, camera, renderer, ship;
+  var walls = [], crystals = [], caveRings = [];
+  var running = false, over = false, lift = false;
+  var dist = 0, gems = 0, speed = 16, vy = 0;
+  var lastT = 0, nextWall = 40;
+  var CAVE_R = 9;
+
+  var hud = document.getElementById('hud');
+  var overlay = document.getElementById('overlay');
+  var bestLine = document.getElementById('bestLine');
+
+  function best(){ try { return parseInt(localStorage.getItem(LS_KEY) || '0', 10) || 0; } catch(e){ return 0; } }
+  function saveBest(v){ try { if (v > best()) localStorage.setItem(LS_KEY, String(v)); } catch(e){} }
+  bestLine.textContent = best() ? ('Best distance on this device: ' + best() + ' m') : 'Distances stay in this browser (ftol:crystalcaveflyer:best).';
+
+  function init(){
+    scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x060612, 24, 90);
+    camera = new THREE.PerspectiveCamera(70, innerWidth/innerHeight, 0.1, 200);
+    renderer = new THREE.WebGLRenderer({ antialias:true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    document.body.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0x334, 1.2));
+    var glow = new THREE.PointLight(0x54d6e6, 1.4, 40);
+    glow.position.set(0, 0, -6);
+    scene.add(glow);
+
+    ship = new THREE.Group();
+    var hull = new THREE.Mesh(
+      new THREE.ConeGeometry(0.42, 1.5, 10),
+      new THREE.MeshStandardMaterial({ color:0xffc94d, emissive:0x7a5210, emissiveIntensity:0.5, roughness:0.4 })
+    );
+    hull.rotation.x = -Math.PI/2;
+    ship.add(hull);
+    var wingMat = new THREE.MeshStandardMaterial({ color:0xff7a5c, roughness:0.5 });
+    var wl = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.07, 0.5), wingMat);
+    ship.add(wl);
+    scene.add(ship);
+
+    // cave: rings of rock plates receding into -z, recycled as the ship "advances"
+    var rockMat = new THREE.MeshStandardMaterial({ color:0x27214a, roughness:0.95 });
+    for (var i=0;i<28;i++){
+      var ring = new THREE.Group();
+      for (var k=0;k<10;k++){
+        var a = (k/10)*Math.PI*2 + (i%2)*0.31;
+        var plate = new THREE.Mesh(new THREE.BoxGeometry(6.2, 1.6, 3.4), rockMat);
+        plate.position.set(Math.cos(a)*CAVE_R*1.12, Math.sin(a)*CAVE_R*1.12, 0);
+        plate.rotation.z = a + Math.PI/2;
+        ring.add(plate);
+      }
+      ring.position.z = -i*4;
+      scene.add(ring);
+      caveRings.push(ring);
+    }
+    addEventListener('resize', function(){
+      camera.aspect = innerWidth/innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(innerWidth, innerHeight);
+    });
+    addEventListener('keydown', function(e){
+      if (e.code === 'Space'){ e.preventDefault(); if (over) restart(); else lift = true; }
+      if (e.code === 'KeyR' && over) restart();
+    });
+    addEventListener('keyup', function(e){ if (e.code === 'Space') lift = false; });
+    addEventListener('pointerdown', function(){ if (over) restart(); else lift = true; });
+    addEventListener('pointerup', function(){ lift = false; });
+    requestAnimationFrame(loop);
+  }
+
+  function spawnWall(z){
+    // a rock wall with a circular gap at a random height
+    var gapY = (Math.random()*2-1) * (CAVE_R-4);
+    var gapR = Math.max(3.0, 4.6 - dist/900);
+    var group = new THREE.Group();
+    var mat = new THREE.MeshStandardMaterial({ color:0x3a2f6e, roughness:0.85 });
+    for (var i=0;i<14;i++){
+      var a = (i/14)*Math.PI*2;
+      var px = Math.cos(a)*(gapR + 2.6), py = gapY + Math.sin(a)*(gapR + 2.6);
+      if (Math.abs(px) > CAVE_R+2 || Math.abs(py) > CAVE_R+2) continue;
+      var rock = new THREE.Mesh(new THREE.BoxGeometry(3.4, 3.4, 1.2), mat);
+      rock.position.set(px, py, 0);
+      rock.rotation.z = a;
+      group.add(rock);
+    }
+    group.position.z = z;
+    group.userData = { gapY: gapY, gapR: gapR, passed: false };
+    scene.add(group);
+    walls.push(group);
+    // a crystal floats in ~60% of gaps
+    if (Math.random() < 0.6){
+      var c = new THREE.Mesh(
+        new THREE.OctahedronGeometry(0.55),
+        new THREE.MeshStandardMaterial({ color:0x54d6e6, emissive:0x1a6d7a, emissiveIntensity:0.9 })
+      );
+      c.position.set(0, gapY, z);
+      scene.add(c);
+      crystals.push(c);
+    }
+  }
+
+  function loop(t){
+    requestAnimationFrame(loop);
+    var dt = Math.min(0.05, (t - lastT)/1000 || 0.016);
+    lastT = t;
+    if (running && !over){
+      speed = 16 + Math.min(18, dist/60);
+      dist += speed*dt;
+      vy += (lift ? 24 : -16) * dt;
+      vy = Math.max(-10, Math.min(10, vy));
+      ship.position.y += vy*dt;
+      ship.rotation.x = Math.max(-0.5, Math.min(0.5, vy*0.045));
+      if (ship.position.y > CAVE_R-1 || ship.position.y < -(CAVE_R-1)) return crash();
+
+      for (var i=0;i<caveRings.length;i++){
+        var ring = caveRings[i];
+        ring.position.z += speed*dt;
+        if (ring.position.z > 8) ring.position.z -= caveRings.length*4;
+      }
+      nextWall -= speed*dt;
+      if (nextWall <= 0){
+        spawnWall(-90);
+        nextWall = Math.max(14, 26 - dist/150);
+      }
+      for (var w=walls.length-1;w>=0;w--){
+        var wall = walls[w];
+        wall.position.z += speed*dt;
+        if (!wall.userData.passed && wall.position.z > 0.8){
+          var dy = Math.abs(ship.position.y - wall.userData.gapY);
+          if (dy > wall.userData.gapR - 0.6) return crash();
+          wall.userData.passed = true;
+        }
+        if (wall.position.z > 10){ scene.remove(wall); walls.splice(w,1); }
+      }
+      for (var c=crystals.length-1;c>=0;c--){
+        var cr = crystals[c];
+        cr.position.z += speed*dt;
+        cr.rotation.y += 2.4*dt;
+        if (cr.position.z > -1 && cr.position.z < 1.6 && Math.abs(cr.position.y - ship.position.y) < 1.3){
+          gems++; scene.remove(cr); crystals.splice(c,1); continue;
+        }
+        if (cr.position.z > 10){ scene.remove(cr); crystals.splice(c,1); }
+      }
+      hud.innerHTML = Math.floor(dist) + ' m &middot; ' + gems + ' crystals';
+    }
+    camera.position.set(0, ship.position.y*0.5 + 1.2, 7);
+    camera.lookAt(0, ship.position.y*0.5, -10);
+    renderer.render(scene, camera);
+  }
+
+  function crash(){
+    over = true;
+    var total = Math.floor(dist) + gems*25;
+    saveBest(total);
+    overlay.querySelector('h1').textContent = 'CAVE-IN!';
+    overlay.querySelectorAll('p')[0].textContent = Math.floor(dist) + ' m flown, ' + gems + ' crystals (score ' + total + ').';
+    bestLine.textContent = 'Best on this device: ' + best();
+    document.getElementById('startBtn').textContent = 'Fly again';
+    overlay.classList.remove('hidden');
+  }
+
+  function restart(){
+    for (var i=0;i<walls.length;i++) scene.remove(walls[i]);
+    for (var j=0;j<crystals.length;j++) scene.remove(crystals[j]);
+    walls = []; crystals = [];
+    dist = 0; gems = 0; vy = 0; nextWall = 45;
+    ship.position.set(0, 0, 0);
+    over = false; running = true;
+    overlay.classList.add('hidden');
+  }
+
+  document.getElementById('startBtn').addEventListener('click', restart);
+  init();
+})();
+</script>
+</body>
+</html>

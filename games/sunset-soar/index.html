@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="robots" content="noindex">
+<title>Sunset Soar</title>
+<style>
+  html,body{margin:0;padding:0;overflow:hidden;height:100%;background:#2b1533;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+  canvas{display:block;}
+  #overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(30,12,40,.82);color:#fff;text-align:center;padding:18px;}
+  #overlay h1{font-size:30px;margin:0 0 8px 0;letter-spacing:2px;}
+  #overlay p{max-width:460px;font-size:14.5px;color:#ffd9c2;margin:6px 0;}
+  #overlay button{margin-top:14px;padding:12px 34px;font-size:17px;font-weight:700;border:0;border-radius:8px;background:#ff8c42;color:#3a1804;cursor:pointer;}
+  #overlay button:hover{background:#ffa763;}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div id="overlay">
+  <h1>SUNSET SOAR</h1>
+  <p>Ride the rolling hills into the sunset. HOLD (Space, click, or touch) to dive, RELEASE to soar - dive down the slopes to build speed, release at the crest to launch. Losing all momentum ends the run; the sun sets as you fly farther.</p>
+  <p id="bestLine"></p>
+  <button id="startBtn" type="button">Play</button>
+</div>
+<script>
+(function(){
+  'use strict';
+  var LS_KEY = 'ftol:sunsetsoar:best';
+  var cv = document.getElementById('cv');
+  var ctx = cv.getContext('2d');
+  var overlay = document.getElementById('overlay');
+  var bestLine = document.getElementById('bestLine');
+  var W, H;
+  var running = false, over = false, diving = false;
+  var x = 0, y = 0, vx = 0, vy = 0, dist = 0, airTime = 0, boosts = 0;
+  var lastT = 0, stallTimer = 0;
+
+  function best(){ try { return parseInt(localStorage.getItem(LS_KEY) || '0', 10) || 0; } catch(e){ return 0; } }
+  function saveBest(v){ try { if (v > best()) localStorage.setItem(LS_KEY, String(v)); } catch(e){} }
+  bestLine.textContent = best() ? ('Best distance on this device: ' + best() + ' m') : 'Distances stay in this browser (ftol:sunsetsoar:best).';
+
+  function resize(){ W = cv.width = innerWidth; H = cv.height = innerHeight; }
+  addEventListener('resize', resize);
+  resize();
+
+  // procedural hills: sum of sines, amplitude grows gently with distance
+  function ground(gx){
+    return H*0.62
+      + Math.sin(gx*0.0021) * 90
+      + Math.sin(gx*0.00093 + 2.1) * 150
+      + Math.sin(gx*0.0052 + 0.7) * 26;
+  }
+
+  function press(on){ if (over && on){ restart(); return; } diving = on; }
+  addEventListener('keydown', function(e){ if (e.code === 'Space'){ e.preventDefault(); press(true); } if (e.code === 'KeyR' && over) restart(); });
+  addEventListener('keyup', function(e){ if (e.code === 'Space') press(false); });
+  addEventListener('pointerdown', function(){ press(true); });
+  addEventListener('pointerup', function(){ press(false); });
+
+  function restart(){
+    x = 0; y = ground(0) - 60; vx = 240; vy = 0;
+    dist = 0; airTime = 0; boosts = 0; stallTimer = 0;
+    over = false; running = true;
+    overlay.classList.add('hidden');
+  }
+  document.getElementById('startBtn').addEventListener('click', restart);
+
+  function gameOver(){
+    over = true;
+    var m = Math.floor(dist/10);
+    saveBest(m);
+    overlay.querySelector('h1').textContent = 'SUN DOWN';
+    overlay.querySelectorAll('p')[0].textContent = m + ' m soared, ' + boosts + ' perfect launches.';
+    bestLine.textContent = 'Best distance on this device: ' + best() + ' m';
+    document.getElementById('startBtn').textContent = 'Soar again';
+    overlay.classList.remove('hidden');
+  }
+
+  function lerpColor(a, b, t){
+    return 'rgb(' + Math.round(a[0]+(b[0]-a[0])*t) + ',' + Math.round(a[1]+(b[1]-a[1])*t) + ',' + Math.round(a[2]+(b[2]-a[2])*t) + ')';
+  }
+
+  function loop(t){
+    requestAnimationFrame(loop);
+    var dt = Math.min(0.05, (t - lastT)/1000 || 0.016);
+    lastT = t;
+    if (running && !over){
+      var g = diving ? 2600 : 900;
+      vy += g*dt;
+      x += vx*dt;
+      y += vy*dt;
+      var gy = ground(x);
+      if (y >= gy){
+        // slope at this point: launch or grind
+        var slope = (ground(x+8) - ground(x-8)) / 16;
+        var speed = Math.sqrt(vx*vx + vy*vy);
+        if (vy > 40 && slope > 0.08 && !diving){
+          // landed while sinking on a downslope without diving: scrub speed
+          vx *= 0.985;
+        }
+        // project velocity along the slope (ski physics)
+        var sx = 1, sy = slope;
+        var sl = Math.sqrt(sx*sx + sy*sy);
+        sx /= sl; sy /= sl;
+        var dot = vx*sx + vy*sy;
+        if (diving && vy > 0 && slope > 0.15 && airTime > 0.55){ dot *= 1.06; boosts++; }
+        vx = dot*sx; vy = dot*sy;
+        vx += (diving ? 900 : 320) * Math.max(0, slope) * dt;
+        y = gy;
+        airTime = 0;
+      } else {
+        airTime += dt;
+      }
+      vx = Math.max(0, vx - 8*dt); // drag
+      if (dist < 15000) vx = Math.max(vx, 110); // warm-up grace: never stall in the first 1.5 km
+      dist = Math.max(dist, x);
+      if (vx < 45 && airTime === 0){ stallTimer += dt; if (stallTimer > 1.6) gameOver(); }
+      else stallTimer = 0;
+    }
+
+    // ---- draw ----
+    var duskT = Math.min(1, dist/38000);
+    var skyTop = lerpColor([255,160,90], [40,18,70], duskT);
+    var skyBot = lerpColor([255,110,80], [120,40,90], duskT);
+    var grad = ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0, skyTop);
+    grad.addColorStop(1, skyBot);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0,0,W,H);
+
+    // sun sinking with distance
+    var sunY = H*0.28 + duskT*H*0.45;
+    ctx.beginPath();
+    ctx.arc(W*0.68, sunY, 58, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(255,220,150,0.95)';
+    ctx.fill();
+
+    var camX = x - W*0.3;
+    var camY = Math.min(y, ground(x)) - H*0.45;
+
+    // far hills silhouette
+    ctx.fillStyle = 'rgba(60,20,70,0.55)';
+    ctx.beginPath();
+    ctx.moveTo(0, H);
+    for (var px=0; px<=W; px+=14){
+      var wx = (camX*0.5) + px;
+      ctx.lineTo(px, H*0.5 + Math.sin(wx*0.0016)*70 + Math.sin(wx*0.0037)*30 - camY*0.15);
+    }
+    ctx.lineTo(W, H);
+    ctx.fill();
+
+    // main hills
+    ctx.fillStyle = '#31123f';
+    ctx.beginPath();
+    ctx.moveTo(0, H);
+    for (var qx=0; qx<=W; qx+=8){
+      ctx.lineTo(qx, ground(camX+qx) - camY);
+    }
+    ctx.lineTo(W, H);
+    ctx.fill();
+    // ridge highlight
+    ctx.strokeStyle = 'rgba(255,150,90,' + (0.7 - duskT*0.4) + ')';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    for (var rx=0; rx<=W; rx+=8){
+      var ry = ground(camX+rx) - camY;
+      if (rx===0) ctx.moveTo(rx, ry); else ctx.lineTo(rx, ry);
+    }
+    ctx.stroke();
+
+    // glider (paper-dart silhouette)
+    if (running){
+      var px2 = x - camX, py2 = y - camY - 6;
+      var ang = Math.atan2(vy, Math.max(60,vx)) * 0.8;
+      ctx.save();
+      ctx.translate(px2, py2);
+      ctx.rotate(ang);
+      ctx.fillStyle = diving ? '#ffd166' : '#ffe9d6';
+      ctx.beginPath();
+      ctx.moveTo(16,0); ctx.lineTo(-12,-8); ctx.lineTo(-6,0); ctx.lineTo(-12,8);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      ctx.fillStyle = '#fff';
+      ctx.font = '600 15px sans-serif';
+      ctx.fillText(Math.floor(dist/10) + ' m   ' + Math.floor(Math.sqrt(vx*vx+vy*vy)/10) + ' speed' + (boosts ? ('   ' + boosts + ' launches') : ''), 12, 24);
+      if (stallTimer > 0.3){
+        ctx.fillStyle = '#ffd166';
+        ctx.fillText('Stalling - dive down a slope to rebuild speed!', 12, 46);
+      }
+    }
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
