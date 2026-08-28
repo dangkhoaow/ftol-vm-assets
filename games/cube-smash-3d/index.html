@@ -6,93 +6,228 @@
 <meta name="robots" content="noindex">
 <title>Cube Smash 3D</title>
 <style>
-  html,body{margin:0;padding:0;overflow:hidden;background:#0b0b14;height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
-  #hud{position:fixed;top:10px;left:12px;color:#fff;font-size:15px;text-shadow:0 1px 3px #000;user-select:none;}
-  #hearts{position:fixed;top:10px;right:12px;color:#ff5470;font-size:20px;letter-spacing:3px;text-shadow:0 1px 3px #000;}
-  #combo{position:fixed;top:36px;left:12px;color:#ffd166;font-size:13px;text-shadow:0 1px 3px #000;}
-  #overlay{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(6,6,14,.82);color:#fff;text-align:center;padding:18px;}
-  #overlay h1{font-size:30px;margin:0 0 8px 0;letter-spacing:2px;}
-  #overlay p{max-width:460px;font-size:14.5px;color:#cfcfe0;margin:6px 0;}
-  #overlay button{margin-top:14px;padding:12px 34px;font-size:17px;font-weight:700;border:0;border-radius:8px;background:#7c5cff;color:#fff;cursor:pointer;}
-  #overlay button:hover{background:#9678ff;}
+  html,body{margin:0;padding:0;overflow:hidden;background:#5da33a;height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;user-select:none;-webkit-user-select:none;}
+  .hudtxt{color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.55);}
+  #topbar{position:fixed;top:8px;left:0;right:0;text-align:center;pointer-events:none;}
+  #lv{font-weight:800;font-size:16px;letter-spacing:1px;}
+  #timer{font-weight:800;font-size:34px;line-height:1.05;}
+  #weapon{position:fixed;top:10px;left:12px;background:rgba(0,0,0,.45);border-radius:16px;padding:6px 14px;font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;}
+  #pips span{display:inline-block;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);margin-right:3px;}
+  #pips span.on{background:#ffd166;}
+  #counters{position:fixed;top:10px;right:14px;text-align:right;font-size:15px;font-weight:700;}
+  #counters div{margin-bottom:4px;}
+  #hpwrap{position:fixed;left:14px;bottom:34px;width:270px;}
+  #hpbar{height:16px;background:rgba(0,0,0,.4);border:2px solid #222;border-radius:9px;overflow:hidden;}
+  #hpfill{height:100%;width:100%;background:linear-gradient(#ff6a4d,#d92b1e);border-radius:6px;}
+  #hptxt{font-size:13px;font-weight:800;margin-top:3px;}
+  #xpbar{height:9px;background:rgba(0,0,0,.4);border:2px solid #222;border-radius:6px;overflow:hidden;margin-top:6px;width:200px;}
+  #xpfill{height:100%;width:0%;background:linear-gradient(#ffe27a,#f2b60a);}
+  #footer{position:fixed;bottom:6px;left:0;right:0;text-align:center;font-size:13px;font-weight:600;color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.5);pointer-events:none;}
+  .panel{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(20,30,12,.78);color:#fff;text-align:center;padding:18px;z-index:20;}
+  .panel h1{font-size:32px;margin:0 0 8px 0;letter-spacing:2px;}
+  .panel p{max-width:480px;font-size:14.5px;color:#e8f0d8;margin:6px 0;}
+  .panel button{margin-top:14px;padding:12px 34px;font-size:17px;font-weight:700;border:0;border-radius:8px;background:#f2b60a;color:#3a2a04;cursor:pointer;}
+  .panel button:hover{background:#ffd166;}
+  #upgrade{display:none;}
+  .cardrow{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap;justify-content:center;}
+  .upcard{width:170px;background:#28361c;border:2px solid #f2b60a;border-radius:10px;padding:14px 10px;cursor:pointer;}
+  .upcard:hover{background:#3a4d2a;}
+  .upcard b{display:block;font-size:15px;margin-bottom:6px;color:#ffd166;}
+  .upcard span{font-size:12.5px;color:#d8e4c4;}
   .hidden{display:none !important;}
 </style>
 </head>
 <body>
-<div id="hud">Score 0 &middot; Wave 1 &middot; 0:00</div>
-<div id="combo"></div>
-<div id="hearts">&#9829;&#9829;&#9829;</div>
-<div id="overlay">
+<div id="topbar" class="hudtxt"><div id="lv">LV 1</div><div id="timer">0:00</div></div>
+<div id="weapon"><span>&#128296;</span> Smash Hammer <span id="pips"></span></div>
+<div id="counters" class="hudtxt"><div>&#128121; <span id="kills">0</span></div><div>&#128176; <span id="coins">0</span></div></div>
+<div id="hpwrap" class="hudtxt"><div id="hpbar"><div id="hpfill"></div></div><div id="hptxt">100/100</div><div id="xpbar"><div id="xpfill"></div></div></div>
+<div id="footer">WASD move &middot; SHIFT sprint &middot; SPACE jump &middot; drag mouse = camera &middot; scroll = zoom &middot; P pause &middot; M mute</div>
+<div id="overlay" class="panel">
   <h1>CUBE SMASH 3D</h1>
-  <p>Waves of cubes close in on the arena. Move with WASD / arrows (or drag on touch) and press Space / tap to DASH - the dash smashes every cube it touches. Chain smashes for combo points. Three hearts; a cube that reaches you costs one.</p>
+  <p>A sunny meadow, one hammer, and endless waves of grumpy cube blobs. Your Smash Hammer swings on its own - walk into range, smash, scoop the gems they drop, and pick an upgrade every level. Survive as long as you can.</p>
+  <p>WASD move, SHIFT sprint, SPACE jump. Drag the mouse to orbit the camera, scroll to zoom. P pauses, M mutes. On touch: drag to move, tap to jump.</p>
   <p id="bestLine"></p>
   <button id="startBtn" type="button">Play</button>
+</div>
+<div id="upgrade" class="panel">
+  <h1>LEVEL UP!</h1>
+  <p>Pick one upgrade:</p>
+  <div class="cardrow" id="cards"></div>
 </div>
 <script src="../../vendor/three/three.min.js"></script>
 <script>
 (function(){
   'use strict';
   var LS_KEY = 'ftol:cubesmash3d:best';
-  var scene, camera, renderer, player, arena;
-  var cubes = [], shards = [];
-  var keys = {}, touchTarget = null;
-  var running = false, over = false;
-  var score = 0, wave = 1, hearts = 3, combo = 0, comboTimer = 0, elapsed = 0;
-  var dashCd = 0, dashActive = 0, dashRadius = 3.2, moveSpeed = 9;
-  var ARENA_R = 16;
-  var lastT = 0, spawnTimer = 0;
+  var scene, camera, renderer, sun;
+  var player, hammer, hammerPivot;
+  var enemies = [], gems = [], shards = [], grassBits = [];
+  var keys = {};
+  var running = false, over = false, paused = false, choosing = false, muted = false;
+  var hp = 100, maxHp = 100, xp = 0, xpNeed = 6, level = 1;
+  var kills = 0, coins = 0, elapsed = 0, score = 0;
+  var moveSpeed = 7.5, sprintMul = 1.55, dmg = 34, swingArc = 2.4, magnet = 3.5, regen = 0;
+  var weaponPips = 1;
+  var swingT = 0, swingCd = 0, hurtCd = 0;
+  var vy = 0, grounded = true;
+  var camYaw = 0.0, camPitch = 0.62, camDist = 18;
+  var dragging = false, lastMx = 0, lastMy = 0;
+  var touchMove = null;
+  var lastT = 0, spawnTimer = 1.2;
+  var WORLD = 60;
 
-  var hud = document.getElementById('hud');
-  var heartsEl = document.getElementById('hearts');
-  var comboEl = document.getElementById('combo');
   var overlay = document.getElementById('overlay');
+  var upgradeEl = document.getElementById('upgrade');
   var bestLine = document.getElementById('bestLine');
+
+  // ---------- tiny synth sfx (all original, WebAudio) ----------
+  var AC = null;
+  function sfx(freq, dur, type, vol){
+    if (muted) return;
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+      var o = AC.createOscillator(), g = AC.createGain();
+      o.type = type || 'square'; o.frequency.value = freq;
+      g.gain.setValueAtTime(vol || 0.05, AC.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + (dur || 0.12));
+      o.connect(g); g.connect(AC.destination);
+      o.start(); o.stop(AC.currentTime + (dur || 0.12));
+    } catch(e){}
+  }
 
   function best(){ try { return parseInt(localStorage.getItem(LS_KEY) || '0', 10) || 0; } catch(e){ return 0; } }
   function saveBest(v){ try { if (v > best()) localStorage.setItem(LS_KEY, String(v)); } catch(e){} }
   bestLine.textContent = best() ? ('Best score on this device: ' + best()) : 'Scores stay in this browser (ftol:cubesmash3d:best).';
 
+  // ---------- world ----------
+  function mat(c, rough){ return new THREE.MeshLambertMaterial({ color:c }); }
+
+  function makeTree(x, z, s){
+    var g = new THREE.Group();
+    var trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.35*s, 0.5*s, 3.2*s, 6), mat(0x6b4226));
+    trunk.position.y = 1.6*s;
+    g.add(trunk);
+    var crown = new THREE.Mesh(new THREE.IcosahedronGeometry(1.9*s, 0), mat(0x2f7d32));
+    crown.position.y = 4.1*s;
+    crown.rotation.y = Math.random()*3;
+    g.add(crown);
+    var crown2 = new THREE.Mesh(new THREE.IcosahedronGeometry(1.3*s, 0), mat(0x3c9440));
+    crown2.position.set(0.8*s, 3.2*s, 0.4*s);
+    g.add(crown2);
+    g.position.set(x, 0, z);
+    return g;
+  }
+
+  function makeGrassTuft(x, z){
+    var t = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.7, 4), mat(0x9ed65f));
+    t.position.set(x, 0.35, z);
+    t.rotation.y = Math.random()*3;
+    t.rotation.z = (Math.random()-0.5)*0.5;
+    return t;
+  }
+
+  function makePlayer(){
+    var g = new THREE.Group();
+    var legs = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.8, 0.45), mat(0x2a3550));
+    legs.position.y = 0.4; g.add(legs);
+    var body = new THREE.Mesh(new THREE.BoxGeometry(0.95, 0.9, 0.6), mat(0xe6641e));
+    body.position.y = 1.25; g.add(body);
+    var head = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.6, 0.6), mat(0xf0b27a));
+    head.position.y = 2.05; g.add(head);
+    var hair = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.22, 0.65), mat(0x4a2c17));
+    hair.position.y = 2.4; g.add(hair);
+    var armL = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.75, 0.25), mat(0xe6641e));
+    armL.position.set(-0.62, 1.25, 0); g.add(armL);
+    // hammer arm pivot (right)
+    hammerPivot = new THREE.Group();
+    hammerPivot.position.set(0.62, 1.6, 0);
+    var armR = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.7, 0.25), mat(0xf0b27a));
+    armR.position.y = -0.3;
+    hammerPivot.add(armR);
+    hammer = new THREE.Group();
+    var handle = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 1.3, 6), mat(0x8a5a2b));
+    handle.position.y = -0.9;
+    handle.rotation.z = 0;
+    hammer.add(handle);
+    var headH = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.34, 0.34), mat(0xf2b60a));
+    headH.position.y = -1.5;
+    hammer.add(headH);
+    hammerPivot.add(hammer);
+    g.add(hammerPivot);
+    return g;
+  }
+
+  function makeEnemy(tier){
+    var g = new THREE.Group();
+    var size = tier === 2 ? 1.5 : 1.0;
+    var bodyC = tier === 2 ? 0x1d6e2b : 0x3fae3f;
+    var body = new THREE.Mesh(new THREE.BoxGeometry(size, size, size), mat(bodyC));
+    body.position.y = size/2 + 0.05;
+    g.add(body);
+    var eyeGeo = new THREE.BoxGeometry(0.16*size, 0.16*size, 0.06);
+    var eyeM = mat(0xd92b1e);
+    var e1 = new THREE.Mesh(eyeGeo, eyeM); e1.position.set(-0.22*size, size*0.65, size/2+0.02); g.add(e1);
+    var e2 = new THREE.Mesh(eyeGeo, eyeM); e2.position.set(0.22*size, size*0.65, size/2+0.02); g.add(e2);
+    g.userData = {
+      hp: tier === 2 ? 90 : 40,
+      speed: (tier === 2 ? 2.0 : 2.8) + Math.random()*0.8 + Math.min(2.5, elapsed/90),
+      dmg: tier === 2 ? 22 : 12,
+      size: size, tier: tier, hopT: Math.random()*3, hitCd: 0
+    };
+    return g;
+  }
+
   function init(){
     scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x0b0b14, 30, 70);
-    camera = new THREE.PerspectiveCamera(58, innerWidth/innerHeight, 0.1, 200);
+    scene.background = new THREE.Color(0x9ad0ec);
+    scene.fog = new THREE.Fog(0x9ad0ec, 55, 110);
+    camera = new THREE.PerspectiveCamera(55, innerWidth/innerHeight, 0.1, 300);
     renderer = new THREE.WebGLRenderer({ antialias:true });
     renderer.setSize(innerWidth, innerHeight);
     renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    renderer.shadowMap.enabled = true;
     document.body.appendChild(renderer.domElement);
 
-    scene.add(new THREE.AmbientLight(0x8888aa, 0.9));
-    var sun = new THREE.DirectionalLight(0xffffff, 0.9);
-    sun.position.set(8, 18, 6);
+    scene.add(new THREE.HemisphereLight(0xdfF6ff, 0x59892f, 0.95));
+    sun = new THREE.DirectionalLight(0xfff3d6, 1.15);
+    sun.position.set(24, 38, 18);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    sun.shadow.camera.left = -40; sun.shadow.camera.right = 40;
+    sun.shadow.camera.top = 40; sun.shadow.camera.bottom = -40;
     scene.add(sun);
 
-    arena = new THREE.Mesh(
-      new THREE.CylinderGeometry(ARENA_R, ARENA_R, 0.5, 48),
-      new THREE.MeshStandardMaterial({ color:0x1c1c30, roughness:0.85 })
-    );
-    arena.position.y = -0.25;
-    scene.add(arena);
-    var rim = new THREE.Mesh(
-      new THREE.TorusGeometry(ARENA_R, 0.18, 10, 64),
-      new THREE.MeshStandardMaterial({ color:0x7c5cff, emissive:0x4b2fd6, emissiveIntensity:0.7 })
-    );
-    rim.rotation.x = Math.PI/2;
-    scene.add(rim);
+    var ground = new THREE.Mesh(new THREE.CircleGeometry(WORLD+30, 48), mat(0x5da33a));
+    ground.rotation.x = -Math.PI/2;
+    ground.receiveShadow = true;
+    scene.add(ground);
+    // gentle meadow bumps at the edge
+    for (var b=0;b<10;b++){
+      var hill = new THREE.Mesh(new THREE.SphereGeometry(9+Math.random()*8, 10, 8), mat(0x6aa93a));
+      var ha = Math.random()*Math.PI*2;
+      hill.position.set(Math.cos(ha)*(WORLD+10), -5.5, Math.sin(ha)*(WORLD+10));
+      scene.add(hill);
+    }
+    for (var i=0;i<24;i++){
+      var a = Math.random()*Math.PI*2, r = 20 + Math.random()*(WORLD+5);
+      scene.add(makeTree(Math.cos(a)*r, Math.sin(a)*r, 0.8 + Math.random()*0.8));
+    }
+    for (var t=0;t<220;t++){
+      var ga = Math.random()*Math.PI*2, gr = Math.sqrt(Math.random())*WORLD;
+      var tuft = makeGrassTuft(Math.cos(ga)*gr, Math.sin(ga)*gr);
+      grassBits.push(tuft);
+      scene.add(tuft);
+    }
+    for (var rck=0;rck<14;rck++){
+      var rr = new THREE.Mesh(new THREE.DodecahedronGeometry(0.4+Math.random()*0.5, 0), mat(0x9a9a92));
+      var ra = Math.random()*Math.PI*2, rd = 8+Math.random()*WORLD;
+      rr.position.set(Math.cos(ra)*rd, 0.25, Math.sin(ra)*rd);
+      scene.add(rr);
+    }
 
-    player = new THREE.Group();
-    var body = new THREE.Mesh(
-      new THREE.SphereGeometry(0.75, 24, 18),
-      new THREE.MeshStandardMaterial({ color:0x35e0c0, emissive:0x0f6d5a, emissiveIntensity:0.6, roughness:0.35 })
-    );
-    body.position.y = 0.75;
-    player.add(body);
-    player.userData.ring = new THREE.Mesh(
-      new THREE.TorusGeometry(dashRadius, 0.07, 8, 40),
-      new THREE.MeshBasicMaterial({ color:0xffd166, transparent:true, opacity:0 })
-    );
-    player.userData.ring.rotation.x = Math.PI/2;
-    player.userData.ring.position.y = 0.35;
-    player.add(player.userData.ring);
+    player = makePlayer();
+    player.traverse(function(o){ if (o.isMesh) o.castShadow = true; });
     scene.add(player);
 
     addEventListener('resize', function(){
@@ -102,175 +237,271 @@
     });
     addEventListener('keydown', function(e){
       keys[e.code] = true;
-      if (e.code === 'Space'){ e.preventDefault(); if (over) restart(); else dash(); }
+      if (e.code === 'Space'){ e.preventDefault(); if (over) return restart(); if (grounded && running && !paused && !choosing){ vy = 9; grounded = false; sfx(300,0.1,'sine',0.04); } }
+      if (e.code === 'KeyP' && running && !over && !choosing){ paused = !paused; }
+      if (e.code === 'KeyM'){ muted = !muted; }
       if (e.code === 'KeyR' && over) restart();
     });
     addEventListener('keyup', function(e){ keys[e.code] = false; });
-    renderer.domElement.addEventListener('pointerdown', function(e){
-      if (over){ restart(); return; }
-      dash();
-      touchTarget = toArena(e);
+    renderer.domElement.addEventListener('mousedown', function(e){ dragging = true; lastMx = e.clientX; lastMy = e.clientY; });
+    addEventListener('mouseup', function(){ dragging = false; });
+    addEventListener('mousemove', function(e){
+      if (!dragging) return;
+      camYaw -= (e.clientX - lastMx) * 0.005;
+      camPitch = Math.max(0.35, Math.min(1.35, camPitch + (e.clientY - lastMy) * 0.004));
+      lastMx = e.clientX; lastMy = e.clientY;
     });
-    renderer.domElement.addEventListener('pointermove', function(e){
-      if (e.buttons) touchTarget = toArena(e);
+    addEventListener('wheel', function(e){ camDist = Math.max(8, Math.min(30, camDist + e.deltaY*0.02)); }, { passive:true });
+    // touch: drag = move direction, quick tap = jump
+    var touchStart = null;
+    renderer.domElement.addEventListener('touchstart', function(e){
+      var t = e.touches[0];
+      touchStart = { x:t.clientX, y:t.clientY, t:Date.now() };
+      touchMove = null;
+    }, { passive:true });
+    renderer.domElement.addEventListener('touchmove', function(e){
+      var t = e.touches[0];
+      if (touchStart) touchMove = { x: t.clientX - touchStart.x, y: t.clientY - touchStart.y };
+    }, { passive:true });
+    renderer.domElement.addEventListener('touchend', function(){
+      if (touchStart && !touchMove && Date.now() - touchStart.t < 250 && grounded && running && !paused){ vy = 9; grounded = false; }
+      touchStart = null; touchMove = null;
     });
-    renderer.domElement.addEventListener('pointerup', function(){ touchTarget = null; });
     requestAnimationFrame(loop);
   }
 
-  function toArena(e){
-    var v = new THREE.Vector3((e.clientX/innerWidth)*2-1, -(e.clientY/innerHeight)*2+1, 0.5).unproject(camera);
-    var dir = v.sub(camera.position).normalize();
-    var t = -camera.position.y / dir.y;
-    var p = camera.position.clone().add(dir.multiplyScalar(t));
-    return new THREE.Vector2(p.x, p.z);
+  // ---------- flow ----------
+  function pips(){
+    var el = document.getElementById('pips');
+    var h = '';
+    for (var i=0;i<8;i++) h += '<span class="' + (i<weaponPips?'on':'') + '"></span>';
+    el.innerHTML = h;
   }
 
-  function spawnCube(){
-    var size = 0.9 + Math.random()*0.9;
-    var hue = 0.62 + Math.random()*0.25;
-    var c = new THREE.Mesh(
-      new THREE.BoxGeometry(size, size, size),
-      new THREE.MeshStandardMaterial({ color: new THREE.Color().setHSL(hue, 0.75, 0.55), roughness:0.5 })
-    );
-    var a = Math.random()*Math.PI*2;
-    c.position.set(Math.cos(a)*(ARENA_R-0.8), size/2, Math.sin(a)*(ARENA_R-0.8));
-    c.userData = { speed: (1.0 + wave*0.16 + Math.random()*0.5), size:size, spin:(Math.random()-0.5)*2 };
-    scene.add(c);
-    cubes.push(c);
+  function hud(){
+    var m = Math.floor(elapsed/60), s2 = Math.floor(elapsed%60);
+    document.getElementById('timer').textContent = m + ':' + (s2<10?'0':'') + s2;
+    document.getElementById('lv').textContent = 'LV ' + level;
+    document.getElementById('kills').textContent = kills;
+    document.getElementById('coins').textContent = coins;
+    document.getElementById('hpfill').style.width = Math.max(0, (hp/maxHp)*100) + '%';
+    document.getElementById('hptxt').textContent = Math.ceil(hp) + '/' + maxHp;
+    document.getElementById('xpfill').style.width = Math.min(100, (xp/xpNeed)*100) + '%';
   }
 
-  function burst(pos, color){
-    for (var i=0;i<7;i++){
-      var s = new THREE.Mesh(new THREE.BoxGeometry(0.18,0.18,0.18), new THREE.MeshBasicMaterial({ color:color }));
+  var UPGRADES = [
+    { name: 'Heavier Hammer', desc: '+40% damage, wider swing', apply: function(){ dmg *= 1.4; swingArc = Math.min(3.6, swingArc + 0.25); weaponPips = Math.min(8, weaponPips+1); pips(); } },
+    { name: 'Swift Boots', desc: '+18% move speed', apply: function(){ moveSpeed *= 1.18; } },
+    { name: 'Hearty Meal', desc: '+30 max HP and full heal', apply: function(){ maxHp += 30; hp = maxHp; } },
+    { name: 'Gem Magnet', desc: 'Gems fly to you from farther away', apply: function(){ magnet += 2.5; } },
+    { name: 'Thick Skin', desc: 'Regenerate 1.5 HP per second', apply: function(){ regen += 1.5; } },
+    { name: 'Quick Swings', desc: 'Hammer swings 25% faster', apply: function(){ swingRate *= 0.75; weaponPips = Math.min(8, weaponPips+1); pips(); } }
+  ];
+  var swingRate = 0.85;
+
+  function levelUp(){
+    choosing = true;
+    sfx(660,0.2,'triangle',0.06); sfx(880,0.25,'triangle',0.05);
+    var picks = UPGRADES.slice().sort(function(){ return Math.random()-0.5; }).slice(0,3);
+    var row = document.getElementById('cards');
+    row.innerHTML = '';
+    picks.forEach(function(u){
+      var d = document.createElement('div');
+      d.className = 'upcard';
+      d.innerHTML = '<b>' + u.name + '</b><span>' + u.desc + '</span>';
+      d.addEventListener('click', function(){
+        u.apply();
+        upgradeEl.style.display = 'none';
+        choosing = false;
+      });
+      row.appendChild(d);
+    });
+    upgradeEl.style.display = 'flex';
+  }
+
+  function burst(pos, color, n){
+    for (var i=0;i<(n||8);i++){
+      var s = new THREE.Mesh(new THREE.BoxGeometry(0.16,0.16,0.16), new THREE.MeshBasicMaterial({ color:color }));
       s.position.copy(pos);
-      s.userData = { v: new THREE.Vector3((Math.random()-0.5)*8, Math.random()*7+2, (Math.random()-0.5)*8), life: 0.7 };
+      s.userData = { v: new THREE.Vector3((Math.random()-0.5)*7, Math.random()*6+2, (Math.random()-0.5)*7), life: 0.6 };
       scene.add(s);
       shards.push(s);
     }
   }
 
-  function dash(){
-    if (!running || dashCd > 0) return;
-    dashCd = 1.1;
-    dashActive = 0.22;
-    player.userData.ring.material.opacity = 0.9;
-    var hit = 0;
-    for (var i=cubes.length-1;i>=0;i--){
-      var c = cubes[i];
-      if (c.position.distanceTo(player.position) <= dashRadius + c.userData.size/2){
-        burst(c.position, c.material.color);
-        scene.remove(c);
-        cubes.splice(i,1);
-        hit++;
-      }
-    }
-    if (hit){
-      combo += hit;
-      comboTimer = 2.2;
-      score += hit * 10 * Math.max(1, Math.floor(combo/5)+1);
-      if (score > 0 && wave < 40 && score > wave*wave*60){ wave++; moveSpeed += 0.25; dashRadius = Math.min(5.2, dashRadius + 0.12); rebuildRing(); }
-    }
+  function dropGem(pos, tier){
+    var isCoin = Math.random() < 0.12;
+    var m = new THREE.Mesh(
+      isCoin ? new THREE.CylinderGeometry(0.28,0.28,0.1,10) : new THREE.OctahedronGeometry(0.24),
+      new THREE.MeshLambertMaterial({ color: isCoin ? 0xf2b60a : (tier===2 ? 0xb45cff : 0x54d6e6), emissive: isCoin ? 0x6b4e00 : 0x114455 })
+    );
+    m.position.set(pos.x, 0.4, pos.z);
+    m.userData = { coin:isCoin, xp: tier===2 ? 3 : 1 };
+    scene.add(m);
+    gems.push(m);
   }
 
-  function rebuildRing(){
-    var old = player.userData.ring;
-    player.remove(old);
-    old.geometry.dispose();
-    var ring = new THREE.Mesh(new THREE.TorusGeometry(dashRadius, 0.07, 8, 40), old.material);
-    ring.rotation.x = Math.PI/2; ring.position.y = 0.35;
-    player.userData.ring = ring;
-    player.add(ring);
+  function spawnEnemy(){
+    var tier = elapsed > 75 && Math.random() < 0.22 ? 2 : 1;
+    var e = makeEnemy(tier);
+    var a = Math.random()*Math.PI*2;
+    var r = 26 + Math.random()*12;
+    e.position.set(player.position.x + Math.cos(a)*r, 0, player.position.z + Math.sin(a)*r);
+    e.traverse(function(o){ if (o.isMesh) o.castShadow = true; });
+    scene.add(e);
+    enemies.push(e);
   }
 
-  function hudText(){
-    var m = Math.floor(elapsed/60), s = Math.floor(elapsed%60);
-    hud.innerHTML = 'Score ' + score + ' &middot; Wave ' + wave + ' &middot; ' + m + ':' + (s<10?'0':'') + s;
-    heartsEl.innerHTML = new Array(hearts+1).join('&#9829;') || '&#9760;';
-    comboEl.textContent = combo >= 5 ? ('Combo x' + (Math.floor(combo/5)+1)) : '';
-  }
-
+  // ---------- main loop ----------
   function loop(t){
     requestAnimationFrame(loop);
     var dt = Math.min(0.05, (t - lastT)/1000 || 0.016);
     lastT = t;
-    if (running && !over){
+    if (running && !over && !paused && !choosing){
       elapsed += dt;
+      hp = Math.min(maxHp, hp + regen*dt);
       spawnTimer -= dt;
-      var interval = Math.max(0.28, 1.5 - wave*0.09);
-      if (spawnTimer <= 0){ spawnCube(); spawnTimer = interval; }
+      var interval = Math.max(0.25, 1.35 - elapsed/120);
+      if (spawnTimer <= 0){ spawnEnemy(); spawnTimer = interval; }
 
-      var mv = new THREE.Vector2(0,0);
-      if (keys.KeyW || keys.ArrowUp) mv.y -= 1;
-      if (keys.KeyS || keys.ArrowDown) mv.y += 1;
-      if (keys.KeyA || keys.ArrowLeft) mv.x -= 1;
-      if (keys.KeyD || keys.ArrowRight) mv.x += 1;
-      if (touchTarget){
-        var d = new THREE.Vector2(touchTarget.x - player.position.x, touchTarget.y - player.position.z);
-        if (d.length() > 0.4) mv.copy(d);
+      // movement relative to camera yaw
+      var mx = 0, mz = 0;
+      if (keys.KeyW || keys.ArrowUp) mz -= 1;
+      if (keys.KeyS || keys.ArrowDown) mz += 1;
+      if (keys.KeyA || keys.ArrowLeft) mx -= 1;
+      if (keys.KeyD || keys.ArrowRight) mx += 1;
+      if (touchMove && (Math.abs(touchMove.x) > 14 || Math.abs(touchMove.y) > 14)){
+        mx = touchMove.x/80; mz = touchMove.y/80;
+        var tl = Math.sqrt(mx*mx+mz*mz); if (tl>1){ mx/=tl; mz/=tl; }
       }
-      if (mv.length() > 0){
-        mv.normalize().multiplyScalar(moveSpeed*dt);
-        player.position.x = Math.max(-ARENA_R+1, Math.min(ARENA_R-1, player.position.x + mv.x));
-        player.position.z = Math.max(-ARENA_R+1, Math.min(ARENA_R-1, player.position.z + mv.y));
+      var sp = moveSpeed * ((keys.ShiftLeft||keys.ShiftRight) ? sprintMul : 1);
+      if (mx || mz){
+        var cy = camYaw;
+        var wx = (mx*Math.cos(cy) - mz*Math.sin(cy));
+        var wz = (mx*Math.sin(cy) + mz*Math.cos(cy));
+        var l = Math.sqrt(wx*wx+wz*wz) || 1;
+        player.position.x += (wx/l)*sp*dt;
+        player.position.z += (wz/l)*sp*dt;
+        player.rotation.y = Math.atan2(wx, wz);
+        var rr2 = Math.sqrt(player.position.x*player.position.x + player.position.z*player.position.z);
+        if (rr2 > WORLD){ player.position.x *= WORLD/rr2; player.position.z *= WORLD/rr2; }
       }
-      if (dashCd > 0) dashCd -= dt;
-      if (dashActive > 0){ dashActive -= dt; if (dashActive <= 0) player.userData.ring.material.opacity = 0; }
-      if (comboTimer > 0){ comboTimer -= dt; if (comboTimer <= 0) combo = 0; }
+      // jump
+      if (!grounded){ vy -= 24*dt; player.position.y += vy*dt; if (player.position.y <= 0){ player.position.y = 0; grounded = true; vy = 0; } }
 
-      for (var i=cubes.length-1;i>=0;i--){
-        var c = cubes[i];
-        var dir = new THREE.Vector3().subVectors(player.position, c.position);
-        dir.y = 0;
-        var dist = dir.length();
-        dir.normalize();
-        c.position.addScaledVector(dir, c.userData.speed*dt);
-        c.rotation.y += c.userData.spin*dt;
-        if (dist < 0.8 + c.userData.size/2){
-          burst(c.position, new THREE.Color(0xff5470));
-          scene.remove(c); cubes.splice(i,1);
-          hearts--; combo = 0;
-          if (hearts <= 0) gameOver();
+      // auto hammer swing
+      swingCd -= dt;
+      var nearest = null, nd = 1e9;
+      for (var q=0;q<enemies.length;q++){
+        var dq = enemies[q].position.distanceTo(player.position);
+        if (dq < nd){ nd = dq; nearest = enemies[q]; }
+      }
+      if (swingCd <= 0 && nearest && nd < swingArc + 0.8){
+        swingCd = swingRate;
+        swingT = 0.28;
+        sfx(120,0.09,'square',0.06);
+        // face target and hit everything in the arc radius
+        player.rotation.y = Math.atan2(nearest.position.x - player.position.x, nearest.position.z - player.position.z);
+        for (var h2=enemies.length-1;h2>=0;h2--){
+          var en = enemies[h2];
+          if (en.position.distanceTo(player.position) <= swingArc + 0.8){
+            en.userData.hp -= dmg;
+            en.position.add(new THREE.Vector3().subVectors(en.position, player.position).setY(0).normalize().multiplyScalar(0.7));
+            if (en.userData.hp <= 0){
+              burst(en.position.clone().setY(0.8), en.userData.tier===2 ? 0x1d6e2b : 0x3fae3f, 10);
+              dropGem(en.position, en.userData.tier);
+              scene.remove(en); enemies.splice(h2,1);
+              kills++; score += en.userData.tier===2 ? 30 : 10;
+              sfx(520,0.1,'triangle',0.05);
+            }
+          }
         }
       }
-      for (var j=shards.length-1;j>=0;j--){
-        var sh = shards[j];
-        sh.userData.life -= dt;
-        sh.userData.v.y -= 18*dt;
-        sh.position.addScaledVector(sh.userData.v, dt);
-        if (sh.userData.life <= 0){ scene.remove(sh); shards.splice(j,1); }
+      if (swingT > 0){ swingT -= dt; hammerPivot.rotation.x = -2.2 * Math.sin((0.28 - swingT)/0.28 * Math.PI); }
+      else hammerPivot.rotation.x = 0;
+
+      // enemies chase + hop
+      hurtCd -= dt;
+      for (var i2=enemies.length-1;i2>=0;i2--){
+        var e2 = enemies[i2];
+        var dir = new THREE.Vector3().subVectors(player.position, e2.position); dir.y = 0;
+        var dist = dir.length(); dir.normalize();
+        e2.position.addScaledVector(dir, e2.userData.speed*dt);
+        e2.userData.hopT += dt*6;
+        e2.children[0].position.y = e2.userData.size/2 + 0.05 + Math.abs(Math.sin(e2.userData.hopT))*0.25;
+        e2.rotation.y = Math.atan2(dir.x, dir.z);
+        e2.userData.hitCd -= dt;
+        if (dist < 1.0 + e2.userData.size/2 && e2.userData.hitCd <= 0 && grounded){
+          e2.userData.hitCd = 0.8;
+          hp -= e2.userData.dmg;
+          sfx(90,0.15,'sawtooth',0.07);
+          burst(player.position.clone().setY(1.2), 0xd92b1e, 5);
+          if (hp <= 0){ hp = 0; gameOver(); }
+        }
       }
-      hudText();
+      // gems: magnet + collect
+      for (var g2=gems.length-1;g2>=0;g2--){
+        var gm = gems[g2];
+        gm.rotation.y += 3*dt;
+        var gd = gm.position.distanceTo(player.position);
+        if (gd < magnet) gm.position.lerp(new THREE.Vector3(player.position.x, 0.6, player.position.z), Math.min(1, 8*dt));
+        if (gd < 1.0){
+          if (gm.userData.coin){ coins++; score += 5; sfx(980,0.1,'triangle',0.05); }
+          else { xp += gm.userData.xp; sfx(760,0.07,'sine',0.04); }
+          scene.remove(gm); gems.splice(g2,1);
+          if (xp >= xpNeed){ xp -= xpNeed; level++; xpNeed = Math.round(xpNeed*1.35 + 2); levelUp(); }
+        }
+      }
+      // shards
+      for (var j2=shards.length-1;j2>=0;j2--){
+        var sh = shards[j2];
+        sh.userData.life -= dt;
+        sh.userData.v.y -= 16*dt;
+        sh.position.addScaledVector(sh.userData.v, dt);
+        if (sh.userData.life <= 0){ scene.remove(sh); shards.splice(j2,1); }
+      }
+      score = Math.max(score, kills*10 + Math.floor(elapsed)*2 + coins*5);
+      hud();
     }
-    camera.position.set(player.position.x*0.35, 21, player.position.z*0.35 + 14);
-    camera.lookAt(player.position.x*0.6, 0, player.position.z*0.6);
+    // camera orbit follow
+    var cx = player.position.x + Math.sin(camYaw)*Math.cos(camPitch)*camDist;
+    var cz = player.position.z + Math.cos(camYaw)*Math.cos(camPitch)*camDist;
+    var cyy = player.position.y + Math.sin(camPitch)*camDist;
+    camera.position.set(cx, cyy, cz);
+    camera.lookAt(player.position.x, player.position.y + 1.2, player.position.z);
     renderer.render(scene, camera);
   }
 
   function gameOver(){
     over = true;
     saveBest(score);
+    sfx(160,0.5,'sawtooth',0.08);
     overlay.querySelector('h1').textContent = 'SMASHED!';
-    overlay.querySelectorAll('p')[0].textContent = 'Score ' + score + ' - wave ' + wave + ', ' + Math.floor(elapsed) + 's survived.';
+    overlay.querySelectorAll('p')[0].textContent = 'Score ' + score + ' - LV ' + level + ', ' + kills + ' blobs bashed, ' + coins + ' coins, ' + Math.floor(elapsed) + 's survived.';
+    overlay.querySelectorAll('p')[1].textContent = 'Press Play (or Space / R) to run it back.';
     bestLine.textContent = 'Best score on this device: ' + best();
     document.getElementById('startBtn').textContent = 'Play again';
     overlay.classList.remove('hidden');
   }
 
   function restart(){
-    for (var i=0;i<cubes.length;i++) scene.remove(cubes[i]);
-    for (var j=0;j<shards.length;j++) scene.remove(shards[j]);
-    cubes = []; shards = [];
-    score = 0; wave = 1; hearts = 3; combo = 0; elapsed = 0;
-    dashRadius = 3.2; moveSpeed = 9; dashCd = 0;
-    rebuildRing();
-    player.position.set(0,0,0);
-    over = false; running = true;
+    for (var i=0;i<enemies.length;i++) scene.remove(enemies[i]);
+    for (var j=0;j<gems.length;j++) scene.remove(gems[j]);
+    for (var k=0;k<shards.length;k++) scene.remove(shards[k]);
+    enemies = []; gems = []; shards = [];
+    hp = 100; maxHp = 100; xp = 0; xpNeed = 6; level = 1;
+    kills = 0; coins = 0; elapsed = 0; score = 0;
+    moveSpeed = 7.5; dmg = 34; swingArc = 2.4; magnet = 3.5; regen = 0; swingRate = 0.85;
+    weaponPips = 1; pips();
+    player.position.set(0,0,0); vy = 0; grounded = true;
+    over = false; running = true; paused = false; choosing = false;
     overlay.classList.add('hidden');
-    hudText();
+    upgradeEl.style.display = 'none';
+    hud();
   }
 
   document.getElementById('startBtn').addEventListener('click', restart);
+  pips();
   init();
 })();
 </script>
