@@ -182,6 +182,20 @@
       "tex_zoom": 13,
       "cloud_lt": 25,
       "notes": "Desert/dunefield class (runbook 2b): the Sahara (9M sq km) cannot fit any window, so this frames the signature Erg Chebbi dune sea near Merzouga, Morocco (31.0994N 4.0083W village, dune field extending north to ~31.25N) - the most famous, most-photographed Sahara erg, with dunes commonly 100-150m and locally cited toward the tallest-recorded range the BODYWELCOME text already names. dem_zoom stepped to 12 per the desert/dunefield class default (low-frequency dune relief; halves bytes on the ~19x29km window). Decode sanity checks: Merzouga village/dune-field base documented around 750m ASL; Erg Chebbi dune crests documented roughly 100-150m above the base, so summit samples should land near 850-900m ASL - use a generous band, dune crests migrate and are not fixed survey points. (retry note: first build run dropped texture for 3 places under a full-registry cache-invalidation rebuild - likely STAC rate-limit; retrying.)"
+    },
+    {
+      "slug": "mount-kilimanjaro",
+      "name": "Mount Kilimanjaro (Kibo summit cone, Tanzania)",
+      "bbox": [
+        37.2383,
+        -3.1669,
+        37.4683,
+        -2.9869
+      ],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 20,
+      "notes": "Peak/massif class (runbook 2b): a ~25.6x20km window centered on Uhuru Peak (3.0769S 37.3533E, 5895m, Africa's highest point and the world's highest free-standing mountain) with margin to keep the summit well inside per the class default, also covering Kibo Hut (3.0822S 37.3714E, 4703m published) on the NE saddle approach. Equatorial-belt Sentinel-2 scenes can carry afternoon convective cloud, so cloud_lt raised slightly to 20 (matches lake-victoria's East Africa precedent) - CI's STAC search still prefers the lowest-cloud footprint under that ceiling. Decode sanity checks (guard 3): Uhuru Peak summit ~5895m ASL; Kibo Hut ~4703m ASL - both should land inside a generous +-150m band given z13 ~15-19m/px landmark-point tolerance (same tolerance class as the Everest/Grand Canyon pilots)."
     }
   ]
 }
