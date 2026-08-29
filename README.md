@@ -16,6 +16,14 @@ Build pipelines for the large browser assets used by freetoolonline.com:
   into the site repo (seed: the Mars MOLA elevation heightmap). See "Space-3D
   visualizer assets" below.
 
+- **Text to Speech** (`/utility-tools/text-to-speech.html`) - the
+  [Supertonic 3](https://huggingface.co/Supertone/supertonic-3) on-device TTS
+  model set (4 ONNX graphs, ~398 MB, 31+ languages, 10 voices). Two of the
+  graphs are over GitHub's 100 MB per-file push limit, so they can never live in
+  the site repos. Fetched from a pinned upstream revision + checksum-verified in
+  CI; the page downloads them once and caches them in the reader's browser. See
+  "Supertonic TTS assets" below.
+
 The built assets are published to this repository's **GitHub Pages site**
 (deploy-from-artifact - they never enter git):
 
@@ -132,6 +140,43 @@ floor ~-8 km). NASA/USGS MOLA data are a U.S. Government work = **public domain*
 
 The space-3d build is cached in CI on the hash of `space-3d/**`, so the ~2.1 GB
 MOLA source is re-fetched only when the pipeline actually changes.
+
+## Supertonic TTS assets
+
+`supertonic/build-supertonic.sh` fetches the **Supertonic 3** on-device TTS model
+set from HuggingFace (`Supertone/supertonic-3`) at the **pinned revision**
+`3cadd1ee6394adea1bd021217a0e650ede09a323`, verifies every byte against
+`supertonic/checksums.txt`, and stages it at `out/supertonic/v3/` for the Pages
+site. Published layout:
+
+    https://gh-static.freetool.online/supertonic/v3/manifest.json
+    https://gh-static.freetool.online/supertonic/v3/onnx/{duration_predictor,text_encoder,vector_estimator,vocoder}.onnx
+    https://gh-static.freetool.online/supertonic/v3/onnx/{tts,unicode_indexer}.json
+    https://gh-static.freetool.online/supertonic/v3/voice_styles/{M1..M5,F1..F5}.json
+    https://gh-static.freetool.online/supertonic/v3/{LICENSE,CREDITS.txt}
+
+- **Why the CDN and not the site repos:** `vector_estimator.onnx` is 245 MB and
+  `vocoder.onnx` is 97 MB - both over GitHub's hard 100 MB per-file push limit.
+  The whole set is ~398 MB. The consuming page
+  (`/utility-tools/text-to-speech.html`) fetches `manifest.json` first, shows the
+  real download size, then downloads each asset once and keeps it in the
+  browser's Cache Storage, so a returning reader synthesizes offline.
+- **Runtime split:** the model DATA lives here; the ONNX Runtime Web engine is
+  vendored inside the site repos at `static/vendor/onnxruntime-web/` (MIT, ~28 MB,
+  exempt from the large-asset gate like ffmpeg/monaco/tesseract).
+- **License gate:** the weights are **BigScience OpenRAIL-M** - redistribution is
+  permitted and the license text plus its use-based restrictions (Attachment A)
+  travel with the files as `LICENSE`; `CREDITS.txt` records the pinned source and
+  states that the site's inference code is an independent implementation of the
+  documented model contract, not a copy of the upstream demo. The tool page links
+  both.
+- **Bumping the model:** change `REVISION` (and `VERSION` when the graph contract
+  changes) in `supertonic/build-supertonic.sh`, refresh `supertonic/checksums.txt`
+  from the new revision, and keep the old `v<N>` directory until the site page
+  points at the new one - readers hold cached copies keyed by URL.
+
+The supertonic build is cached in CI on the hash of `supertonic/**`, so the
+~398 MB download only happens when the pinned revision or the pipeline changes.
 
 ## Iterating
 

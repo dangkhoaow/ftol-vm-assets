@@ -150,6 +150,29 @@ jobs:
           path: out/places-3d
           key: places-3d-${{ hashFiles('places-3d/**') }}
 
+      # ---------- Supertonic 3 TTS model set (~398 MB, 4 ONNX graphs) ----------
+      # Two of the graphs exceed GitHub's 100 MB push limit, so they can never
+      # live in the site repos. Fetched from a PINNED HuggingFace revision and
+      # checksum-verified; cached on supertonic/** so it re-downloads only when
+      # the pinned revision or the pipeline changes.
+      - name: Restore supertonic cache
+        id: supertonic-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: out/supertonic
+          key: supertonic-${{ hashFiles('supertonic/**') }}
+      - name: Fetch + verify supertonic model set
+        if: steps.supertonic-cache.outputs.cache-hit != 'true'
+        run: |
+          set -o pipefail
+          bash supertonic/build-supertonic.sh 2>&1 | tee build-supertonic.log
+      - name: Save supertonic cache
+        if: steps.supertonic-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: out/supertonic
+          key: supertonic-${{ hashFiles('supertonic/**') }}
+
       # ---------- Assemble + publish the combined Pages site ----------
       - name: Assemble site
         run: |
@@ -162,6 +185,8 @@ jobs:
           cp -a out/space-3d/. out/site/space-3d/
           mkdir -p out/site/places-3d
           cp -a out/places-3d/. out/site/places-3d/
+          mkdir -p out/site/supertonic
+          cp -a out/supertonic/. out/site/supertonic/
           # dinosaur-3d/ ships as-is: tiny CC0 glTF models committed to git
           # (same rationale as vendor/ - ~0.3 MB each, license-clean), served
           # with CORS for the /dinosaur-3d viewer pages' optional photoreal layer.
@@ -187,7 +212,7 @@ jobs:
           gh release view vm-assets-debug --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create vm-assets-debug --repo "$GITHUB_REPOSITORY" --prerelease \
               --title "vm-images debug logs" --notes "Step logs from failed runs. Safe to delete."
-          for f in build-terminal.log build-desktop.log snapshot-terminal.log snapshot-desktop.log package.log build-retro-fps.log build-space-3d.log build-places-3d.log; do
+          for f in build-terminal.log build-desktop.log snapshot-terminal.log snapshot-desktop.log package.log build-retro-fps.log build-space-3d.log build-places-3d.log build-supertonic.log; do
             [ -s "$f" ] && gh release upload vm-assets-debug "$f" --repo "$GITHUB_REPOSITORY" --clobber || true
           done
           for f in out/retro-fps-work/dwasm/build_native/cmake-native.log \
