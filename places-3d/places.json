@@ -72,6 +72,15 @@
       "tex_zoom": 15,
       "cloud_lt": 15,
       "notes": "Waterfall/escarpment class (runbook 2b): a small ~12km window at dem_zoom 14 (~8.6 m/px at this latitude, doubled resolution the small window's tile budget allows) framing the signature drop - the Iguazu River flowing west across the basalt Parana Plateau, the crescent escarpment where it plunges (Devil's Throat / Garganta do Diablo at ~-54.442 -25.6875), and the lower gorge downstream to the west. The falls are the figure, so the real value is the ~60-82m of vertical relief between the plateau/crest and the gorge floor over a short distance. Decode sanity checks: falls crest / upper Iguazu River surface just above the falls ~150m ASL (published, worldatlas / iguazufalls.com consensus); lower gorge base below the falls ~68-110m ASL (crest ~150m minus the published 60-82m drop; the Iguazu mouth at the Parana confluence a few km downstream is ~110m ASL - use a generous band). Terrarium records the plateau + gorge SURFACE (water surface over the river), not the falling water, so the page's schematic falls/mist cues stay a teaching overlay; BODYWELCOME must say so."
+    },
+    {
+      "slug": "son-doong-cave",
+      "name": "Son Doong Cave surface karst (Phong Nha-Ke Bang cone-karst massif above the passage)",
+      "bbox": [106.20, 17.38, 106.38, 17.53],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 30,
+      "notes": "Surface-karst class (runbook guard 8 / 2b): Terrarium/Sentinel-2 cannot see the cave interior, so this migrates the SURFACE terrain of the Phong Nha-Ke Bang cone-karst massif directly above and around the passage - a ~18x17km window centered near the surveyed entrance (17.45694N 106.28750E, British Cave Research Association) framing the jagged limestone cone-karst hills the park is famous for. The existing cave cross-section/interior teaching toggle stays a schematic overlay; the real view is explicitly the surface above, never the passage itself - BODYWELCOME must say so per guard 8. Humid tropical climate -> cloud_lt raised to 30 to improve odds of a usable Sentinel-2 scene; CI's STAC search still prefers the lowest-cloud footprint under that ceiling. Decode sanity checks (guard 3): cone-karst hill peaks in this window are documented in the 200-800m ASL range around the park (limestone tower karst rising steeply from lower valleys near 50-150m ASL) - validate a local-max hill sample lands in the karst-peak band and a valley/river-floor sample lands in the lower band before the CDN push."
     }
   ]
 }
