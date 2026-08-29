@@ -143,6 +143,11 @@ jobs:
           set -o pipefail
           node places-3d/build-place-terrain.mjs --all 2>&1 | tee build-places-3d.log
           node places-3d/make-places-3d-manifest.mjs out/places-3d
+      # PUBLISH GATE (2026-08-29): refuses swath-edge-nodata textures, flat-plate
+      # DEMs and unreadably dark imagery. Runs OUTSIDE the cache-miss guard so a
+      # cache HIT is still verified - a cached bad asset must not sail through.
+      - name: Assert places-3d asset quality
+        run: node places-3d/assert-places-3d-quality.mjs out/places-3d
       - name: Save places-3d cache
         if: steps.p3d-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4

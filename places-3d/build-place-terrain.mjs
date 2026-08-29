@@ -176,6 +176,61 @@ function buildElevation(place, outDir, workDir) {
       }
     }
   }
+  // ── DESPIKE (2026-08-29 defect fix RC-C) ────────────────────────────────
+  // Terrarium tiles carry rare isolated garbage samples. They are a vanishing
+  // FRACTION of pixels but they set min/max, and the viewer normalises relief by
+  // (h - minH) / (maxH - minH) - so a handful of bad pixels flattens the whole
+  // mesh. MEASURED on the first 9 shipped places: iguazu-falls had 52 bad
+  // samples out of 1,992,200 (0.003%) pulling min to -9897 m, which compressed
+  // its true 177 m relief into 1.7% of the mesh height range - the page shipped
+  // as a FLAT PLATE. amazon-rainforest: 21 samples -> min -406 m, relief
+  // squeezed to 10%.
+  //
+  // The test must kill isolated artifacts WITHOUT touching genuine smooth
+  // extremes (the Everest summit and the Grand Canyon river floor are real
+  // min/max and must survive). Two conditions, both required:
+  //   (a) the sample lies outside the robust band [p0.05, p99.95], and
+  //   (b) it differs from its 8-neighbour median by > SPIKE_DELTA_M.
+  // A real summit apex fails (b) - its neighbours are within ~100 m of it. An
+  // isolated garbage pixel fails both. Verified against the shipped data: the
+  // Everest summit (8849 m, neighbours ~8700-8800) is preserved; iguazu's
+  // -9897 m (neighbour median ~220 m) is replaced.
+  const SPIKE_DELTA_M = 300;
+  let despiked = 0;
+  {
+    const sorted = Int16Array.from(heights).sort();
+    const at = (q) => sorted[Math.min(sorted.length - 1, Math.max(0, Math.floor(q * (sorted.length - 1))))];
+    const lo = at(0.0005), hi = at(0.9995);
+    const src = Int16Array.from(heights); // read from a copy so fixes never cascade
+    const med = (arr) => { arr.sort((a, b) => a - b); return arr[arr.length >> 1]; };
+    for (let y = 0; y < hpx; y++) {
+      for (let x = 0; x < wpx; x++) {
+        const i = y * wpx + x, h = src[i];
+        if (h >= lo && h <= hi) continue;
+        const nb = [];
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            if (!dx && !dy) continue;
+            const yy = y + dy, xx = x + dx;
+            if (yy < 0 || yy >= hpx || xx < 0 || xx >= wpx) continue;
+            nb.push(src[yy * wpx + xx]);
+          }
+        }
+        if (nb.length < 3) continue;
+        const m = med(nb);
+        if (Math.abs(h - m) > SPIKE_DELTA_M) { heights[i] = m; despiked += 1; }
+      }
+    }
+    if (despiked) {
+      minH = Infinity; maxH = -Infinity;
+      for (let i = 0; i < heights.length; i++) {
+        if (heights[i] < minH) minH = heights[i];
+        if (heights[i] > maxH) maxH = heights[i];
+      }
+      console.log(`[${place.slug}] despiked ${despiked} sample(s) (${(despiked / heights.length * 100).toFixed(4)}%); range now ${minH}..${maxH}m`);
+    }
+  }
+
   const binPath = path.join(outDir, "heights.bin");
   fs.writeFileSync(binPath, Buffer.from(heights.buffer));
   const centerLat = (N + S) / 2;
@@ -185,6 +240,7 @@ function buildElevation(place, outDir, workDir) {
     order: "row-major, west-to-east per row, north-to-south rows",
     dem_zoom: z, meters_per_px: +metersPerPx(centerLat, z).toFixed(3),
     bbox_wsen: place.bbox, min_h_m: minH, max_h_m: maxH,
+    despiked_samples: despiked, spike_delta_m: SPIKE_DELTA_M,
     // exact mercator pixel window so the viewer + texture stage share one grid
     merc_px_window: { z, px0, py0, px1, py1 },
   };
@@ -195,48 +251,110 @@ function haveGdal() {
   return spawnSync("gdalwarp", ["--version"], { stdio: "pipe" }).status === 0;
 }
 
+// Minimum fraction of the window a scene must actually FILL with pixels.
+// 2026-08-29 defect fix RC-B: Sentinel-2 granules on the edge of an orbit swath
+// are only partly populated - the classic diagonal cut - yet their STAC `bbox` is
+// still the full ~110 km tile, so a bbox-containment test passes them. MEASURED on
+// the first 9 shipped places: mount-everest texture was 77.9% pure black and
+// lake-baikal 59.4%, which is what put a bright diagonal stripe on an otherwise
+// black Everest. Containment is therefore NOT sufficient evidence - we now warp
+// with -dstalpha and read the alpha band's mean, which IS the filled fraction.
+const MIN_VALID_FRAC = Number(process.env.PLACES_MIN_VALID || 0.98);
+const MAX_SCENE_TRIES = Number(process.env.PLACES_MAX_TRIES || 12);
+
+function gdalStats(file) {
+  const out = execFileSync("gdalinfo", ["-json", "-stats", file], { encoding: "utf8", maxBuffer: 64e6 });
+  return JSON.parse(out).bands.map((b) => ({ min: b.minimum, max: b.maximum, mean: b.mean, std: b.stdDev }));
+}
+
 function buildTexture(place, outDir, elev) {
   const [W, S, E, N] = place.bbox;
   const cloudLt = place.cloud_lt ?? 8;
   const texZoom = place.tex_zoom ?? (place.dem_zoom ?? 13) + 1;
-  // 1. STAC: newest low-cloud Sentinel-2 L2A scene covering the bbox center
   const body = JSON.stringify({
     collections: ["sentinel-2-l2a"], bbox: [W, S, E, N],
     query: { "eo:cloud_cover": { lt: cloudLt } },
-    sortby: [{ field: "properties.eo:cloud_cover", direction: "asc" }], limit: 8,
+    sortby: [{ field: "properties.eo:cloud_cover", direction: "asc" }], limit: 40,
   });
   const res = execFileSync("curl", ["-sS", "--fail", "-X", "POST", STAC, "-H", "Content-Type: application/json", "-d", body], { encoding: "utf8", maxBuffer: 64e6 });
-  const feats = JSON.parse(res).features || [];
-  // Prefer a scene whose footprint fully contains the bbox (avoids nodata seams);
-  // fall back to the least-cloudy one. Multi-scene mosaics are a v2 concern.
-  const contains = (f) => {
-    const b = f.bbox; return b && b[0] <= W && b[1] <= S && b[2] >= E && b[3] >= N;
-  };
-  const item = feats.find(contains) || feats[0];
-  if (!item) throw new Error(`no Sentinel-2 scene < ${cloudLt}% cloud over bbox - raise cloud_lt for ${place.slug}`);
-  const href = item.assets.visual?.href;
-  if (!href) throw new Error(`scene ${item.id} has no "visual" (TCI) asset`);
-  console.log(`[${place.slug}] sentinel-2 scene ${item.id} cloud=${item.properties["eo:cloud_cover"]}% contains_bbox=${contains(item)}`);
+  const feats = (JSON.parse(res).features || []).filter((f) => f.assets?.visual?.href);
+  if (!feats.length) throw new Error(`no Sentinel-2 scene < ${cloudLt}% cloud over bbox - raise cloud_lt for ${place.slug}`);
+  // bbox containment is now only a RANKING hint, never an acceptance test
+  const contains = (f) => { const b = f.bbox; return b && b[0] <= W && b[1] <= S && b[2] >= E && b[3] >= N; };
+  feats.sort((a, b) => (contains(b) - contains(a)) || (a.properties["eo:cloud_cover"] - b.properties["eo:cloud_cover"]));
 
-  // 2. Warp the COG window straight off S3 into our exact mercator grid at tex_zoom.
   const scale = Math.pow(2, texZoom - elev.merc_px_window.z);
   const outW = Math.round((elev.merc_px_window.px1 - elev.merc_px_window.px0) * scale);
   const outH = Math.round((elev.merc_px_window.py1 - elev.merc_px_window.py0) * scale);
   const texPath = path.join(outDir, "texture.jpg");
-  execFileSync("gdalwarp", [
-    "-q", "-overwrite", "-t_srs", "EPSG:3857",
-    "-te_srs", "EPSG:4326", "-te", String(W), String(S), String(E), String(N),
-    "-ts", String(outW), String(outH), "-r", "cubic",
-    "-co", "QUALITY=82", "-of", "JPEG",
-    `/vsicurl/${href}`, texPath,
-  ], { stdio: "inherit", timeout: 15 * 60 * 1000 });
-  const bytes = fs.statSync(texPath).size;
-  console.log(`[${place.slug}] texture.jpg ${outW}x${outH} ${(bytes / 1e6).toFixed(1)}MB`);
-  return {
-    file: "texture.jpg", width_px: outW, height_px: outH, tex_zoom: texZoom,
-    scene_id: item.id, scene_datetime: item.properties.datetime,
-    cloud_cover_pct: item.properties["eo:cloud_cover"],
-  };
+  const probeTif = path.join(outDir, "_probe.tif");
+
+  const tries = [];
+  for (const item of feats.slice(0, MAX_SCENE_TRIES)) {
+    const href = item.assets.visual.href;
+    // Warp to GTiff WITH an alpha band: alpha = 0 exactly where the source has no
+    // pixels, so mean(alpha)/255 is the filled fraction of our window.
+    execFileSync("gdalwarp", [
+      "-q", "-overwrite", "-t_srs", "EPSG:3857",
+      "-te_srs", "EPSG:4326", "-te", String(W), String(S), String(E), String(N),
+      "-ts", String(outW), String(outH), "-r", "cubic", "-dstalpha",
+      "-of", "GTiff", "-co", "COMPRESS=DEFLATE", "-co", "TILED=YES",
+      `/vsicurl/${href}`, probeTif,
+    ], { stdio: "pipe", timeout: 20 * 60 * 1000 });
+    const bands = gdalStats(probeTif);
+    const valid = bands.length >= 4 ? bands[3].mean / 255 : 1;
+    const lum = (bands[0].mean * 0.2126 + bands[1].mean * 0.7152 + bands[2].mean * 0.0722);
+    tries.push({ id: item.id, valid: +valid.toFixed(4), lum: +lum.toFixed(1) });
+    console.log(`[${place.slug}] candidate ${item.id} cloud=${item.properties["eo:cloud_cover"]}% filled=${(valid * 100).toFixed(1)}% lum=${lum.toFixed(1)}`);
+    if (valid < MIN_VALID_FRAC) continue;
+
+    // ── DISPLAY STRETCH (2026-08-29 defect fix RC-D) ──────────────────────────
+    // Sentinel-2 TCI is an analysis product with NO display contrast stretch, so
+    // vegetated and high-latitude scenes render genuinely dim: measured mean
+    // luminance 34/255 (iguazu-falls), 40/255 (mount-fuji), 22/255 (lake-baikal)
+    // against 84/255 for the bright desert at grand-canyon. A per-band
+    // mean +/- 2.5 sigma stretch is the standard display normalisation for
+    // satellite imagery. It changes only how the SAME pixels are displayed and is
+    // recorded in the descriptor, so the page can state it honestly.
+    const scaleArgs = [];
+    const stretch = [];
+    for (let b = 0; b < 3; b++) {
+      const { mean, std } = bands[b];
+      const lo = Math.max(0, mean - 2.5 * std);
+      const hi = Math.min(255, mean + 2.5 * std);
+      const use = hi - lo > 8 ? [lo, hi] : [0, 255]; // degenerate band -> passthrough
+      stretch.push({ band: b + 1, src_min: +use[0].toFixed(1), src_max: +use[1].toFixed(1) });
+      scaleArgs.push(`-scale_${b + 1}`, String(use[0]), String(use[1]), "0", "255");
+    }
+    execFileSync("gdal_translate", [
+      "-q", "-of", "JPEG", "-co", "QUALITY=82", "-ot", "Byte",
+      "-b", "1", "-b", "2", "-b", "3", ...scaleArgs,
+      probeTif, texPath,
+    ], { stdio: "pipe", timeout: 10 * 60 * 1000 });
+    const after = gdalStats(texPath);
+    const lumAfter = (after[0].mean * 0.2126 + after[1].mean * 0.7152 + after[2].mean * 0.0722);
+    fs.rmSync(probeTif, { force: true });
+    fs.rmSync(probeTif + ".aux.xml", { force: true });
+    fs.rmSync(texPath + ".aux.xml", { force: true });
+    const bytes = fs.statSync(texPath).size;
+    console.log(`[${place.slug}] texture.jpg ${outW}x${outH} ${(bytes / 1e6).toFixed(1)}MB filled=${(valid * 100).toFixed(1)}% lum ${lum.toFixed(1)} -> ${lumAfter.toFixed(1)}`);
+    return {
+      file: "texture.jpg", width_px: outW, height_px: outH, tex_zoom: texZoom,
+      scene_id: item.id, scene_datetime: item.properties.datetime,
+      cloud_cover_pct: item.properties["eo:cloud_cover"],
+      filled_frac: +valid.toFixed(4), mean_luminance_before: +lum.toFixed(1),
+      mean_luminance: +lumAfter.toFixed(1), display_stretch: stretch,
+      candidates_tried: tries.length,
+    };
+  }
+
+  // Every candidate was partly empty. Shipping a black-holed texture is WORSE
+  // than shipping none: with texture:null the viewer keeps its bright hypsometric
+  // colouring, which is honest and readable. Recorded so the gate can see it.
+  fs.rmSync(probeTif, { force: true });
+  fs.rmSync(probeTif + ".aux.xml", { force: true });
+  console.log(`[${place.slug}] NO usable scene: ${tries.length} candidate(s), best filled=${(Math.max(...tries.map((t) => t.valid)) * 100).toFixed(1)}% < ${(MIN_VALID_FRAC * 100).toFixed(0)}% -> texture:null (hypsometric fallback)`);
+  return null;
 }
 
 // ---------------------------------------------------------------------------
