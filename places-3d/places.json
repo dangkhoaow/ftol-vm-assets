@@ -74,6 +74,15 @@
       "notes": "Waterfall/escarpment class (runbook 2b): a small ~12km window at dem_zoom 14 (~8.6 m/px at this latitude, doubled resolution the small window's tile budget allows) framing the signature drop - the Iguazu River flowing west across the basalt Parana Plateau, the crescent escarpment where it plunges (Devil's Throat / Garganta do Diablo at ~-54.442 -25.6875), and the lower gorge downstream to the west. The falls are the figure, so the real value is the ~60-82m of vertical relief between the plateau/crest and the gorge floor over a short distance. Decode sanity checks: falls crest / upper Iguazu River surface just above the falls ~150m ASL (published, worldatlas / iguazufalls.com consensus); lower gorge base below the falls ~68-110m ASL (crest ~150m minus the published 60-82m drop; the Iguazu mouth at the Parana confluence a few km downstream is ~110m ASL - use a generous band). Terrarium records the plateau + gorge SURFACE (water surface over the river), not the falling water, so the page's schematic falls/mist cues stay a teaching overlay; BODYWELCOME must say so."
     },
     {
+      "slug": "black-sea",
+      "name": "Black Sea (Bosphorus Strait, the sea's only outlet)",
+      "bbox": [28.95, 41.03, 29.15, 41.26],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 15,
+      "notes": "Lake/inland-sea class (runbook 2b): the 436,400 sq km sea cannot fit a 15-30km window, and the page's own signature feature (the oxic/anoxic chemocline at 150-200m depth) is a chemistry cross-section Terrarium cannot see, matching the Lake Victoria/Baikal precedent of framing a named real shoreline landmark instead of a naive basin-center bbox. This frames the Bosphorus Strait from its Black Sea mouth (Rumeli Feneri/Anadolu Feneri, ~41.24N) south into Istanbul (~41.03N) - the strait already named in BODYWELCOME as the sea's only outlet to the Mediterranean, with real hilly terrain on both the European and Asian shores. Terrarium gives sea-surface elevation (~0m ASL), not the 2,212m anoxic-basin bathymetry, so the strait/sea renders flat at sea level while the flanking hills are real; the page's existing oxic/anoxic band + chemocline toggles stay a schematic overlay exactly like lake-victoria's surface/depth split - BODYWELCOME must say so. Decode sanity checks (guard 3): Bosphorus strait/sea surface ~0m ASL (sea-level datum); Yoros Castle hill overlooking the Black Sea mouth at Anadolu Kavagi (41.2247N 29.0947E) documented ~200-230m ASL - use a generous band, a hilltop landmark not a precise survey point."
+    },
+    {
       "slug": "son-doong-cave",
       "name": "Son Doong Cave surface karst (Phong Nha-Ke Bang cone-karst massif above the passage)",
       "bbox": [106.20, 17.38, 106.38, 17.53],
