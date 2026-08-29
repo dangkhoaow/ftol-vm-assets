@@ -27,6 +27,15 @@
       "tex_zoom": 14,
       "cloud_lt": 10,
       "notes": "Pilot 3. Summit 138.7274E 35.3606N, 3776 m. Near-perfect radial cone - the strongest visual proof that real DEM beats procedural noise."
+    },
+    {
+      "slug": "mammoth-cave",
+      "name": "Mammoth Cave (karst plateau surface over the cave system)",
+      "bbox": [-86.213, 37.096, -85.987, 37.276],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 15,
+      "notes": "Surface-karst mode (runbook guard 8): this is the SURFACE terrain of the sinkhole plain / karst plateau above the cave system, not the cave interior (which stays a schematic toggle). Centered on the Mammoth Cave Visitor Center (37.1862N 86.1000W, ~230m/755ft) with the Green River valley cutting across the window (~128m/420ft at Green River Ferry) - use these as decode sanity checks. Relief here is gentle (sinkhole plain + river valley), not a peak."
     }
   ]
 }
