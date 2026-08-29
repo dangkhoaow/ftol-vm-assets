@@ -36,6 +36,15 @@
       "tex_zoom": 14,
       "cloud_lt": 15,
       "notes": "Surface-karst mode (runbook guard 8): this is the SURFACE terrain of the sinkhole plain / karst plateau above the cave system, not the cave interior (which stays a schematic toggle). Centered on the Mammoth Cave Visitor Center (37.1862N 86.1000W, ~230m/755ft) with the Green River valley cutting across the window (~128m/420ft at Green River Ferry) - use these as decode sanity checks. Relief here is gentle (sinkhole plain + river valley), not a peak."
+    },
+    {
+      "slug": "lake-victoria",
+      "name": "Lake Victoria (Jinja shore + White Nile outlet)",
+      "bbox": [33.05, 0.30, 33.32, 0.55],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 20,
+      "notes": "Lake/inland-sea class (runbook 2b): the full 68,800 sq km lake cannot fit a 15-30km window, so this frames the signature northern shore + White Nile outlet at Jinja, Uganda (0.4478N 33.2026E) near the historic Ripon Falls site / Nalubaale Dam - already named in BODYWELCOME as the lake's only major outflow. Terrarium gives lake-SURFACE elevation, not underwater bathymetry, so the water renders flat at ~1133m ASL while the shore terrain is real; the page's existing depth-band cross-section (84m max depth, 40m mean) stays a schematic toggle exactly like mammoth-cave's surface/interior split. Decode sanity checks: lake surface ~1133m ASL; Jinja shore/town ground ~1150-1200m ASL (rises above the lake surface)."
     }
   ]
 }
