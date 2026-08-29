@@ -24,6 +24,11 @@ Build pipelines for the large browser assets used by freetoolonline.com:
   CI; the page downloads them once and caches them in the reader's browser. See
   "Supertonic TTS assets" below.
 
+- **Meeting Notes Taker** (`/utility-tools/meeting-notes-taker.html`) - the ONNX
+  export of [OpenAI Whisper base](https://huggingface.co/openai/whisper-base)
+  (int8, ~78 MB) so a recorded meeting is transcribed in the reader's own browser
+  with transformers.js. See "Whisper transcription assets" below.
+
 The built assets are published to this repository's **GitHub Pages site**
 (deploy-from-artifact - they never enter git):
 
@@ -177,6 +182,35 @@ site. Published layout:
 
 The supertonic build is cached in CI on the hash of `supertonic/**`, so the
 ~398 MB download only happens when the pinned revision or the pipeline changes.
+
+## Whisper transcription assets
+
+`whisper/build-whisper.sh` fetches the int8 ONNX export of **openai/whisper-base**
+(via `onnx-community/whisper-base`) at the **pinned revision**
+`1846881b6b3a3024392c1eea3ad983695bc23925`, verifies every byte against
+`whisper/checksums.txt`, and stages it at `out/whisper/whisper-base/`. Published
+layout mirrors the upstream repo so transformers.js loads it with nothing but an
+`env.remoteHost` change:
+
+    https://gh-static.freetool.online/whisper/manifest.json
+    https://gh-static.freetool.online/whisper/whisper-base/onnx/{encoder_model_int8,decoder_model_merged_int8}.onnx
+    https://gh-static.freetool.online/whisper/whisper-base/{config,generation_config,preprocessor_config,tokenizer,tokenizer_config,special_tokens_map,added_tokens,vocab}.json
+    https://gh-static.freetool.online/whisper/whisper-base/{merges.txt,normalizer.json,LICENSE,CREDITS.txt}
+
+- **Split of duties:** model DATA here (~78 MB: 22 MB encoder + 51 MB decoder +
+  ~4 MB tokenizer); the transformers.js runtime and its ONNX Runtime Web build are
+  vendored inside the site repos at `static/vendor/transformers/` (Apache-2.0,
+  exempt from the large-asset gate like ffmpeg/monaco/tesseract).
+- **License gate:** weights are Apache-2.0 (`LICENSE` beside them); `CREDITS.txt`
+  records the pinned source, notes that the OpenAI reference code is MIT, and states
+  that the consuming page is an independent browser implementation inspired by the
+  MIT-licensed desktop app `Zackriya-Solutions/meetily` - no meetily code is served.
+- **Adding a size (tiny/small):** add the files to `whisper/checksums.txt`, extend
+  `MODEL_DIR` handling in the script, and add a `models[]` entry via the manifest
+  writer; the page reads the manifest, so a new size needs no page change beyond an
+  option row.
+
+Cached in CI on the hash of `whisper/**`.
 
 ## Iterating
 

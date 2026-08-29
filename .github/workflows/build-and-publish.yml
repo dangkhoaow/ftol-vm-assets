@@ -173,6 +173,28 @@ jobs:
           path: out/supertonic
           key: supertonic-${{ hashFiles('supertonic/**') }}
 
+      # ---------- Whisper base int8 (in-browser meeting transcription) ----------
+      # ~78 MB ONNX export of openai/whisper-base + tokenizer set, fetched from a
+      # PINNED HuggingFace revision and checksum-verified. Published in the upstream
+      # repo layout so transformers.js can load it straight from this CDN.
+      - name: Restore whisper cache
+        id: whisper-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: out/whisper
+          key: whisper-${{ hashFiles('whisper/**') }}
+      - name: Fetch + verify whisper model set
+        if: steps.whisper-cache.outputs.cache-hit != 'true'
+        run: |
+          set -o pipefail
+          bash whisper/build-whisper.sh 2>&1 | tee build-whisper.log
+      - name: Save whisper cache
+        if: steps.whisper-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: out/whisper
+          key: whisper-${{ hashFiles('whisper/**') }}
+
       # ---------- Assemble + publish the combined Pages site ----------
       - name: Assemble site
         run: |
@@ -187,6 +209,8 @@ jobs:
           cp -a out/places-3d/. out/site/places-3d/
           mkdir -p out/site/supertonic
           cp -a out/supertonic/. out/site/supertonic/
+          mkdir -p out/site/whisper
+          cp -a out/whisper/. out/site/whisper/
           # dinosaur-3d/ ships as-is: tiny CC0 glTF models committed to git
           # (same rationale as vendor/ - ~0.3 MB each, license-clean), served
           # with CORS for the /dinosaur-3d viewer pages' optional photoreal layer.
@@ -212,7 +236,7 @@ jobs:
           gh release view vm-assets-debug --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 || \
             gh release create vm-assets-debug --repo "$GITHUB_REPOSITORY" --prerelease \
               --title "vm-images debug logs" --notes "Step logs from failed runs. Safe to delete."
-          for f in build-terminal.log build-desktop.log snapshot-terminal.log snapshot-desktop.log package.log build-retro-fps.log build-space-3d.log build-places-3d.log build-supertonic.log; do
+          for f in build-terminal.log build-desktop.log snapshot-terminal.log snapshot-desktop.log package.log build-retro-fps.log build-space-3d.log build-places-3d.log build-supertonic.log build-whisper.log; do
             [ -s "$f" ] && gh release upload vm-assets-debug "$f" --repo "$GITHUB_REPOSITORY" --clobber || true
           done
           for f in out/retro-fps-work/dwasm/build_native/cmake-native.log \
