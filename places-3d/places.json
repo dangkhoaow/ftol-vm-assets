@@ -45,6 +45,15 @@
       "tex_zoom": 14,
       "cloud_lt": 20,
       "notes": "Lake/inland-sea class (runbook 2b): the full 68,800 sq km lake cannot fit a 15-30km window, so this frames the signature northern shore + White Nile outlet at Jinja, Uganda (0.4478N 33.2026E) near the historic Ripon Falls site / Nalubaale Dam - already named in BODYWELCOME as the lake's only major outflow. Terrarium gives lake-SURFACE elevation, not underwater bathymetry, so the water renders flat at ~1133m ASL while the shore terrain is real; the page's existing depth-band cross-section (84m max depth, 40m mean) stays a schematic toggle exactly like mammoth-cave's surface/interior split. Decode sanity checks: lake surface ~1133m ASL; Jinja shore/town ground ~1150-1200m ASL (rises above the lake surface)."
+    },
+    {
+      "slug": "amazon-rainforest",
+      "name": "Amazon Rainforest (Rio Negro / Solimoes confluence, the Meeting of Waters, near Manaus)",
+      "bbox": [-60.04, -3.25, -59.80, -3.01],
+      "dem_zoom": 12,
+      "tex_zoom": 13,
+      "cloud_lt": 40,
+      "notes": "River reach class (runbook 2b): the 5.5M sq km rainforest cannot fit any window, so this frames the signature reach - the Encontro das Aguas / Meeting of Waters confluence (3.1333S 59.9167W) where the black Rio Negro meets the sediment-pale Solimoes/Amazon, ~20km from Manaus. Relief here is lowland-river-basin scale, not a peak - dem_zoom stepped down to 12 per the River-reach class default; the Sentinel-2 texture (dark vs pale water color contrast at the confluence, canopy-green forest either side) carries the visual story, matching the page's canopy-relief framing honestly per guard 2b. Decode sanity checks: confluence/river surface ~7m ASL (GeoNames, via Wikidata Q656597); surrounding terra-firme ground documented 20-90m ASL across the Manaus area (multiple sources disagree because the area's relief genuinely varies that much over a few km - use a generous PASS band)."
     }
   ]
 }
