@@ -54,6 +54,15 @@
       "tex_zoom": 13,
       "cloud_lt": 40,
       "notes": "River reach class (runbook 2b): the 5.5M sq km rainforest cannot fit any window, so this frames the signature reach - the Encontro das Aguas / Meeting of Waters confluence (3.1333S 59.9167W) where the black Rio Negro meets the sediment-pale Solimoes/Amazon, ~20km from Manaus. Relief here is lowland-river-basin scale, not a peak - dem_zoom stepped down to 12 per the River-reach class default; the Sentinel-2 texture (dark vs pale water color contrast at the confluence, canopy-green forest either side) carries the visual story, matching the page's canopy-relief framing honestly per guard 2b. Decode sanity checks: confluence/river surface ~7m ASL (GeoNames, via Wikidata Q656597); surrounding terra-firme ground documented 20-90m ASL across the Manaus area (multiple sources disagree because the area's relief genuinely varies that much over a few km - use a generous PASS band)."
+    },
+    {
+      "slug": "lake-baikal",
+      "name": "Lake Baikal (Maloe More strait, Olkhon Island shore vs the Primorsky Range)",
+      "bbox": [106.998, 52.928, 107.402, 53.172],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 20,
+      "notes": "Lake/inland-sea class (runbook 2b): the 636km rift lake cannot fit a 15-30km window, so this frames the signature Maloe More (Small Sea) strait between Olkhon Island's west shore (Khuzhir / Cape Burkhan area, ~53.19N 107.38E) and the mainland Primorsky Range, which rises steeply right at the shoreline - the same flanking-mountain drama the page's procedural rift-valley scene already teaches. Terrarium gives lake-SURFACE elevation, not the 1,642m bathymetry, so the water renders flat at the published lake level while the shore + mountain terrain is real; the page's existing three-basin depth-band scene stays a schematic toggle exactly like lake-victoria's surface/depth split. Decode sanity checks: lake surface ~456m ASL (published Baikal water level); Primorsky Range slope above the Maloe More shore rising well above the lake level within a few km (generous sanity band, steep-slope landmark not a surveyed point)."
     }
   ]
 }
