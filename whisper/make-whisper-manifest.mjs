@@ -33,10 +33,10 @@ const manifest = {
     models: [
         {
             id: modelDir,
-            label: 'Whisper base (int8)',
+            label: 'Whisper base (q8)',
             source: { repo: `https://huggingface.co/${repoId}`, revision },
             license: 'Apache-2.0 (openai/whisper-base weights; see LICENSE)',
-            dtype: 'int8',
+            dtype: 'q8',
             sample_rate: 16000,
             total_bytes: assets.reduce((n, a) => n + a.bytes, 0),
             assets,

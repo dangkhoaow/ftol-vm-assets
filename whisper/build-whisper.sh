@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fetch the ONNX export of OpenAI Whisper (base, int8) from HuggingFace at a PINNED
+# Fetch the ONNX export of OpenAI Whisper (base, q8) from HuggingFace at a PINNED
 # revision, verify every byte against whisper/checksums.txt, and stage it for this
 # repo's GitHub Pages site.
 #
@@ -33,8 +33,8 @@ fetch() { # fetch <remote-path> <local-path>
   mv "$dest.part" "$dest"
 }
 
-echo "Whisper base (int8) <- $REPO_ID @ ${REVISION:0:12}"
-for f in encoder_model_int8.onnx decoder_model_merged_int8.onnx; do
+echo "Whisper base (q8) <- $REPO_ID @ ${REVISION:0:12}"
+for f in encoder_model_quantized.onnx decoder_model_merged_quantized.onnx; do
   fetch "onnx/$f" "$out/onnx/$f"
 done
 for f in config.json generation_config.json preprocessor_config.json tokenizer.json \
