@@ -23,6 +23,8 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build:
+    outputs:
+      places3d_quarantined: ${{ steps.p3dgate.outputs.quarantined }}
     runs-on: ubuntu-latest
     timeout-minutes: 300
     steps:
@@ -146,8 +148,22 @@ jobs:
       # PUBLISH GATE (2026-08-29): refuses swath-edge-nodata textures, flat-plate
       # DEMs and unreadably dark imagery. Runs OUTSIDE the cache-miss guard so a
       # cache HIT is still verified - a cached bad asset must not sail through.
-      - name: Assert places-3d asset quality
-        run: node places-3d/assert-places-3d-quality.mjs out/places-3d
+      # QUARANTINE, not a hard stop. On 2026-08-29 this step's first real failure
+      # skipped the deploy job, so the last successful publish was the built-in
+      # branch-deploy (git tree only) and places-3d + space-3d + retro-fps all
+      # 404'd. A places-3d quality problem must not take the CDN down: bad assets
+      # are pulled out, the good ones publish, and the workflow fails AFTER the
+      # deploy so the signal survives without an outage.
+      - name: Gate places-3d asset quality (quarantine bad, publish good)
+        id: p3dgate
+        run: |
+          node places-3d/assert-places-3d-quality.mjs out/places-3d --quarantine
+          if [ -f out/places-3d-quarantined.json ]; then
+            echo "quarantined=1" >> "$GITHUB_OUTPUT"
+            cat out/places-3d-quarantined.json
+          else
+            echo "quarantined=0" >> "$GITHUB_OUTPUT"
+          fi
       - name: Save places-3d cache
         if: steps.p3d-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
@@ -269,3 +285,18 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # The places-3d quality signal, raised AFTER the site is published so a bad
+  # asset never leaves the CDN incomplete (2026-08-29 outage lesson).
+  places3d-quality-signal:
+    needs: [build, deploy]
+    if: always() && needs.build.outputs.places3d_quarantined == '1'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report quarantined places-3d assets
+        run: |
+          echo "::error::One or more places-3d terrain assets FAILED the quality gate and were NOT published."
+          echo "The affected pages keep their procedural scenes (designed fallback)."
+          echo "Fix the builder inputs (bbox / dem_zoom / cloud_lt / season) and rebuild."
+          echo "Never relax a threshold to get green - see places-3d/assert-places-3d-quality.mjs."
+          exit 1

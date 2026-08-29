@@ -18,17 +18,38 @@
  * The builder now prevents all three, but a prevention with no gate behind it is
  * one refactor away from regressing silently. This asserts the OUTPUT.
  *
- * Run after build, before publish:
+ * TWO MODES - and the second one exists because of a mistake this file made on the
+ * day it was written (2026-08-29). Wired as a hard fail between build and publish,
+ * its first real failure skipped the `deploy` job, so the last successful publish
+ * was GitHub's built-in branch-deploy of the git tree - which contains none of the
+ * built asset trees. Result: places-3d AND space-3d AND retro-fps manifests all
+ * 404'd. A places-3d quality problem must never take the whole CDN down; that is
+ * this repo's own documented failure shape ("blocking on pre-existing debt stops
+ * every lane at once, which is how a well-meant gate becomes an outage").
+ *
  *   node places-3d/assert-places-3d-quality.mjs out/places-3d
- * Exit 0 = all assets publishable. Exit 1 = at least one FAIL (CI must stop).
+ *     ASSERT mode. Exit 0 = all publishable, 1 = at least one FAIL. For local use.
+ *
+ *   node places-3d/assert-places-3d-quality.mjs out/places-3d --quarantine
+ *     CI mode. Failing asset dirs are MOVED to out/places-3d-quarantine/ so the
+ *     good ones still publish, the manifest is regenerated without them, and a
+ *     marker file records what was pulled. ALWAYS exits 0 so the deploy proceeds.
+ *     A later CI step reads the marker and fails the workflow AFTER publishing, so
+ *     the signal is kept without an outage. A quarantined place simply finds no
+ *     asset in the manifest and keeps its procedural scene - the designed fallback.
+ *
  * Env overrides: PLACES_GATE_MIN_FILLED, PLACES_GATE_MIN_LUM,
  *                PLACES_GATE_MAX_DESPIKE_PCT, PLACES_GATE_MIN_RELIEF_FRAC.
  */
 
 import fs from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
+import url from "node:url";
 
-const OUT = path.resolve(process.argv[2] || "out/places-3d");
+const args = process.argv.slice(2);
+const QUARANTINE = args.includes("--quarantine");
+const OUT = path.resolve(args.find((a) => !a.startsWith("--")) || "out/places-3d");
 const MIN_FILLED = Number(process.env.PLACES_GATE_MIN_FILLED || 0.98);
 const MIN_LUM = Number(process.env.PLACES_GATE_MIN_LUM || 55);
 const MAX_DESPIKE_PCT = Number(process.env.PLACES_GATE_MAX_DESPIKE_PCT || 0.5);
@@ -57,6 +78,7 @@ if (!slugs.length) {
 }
 
 let fails = 0, warns = 0;
+const failed = [];
 console.log(`[places-3d-gate] ${slugs.length} asset(s) | filled>=${(MIN_FILLED * 100).toFixed(0)}% lum>=${MIN_LUM} despike<=${MAX_DESPIKE_PCT}% relief>=${(MIN_RELIEF_FRAC * 100).toFixed(0)}%`);
 
 for (const slug of slugs) {
@@ -103,7 +125,7 @@ for (const slug of slugs) {
   }
 
   const status = problems.length ? "FAIL" : (notes.length ? "PASS*" : "PASS");
-  if (problems.length) fails += 1;
+  if (problems.length) { fails += 1; failed.push({ slug, problems }); }
   if (notes.length) warns += 1;
   console.log(`  ${status.padEnd(5)} ${slug}` +
     (t ? ` tex filled=${t.filled_frac !== undefined ? (t.filled_frac * 100).toFixed(1) + "%" : "?"} lum=${t.mean_luminance ?? "?"}` : " tex=null") +
@@ -113,7 +135,37 @@ for (const slug of slugs) {
 }
 
 console.log(`[places-3d-gate] ${slugs.length - fails}/${slugs.length} publishable, ${fails} FAIL, ${warns} with notes`);
-if (fails) {
+
+const MARKER = path.join(path.dirname(OUT), "places-3d-quarantined.json");
+fs.rmSync(MARKER, { force: true });
+
+if (!fails) process.exit(0);
+
+if (!QUARANTINE) {
   console.error("[places-3d-gate] REFUSING publish - fix the builder inputs (bbox / dem_zoom / cloud_lt / season) and rebuild. Do NOT relax the thresholds to get green.");
   process.exit(1);
 }
+
+// CI mode: pull the bad assets out, keep publishing the good ones.
+const QDIR = path.join(path.dirname(OUT), "places-3d-quarantine");
+fs.mkdirSync(QDIR, { recursive: true });
+for (const { slug } of failed) {
+  const from = path.join(OUT, slug), to = path.join(QDIR, slug);
+  fs.rmSync(to, { recursive: true, force: true });
+  fs.renameSync(from, to);
+  console.log(`[places-3d-gate] QUARANTINED ${slug} -> ${path.relative(process.cwd(), to)} (not published)`);
+}
+// Regenerate the manifest so it lists only what actually ships. The maker exits
+// non-zero when NO asset dir remains, which is a legitimate state here.
+const maker = path.join(path.dirname(url.fileURLToPath(import.meta.url)), "make-places-3d-manifest.mjs");
+const remaining = fs.readdirSync(OUT, { withFileTypes: true }).filter((d) => d.isDirectory() && fs.existsSync(path.join(OUT, d.name, "descriptor.json")));
+if (remaining.length) {
+  execFileSync("node", [maker, OUT], { stdio: "inherit" });
+} else {
+  fs.writeFileSync(path.join(OUT, "manifest.json"), JSON.stringify({ schema: "ftol-places-3d/1", version: "quarantined", assets: {} }, null, 2) + "\n");
+  console.log("[places-3d-gate] every asset quarantined - wrote an empty manifest (all pages keep their procedural scenes)");
+}
+fs.writeFileSync(MARKER, JSON.stringify({ quarantined_iso: new Date().toISOString(), count: failed.length, assets: failed }, null, 2) + "\n");
+console.log(`[places-3d-gate] marker: ${MARKER}`);
+console.log("[places-3d-gate] deploy PROCEEDS with the passing assets; a later CI step fails this workflow so the signal is not lost.");
+process.exit(0);
