@@ -4,7 +4,12 @@
     {
       "slug": "grand-canyon",
       "name": "Grand Canyon (South Rim + river core)",
-      "bbox": [-112.26, 36.02, -111.98, 36.15],
+      "bbox": [
+        -112.26,
+        36.02,
+        -111.98,
+        36.15
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 8,
@@ -13,7 +18,12 @@
     {
       "slug": "mount-everest",
       "name": "Mount Everest (Khumbu massif)",
-      "bbox": [86.85, 27.92, 87.05, 28.06],
+      "bbox": [
+        86.85,
+        27.92,
+        87.05,
+        28.06
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 15,
@@ -22,7 +32,12 @@
     {
       "slug": "mount-fuji",
       "name": "Mount Fuji (stratovolcano + Fuji Five Lakes edge)",
-      "bbox": [138.62, 35.28, 138.85, 35.45],
+      "bbox": [
+        138.62,
+        35.28,
+        138.85,
+        35.45
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 10,
@@ -31,7 +46,12 @@
     {
       "slug": "mammoth-cave",
       "name": "Mammoth Cave (karst plateau surface over the cave system)",
-      "bbox": [-86.213, 37.096, -85.987, 37.276],
+      "bbox": [
+        -86.213,
+        37.096,
+        -85.987,
+        37.276
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 15,
@@ -40,7 +60,12 @@
     {
       "slug": "lake-victoria",
       "name": "Lake Victoria (Jinja shore + White Nile outlet)",
-      "bbox": [33.05, 0.30, 33.32, 0.55],
+      "bbox": [
+        33.05,
+        0.3,
+        33.32,
+        0.55
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 20,
@@ -49,7 +74,12 @@
     {
       "slug": "amazon-rainforest",
       "name": "Amazon Rainforest (Rio Negro / Solimoes confluence, the Meeting of Waters, near Manaus)",
-      "bbox": [-60.04, -3.25, -59.80, -3.01],
+      "bbox": [
+        -60.04,
+        -3.25,
+        -59.8,
+        -3.01
+      ],
       "dem_zoom": 12,
       "tex_zoom": 13,
       "cloud_lt": 40,
@@ -58,7 +88,12 @@
     {
       "slug": "lake-baikal",
       "name": "Lake Baikal (Maloe More strait, Olkhon Island shore vs the Primorsky Range)",
-      "bbox": [106.998, 52.928, 107.402, 53.172],
+      "bbox": [
+        106.998,
+        52.928,
+        107.402,
+        53.172
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 20,
@@ -67,7 +102,12 @@
     {
       "slug": "iguazu-falls",
       "name": "Iguazu Falls (Devil's Throat crest + Parana Plateau escarpment + lower gorge)",
-      "bbox": [-54.50, -25.74, -54.38, -25.63],
+      "bbox": [
+        -54.5,
+        -25.74,
+        -54.38,
+        -25.63
+      ],
       "dem_zoom": 14,
       "tex_zoom": 15,
       "cloud_lt": 15,
@@ -76,7 +116,12 @@
     {
       "slug": "black-sea",
       "name": "Black Sea (Bosphorus Strait, the sea's only outlet)",
-      "bbox": [28.95, 41.03, 29.15, 41.26],
+      "bbox": [
+        28.95,
+        41.03,
+        29.15,
+        41.26
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 15,
@@ -85,7 +130,12 @@
     {
       "slug": "lake-michigan-huron",
       "name": "Lake Michigan-Huron (Straits of Mackinac connector + Mackinac Island bluffs)",
-      "bbox": [-84.80, 45.78, -84.55, 45.92],
+      "bbox": [
+        -84.8,
+        45.78,
+        -84.55,
+        45.92
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 20,
@@ -94,7 +144,12 @@
     {
       "slug": "caspian-sea",
       "name": "Caspian Sea (Beshbarmag Mountain shore, Azerbaijan)",
-      "bbox": [49.20, 40.62, 49.45, 40.80],
+      "bbox": [
+        49.2,
+        40.62,
+        49.45,
+        40.8
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 20,
@@ -103,11 +158,30 @@
     {
       "slug": "son-doong-cave",
       "name": "Son Doong Cave surface karst (Phong Nha-Ke Bang cone-karst massif above the passage)",
-      "bbox": [106.20, 17.38, 106.38, 17.53],
+      "bbox": [
+        106.2,
+        17.38,
+        106.38,
+        17.53
+      ],
       "dem_zoom": 13,
       "tex_zoom": 14,
       "cloud_lt": 30,
       "notes": "Surface-karst class (runbook guard 8 / 2b): Terrarium/Sentinel-2 cannot see the cave interior, so this migrates the SURFACE terrain of the Phong Nha-Ke Bang cone-karst massif directly above and around the passage - a ~18x17km window centered near the surveyed entrance (17.45694N 106.28750E, British Cave Research Association) framing the jagged limestone cone-karst hills the park is famous for. The existing cave cross-section/interior teaching toggle stays a schematic overlay; the real view is explicitly the surface above, never the passage itself - BODYWELCOME must say so per guard 8. Humid tropical climate -> cloud_lt raised to 30 to improve odds of a usable Sentinel-2 scene; CI's STAC search still prefers the lowest-cloud footprint under that ceiling. Decode sanity checks (guard 3): cone-karst hill peaks in this window are documented in the 200-800m ASL range around the park (limestone tower karst rising steeply from lower valleys near 50-150m ASL) - validate a local-max hill sample lands in the karst-peak band and a valley/river-floor sample lands in the lower band before the CDN push."
+    },
+    {
+      "slug": "sahara-desert",
+      "name": "Sahara Desert (Erg Chebbi dune field, Merzouga, Morocco)",
+      "bbox": [
+        -4.12,
+        31.02,
+        -3.9,
+        31.28
+      ],
+      "dem_zoom": 12,
+      "tex_zoom": 13,
+      "cloud_lt": 25,
+      "notes": "Desert/dunefield class (runbook 2b): the Sahara (9M sq km) cannot fit any window, so this frames the signature Erg Chebbi dune sea near Merzouga, Morocco (31.0994N 4.0083W village, dune field extending north to ~31.25N) - the most famous, most-photographed Sahara erg, with dunes commonly 100-150m and locally cited toward the tallest-recorded range the BODYWELCOME text already names. dem_zoom stepped to 12 per the desert/dunefield class default (low-frequency dune relief; halves bytes on the ~19x29km window). Decode sanity checks: Merzouga village/dune-field base documented around 750m ASL; Erg Chebbi dune crests documented roughly 100-150m above the base, so summit samples should land near 850-900m ASL - use a generous band, dune crests migrate and are not fixed survey points."
     }
   ]
 }
