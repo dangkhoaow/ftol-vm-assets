@@ -210,6 +210,20 @@
       "tex_zoom": 14,
       "cloud_lt": 20,
       "notes": "Peak/massif class (runbook 2b): a ~20x22km window centered on the Feldberg summit (47.8747N 8.0006E, 1493m, the Black Forest's highest point) with margin. Local build confirmed grid max 1489m sits within 5px of the window center, confirming correct centering; landmark-tolerant local-max search (r=5px) decoded the summit at 1461m vs published 1493m (32m/2.1% diff, within z13 ~13m/px landmark-point tolerance). Window relief spans 348-1489m (1141m), consistent with the massif's documented elevation range and confirming real terrain shape (not a flat plate) - the plateau itself sits mostly 850-1150m with valleys cutting down toward the north edge of the window."
+    },
+    {
+      "slug": "tibetan-plateau",
+      "name": "Tibetan Plateau - Mount Kailash massif, Tibet Autonomous Region, China",
+      "bbox": [
+        81.197,
+        30.967,
+        81.427,
+        31.167
+      ],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 20,
+      "notes": "Peak/massif class (runbook 2b): the 2.5M sq km plateau cannot fit any window, so framed the globally-recognized Mount Kailash massif (31.0666N 81.3119E, summit ~6638m, sacred to Hindus/Buddhists/Jains/Bon) with a ~24x22km window centered on the summit, also covering the Barkha plain base to the south (~4560-4675m published) and the Dolma La kora-trail pass to the NE (~5630m published). Decode sanity checks (guard 3): global grid max 6457m sits 7px from window center confirming correct centering (vs published ~6638m summit, -181m/2.7% generous landmark-point band at z13 ~16.4m/px on a steep isolated peak); global grid min 4614m at the window's south edge matches the published Barkha-plain base band."
     }
   ]
 }
