@@ -1,229 +1,243 @@
 {
-  "note": "Registry for build-place-terrain.mjs. bbox is [W,S,E,N] in degrees, sized ~15-30 km per side around the place's signature terrain. dem_zoom 13 = ~15-19 m/sample at temperate latitudes (~2-4 MB heights.bin); tex_zoom = dem_zoom+1 doubles texture resolution (~1-3 MB JPEG). Keep each place's total under ~20 MB (operator budget 2026-08-28). cloud_lt = max Sentinel-2 cloud cover percent accepted.",
-  "places": [
-    {
-      "slug": "grand-canyon",
-      "name": "Grand Canyon (South Rim + river core)",
-      "bbox": [
-        -112.26,
-        36.02,
-        -111.98,
-        36.15
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 8,
-      "notes": "Pilot 1. Window centered on Bright Angel / South Rim; river visible at ~750 m, rim ~2100 m - use these as decode sanity checks."
-    },
-    {
-      "slug": "mount-everest",
-      "name": "Mount Everest (Khumbu massif)",
-      "bbox": [
-        86.85,
-        27.92,
-        87.05,
-        28.06
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 15,
-      "notes": "Pilot 2. Summit 86.9253E 27.9881N, 8849 m. Himalaya scenes are often cloudy/snowy - cloud_lt relaxed; prefer a post-monsoon (Oct-Dec) scene if the top STAC hit looks poor."
-    },
-    {
-      "slug": "mount-fuji",
-      "name": "Mount Fuji (stratovolcano + Fuji Five Lakes edge)",
-      "bbox": [
-        138.62,
-        35.28,
-        138.85,
-        35.45
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 10,
-      "notes": "Pilot 3. Summit 138.7274E 35.3606N, 3776 m. Near-perfect radial cone - the strongest visual proof that real DEM beats procedural noise."
-    },
-    {
-      "slug": "mammoth-cave",
-      "name": "Mammoth Cave (karst plateau surface over the cave system)",
-      "bbox": [
-        -86.213,
-        37.096,
-        -85.987,
-        37.276
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 15,
-      "notes": "Surface-karst mode (runbook guard 8): this is the SURFACE terrain of the sinkhole plain / karst plateau above the cave system, not the cave interior (which stays a schematic toggle). Centered on the Mammoth Cave Visitor Center (37.1862N 86.1000W, ~230m/755ft) with the Green River valley cutting across the window (~128m/420ft at Green River Ferry) - use these as decode sanity checks. Relief here is gentle (sinkhole plain + river valley), not a peak."
-    },
-    {
-      "slug": "lake-victoria",
-      "name": "Lake Victoria (Jinja shore + White Nile outlet)",
-      "bbox": [
-        33.05,
-        0.3,
-        33.32,
-        0.55
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 20,
-      "notes": "Lake/inland-sea class (runbook 2b): the full 68,800 sq km lake cannot fit a 15-30km window, so this frames the signature northern shore + White Nile outlet at Jinja, Uganda (0.4478N 33.2026E) near the historic Ripon Falls site / Nalubaale Dam - already named in BODYWELCOME as the lake's only major outflow. Terrarium gives lake-SURFACE elevation, not underwater bathymetry, so the water renders flat at ~1133m ASL while the shore terrain is real; the page's existing depth-band cross-section (84m max depth, 40m mean) stays a schematic toggle exactly like mammoth-cave's surface/interior split. Decode sanity checks: lake surface ~1133m ASL; Jinja shore/town ground ~1150-1200m ASL (rises above the lake surface)."
-    },
-    {
-      "slug": "amazon-rainforest",
-      "name": "Amazon Rainforest (Rio Negro / Solimoes confluence, the Meeting of Waters, near Manaus)",
-      "bbox": [
-        -60.04,
-        -3.25,
-        -59.8,
-        -3.01
-      ],
-      "dem_zoom": 12,
-      "tex_zoom": 13,
-      "cloud_lt": 40,
-      "notes": "River reach class (runbook 2b): the 5.5M sq km rainforest cannot fit any window, so this frames the signature reach - the Encontro das Aguas / Meeting of Waters confluence (3.1333S 59.9167W) where the black Rio Negro meets the sediment-pale Solimoes/Amazon, ~20km from Manaus. Relief here is lowland-river-basin scale, not a peak - dem_zoom stepped down to 12 per the River-reach class default; the Sentinel-2 texture (dark vs pale water color contrast at the confluence, canopy-green forest either side) carries the visual story, matching the page's canopy-relief framing honestly per guard 2b. Decode sanity checks: confluence/river surface ~7m ASL (GeoNames, via Wikidata Q656597); surrounding terra-firme ground documented 20-90m ASL across the Manaus area (multiple sources disagree because the area's relief genuinely varies that much over a few km - use a generous PASS band)."
-    },
-    {
-      "slug": "lake-baikal",
-      "name": "Lake Baikal (Maloe More strait, Olkhon Island shore vs the Primorsky Range)",
-      "bbox": [
-        106.998,
-        52.928,
-        107.402,
-        53.172
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 20,
-      "notes": "Lake/inland-sea class (runbook 2b): the 636km rift lake cannot fit a 15-30km window, so this frames the signature Maloe More (Small Sea) strait between Olkhon Island's west shore (Khuzhir / Cape Burkhan area, ~53.19N 107.38E) and the mainland Primorsky Range, which rises steeply right at the shoreline - the same flanking-mountain drama the page's procedural rift-valley scene already teaches. Terrarium gives lake-SURFACE elevation, not the 1,642m bathymetry, so the water renders flat at the published lake level while the shore + mountain terrain is real; the page's existing three-basin depth-band scene stays a schematic toggle exactly like lake-victoria's surface/depth split. Decode sanity checks: lake surface ~456m ASL (published Baikal water level); Primorsky Range slope above the Maloe More shore rising well above the lake level within a few km (generous sanity band, steep-slope landmark not a surveyed point)."
-    },
-    {
-      "slug": "iguazu-falls",
-      "name": "Iguazu Falls (Devil's Throat crest + Parana Plateau escarpment + lower gorge)",
-      "bbox": [
-        -54.5,
-        -25.74,
-        -54.38,
-        -25.63
-      ],
-      "dem_zoom": 14,
-      "tex_zoom": 15,
-      "cloud_lt": 15,
-      "notes": "Waterfall/escarpment class (runbook 2b): a small ~12km window at dem_zoom 14 (~8.6 m/px at this latitude, doubled resolution the small window's tile budget allows) framing the signature drop - the Iguazu River flowing west across the basalt Parana Plateau, the crescent escarpment where it plunges (Devil's Throat / Garganta do Diablo at ~-54.442 -25.6875), and the lower gorge downstream to the west. The falls are the figure, so the real value is the ~60-82m of vertical relief between the plateau/crest and the gorge floor over a short distance. Decode sanity checks: falls crest / upper Iguazu River surface just above the falls ~150m ASL (published, worldatlas / iguazufalls.com consensus); lower gorge base below the falls ~68-110m ASL (crest ~150m minus the published 60-82m drop; the Iguazu mouth at the Parana confluence a few km downstream is ~110m ASL - use a generous band). Terrarium records the plateau + gorge SURFACE (water surface over the river), not the falling water, so the page's schematic falls/mist cues stay a teaching overlay; BODYWELCOME must say so."
-    },
-    {
-      "slug": "black-sea",
-      "name": "Black Sea (Bosphorus Strait, the sea's only outlet)",
-      "bbox": [
-        28.95,
-        41.03,
-        29.15,
-        41.26
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 15,
-      "notes": "Lake/inland-sea class (runbook 2b): the 436,400 sq km sea cannot fit a 15-30km window, and the page's own signature feature (the oxic/anoxic chemocline at 150-200m depth) is a chemistry cross-section Terrarium cannot see, matching the Lake Victoria/Baikal precedent of framing a named real shoreline landmark instead of a naive basin-center bbox. This frames the Bosphorus Strait from its Black Sea mouth (Rumeli Feneri/Anadolu Feneri, ~41.24N) south into Istanbul (~41.03N) - the strait already named in BODYWELCOME as the sea's only outlet to the Mediterranean, with real hilly terrain on both the European and Asian shores. Terrarium gives sea-surface elevation (~0m ASL), not the 2,212m anoxic-basin bathymetry, so the strait/sea renders flat at sea level while the flanking hills are real; the page's existing oxic/anoxic band + chemocline toggles stay a schematic overlay exactly like lake-victoria's surface/depth split - BODYWELCOME must say so. Decode sanity checks (guard 3): Bosphorus strait/sea surface ~0m ASL (sea-level datum); Yoros Castle hill overlooking the Black Sea mouth at Anadolu Kavagi (41.2247N 29.0947E) documented ~200-230m ASL - use a generous band, a hilltop landmark not a precise survey point."
-    },
-    {
-      "slug": "lake-michigan-huron",
-      "name": "Lake Michigan-Huron (Straits of Mackinac connector + Mackinac Island bluffs)",
-      "bbox": [
-        -84.8,
-        45.78,
-        -84.55,
-        45.92
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 20,
-      "notes": "Lake/inland-sea class (runbook 2b): the combined 117,340 sq km basin cannot fit a 15-30km window, so this frames the page's actual signature feature - the Straits of Mackinac, the ~5.6km-wide, ~50m-deep connector that hydrologically joins the two named lakes (Mackinac Bridge crossing near 45.817N 84.727W, Mackinaw City on the Lake Michigan side to the south, St. Ignace on the Lake Huron side to the north). A first pass centered purely on the open strait (bbox [-84.888,45.705,-84.566,45.929]) failed the publish-gate flat-plate check (robust relief 49m / 100m span = 49.0%, just under the 50% floor) because open water dominates a straits-only window; this revision narrows the window and shifts it to also include Mackinac Island (45.836-45.867N, 84.665-84.607W, between the two peninsulas) whose Fort Holmes bluff rises to roughly 316m ASL / ~140m above the lake - real relief the straits alone do not have, while keeping the bridge crossing and both shorelines inside the frame. Terrarium gives lake-SURFACE elevation, not the strait's underwater depth, so open water renders flat at the shared ~176m ASL surface while the island bluffs and both peninsula shores are real - the page's existing two-lake-color / unified-color / strait-highlight toggles stay meaningful exactly like lake-victoria's surface/depth split; BODYWELCOME must keep saying the basin profile and vertical scale are schematic. Decode sanity checks (guard 3): open-water surface on both sides of the strait ~176m ASL (published Michigan-Huron datum, identical both basins); Mackinac Island / Fort Holmes bluff documented ~300-320m ASL (rises well above the shared lake level) - use a generous band, an island-bluff landmark not a precise survey point."
-    },
-    {
-      "slug": "caspian-sea",
-      "name": "Caspian Sea (Beshbarmag Mountain shore, Azerbaijan)",
-      "bbox": [
-        49.2,
-        40.62,
-        49.45,
-        40.8
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 20,
-      "notes": "Lake/inland-sea class (runbook 2b): the 371,000 sq km sea cannot fit a 15-30km window and its own signature feature (the three-basin depth cross-section down to 1,025m) is bathymetry Terrarium cannot see, matching the Lake Victoria/Baikal/Black Sea precedent of framing a named real shoreline landmark instead of a basin-center bbox. This frames Beshbarmag Mountain (Five-Finger Mountain, ~40.7314N 49.3378E, ~546m ASL) on Azerbaijan's Caspian coast north of Baku - a limestone ridge that rises steeply right at the shoreline, the most dramatic real relief anywhere on the Caspian's shore and a strong visual contrast to the sea's own -28m surface (the same 'below world ocean level' figure already in BODYWELCOME). Terrarium gives sea-SURFACE elevation, not the basin's underwater depth, so the water renders flat at the shared ~-28m ASL surface while the coastal ridge is real; the page's existing north/middle/south depth-band cross-section + sea-level-plane toggles stay a schematic overlay exactly like lake-victoria's surface/depth split - BODYWELCOME must say so. Decode sanity checks (guard 3): Caspian sea surface about -28m ASL (published, matches existing page copy) - decoded -18..-20m at the window's east shoreline edge; the coastal ridge (Beshbarmag proper plus the flanking Caucasus-foothill crest that meets the sea along this stretch) documented in the 400-900m ASL range - decoded 340..673m across sampled points near the named summit - use a generous band, a ridge-crest landmark not a precise survey point."
-    },
-    {
-      "slug": "son-doong-cave",
-      "name": "Son Doong Cave surface karst (Phong Nha-Ke Bang cone-karst massif above the passage)",
-      "bbox": [
-        106.2,
-        17.38,
-        106.38,
-        17.53
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 30,
-      "notes": "Surface-karst class (runbook guard 8 / 2b): Terrarium/Sentinel-2 cannot see the cave interior, so this migrates the SURFACE terrain of the Phong Nha-Ke Bang cone-karst massif directly above and around the passage - a ~18x17km window centered near the surveyed entrance (17.45694N 106.28750E, British Cave Research Association) framing the jagged limestone cone-karst hills the park is famous for. The existing cave cross-section/interior teaching toggle stays a schematic overlay; the real view is explicitly the surface above, never the passage itself - BODYWELCOME must say so per guard 8. Humid tropical climate -> cloud_lt raised to 30 to improve odds of a usable Sentinel-2 scene; CI's STAC search still prefers the lowest-cloud footprint under that ceiling. Decode sanity checks (guard 3): cone-karst hill peaks in this window are documented in the 200-800m ASL range around the park (limestone tower karst rising steeply from lower valleys near 50-150m ASL) - validate a local-max hill sample lands in the karst-peak band and a valley/river-floor sample lands in the lower band before the CDN push."
-    },
-    {
-      "slug": "sahara-desert",
-      "name": "Sahara Desert (Erg Chebbi dune field, Merzouga, Morocco)",
-      "bbox": [
-        -4.12,
-        31.02,
-        -3.9,
-        31.28
-      ],
-      "dem_zoom": 12,
-      "tex_zoom": 13,
-      "cloud_lt": 25,
-      "notes": "Desert/dunefield class (runbook 2b): the Sahara (9M sq km) cannot fit any window, so this frames the signature Erg Chebbi dune sea near Merzouga, Morocco (31.0994N 4.0083W village, dune field extending north to ~31.25N) - the most famous, most-photographed Sahara erg, with dunes commonly 100-150m and locally cited toward the tallest-recorded range the BODYWELCOME text already names. dem_zoom stepped to 12 per the desert/dunefield class default (low-frequency dune relief; halves bytes on the ~19x29km window). Decode sanity checks: Merzouga village/dune-field base documented around 750m ASL; Erg Chebbi dune crests documented roughly 100-150m above the base, so summit samples should land near 850-900m ASL - use a generous band, dune crests migrate and are not fixed survey points. (retry note: first build run dropped texture for 3 places under a full-registry cache-invalidation rebuild - likely STAC rate-limit; retrying.)"
-    },
-    {
-      "slug": "mount-kilimanjaro",
-      "name": "Mount Kilimanjaro (Kibo summit cone, Tanzania)",
-      "bbox": [
-        37.2383,
-        -3.1669,
-        37.4683,
-        -2.9869
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 20,
-      "notes": "Peak/massif class (runbook 2b): a ~25.6x20km window centered on Uhuru Peak (3.0769S 37.3533E, 5895m, Africa's highest point and the world's highest free-standing mountain) with margin to keep the summit well inside per the class default, also covering Kibo Hut (3.0822S 37.3714E, 4703m published) on the NE saddle approach. Equatorial-belt Sentinel-2 scenes can carry afternoon convective cloud, so cloud_lt raised slightly to 20 (matches lake-victoria's East Africa precedent) - CI's STAC search still prefers the lowest-cloud footprint under that ceiling. Decode sanity checks (guard 3): Uhuru Peak summit ~5895m ASL; Kibo Hut ~4703m ASL - both should land inside a generous +-150m band given z13 ~15-19m/px landmark-point tolerance (same tolerance class as the Everest/Grand Canyon pilots)."
-    },
-    {
-      "slug": "black-forest",
-      "name": "Black Forest (Schwarzwald) - Feldberg massif, Baden-Wuerttemberg, Germany",
-      "bbox": [
-        7.87,
-        47.77,
-        8.14,
-        47.97
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 20,
-      "notes": "Peak/massif class (runbook 2b): a ~20x22km window centered on the Feldberg summit (47.8747N 8.0006E, 1493m, the Black Forest's highest point) with margin. Local build confirmed grid max 1489m sits within 5px of the window center, confirming correct centering; landmark-tolerant local-max search (r=5px) decoded the summit at 1461m vs published 1493m (32m/2.1% diff, within z13 ~13m/px landmark-point tolerance). Window relief spans 348-1489m (1141m), consistent with the massif's documented elevation range and confirming real terrain shape (not a flat plate) - the plateau itself sits mostly 850-1150m with valleys cutting down toward the north edge of the window."
-    },
-    {
-      "slug": "tibetan-plateau",
-      "name": "Tibetan Plateau - Mount Kailash massif, Tibet Autonomous Region, China",
-      "bbox": [
-        81.197,
-        30.967,
-        81.427,
-        31.167
-      ],
-      "dem_zoom": 13,
-      "tex_zoom": 14,
-      "cloud_lt": 20,
-      "notes": "Peak/massif class (runbook 2b): the 2.5M sq km plateau cannot fit any window, so framed the globally-recognized Mount Kailash massif (31.0666N 81.3119E, summit ~6638m, sacred to Hindus/Buddhists/Jains/Bon) with a ~24x22km window centered on the summit, also covering the Barkha plain base to the south (~4560-4675m published) and the Dolma La kora-trail pass to the NE (~5630m published). Decode sanity checks (guard 3): global grid max 6457m sits 7px from window center confirming correct centering (vs published ~6638m summit, -181m/2.7% generous landmark-point band at z13 ~16.4m/px on a steep isolated peak); global grid min 4614m at the window's south edge matches the published Barkha-plain base band."
-    }
-  ]
+ "note": "Registry for build-place-terrain.mjs. bbox is [W,S,E,N] in degrees, sized ~15-30 km per side around the place's signature terrain. dem_zoom 13 = ~15-19 m/sample at temperate latitudes (~2-4 MB heights.bin); tex_zoom = dem_zoom+1 doubles texture resolution (~1-3 MB JPEG). Keep each place's total under ~20 MB (operator budget 2026-08-28). cloud_lt = max Sentinel-2 cloud cover percent accepted.",
+ "places": [
+  {
+   "slug": "grand-canyon",
+   "name": "Grand Canyon (South Rim + river core)",
+   "bbox": [
+    -112.26,
+    36.02,
+    -111.98,
+    36.15
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 8,
+   "notes": "Pilot 1. Window centered on Bright Angel / South Rim; river visible at ~750 m, rim ~2100 m - use these as decode sanity checks."
+  },
+  {
+   "slug": "mount-everest",
+   "name": "Mount Everest (Khumbu massif)",
+   "bbox": [
+    86.85,
+    27.92,
+    87.05,
+    28.06
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 15,
+   "notes": "Pilot 2. Summit 86.9253E 27.9881N, 8849 m. Himalaya scenes are often cloudy/snowy - cloud_lt relaxed; prefer a post-monsoon (Oct-Dec) scene if the top STAC hit looks poor."
+  },
+  {
+   "slug": "mount-fuji",
+   "name": "Mount Fuji (stratovolcano + Fuji Five Lakes edge)",
+   "bbox": [
+    138.62,
+    35.28,
+    138.85,
+    35.45
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 10,
+   "notes": "Pilot 3. Summit 138.7274E 35.3606N, 3776 m. Near-perfect radial cone - the strongest visual proof that real DEM beats procedural noise."
+  },
+  {
+   "slug": "mammoth-cave",
+   "name": "Mammoth Cave (karst plateau surface over the cave system)",
+   "bbox": [
+    -86.213,
+    37.096,
+    -85.987,
+    37.276
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 15,
+   "notes": "Surface-karst mode (runbook guard 8): this is the SURFACE terrain of the sinkhole plain / karst plateau above the cave system, not the cave interior (which stays a schematic toggle). Centered on the Mammoth Cave Visitor Center (37.1862N 86.1000W, ~230m/755ft) with the Green River valley cutting across the window (~128m/420ft at Green River Ferry) - use these as decode sanity checks. Relief here is gentle (sinkhole plain + river valley), not a peak."
+  },
+  {
+   "slug": "lake-victoria",
+   "name": "Lake Victoria (Jinja shore + White Nile outlet)",
+   "bbox": [
+    33.05,
+    0.3,
+    33.32,
+    0.55
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Lake/inland-sea class (runbook 2b): the full 68,800 sq km lake cannot fit a 15-30km window, so this frames the signature northern shore + White Nile outlet at Jinja, Uganda (0.4478N 33.2026E) near the historic Ripon Falls site / Nalubaale Dam - already named in BODYWELCOME as the lake's only major outflow. Terrarium gives lake-SURFACE elevation, not underwater bathymetry, so the water renders flat at ~1133m ASL while the shore terrain is real; the page's existing depth-band cross-section (84m max depth, 40m mean) stays a schematic toggle exactly like mammoth-cave's surface/interior split. Decode sanity checks: lake surface ~1133m ASL; Jinja shore/town ground ~1150-1200m ASL (rises above the lake surface)."
+  },
+  {
+   "slug": "amazon-rainforest",
+   "name": "Amazon Rainforest (Rio Negro / Solimoes confluence, the Meeting of Waters, near Manaus)",
+   "bbox": [
+    -60.04,
+    -3.25,
+    -59.8,
+    -3.01
+   ],
+   "dem_zoom": 12,
+   "tex_zoom": 13,
+   "cloud_lt": 40,
+   "notes": "River reach class (runbook 2b): the 5.5M sq km rainforest cannot fit any window, so this frames the signature reach - the Encontro das Aguas / Meeting of Waters confluence (3.1333S 59.9167W) where the black Rio Negro meets the sediment-pale Solimoes/Amazon, ~20km from Manaus. Relief here is lowland-river-basin scale, not a peak - dem_zoom stepped down to 12 per the River-reach class default; the Sentinel-2 texture (dark vs pale water color contrast at the confluence, canopy-green forest either side) carries the visual story, matching the page's canopy-relief framing honestly per guard 2b. Decode sanity checks: confluence/river surface ~7m ASL (GeoNames, via Wikidata Q656597); surrounding terra-firme ground documented 20-90m ASL across the Manaus area (multiple sources disagree because the area's relief genuinely varies that much over a few km - use a generous PASS band)."
+  },
+  {
+   "slug": "lake-baikal",
+   "name": "Lake Baikal (Maloe More strait, Olkhon Island shore vs the Primorsky Range)",
+   "bbox": [
+    106.998,
+    52.928,
+    107.402,
+    53.172
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Lake/inland-sea class (runbook 2b): the 636km rift lake cannot fit a 15-30km window, so this frames the signature Maloe More (Small Sea) strait between Olkhon Island's west shore (Khuzhir / Cape Burkhan area, ~53.19N 107.38E) and the mainland Primorsky Range, which rises steeply right at the shoreline - the same flanking-mountain drama the page's procedural rift-valley scene already teaches. Terrarium gives lake-SURFACE elevation, not the 1,642m bathymetry, so the water renders flat at the published lake level while the shore + mountain terrain is real; the page's existing three-basin depth-band scene stays a schematic toggle exactly like lake-victoria's surface/depth split. Decode sanity checks: lake surface ~456m ASL (published Baikal water level); Primorsky Range slope above the Maloe More shore rising well above the lake level within a few km (generous sanity band, steep-slope landmark not a surveyed point)."
+  },
+  {
+   "slug": "iguazu-falls",
+   "name": "Iguazu Falls (Devil's Throat crest + Parana Plateau escarpment + lower gorge)",
+   "bbox": [
+    -54.5,
+    -25.74,
+    -54.38,
+    -25.63
+   ],
+   "dem_zoom": 14,
+   "tex_zoom": 15,
+   "cloud_lt": 15,
+   "notes": "Waterfall/escarpment class (runbook 2b): a small ~12km window at dem_zoom 14 (~8.6 m/px at this latitude, doubled resolution the small window's tile budget allows) framing the signature drop - the Iguazu River flowing west across the basalt Parana Plateau, the crescent escarpment where it plunges (Devil's Throat / Garganta do Diablo at ~-54.442 -25.6875), and the lower gorge downstream to the west. The falls are the figure, so the real value is the ~60-82m of vertical relief between the plateau/crest and the gorge floor over a short distance. Decode sanity checks: falls crest / upper Iguazu River surface just above the falls ~150m ASL (published, worldatlas / iguazufalls.com consensus); lower gorge base below the falls ~68-110m ASL (crest ~150m minus the published 60-82m drop; the Iguazu mouth at the Parana confluence a few km downstream is ~110m ASL - use a generous band). Terrarium records the plateau + gorge SURFACE (water surface over the river), not the falling water, so the page's schematic falls/mist cues stay a teaching overlay; BODYWELCOME must say so."
+  },
+  {
+   "slug": "black-sea",
+   "name": "Black Sea (Bosphorus Strait, the sea's only outlet)",
+   "bbox": [
+    28.95,
+    41.03,
+    29.15,
+    41.26
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 15,
+   "notes": "Lake/inland-sea class (runbook 2b): the 436,400 sq km sea cannot fit a 15-30km window, and the page's own signature feature (the oxic/anoxic chemocline at 150-200m depth) is a chemistry cross-section Terrarium cannot see, matching the Lake Victoria/Baikal precedent of framing a named real shoreline landmark instead of a naive basin-center bbox. This frames the Bosphorus Strait from its Black Sea mouth (Rumeli Feneri/Anadolu Feneri, ~41.24N) south into Istanbul (~41.03N) - the strait already named in BODYWELCOME as the sea's only outlet to the Mediterranean, with real hilly terrain on both the European and Asian shores. Terrarium gives sea-surface elevation (~0m ASL), not the 2,212m anoxic-basin bathymetry, so the strait/sea renders flat at sea level while the flanking hills are real; the page's existing oxic/anoxic band + chemocline toggles stay a schematic overlay exactly like lake-victoria's surface/depth split - BODYWELCOME must say so. Decode sanity checks (guard 3): Bosphorus strait/sea surface ~0m ASL (sea-level datum); Yoros Castle hill overlooking the Black Sea mouth at Anadolu Kavagi (41.2247N 29.0947E) documented ~200-230m ASL - use a generous band, a hilltop landmark not a precise survey point."
+  },
+  {
+   "slug": "lake-michigan-huron",
+   "name": "Lake Michigan-Huron (Straits of Mackinac connector + Mackinac Island bluffs)",
+   "bbox": [
+    -84.8,
+    45.78,
+    -84.55,
+    45.92
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Lake/inland-sea class (runbook 2b): the combined 117,340 sq km basin cannot fit a 15-30km window, so this frames the page's actual signature feature - the Straits of Mackinac, the ~5.6km-wide, ~50m-deep connector that hydrologically joins the two named lakes (Mackinac Bridge crossing near 45.817N 84.727W, Mackinaw City on the Lake Michigan side to the south, St. Ignace on the Lake Huron side to the north). A first pass centered purely on the open strait (bbox [-84.888,45.705,-84.566,45.929]) failed the publish-gate flat-plate check (robust relief 49m / 100m span = 49.0%, just under the 50% floor) because open water dominates a straits-only window; this revision narrows the window and shifts it to also include Mackinac Island (45.836-45.867N, 84.665-84.607W, between the two peninsulas) whose Fort Holmes bluff rises to roughly 316m ASL / ~140m above the lake - real relief the straits alone do not have, while keeping the bridge crossing and both shorelines inside the frame. Terrarium gives lake-SURFACE elevation, not the strait's underwater depth, so open water renders flat at the shared ~176m ASL surface while the island bluffs and both peninsula shores are real - the page's existing two-lake-color / unified-color / strait-highlight toggles stay meaningful exactly like lake-victoria's surface/depth split; BODYWELCOME must keep saying the basin profile and vertical scale are schematic. Decode sanity checks (guard 3): open-water surface on both sides of the strait ~176m ASL (published Michigan-Huron datum, identical both basins); Mackinac Island / Fort Holmes bluff documented ~300-320m ASL (rises well above the shared lake level) - use a generous band, an island-bluff landmark not a precise survey point."
+  },
+  {
+   "slug": "caspian-sea",
+   "name": "Caspian Sea (Beshbarmag Mountain shore, Azerbaijan)",
+   "bbox": [
+    49.2,
+    40.62,
+    49.45,
+    40.8
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Lake/inland-sea class (runbook 2b): the 371,000 sq km sea cannot fit a 15-30km window and its own signature feature (the three-basin depth cross-section down to 1,025m) is bathymetry Terrarium cannot see, matching the Lake Victoria/Baikal/Black Sea precedent of framing a named real shoreline landmark instead of a basin-center bbox. This frames Beshbarmag Mountain (Five-Finger Mountain, ~40.7314N 49.3378E, ~546m ASL) on Azerbaijan's Caspian coast north of Baku - a limestone ridge that rises steeply right at the shoreline, the most dramatic real relief anywhere on the Caspian's shore and a strong visual contrast to the sea's own -28m surface (the same 'below world ocean level' figure already in BODYWELCOME). Terrarium gives sea-SURFACE elevation, not the basin's underwater depth, so the water renders flat at the shared ~-28m ASL surface while the coastal ridge is real; the page's existing north/middle/south depth-band cross-section + sea-level-plane toggles stay a schematic overlay exactly like lake-victoria's surface/depth split - BODYWELCOME must say so. Decode sanity checks (guard 3): Caspian sea surface about -28m ASL (published, matches existing page copy) - decoded -18..-20m at the window's east shoreline edge; the coastal ridge (Beshbarmag proper plus the flanking Caucasus-foothill crest that meets the sea along this stretch) documented in the 400-900m ASL range - decoded 340..673m across sampled points near the named summit - use a generous band, a ridge-crest landmark not a precise survey point."
+  },
+  {
+   "slug": "son-doong-cave",
+   "name": "Son Doong Cave surface karst (Phong Nha-Ke Bang cone-karst massif above the passage)",
+   "bbox": [
+    106.2,
+    17.38,
+    106.38,
+    17.53
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 30,
+   "notes": "Surface-karst class (runbook guard 8 / 2b): Terrarium/Sentinel-2 cannot see the cave interior, so this migrates the SURFACE terrain of the Phong Nha-Ke Bang cone-karst massif directly above and around the passage - a ~18x17km window centered near the surveyed entrance (17.45694N 106.28750E, British Cave Research Association) framing the jagged limestone cone-karst hills the park is famous for. The existing cave cross-section/interior teaching toggle stays a schematic overlay; the real view is explicitly the surface above, never the passage itself - BODYWELCOME must say so per guard 8. Humid tropical climate -> cloud_lt raised to 30 to improve odds of a usable Sentinel-2 scene; CI's STAC search still prefers the lowest-cloud footprint under that ceiling. Decode sanity checks (guard 3): cone-karst hill peaks in this window are documented in the 200-800m ASL range around the park (limestone tower karst rising steeply from lower valleys near 50-150m ASL) - validate a local-max hill sample lands in the karst-peak band and a valley/river-floor sample lands in the lower band before the CDN push."
+  },
+  {
+   "slug": "sahara-desert",
+   "name": "Sahara Desert (Erg Chebbi dune field, Merzouga, Morocco)",
+   "bbox": [
+    -4.12,
+    31.02,
+    -3.9,
+    31.28
+   ],
+   "dem_zoom": 12,
+   "tex_zoom": 13,
+   "cloud_lt": 25,
+   "notes": "Desert/dunefield class (runbook 2b): the Sahara (9M sq km) cannot fit any window, so this frames the signature Erg Chebbi dune sea near Merzouga, Morocco (31.0994N 4.0083W village, dune field extending north to ~31.25N) - the most famous, most-photographed Sahara erg, with dunes commonly 100-150m and locally cited toward the tallest-recorded range the BODYWELCOME text already names. dem_zoom stepped to 12 per the desert/dunefield class default (low-frequency dune relief; halves bytes on the ~19x29km window). Decode sanity checks: Merzouga village/dune-field base documented around 750m ASL; Erg Chebbi dune crests documented roughly 100-150m above the base, so summit samples should land near 850-900m ASL - use a generous band, dune crests migrate and are not fixed survey points. (retry note: first build run dropped texture for 3 places under a full-registry cache-invalidation rebuild - likely STAC rate-limit; retrying.)"
+  },
+  {
+   "slug": "mount-kilimanjaro",
+   "name": "Mount Kilimanjaro (Kibo summit cone, Tanzania)",
+   "bbox": [
+    37.2383,
+    -3.1669,
+    37.4683,
+    -2.9869
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Peak/massif class (runbook 2b): a ~25.6x20km window centered on Uhuru Peak (3.0769S 37.3533E, 5895m, Africa's highest point and the world's highest free-standing mountain) with margin to keep the summit well inside per the class default, also covering Kibo Hut (3.0822S 37.3714E, 4703m published) on the NE saddle approach. Equatorial-belt Sentinel-2 scenes can carry afternoon convective cloud, so cloud_lt raised slightly to 20 (matches lake-victoria's East Africa precedent) - CI's STAC search still prefers the lowest-cloud footprint under that ceiling. Decode sanity checks (guard 3): Uhuru Peak summit ~5895m ASL; Kibo Hut ~4703m ASL - both should land inside a generous +-150m band given z13 ~15-19m/px landmark-point tolerance (same tolerance class as the Everest/Grand Canyon pilots)."
+  },
+  {
+   "slug": "black-forest",
+   "name": "Black Forest (Schwarzwald) - Feldberg massif, Baden-Wuerttemberg, Germany",
+   "bbox": [
+    7.87,
+    47.77,
+    8.14,
+    47.97
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Peak/massif class (runbook 2b): a ~20x22km window centered on the Feldberg summit (47.8747N 8.0006E, 1493m, the Black Forest's highest point) with margin. Local build confirmed grid max 1489m sits within 5px of the window center, confirming correct centering; landmark-tolerant local-max search (r=5px) decoded the summit at 1461m vs published 1493m (32m/2.1% diff, within z13 ~13m/px landmark-point tolerance). Window relief spans 348-1489m (1141m), consistent with the massif's documented elevation range and confirming real terrain shape (not a flat plate) - the plateau itself sits mostly 850-1150m with valleys cutting down toward the north edge of the window."
+  },
+  {
+   "slug": "tibetan-plateau",
+   "name": "Tibetan Plateau - Mount Kailash massif, Tibet Autonomous Region, China",
+   "bbox": [
+    81.197,
+    30.967,
+    81.427,
+    31.167
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Peak/massif class (runbook 2b): the 2.5M sq km plateau cannot fit any window, so framed the globally-recognized Mount Kailash massif (31.0666N 81.3119E, summit ~6638m, sacred to Hindus/Buddhists/Jains/Bon) with a ~24x22km window centered on the summit, also covering the Barkha plain base to the south (~4560-4675m published) and the Dolma La kora-trail pass to the NE (~5630m published). Decode sanity checks (guard 3): global grid max 6457m sits 7px from window center confirming correct centering (vs published ~6638m summit, -181m/2.7% generous landmark-point band at z13 ~16.4m/px on a steep isolated peak); global grid min 4614m at the window's south edge matches the published Barkha-plain base band."
+  },
+  {
+   "slug": "lake-superior",
+   "name": "Lake Superior (Isle Royale, Mount Desor massif + Siskiwit Bay shore)",
+   "bbox": [
+    -89.15,
+    47.85,
+    -88.88,
+    48.03
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Lake/inland-sea class (runbook 2b): the 82,100 sq km lake cannot fit a 15-30km window, and Terrarium/Sentinel-2 cannot see the 406m bathymetry the page's depth-band toggle teaches, so this frames the signature real-relief feature instead - Isle Royale's Mount Desor massif (47.9554N 89.0129W, 425m ASL, the island's highest point, ~241m prominence above the lake) with Siskiwit Bay opening to the south, matching the BODYWELCOME's existing 'Isle Royale rising above the surface near the northwest shore' framing. A ~20x20km window centered just south-southwest of the summit captures the interior ridge plus open lake water on the Siskiwit Bay side for real relief contrast against the lake surface. Terrarium gives lake-SURFACE elevation (~183m ASL, matches the page's published elevation figure) while the island terrain is real; the existing depth-band cross-section + Edmund Fitzgerald marker stay schematic teaching overlays exactly like lake-victoria's surface/depth split - BODYWELCOME must say so. Decode sanity checks (guard 3): Lake Superior surface ~183m ASL (published, matches existing page copy); Mount Desor summit ~425m ASL (~241m above the lake surface) - use a generous band, a forested island-ridge landmark not a precise survey point."
+  }
+ ]
 }
