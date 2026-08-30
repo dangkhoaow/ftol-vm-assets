@@ -238,6 +238,20 @@
    "tex_zoom": 14,
    "cloud_lt": 20,
    "notes": "Lake/inland-sea class (runbook 2b): the 82,100 sq km lake cannot fit a 15-30km window, and Terrarium/Sentinel-2 cannot see the 406m bathymetry the page's depth-band toggle teaches, so this frames the signature real-relief feature instead - Isle Royale's Mount Desor massif (47.9554N 89.0129W, 425m ASL, the island's highest point, ~241m prominence above the lake) with Siskiwit Bay opening to the south, matching the BODYWELCOME's existing 'Isle Royale rising above the surface near the northwest shore' framing. A ~20x20km window centered just south-southwest of the summit captures the interior ridge plus open lake water on the Siskiwit Bay side for real relief contrast against the lake surface. Terrarium gives lake-SURFACE elevation (~183m ASL, matches the page's published elevation figure) while the island terrain is real; the existing depth-band cross-section + Edmund Fitzgerald marker stay schematic teaching overlays exactly like lake-victoria's surface/depth split - BODYWELCOME must say so. Decode sanity checks (guard 3): Lake Superior surface ~183m ASL (published, matches existing page copy); Mount Desor summit ~425m ASL (~241m above the lake surface) - use a generous band, a forested island-ridge landmark not a precise survey point."
+  },
+  {
+   "slug": "stone-forest-shilin",
+   "name": "Shilin Stone Forest (Yunnan karst plateau, Wenbi Mountain to the core scenic area)",
+   "bbox": [
+    103.22,
+    24.73,
+    103.43,
+    24.92
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Karst-pinnacle class, closest to the runbook 2b karst-surface entry but WITHOUT a cave: the individual limestone pinnacles (20-40m tall towers, meter-scale spacing) are far finer than z13's ~15-19m/px DEM sample and will NOT resolve as separate towers - Terrarium/Sentinel-2 will render the plateau's real broad relief (UNESCO management-plan published band: 1560m low point .. Wenbi Mountain 2203m high point, south of the park) plus the real karst-plateau surface texture, while the existing pinnacle-field mesh + Ashima marker stay as the schematic close-up teaching layer exactly like the cave pages' surface/interior split - BODYWELCOME must say the pinnacle spacing/height is still schematic, only the surrounding plateau relief and imagery are real. No public source gives Wenbi Mountain's exact lat/lon, so the window is centered on the main Stone Forest landmark point (24.8253N 103.3236E, ~22x21km) rather than the peak itself. Decode sanity checks (guard 3, built 2026-08-30): decoded grid min 1607m / max 2105m sit inside the published 1560-2203m band (max ~4.4% low of the 2203m figure - generous landmark tolerance, consistent with other pilots since this DEM window is not centered on the named peak); decoded value at the landmark point itself is 1765m, inside the page's own published plateau-elevation figure (1750-2000m)."
   }
  ]
 }
