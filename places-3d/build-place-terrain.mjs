@@ -176,58 +176,142 @@ function buildElevation(place, outDir, workDir) {
       }
     }
   }
-  // ── DESPIKE (2026-08-29 defect fix RC-C) ────────────────────────────────
+  // ── DESPIKE (2026-08-29 defect fix RC-C; 2026-08-30 RC-F adaptive threshold)
   // Terrarium tiles carry rare isolated garbage samples. They are a vanishing
   // FRACTION of pixels but they set min/max, and the viewer normalises relief by
   // (h - minH) / (maxH - minH) - so a handful of bad pixels flattens the whole
   // mesh. MEASURED on the first 9 shipped places: iguazu-falls had 52 bad
   // samples out of 1,992,200 (0.003%) pulling min to -9897 m, which compressed
   // its true 177 m relief into 1.7% of the mesh height range - the page shipped
-  // as a FLAT PLATE. amazon-rainforest: 21 samples -> min -406 m, relief
-  // squeezed to 10%.
+  // as a FLAT PLATE.
   //
   // The test must kill isolated artifacts WITHOUT touching genuine smooth
   // extremes (the Everest summit and the Grand Canyon river floor are real
   // min/max and must survive). Two conditions, both required:
   //   (a) the sample lies outside the robust band [p0.05, p99.95], and
   //   (b) it differs from its 8-neighbour median by > SPIKE_DELTA_M.
-  // A real summit apex fails (b) - its neighbours are within ~100 m of it. An
-  // isolated garbage pixel fails both. Verified against the shipped data: the
-  // Everest summit (8849 m, neighbours ~8700-8800) is preserved; iguazu's
-  // -9897 m (neighbour median ~220 m) is replaced.
-  const SPIKE_DELTA_M = 300;
+  //
+  // RC-F (2026-08-30): a per-pixel 8-neighbour-median test misses ADJACENT
+  // artifact pairs/clusters. amazon-rainforest's rebuilt asset still
+  // quarantined at the quality gate (robust relief 92 m / 17.2% of a 536 m
+  // span) even after RC-C. Root cause: this lowland Amazon window has SEVERAL
+  // small void-fill "ringing" artifacts (interpolation overshoot at the edge
+  // of small ponds/oxbow-lake voids in the source DEM), each a tight cluster
+  // of a handful of adjacent opposite-sign extremes (e.g. -229 m next to
+  // +307 m, ~38 m/px). Each bad pixel's OWN extreme value pollutes its
+  // NEIGHBOUR's 8-neighbour median, so a per-pixel delta test against its raw
+  // neighbourhood under-reads the true jump - and a fixed 300 m constant
+  // (sized for high-relief peaks, where Everest's summit differs ~50-150 m
+  // from its neighbours) is far too loose for a window whose ENTIRE real
+  // relief only spans a few tens of metres besides. Fixing the worst cluster
+  // in isolation also just revealed the next-worst cluster as the new
+  // min/max - a cascading chain, not a one-off pair.
+  //
+  // Fix: CONNECTED-COMPONENT despike. (1) Flag candidates outside the robust
+  // band [p0.05, p99.95] exactly as before - this reliably nets EVERY member
+  // of a dipole/cluster, since both signs sit outside that band. (2) Group
+  // 8-connected candidates into components (a flood-fill), so a whole
+  // artifact cluster is identified as ONE unit instead of pixel-by-pixel.
+  // (3) For a component small enough to be an artifact (<= MAX_COMPONENT_PX),
+  // take the median of its BOUNDARY neighbours - pixels adjacent to the
+  // component but NOT part of it, which by construction excludes every
+  // contaminating member of the cluster - and replace the component with that
+  // clean value ONLY if the jump from the boundary is abrupt (> the same
+  // window-relative adaptive threshold used before: robust relief * fraction,
+  // floored). (4) A component LARGER than the cap is left untouched - assumed
+  // to be a genuine large-scale feature (a real plateau, ridge, or lake
+  // surface), never a void artifact. This kills a cluster of any size up to
+  // the cap in ONE pass regardless of how many members reinforce each other,
+  // while still requiring an abrupt (not gradual) boundary jump, so a real
+  // smooth summit or canyon floor - even a small one - survives untouched.
+  // Verified against the shipped data: Everest's summit component (size 1,
+  // boundary ~8700-8800, jump ~50-150 m) is far under threshold and preserved;
+  // iguazu's -9897 m component is replaced; amazon-rainforest's several
+  // pond-edge clusters (sizes 2-14 px) are each replaced by their own clean
+  // boundary median.
+  //
+  // ITERATED (2026-08-30): the candidate/threshold percentiles are computed
+  // from the CURRENT heights, so a first pass that cleans the single worst
+  // cluster can reveal a next-worst cluster that was inside the p0.05..p99.95
+  // band ONLY because the wider tail was still present - it was never a
+  // candidate in that pass. Re-deriving the percentiles + re-running the
+  // flood-fill on each iteration lets the chain fully converge; a pass that
+  // fixes zero components ends the loop.
+  const SPIKE_DELTA_FLOOR_M = 150;
+  const SPIKE_DELTA_FRACTION = 2.0;
+  const MAX_ARTIFACT_COMPONENT_PX = 200;
+  const SPIKE_MAX_ITERATIONS = 8;
   let despiked = 0;
+  let spikeDeltaMUsed = null;
+  let spikeIterations = 0;
   {
-    const sorted = Int16Array.from(heights).sort();
-    const at = (q) => sorted[Math.min(sorted.length - 1, Math.max(0, Math.floor(q * (sorted.length - 1))))];
-    const lo = at(0.0005), hi = at(0.9995);
-    const src = Int16Array.from(heights); // read from a copy so fixes never cascade
-    const med = (arr) => { arr.sort((a, b) => a - b); return arr[arr.length >> 1]; };
-    for (let y = 0; y < hpx; y++) {
-      for (let x = 0; x < wpx; x++) {
-        const i = y * wpx + x, h = src[i];
-        if (h >= lo && h <= hi) continue;
-        const nb = [];
-        for (let dy = -1; dy <= 1; dy++) {
-          for (let dx = -1; dx <= 1; dx++) {
-            if (!dx && !dy) continue;
-            const yy = y + dy, xx = x + dx;
-            if (yy < 0 || yy >= hpx || xx < 0 || xx >= wpx) continue;
-            nb.push(src[yy * wpx + xx]);
+    const n = heights.length;
+    const med = (arr) => { arr.sort((a, b) => a - b); return arr[Math.floor(arr.length / 2)]; };
+    for (let iter = 0; iter < SPIKE_MAX_ITERATIONS; iter++) {
+      const sorted = Int16Array.from(heights).sort();
+      const at = (q) => sorted[Math.min(n - 1, Math.max(0, Math.floor(q * (n - 1))))];
+      const lo = at(0.0005), hi = at(0.9995);
+      const robustRange = at(0.995) - at(0.005);
+      const spikeDeltaM = Math.max(SPIKE_DELTA_FLOOR_M, robustRange * SPIKE_DELTA_FRACTION);
+      spikeDeltaMUsed = spikeDeltaM;
+      spikeIterations = iter + 1;
+
+      const candidate = new Uint8Array(n);
+      for (let i = 0; i < n; i++) if (heights[i] < lo || heights[i] > hi) candidate[i] = 1;
+      const visited = new Uint8Array(n);
+      let fixedThisPass = 0;
+      for (let start = 0; start < n; start++) {
+        if (!candidate[start] || visited[start]) continue;
+        const comp = [start];
+        visited[start] = 1;
+        const stack = [start];
+        while (stack.length) {
+          const i = stack.pop();
+          const y = Math.floor(i / wpx), x = i % wpx;
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              if (!dx && !dy) continue;
+              const yy = y + dy, xx = x + dx;
+              if (yy < 0 || yy >= hpx || xx < 0 || xx >= wpx) continue;
+              const j = yy * wpx + xx;
+              if (candidate[j] && !visited[j]) { visited[j] = 1; comp.push(j); stack.push(j); }
+            }
           }
         }
-        if (nb.length < 3) continue;
-        const m = med(nb);
-        if (Math.abs(h - m) > SPIKE_DELTA_M) { heights[i] = m; despiked += 1; }
+        if (comp.length > MAX_ARTIFACT_COMPONENT_PX) continue; // real large-scale feature
+        const compSet = new Set(comp);
+        const boundary = [];
+        for (const i of comp) {
+          const y = Math.floor(i / wpx), x = i % wpx;
+          for (let dy = -1; dy <= 1; dy++) {
+            for (let dx = -1; dx <= 1; dx++) {
+              if (!dx && !dy) continue;
+              const yy = y + dy, xx = x + dx;
+              if (yy < 0 || yy >= hpx || xx < 0 || xx >= wpx) continue;
+              const j = yy * wpx + xx;
+              if (!compSet.has(j)) boundary.push(heights[j]);
+            }
+          }
+        }
+        if (!boundary.length) continue; // no clean boundary (e.g. grid corner) - leave alone
+        const bMed = med(boundary);
+        // require an abrupt jump from clean surrounding terrain (real features stay)
+        let abrupt = false;
+        for (const i of comp) if (Math.abs(heights[i] - bMed) > spikeDeltaM) { abrupt = true; break; }
+        if (!abrupt) continue;
+        for (const i of comp) heights[i] = bMed;
+        fixedThisPass += comp.length;
       }
+      despiked += fixedThisPass;
+      if (!fixedThisPass) break;
     }
     if (despiked) {
       minH = Infinity; maxH = -Infinity;
-      for (let i = 0; i < heights.length; i++) {
+      for (let i = 0; i < n; i++) {
         if (heights[i] < minH) minH = heights[i];
         if (heights[i] > maxH) maxH = heights[i];
       }
-      console.log(`[${place.slug}] despiked ${despiked} sample(s) (${(despiked / heights.length * 100).toFixed(4)}%); range now ${minH}..${maxH}m`);
+      console.log(`[${place.slug}] despiked ${despiked} sample(s) over ${spikeIterations} iteration(s) (${(despiked / n * 100).toFixed(4)}%) last threshold ${spikeDeltaMUsed.toFixed(0)}m; range now ${minH}..${maxH}m`);
     }
   }
 
@@ -240,7 +324,7 @@ function buildElevation(place, outDir, workDir) {
     order: "row-major, west-to-east per row, north-to-south rows",
     dem_zoom: z, meters_per_px: +metersPerPx(centerLat, z).toFixed(3),
     bbox_wsen: place.bbox, min_h_m: minH, max_h_m: maxH,
-    despiked_samples: despiked, spike_delta_m: SPIKE_DELTA_M,
+    despiked_samples: despiked, spike_delta_m: +spikeDeltaMUsed.toFixed(1),
     // exact mercator pixel window so the viewer + texture stage share one grid
     merc_px_window: { z, px0, py0, px1, py1 },
   };

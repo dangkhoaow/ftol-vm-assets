@@ -80,10 +80,10 @@
     -59.8,
     -3.01
    ],
-   "dem_zoom": 12,
-   "tex_zoom": 13,
+   "dem_zoom": 13,
+   "tex_zoom": 14,
    "cloud_lt": 40,
-   "notes": "River reach class (runbook 2b): the 5.5M sq km rainforest cannot fit any window, so this frames the signature reach - the Encontro das Aguas / Meeting of Waters confluence (3.1333S 59.9167W) where the black Rio Negro meets the sediment-pale Solimoes/Amazon, ~20km from Manaus. Relief here is lowland-river-basin scale, not a peak - dem_zoom stepped down to 12 per the River-reach class default; the Sentinel-2 texture (dark vs pale water color contrast at the confluence, canopy-green forest either side) carries the visual story, matching the page's canopy-relief framing honestly per guard 2b. Decode sanity checks: confluence/river surface ~7m ASL (GeoNames, via Wikidata Q656597); surrounding terra-firme ground documented 20-90m ASL across the Manaus area (multiple sources disagree because the area's relief genuinely varies that much over a few km - use a generous PASS band)."
+   "notes": "River reach class (runbook 2b): the 5.5M sq km rainforest cannot fit any window, so this frames the signature reach - the Encontro das Aguas / Meeting of Waters confluence (3.1333S 59.9167W) where the black Rio Negro meets the sediment-pale Solimoes/Amazon, ~20km from Manaus. Relief here is lowland-river-basin scale, not a peak. dem_zoom RAISED 12->13 (2026-08-30 RC-F): the z12 DEM window carried several small void-fill ringing artifacts (interpolation overshoot at pond/oxbow-lake edges in this floodplain) that survived even a connected-component despike pass; finer z13 sampling (42 tiles, within the 400-tile budget) reads the same voids at higher resolution where the ringing is a smaller absolute delta relative to genuine local relief, and is validated below to actually clear the quality gate rather than just improving the despike's own accounting. The Sentinel-2 texture (dark vs pale water color contrast at the confluence, canopy-green forest either side) carries the visual story, matching the page's canopy-relief framing honestly per guard 2b. Decode sanity checks: confluence/river surface ~7m ASL (GeoNames, via Wikidata Q656597); surrounding terra-firme ground documented 20-90m ASL across the Manaus area (multiple sources disagree because the area's relief genuinely varies that much over a few km - use a generous PASS band)."
   },
   {
    "slug": "lake-baikal",
