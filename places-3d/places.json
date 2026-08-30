@@ -271,8 +271,8 @@
    "slug": "dead-sea",
    "name": "Dead Sea (Ein Gedi shore, west bank cliffs meeting the lowest surface on Earth)",
    "bbox": [
-    35.30,
-    31.40,
+    35.3,
+    31.4,
     35.46,
     31.52
    ],
@@ -280,6 +280,20 @@
    "tex_zoom": 14,
    "cloud_lt": 20,
    "notes": "Lake/inland-sea class (runbook 2b), water-surface-datum sub-case (guard 9): the full ~50km lake cannot fit a 15-30km window, so this bbox frames the Ein Gedi Nature Reserve shore on the west (Judean Desert) bank - the page's own procedural scene already models this exact geometry (Judean hills west, steep relief right at the shoreline) and Ein Gedi is a globally recognizable named landmark, not a naive lake-center pick. ~15x13km window. Decode sanity checks (guard 3): the lake surface plateau should decode to about -430m ASL (the page's own published figure, consensus lowest-land-elevation-on-Earth statistic); the Ein Gedi escarpment/plateau a few km inland from the shore rises documented several hundred meters above sea level within a short distance (generous qualitative relief-magnitude band per runbook 2b convention, not a single surveyed landmark)."
+  },
+  {
+   "slug": "niagara-falls",
+   "name": "Niagara Falls (Horseshoe + American Falls, gorge to the Whirlpool, Ontario/New York)",
+   "bbox": [
+    -79.11,
+    43.06,
+    -79.015,
+    43.185
+   ],
+   "dem_zoom": 14,
+   "tex_zoom": 15,
+   "cloud_lt": 25,
+   "notes": "Waterfall/escarpment class (runbook 2b): a ~7.7x13.9km window centered on the shared falls crestline (Horseshoe Falls 43.0799N 79.0747W curved Canadian side, American Falls 43.0828N 79.0664W straight-edged US side, split by Goat Island) extended north to cover the full Niagara Gorge the page already names - the Niagara Whirlpool 4.5km downstream (approx 43.1131N 79.0619W, sharp river bend) and on to the Queenston/Lewiston escarpment mouth (approx 43.161N 79.052W / 43.171N 79.039W, about 11km downstream, where the gorge the page's BODYWELCOME describes actually ends). dem_zoom stepped to 14 per the Waterfall/escarpment class default (the drop is the figure; small window, budget allows the finer resolution) with tex_zoom 15 to match. cloud_lt 25 for the humid-continental climate (STAC still prefers the lowest-cloud footprint under that ceiling). Decode sanity checks (guard 3/4): the falls brink should show a sharp step of about 57m (Horseshoe Falls published height) within a few pixels at z14 (~11-12m/px); the upper river above the brink (Lake Erie outflow side, south of the falls) should sit near 174m ASL (published upper-river elevation, consensus figure for the head of the falls) while the lower river/gorge floor just below the falls should sit near 99-104m ASL (published lower-river elevation) - a drop matching the ~57-70m combined-cataract figure inside the DEM's landmark-point tolerance."
   }
  ]
 }
