@@ -196,6 +196,20 @@
       "tex_zoom": 14,
       "cloud_lt": 20,
       "notes": "Peak/massif class (runbook 2b): a ~25.6x20km window centered on Uhuru Peak (3.0769S 37.3533E, 5895m, Africa's highest point and the world's highest free-standing mountain) with margin to keep the summit well inside per the class default, also covering Kibo Hut (3.0822S 37.3714E, 4703m published) on the NE saddle approach. Equatorial-belt Sentinel-2 scenes can carry afternoon convective cloud, so cloud_lt raised slightly to 20 (matches lake-victoria's East Africa precedent) - CI's STAC search still prefers the lowest-cloud footprint under that ceiling. Decode sanity checks (guard 3): Uhuru Peak summit ~5895m ASL; Kibo Hut ~4703m ASL - both should land inside a generous +-150m band given z13 ~15-19m/px landmark-point tolerance (same tolerance class as the Everest/Grand Canyon pilots)."
+    },
+    {
+      "slug": "black-forest",
+      "name": "Black Forest (Schwarzwald) - Feldberg massif, Baden-Wuerttemberg, Germany",
+      "bbox": [
+        7.87,
+        47.77,
+        8.14,
+        47.97
+      ],
+      "dem_zoom": 13,
+      "tex_zoom": 14,
+      "cloud_lt": 20,
+      "notes": "Peak/massif class (runbook 2b): a ~20x22km window centered on the Feldberg summit (47.8747N 8.0006E, 1493m, the Black Forest's highest point) with margin. Local build confirmed grid max 1489m sits within 5px of the window center, confirming correct centering; landmark-tolerant local-max search (r=5px) decoded the summit at 1461m vs published 1493m (32m/2.1% diff, within z13 ~13m/px landmark-point tolerance). Window relief spans 348-1489m (1141m), consistent with the massif's documented elevation range and confirming real terrain shape (not a flat plate) - the plateau itself sits mostly 850-1150m with valleys cutting down toward the north edge of the window."
     }
   ]
 }
