@@ -292,16 +292,33 @@ function buildTexture(place, outDir, elev) {
   const tries = [];
   for (const item of feats.slice(0, MAX_SCENE_TRIES)) {
     const href = item.assets.visual.href;
-    // Warp to GTiff WITH an alpha band: alpha = 0 exactly where the source has no
-    // pixels, so mean(alpha)/255 is the filled fraction of our window.
-    execFileSync("gdalwarp", [
-      "-q", "-overwrite", "-t_srs", "EPSG:3857",
-      "-te_srs", "EPSG:4326", "-te", String(W), String(S), String(E), String(N),
-      "-ts", String(outW), String(outH), "-r", "cubic", "-dstalpha",
-      "-of", "GTiff", "-co", "COMPRESS=DEFLATE", "-co", "TILED=YES",
-      `/vsicurl/${href}`, probeTif,
-    ], { stdio: "pipe", timeout: 20 * 60 * 1000 });
-    const bands = gdalStats(probeTif);
+    // 2026-08-30 defect fix RC-E: some STAC hits (observed on black-forest,
+    // UTM 32U/MU) return a legacy `s3://sentinel-s2-l2a/...` href instead of
+    // the https sentinel-cogs URL every other place used - gdalwarp's /vsicurl
+    // driver cannot open an s3:// scheme and execFileSync THROWS, which used
+    // to kill the whole multi-place build (no deploy at all, not even for
+    // unrelated places) instead of just this one candidate. A bad href is the
+    // same class of "unusable candidate" as a low-filled-fraction scene, so it
+    // is now caught here and skipped exactly like a MIN_VALID_FRAC miss -
+    // buildTexture already falls through to texture:null (hypsometric
+    // fallback) when every candidate is exhausted.
+    let bands;
+    try {
+      // Warp to GTiff WITH an alpha band: alpha = 0 exactly where the source has no
+      // pixels, so mean(alpha)/255 is the filled fraction of our window.
+      execFileSync("gdalwarp", [
+        "-q", "-overwrite", "-t_srs", "EPSG:3857",
+        "-te_srs", "EPSG:4326", "-te", String(W), String(S), String(E), String(N),
+        "-ts", String(outW), String(outH), "-r", "cubic", "-dstalpha",
+        "-of", "GTiff", "-co", "COMPRESS=DEFLATE", "-co", "TILED=YES",
+        `/vsicurl/${href}`, probeTif,
+      ], { stdio: "pipe", timeout: 20 * 60 * 1000 });
+      bands = gdalStats(probeTif);
+    } catch (err) {
+      console.log(`[${place.slug}] candidate ${item.id} FAILED to warp (${err && err.message ? err.message.split("\n")[0] : err}) - skipping`);
+      tries.push({ id: item.id, valid: 0, lum: null, warp_error: true });
+      continue;
+    }
     const valid = bands.length >= 4 ? bands[3].mean / 255 : 1;
     const lum = (bands[0].mean * 0.2126 + bands[1].mean * 0.7152 + bands[2].mean * 0.0722);
     tries.push({ id: item.id, valid: +valid.toFixed(4), lum: +lum.toFixed(1) });
