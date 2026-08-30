@@ -266,6 +266,20 @@
    "tex_zoom": 13,
    "cloud_lt": 40,
    "notes": "River-reach class (runbook 2b), the mouth/plume reach (amazon-rainforest already covers the upstream Meeting-of-Waters confluence near Manaus - this is a DIFFERENT signature, the river-to-Atlantic transition the page BODYWELCOME actually names: the silt discharge plume). A ~27x28km window centered on Belem, Para (1.4558S 48.5044W) framing Guajara Bay where the turbid Amazon/Para River water meets the bay, with Ilha de Mosqueiro's low coastal relief inside the window's NE corner. dem_zoom stepped to 12 per the River-reach class default (lowland tidal relief, budget-friendly, matches amazon-rainforest). Decode sanity checks: Belem city center documented approximately 10m ASL (published elevation infobox); river/bay tidal surface near sea level, 0-3m ASL - use a generous band, tidal + lowland-delta relief genuinely varies a few meters over short distances."
+  },
+  {
+   "slug": "dead-sea",
+   "name": "Dead Sea (Ein Gedi shore, west bank cliffs meeting the lowest surface on Earth)",
+   "bbox": [
+    35.30,
+    31.40,
+    35.46,
+    31.52
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 20,
+   "notes": "Lake/inland-sea class (runbook 2b), water-surface-datum sub-case (guard 9): the full ~50km lake cannot fit a 15-30km window, so this bbox frames the Ein Gedi Nature Reserve shore on the west (Judean Desert) bank - the page's own procedural scene already models this exact geometry (Judean hills west, steep relief right at the shoreline) and Ein Gedi is a globally recognizable named landmark, not a naive lake-center pick. ~15x13km window. Decode sanity checks (guard 3): the lake surface plateau should decode to about -430m ASL (the page's own published figure, consensus lowest-land-elevation-on-Earth statistic); the Ein Gedi escarpment/plateau a few km inland from the shore rises documented several hundred meters above sea level within a short distance (generous qualitative relief-magnitude band per runbook 2b convention, not a single surveyed landmark)."
   }
  ]
 }
