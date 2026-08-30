@@ -294,6 +294,20 @@
    "tex_zoom": 15,
    "cloud_lt": 25,
    "notes": "Waterfall/escarpment class (runbook 2b): a ~7.7x13.9km window centered on the shared falls crestline (Horseshoe Falls 43.0799N 79.0747W curved Canadian side, American Falls 43.0828N 79.0664W straight-edged US side, split by Goat Island) extended north to cover the full Niagara Gorge the page already names - the Niagara Whirlpool 4.5km downstream (approx 43.1131N 79.0619W, sharp river bend) and on to the Queenston/Lewiston escarpment mouth (approx 43.161N 79.052W / 43.171N 79.039W, about 11km downstream, where the gorge the page's BODYWELCOME describes actually ends). dem_zoom stepped to 14 per the Waterfall/escarpment class default (the drop is the figure; small window, budget allows the finer resolution) with tex_zoom 15 to match. cloud_lt 25 for the humid-continental climate (STAC still prefers the lowest-cloud footprint under that ceiling). Decode sanity checks (guard 3/4): the falls brink should show a sharp step of about 57m (Horseshoe Falls published height) within a few pixels at z14 (~11-12m/px); the upper river above the brink (Lake Erie outflow side, south of the falls) should sit near 174m ASL (published upper-river elevation, consensus figure for the head of the falls) while the lower river/gorge floor just below the falls should sit near 99-104m ASL (published lower-river elevation) - a drop matching the ~57-70m combined-cataract figure inside the DEM's landmark-point tolerance."
+  },
+  {
+   "slug": "perito-moreno-glacier",
+   "name": "Perito Moreno Glacier (calving front + Brazo Rico / Canal de los Tempanos ice-dam junction, Los Glaciares NP, Argentina)",
+   "bbox": [
+    -73.2,
+    -50.58,
+    -72.95,
+    -50.4
+   ],
+   "dem_zoom": 13,
+   "tex_zoom": 14,
+   "cloud_lt": 25,
+   "notes": "Glacier/fjord class (runbook 2b): a ~17.7x22.2km window (dem_zoom 13 default per class; small-window z14 step not needed here since the whole calving junction, not one narrow drop, is the signature) spanning from the ice tongue upstream (west edge -73.20, well short of the glacier's full ~30km length - only the signature terminus reach is in budget) east to -72.95 to leave open-water margin on both lake arms, and north/south (-50.40 to -50.58) to capture BOTH Lago Argentino/Canal de los Tempanos (the main lake, north) and Brazo Rico (the southern arm) either side of the Peninsula de Magallanes contact point the page's BODYWELCOME already names as the ice-dam/rupture location. Anchor coordinates cross-checked across independent sources during this fire: Wikipedia infobox 50.500S/73.133W (glacier area), NASA Earth Observatory focal point 50.4767S/73.0399W (terminus/viewing area), consistent with the terminus sitting a few km east of the general glacier-area label. cloud_lt 25 for Patagonia's variable weather (STAC search during this fire found a 0.07%-cloud 2023-01-10 scene comfortably under that ceiling - confirmed live, not assumed). Decode sanity checks (guard 3/4): the lake-surface plateau (histogram mode, like lake-victoria) should read close to Lago Argentino's published 178-187m ASL band; the ice-face-top / near-terminus ice surface should read roughly lake-elevation + 60-74m (published ice-face height above water, per the page's existing facts table and Wikipedia's 74m average terminus height) at a point a short distance west of the lake shoreline."
   }
  ]
 }
