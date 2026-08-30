@@ -252,6 +252,20 @@
    "tex_zoom": 14,
    "cloud_lt": 20,
    "notes": "Karst-pinnacle class, closest to the runbook 2b karst-surface entry but WITHOUT a cave: the individual limestone pinnacles (20-40m tall towers, meter-scale spacing) are far finer than z13's ~15-19m/px DEM sample and will NOT resolve as separate towers - Terrarium/Sentinel-2 will render the plateau's real broad relief (UNESCO management-plan published band: 1560m low point .. Wenbi Mountain 2203m high point, south of the park) plus the real karst-plateau surface texture, while the existing pinnacle-field mesh + Ashima marker stay as the schematic close-up teaching layer exactly like the cave pages' surface/interior split - BODYWELCOME must say the pinnacle spacing/height is still schematic, only the surrounding plateau relief and imagery are real. No public source gives Wenbi Mountain's exact lat/lon, so the window is centered on the main Stone Forest landmark point (24.8253N 103.3236E, ~22x21km) rather than the peak itself. Decode sanity checks (guard 3, built 2026-08-30): decoded grid min 1607m / max 2105m sit inside the published 1560-2203m band (max ~4.4% low of the 2203m figure - generous landmark tolerance, consistent with other pilots since this DEM window is not centered on the named peak); decoded value at the landmark point itself is 1765m, inside the page's own published plateau-elevation figure (1750-2000m)."
+  },
+  {
+   "slug": "amazon-river",
+   "name": "Amazon River mouth (Belem / Guajara Bay, where the river meets the Atlantic)",
+   "bbox": [
+    -48.62,
+    -1.55,
+    -48.38,
+    -1.3
+   ],
+   "dem_zoom": 12,
+   "tex_zoom": 13,
+   "cloud_lt": 40,
+   "notes": "River-reach class (runbook 2b), the mouth/plume reach (amazon-rainforest already covers the upstream Meeting-of-Waters confluence near Manaus - this is a DIFFERENT signature, the river-to-Atlantic transition the page BODYWELCOME actually names: the silt discharge plume). A ~27x28km window centered on Belem, Para (1.4558S 48.5044W) framing Guajara Bay where the turbid Amazon/Para River water meets the bay, with Ilha de Mosqueiro's low coastal relief inside the window's NE corner. dem_zoom stepped to 12 per the River-reach class default (lowland tidal relief, budget-friendly, matches amazon-rainforest). Decode sanity checks: Belem city center documented approximately 10m ASL (published elevation infobox); river/bay tidal surface near sea level, 0-3m ASL - use a generous band, tidal + lowland-delta relief genuinely varies a few meters over short distances."
   }
  ]
 }
