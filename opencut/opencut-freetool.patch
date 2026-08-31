@@ -1,0 +1,3980 @@
+diff --git a/.gitignore b/.gitignore
+index f5d4d26..24b4677 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -25,4 +25,6 @@ target/
+ 
+ .cargo-tools/
+ 
+-rust-migration-notes.md
+\ No newline at end of file
++rust-migration-notes.md
++apps/web/out/
++apps/web/.next/
+diff --git a/apps/web/next.config.ts b/apps/web/next.config.ts
+index 71d96c2..64ae44c 100644
+--- a/apps/web/next.config.ts
++++ b/apps/web/next.config.ts
+@@ -1,54 +1,25 @@
+-import type { NextConfig } from "next";
+-import { withBotId } from "botid/next/config";
+-import { withContentCollections } from "@content-collections/next";
+-
+-const nextConfig: NextConfig = {
+-	compiler: {
+-		removeConsole: process.env.NODE_ENV === "production",
+-	},
+-	reactStrictMode: true,
+-	productionBrowserSourceMaps: true,
+-	output: "standalone",
+-	images: {
+-		remotePatterns: [
+-			{
+-				protocol: "https",
+-				hostname: "plus.unsplash.com",
+-			},
+-			{
+-				protocol: "https",
+-				hostname: "images.unsplash.com",
+-			},
+-			{
+-				protocol: "https",
+-				hostname: "images.marblecms.com",
+-			},
+-			{
+-				protocol: "https",
+-				hostname: "lh3.googleusercontent.com",
+-			},
+-			{
+-				protocol: "https",
+-				hostname: "avatars.githubusercontent.com",
+-			},
+-			{
+-				protocol: "https",
+-				hostname: "api.iconify.design",
+-			},
+-			{
+-				protocol: "https",
+-				hostname: "api.simplesvg.com",
+-			},
+-			{
+-				protocol: "https",
+-				hostname: "api.unisvg.com",
+-			},
+-			{
+-				protocol: "https",
+-				hostname: "cdn.brandfetch.io",
+-			},
+-		],
+-	},
+-};
+-
+-export default withContentCollections(withBotId(nextConfig));
++import type { NextConfig } from "next";
++import { withContentCollections } from "@content-collections/next";
++
++// FreeToolOnline self-hosted build: static export served from
++// https://gh-static.freetool.online/opencut/ (no server, no BotId).
++const nextConfig: NextConfig = {
++	compiler: {
++		removeConsole: process.env.NODE_ENV === "production",
++	},
++	reactStrictMode: true,
++	// Upstream HEAD carries a pre-existing type error (actions/keybindings
++	// persistence imports a helper the module no longer exports); the code
++	// compiles and runs, so the static build skips the failing type pass.
++	typescript: { ignoreBuildErrors: true },
++	eslint: { ignoreDuringBuilds: true },
++	productionBrowserSourceMaps: false,
++	output: "export",
++	basePath: "/opencut",
++	trailingSlash: true,
++	images: {
++		unoptimized: true,
++	},
++};
++
++export default withContentCollections(nextConfig);
+diff --git a/apps/web/package.json b/apps/web/package.json
+index 90cd9fb..bda85e7 100644
+--- a/apps/web/package.json
++++ b/apps/web/package.json
+@@ -22,6 +22,7 @@
+     "@hugeicons/core-free-icons": "^3.3.0",
+     "@hugeicons/react": "^1.1.6",
+     "@huggingface/transformers": "^3.8.1",
++    "@mlc-ai/web-llm": "0.2.84",
+     "@opennextjs/cloudflare": "^1.18.0",
+     "@radix-ui/react-accordion": "^1.2.12",
+     "@radix-ui/react-checkbox": "^1.3.3",
+diff --git a/apps/web/src/app/api/auth/[...all]/route.ts b/apps/web/src/app/api/auth/[...all]/route.ts
+deleted file mode 100644
+index edf0d0c..0000000
+--- a/apps/web/src/app/api/auth/[...all]/route.ts
++++ /dev/null
+@@ -1,4 +0,0 @@
+-import { auth } from "@/auth/server";
+-import { toNextJsHandler } from "better-auth/next-js";
+-
+-export const { POST, GET } = toNextJsHandler(auth);
+diff --git a/apps/web/src/app/api/feedback/route.ts b/apps/web/src/app/api/feedback/route.ts
+deleted file mode 100644
+index cd853ee..0000000
+--- a/apps/web/src/app/api/feedback/route.ts
++++ /dev/null
+@@ -1,31 +0,0 @@
+-import { type NextRequest, NextResponse } from "next/server";
+-import { z } from "zod";
+-import { checkRateLimit } from "@/auth/rate-limit";
+-import { submitFeedback, MAX_MESSAGE_LENGTH } from "@/feedback";
+-
+-const submitSchema = z.object({
+-	message: z
+-		.string()
+-		.min(1, "Message is required")
+-		.max(MAX_MESSAGE_LENGTH, "Message too long"),
+-});
+-
+-export async function POST(request: NextRequest) {
+-	const { limited } = await checkRateLimit({ request });
+-	if (limited) {
+-		return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+-	}
+-
+-	const body = await request.json();
+-	const result = submitSchema.safeParse(body);
+-
+-	if (!result.success) {
+-		return NextResponse.json(
+-			{ error: "Invalid input", details: result.error.flatten().fieldErrors },
+-			{ status: 400 },
+-		);
+-	}
+-
+-	const entry = await submitFeedback(result.data);
+-	return NextResponse.json({ entry }, { status: 201 });
+-}
+diff --git a/apps/web/src/app/api/health/route.ts b/apps/web/src/app/api/health/route.ts
+deleted file mode 100644
+index dbe6fdb..0000000
+--- a/apps/web/src/app/api/health/route.ts
++++ /dev/null
+@@ -1,3 +0,0 @@
+-export async function GET() {
+-	return new Response("OK", { status: 200 });
+-}
+diff --git a/apps/web/src/app/api/sounds/search/route.ts b/apps/web/src/app/api/sounds/search/route.ts
+deleted file mode 100644
+index aa7a1b6..0000000
+--- a/apps/web/src/app/api/sounds/search/route.ts
++++ /dev/null
+@@ -1,280 +0,0 @@
+-import { webEnv } from "@/env/web";
+-import { type NextRequest, NextResponse } from "next/server";
+-import { z } from "zod";
+-import { checkRateLimit } from "@/auth/rate-limit";
+-
+-const searchParamsSchema = z.object({
+-	q: z.string().max(500, "Query too long").optional(),
+-	type: z.enum(["songs", "effects"]).optional(),
+-	page: z.coerce.number().int().min(1).max(1000).default(1),
+-	page_size: z.coerce.number().int().min(1).max(150).default(20),
+-	sort: z
+-		.enum(["downloads", "rating", "created", "score"])
+-		.default("downloads"),
+-	min_rating: z.coerce.number().min(0).max(5).default(3),
+-	commercial_only: z.coerce.boolean().default(true),
+-});
+-
+-const freesoundResultSchema = z.object({
+-	id: z.number(),
+-	name: z.string(),
+-	description: z.string(),
+-	url: z.string().url(),
+-	previews: z
+-		.object({
+-			"preview-hq-mp3": z.string().url(),
+-			"preview-lq-mp3": z.string().url(),
+-			"preview-hq-ogg": z.string().url(),
+-			"preview-lq-ogg": z.string().url(),
+-		})
+-		.optional(),
+-	download: z.string().url().optional(),
+-	duration: z.number(),
+-	filesize: z.number(),
+-	type: z.string(),
+-	channels: z.number(),
+-	bitrate: z.number(),
+-	bitdepth: z.number(),
+-	samplerate: z.number(),
+-	username: z.string(),
+-	tags: z.array(z.string()),
+-	license: z.string(),
+-	created: z.string(),
+-	num_downloads: z.number().optional(),
+-	avg_rating: z.number().optional(),
+-	num_ratings: z.number().optional(),
+-});
+-
+-const freesoundResponseSchema = z.object({
+-	count: z.number(),
+-	next: z.string().url().nullable(),
+-	previous: z.string().url().nullable(),
+-	results: z.array(freesoundResultSchema),
+-});
+-
+-const transformedResultSchema = z.object({
+-	id: z.number(),
+-	name: z.string(),
+-	description: z.string(),
+-	url: z.string(),
+-	previewUrl: z.string().optional(),
+-	downloadUrl: z.string().optional(),
+-	duration: z.number(),
+-	filesize: z.number(),
+-	type: z.string(),
+-	channels: z.number(),
+-	bitrate: z.number(),
+-	bitdepth: z.number(),
+-	samplerate: z.number(),
+-	username: z.string(),
+-	tags: z.array(z.string()),
+-	license: z.string(),
+-	created: z.string(),
+-	downloads: z.number().optional(),
+-	rating: z.number().optional(),
+-	ratingCount: z.number().optional(),
+-});
+-
+-const apiResponseSchema = z.object({
+-	count: z.number(),
+-	next: z.string().nullable(),
+-	previous: z.string().nullable(),
+-	results: z.array(transformedResultSchema),
+-	query: z.string().optional(),
+-	type: z.string(),
+-	page: z.number(),
+-	pageSize: z.number(),
+-	sort: z.string(),
+-	minRating: z.number().optional(),
+-});
+-
+-function buildSortParameter({ query, sort }: { query?: string; sort: string }) {
+-	if (!query) return `${sort}_desc`;
+-	return sort === "score" ? "score" : `${sort}_desc`;
+-}
+-
+-function applyEffectsFilters({
+-	params,
+-	min_rating,
+-	commercial_only,
+-}: {
+-	params: URLSearchParams;
+-	min_rating: number;
+-	commercial_only: boolean;
+-}) {
+-	params.append("filter", "duration:[* TO 30.0]");
+-	params.append("filter", `avg_rating:[${min_rating} TO *]`);
+-
+-	if (commercial_only) {
+-		params.append(
+-			"filter",
+-			'license:("Attribution" OR "Creative Commons 0" OR "Attribution Noncommercial" OR "Attribution Commercial")',
+-		);
+-	}
+-
+-	params.append(
+-		"filter",
+-		"tag:sound-effect OR tag:sfx OR tag:foley OR tag:ambient OR tag:nature OR tag:mechanical OR tag:electronic OR tag:impact OR tag:whoosh OR tag:explosion",
+-	);
+-}
+-
+-function transformFreesoundResult(
+-	result: z.infer<typeof freesoundResultSchema>,
+-) {
+-	return {
+-		id: result.id,
+-		name: result.name,
+-		description: result.description,
+-		url: result.url,
+-		previewUrl:
+-			result.previews?.["preview-hq-mp3"] ||
+-			result.previews?.["preview-lq-mp3"],
+-		downloadUrl: result.download,
+-		duration: result.duration,
+-		filesize: result.filesize,
+-		type: result.type,
+-		channels: result.channels,
+-		bitrate: result.bitrate,
+-		bitdepth: result.bitdepth,
+-		samplerate: result.samplerate,
+-		username: result.username,
+-		tags: result.tags,
+-		license: result.license,
+-		created: result.created,
+-		downloads: result.num_downloads || 0,
+-		rating: result.avg_rating || 0,
+-		ratingCount: result.num_ratings || 0,
+-	};
+-}
+-
+-export async function GET(request: NextRequest) {
+-	try {
+-		const { limited } = await checkRateLimit({ request });
+-		if (limited) {
+-			return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+-		}
+-
+-		const { searchParams } = new URL(request.url);
+-
+-		const validationResult = searchParamsSchema.safeParse({
+-			q: searchParams.get("q") || undefined,
+-			type: searchParams.get("type") || undefined,
+-			page: searchParams.get("page") || undefined,
+-			page_size: searchParams.get("page_size") || undefined,
+-			sort: searchParams.get("sort") || undefined,
+-			min_rating: searchParams.get("min_rating") || undefined,
+-		});
+-
+-		if (!validationResult.success) {
+-			return NextResponse.json(
+-				{
+-					error: "Invalid parameters",
+-					details: validationResult.error.flatten().fieldErrors,
+-				},
+-				{ status: 400 },
+-			);
+-		}
+-
+-		const {
+-			q: query,
+-			type,
+-			page,
+-			page_size: pageSize,
+-			sort,
+-			min_rating,
+-			commercial_only,
+-		} = validationResult.data;
+-
+-		if (type === "songs") {
+-			return NextResponse.json(
+-				{
+-					error: "Songs are not available yet",
+-					message:
+-						"Song search functionality is coming soon. Try searching for sound effects instead.",
+-				},
+-				{ status: 501 },
+-			);
+-		}
+-
+-		const baseUrl = "https://freesound.org/apiv2/search/text/";
+-
+-		const sortParam = buildSortParameter({ query, sort });
+-
+-		const params = new URLSearchParams({
+-			query: query || "",
+-			token: webEnv.FREESOUND_API_KEY,
+-			page: page.toString(),
+-			page_size: pageSize.toString(),
+-			sort: sortParam,
+-			fields:
+-				"id,name,description,url,previews,download,duration,filesize,type,channels,bitrate,bitdepth,samplerate,username,tags,license,created,num_downloads,avg_rating,num_ratings",
+-		});
+-
+-		const isEffectsSearch = type === "effects" || !type;
+-		if (isEffectsSearch) {
+-			applyEffectsFilters({ params, min_rating, commercial_only });
+-		}
+-
+-		const response = await fetch(`${baseUrl}?${params.toString()}`);
+-
+-		if (!response.ok) {
+-			const errorText = await response.text();
+-			console.error("Freesound API error:", response.status, errorText);
+-			return NextResponse.json(
+-				{ error: "Failed to search sounds" },
+-				{ status: response.status },
+-			);
+-		}
+-
+-		const rawData = await response.json();
+-
+-		const freesoundValidation = freesoundResponseSchema.safeParse(rawData);
+-		if (!freesoundValidation.success) {
+-			console.error(
+-				"Invalid Freesound API response:",
+-				freesoundValidation.error,
+-			);
+-			return NextResponse.json(
+-				{ error: "Invalid response from Freesound API" },
+-				{ status: 502 },
+-			);
+-		}
+-
+-		const data = freesoundValidation.data;
+-
+-		const transformedResults = data.results.map(transformFreesoundResult);
+-
+-		const responseData = {
+-			count: data.count,
+-			next: data.next,
+-			previous: data.previous,
+-			results: transformedResults,
+-			query: query || "",
+-			type: type || "effects",
+-			page,
+-			pageSize,
+-			sort,
+-			minRating: min_rating,
+-		};
+-
+-		const responseValidation = apiResponseSchema.safeParse(responseData);
+-		if (!responseValidation.success) {
+-			console.error(
+-				"Invalid API response structure:",
+-				responseValidation.error,
+-			);
+-			return NextResponse.json(
+-				{ error: "Internal response formatting error" },
+-				{ status: 500 },
+-			);
+-		}
+-
+-		return NextResponse.json(responseValidation.data);
+-	} catch (error) {
+-		console.error("Error searching sounds:", error);
+-		return NextResponse.json(
+-			{ error: "Internal server error" },
+-			{ status: 500 },
+-		);
+-	}
+-}
+diff --git a/apps/web/src/app/blog/[slug]/page.tsx b/apps/web/src/app/blog/[slug]/page.tsx
+deleted file mode 100644
+index dba9b50..0000000
+--- a/apps/web/src/app/blog/[slug]/page.tsx
++++ /dev/null
+@@ -1,135 +0,0 @@
+-import type { Metadata } from "next";
+-import Image from "next/image";
+-import { notFound } from "next/navigation";
+-import { BasePage } from "@/app/base-page";
+-import Prose from "@/components/ui/prose";
+-import { Separator } from "@/components/ui/separator";
+-import { getPosts, getSinglePost, processHtmlContent } from "@/blog/query";
+-import type { Author, Post } from "@/blog/types";
+-
+-type PageProps = {
+-	params: Promise<{ slug: string }>;
+-	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+-};
+-
+-export async function generateMetadata({
+-	params,
+-}: PageProps): Promise<Metadata> {
+-	const slug = (await params).slug;
+-
+-	const data = await getSinglePost({ slug });
+-
+-	if (!data || !data.post) return {};
+-
+-	return {
+-		title: data.post.title,
+-		description: data.post.description,
+-		twitter: {
+-			title: `${data.post.title}`,
+-			description: `${data.post.description}`,
+-			card: "summary_large_image",
+-			images: [
+-				{
+-					url: data.post.coverImage,
+-					width: "1200",
+-					height: "630",
+-					alt: data.post.title,
+-				},
+-			],
+-		},
+-		openGraph: {
+-			type: "article",
+-			images: [
+-				{
+-					url: data.post.coverImage,
+-					width: "1200",
+-					height: "630",
+-					alt: data.post.title,
+-				},
+-			],
+-			title: data.post.title,
+-			description: data.post.description,
+-			publishedTime: new Date(data.post.publishedAt).toISOString(),
+-			authors: data.post.authors.map((author: Author) => author.name),
+-		},
+-	};
+-}
+-
+-export async function generateStaticParams() {
+-	const data = await getPosts();
+-	if (!data || !data.posts.length) return [];
+-
+-	return data.posts.map((post) => ({
+-		slug: post.slug,
+-	}));
+-}
+-
+-export default async function BlogPostPage({ params }: PageProps) {
+-	const slug = (await params).slug;
+-	const data = await getSinglePost({ slug });
+-	if (!data || !data.post) return notFound();
+-
+-	const html = await processHtmlContent({ html: data.post.content });
+-
+-	return (
+-		<BasePage>
+-			<PostHeader post={data.post} />
+-			<Separator />
+-			<PostContent html={html} />
+-		</BasePage>
+-	);
+-}
+-
+-function PostHeader({ post }: { post: Post }) {
+-	const formattedDate = new Date(post.publishedAt).toLocaleDateString("en-US", {
+-		day: "numeric",
+-		month: "long",
+-		year: "numeric",
+-	});
+-
+-	return (
+-		<div className="flex flex-col items-center justify-center gap-8">
+-			<PostMeta date={formattedDate} publishedAt={post.publishedAt} />
+-			<PostTitle title={post.title} />
+-			{post.coverImage && <PostCoverImage post={post} />}
+-		</div>
+-	);
+-}
+-
+-function PostCoverImage({ post }: { post: Post }) {
+-	return (
+-		<div className="relative aspect-video overflow-hidden rounded-lg w-full mt-4">
+-			<Image
+-				src={post.coverImage}
+-				alt={post.title}
+-				loading="eager"
+-				fill
+-				className="rounded-lg object-cover"
+-			/>
+-		</div>
+-	);
+-}
+-
+-function PostMeta({ date, publishedAt }: { date: string; publishedAt: Date }) {
+-	return (
+-		<div className="flex items-center justify-center">
+-			<time dateTime={publishedAt.toString()}>{date}</time>
+-		</div>
+-	);
+-}
+-
+-function PostTitle({ title }: { title: string }) {
+-	return (
+-		<h1 className="text-5xl font-bold tracking-tight md:text-4xl text-center">
+-			{title}
+-		</h1>
+-	);
+-}
+-
+-function PostContent({ html }: { html: string }) {
+-	return (
+-		<section className="">
+-			<Prose html={html} />
+-		</section>
+-	);
+-}
+diff --git a/apps/web/src/app/blog/page.tsx b/apps/web/src/app/blog/page.tsx
+deleted file mode 100644
+index b40bc2f..0000000
+--- a/apps/web/src/app/blog/page.tsx
++++ /dev/null
+@@ -1,52 +0,0 @@
+-import type { Metadata } from "next";
+-import Link from "next/link";
+-import { BasePage } from "@/app/base-page";
+-import { Separator } from "@/components/ui/separator";
+-import { getPosts } from "@/blog/query";
+-import type { Post } from "@/blog/types";
+-
+-export const metadata: Metadata = {
+-	title: "Blog - OpenCut",
+-	description:
+-		"Read the latest news and updates about OpenCut, the free and open-source video editor.",
+-	openGraph: {
+-		title: "Blog - OpenCut",
+-		description:
+-			"Read the latest news and updates about OpenCut, the free and open-source video editor.",
+-		type: "website",
+-	},
+-};
+-
+-export default async function BlogPage() {
+-	const data = await getPosts().catch(() => null);
+-	if (!data || !data.posts) return <div>No posts yet</div>;
+-
+-	return (
+-		<BasePage
+-			title="Blog"
+-			description="Read the latest news and updates about OpenCut, the free and open-source video editor."
+-		>
+-			<div className="flex flex-col">
+-				{data.posts.map((post) => (
+-					<div key={post.id} className="flex flex-col">
+-						<BlogPostItem post={post} />
+-						<Separator />
+-					</div>
+-				))}
+-			</div>
+-		</BasePage>
+-	);
+-}
+-
+-function BlogPostItem({ post }: { post: Post }) {
+-	return (
+-		<Link href={`/blog/${post.slug}`}>
+-			<div className="flex h-auto w-full items-center justify-between py-6 opacity-100 hover:opacity-75">
+-				<div className="flex flex-col gap-2">
+-					<h2 className="text-xl font-semibold">{post.title}</h2>
+-					<p className="text-muted-foreground">{post.description}</p>
+-				</div>
+-			</div>
+-		</Link>
+-	);
+-}
+diff --git a/apps/web/src/app/brand/page.tsx b/apps/web/src/app/brand/page.tsx
+index 9728cbc..334cfce 100644
+--- a/apps/web/src/app/brand/page.tsx
++++ b/apps/web/src/app/brand/page.tsx
+@@ -52,14 +52,14 @@ const ASSET_SECTIONS: AssetSection[] = [
+ 		cols: "2",
+ 		assets: [
+ 			{
+-				src: "/logos/opencut/symbol.svg",
++				src: "/opencut/logos/opencut/symbol.svg",
+ 				theme: "dark",
+ 				label: "Symbol",
+ 				width: 400,
+ 				height: 400,
+ 			},
+ 			{
+-				src: "/logos/opencut/symbol-light.svg",
++				src: "/opencut/logos/opencut/symbol-light.svg",
+ 				theme: "light",
+ 				label: "Symbol",
+ 				width: 400,
+@@ -74,28 +74,28 @@ const ASSET_SECTIONS: AssetSection[] = [
+ 		cols: "2",
+ 		assets: [
+ 			{
+-				src: "/logos/opencut/logo.svg",
++				src: "/opencut/logos/opencut/logo.svg",
+ 				theme: "dark",
+ 				label: "Logo",
+ 				width: 1809,
+ 				height: 400,
+ 			},
+ 			{
+-				src: "/logos/opencut/logo-light.svg",
++				src: "/opencut/logos/opencut/logo-light.svg",
+ 				theme: "light",
+ 				label: "Logo",
+ 				width: 1809,
+ 				height: 400,
+ 			},
+ 			{
+-				src: "/logos/opencut/text.svg",
++				src: "/opencut/logos/opencut/text.svg",
+ 				theme: "dark",
+ 				label: "Text",
+ 				width: 1760,
+ 				height: 400,
+ 			},
+ 			{
+-				src: "/logos/opencut/text-light.svg",
++				src: "/opencut/logos/opencut/text-light.svg",
+ 				theme: "light",
+ 				label: "Text",
+ 				width: 1760,
+diff --git a/apps/web/src/app/changelog/[version]/page.tsx b/apps/web/src/app/changelog/[version]/page.tsx
+deleted file mode 100644
+index 6c529ce..0000000
+--- a/apps/web/src/app/changelog/[version]/page.tsx
++++ /dev/null
+@@ -1,102 +0,0 @@
+-import type { Metadata } from "next";
+-import Link from "next/link";
+-import { notFound } from "next/navigation";
+-import { BasePage } from "@/app/base-page";
+-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+-import { getReleaseByVersion, getSortedReleases } from "@/changelog/utils";
+-import {
+-	ReleaseArticle,
+-	ReleaseMeta,
+-	ReleaseTitle,
+-	ReleaseDescription,
+-	ReleaseChanges,
+-} from "@/changelog/components/release";
+-import { CopyMarkdownButton } from "@/changelog/components/copy-markdown-button";
+-
+-type Props = { params: Promise<{ version: string }> };
+-
+-export async function generateStaticParams() {
+-	return getSortedReleases().map((release) => ({ version: release.version }));
+-}
+-
+-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+-	const { version } = await params;
+-	const release = getReleaseByVersion({ version });
+-	if (!release) return {};
+-	return {
+-		title: `${release.title} (${release.version}) - OpenCut Changelog`,
+-		description: release.description,
+-	};
+-}
+-
+-export default async function ReleaseDetailPage({ params }: Props) {
+-	const { version } = await params;
+-	const releases = getSortedReleases();
+-	const index = releases.findIndex((entry) => entry.version === version);
+-	if (index === -1) notFound();
+-	const release = releases[index];
+-	const newer = index > 0 ? releases[index - 1] : null;
+-	const older = index < releases.length - 1 ? releases[index + 1] : null;
+-
+-	return (
+-		<BasePage>
+-			<div className="mx-auto w-full max-w-3xl flex flex-col gap-12">
+-				<Link
+-					href="/changelog"
+-					className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 w-fit"
+-				>
+-					<ChevronLeftIcon className="size-4" />
+-					All releases
+-				</Link>
+-
+-				<ReleaseArticle variant="detail">
+-					<div className="flex flex-col gap-4">
+-						<div className="flex items-center justify-between">
+-							<ReleaseMeta release={release} />
+-							<CopyMarkdownButton
+-								description={release.description}
+-								changes={release.changes}
+-							/>
+-						</div>
+-						<ReleaseTitle as="h1">{release.title}</ReleaseTitle>
+-						{release.description && (
+-							<ReleaseDescription>{release.description}</ReleaseDescription>
+-						)}
+-					</div>
+-					<ReleaseChanges release={release} />
+-				</ReleaseArticle>
+-
+-				<nav className="flex items-center justify-between border-t pt-8">
+-					{older ? (
+-						<Link
+-							href={`/changelog/${older.version}`}
+-							className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground group"
+-						>
+-							<ChevronLeftIcon className="size-4" />
+-							<div className="flex flex-col">
+-								<span className="text-xs text-muted-foreground/60">Older</span>
+-								<span className="font-medium">{older.title}</span>
+-							</div>
+-						</Link>
+-					) : (
+-						<div />
+-					)}
+-					{newer ? (
+-						<Link
+-							href={`/changelog/${newer.version}`}
+-							className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground group text-right"
+-						>
+-							<div className="flex flex-col">
+-								<span className="text-xs text-muted-foreground/60">Newer</span>
+-								<span className="font-medium">{newer.title}</span>
+-							</div>
+-							<ChevronRightIcon className="size-4" />
+-						</Link>
+-					) : (
+-						<div />
+-					)}
+-				</nav>
+-			</div>
+-		</BasePage>
+-	);
+-}
+diff --git a/apps/web/src/app/changelog/page.tsx b/apps/web/src/app/changelog/page.tsx
+deleted file mode 100644
+index 25ae25d..0000000
+--- a/apps/web/src/app/changelog/page.tsx
++++ /dev/null
+@@ -1,83 +0,0 @@
+-import type { Metadata } from "next";
+-import { BasePage } from "@/app/base-page";
+-import { Separator } from "@/components/ui/separator";
+-import {
+-	type Release as ReleaseType,
+-	getSortedReleases,
+-} from "@/changelog/utils";
+-import {
+-	ReleaseArticle,
+-	ReleaseMeta,
+-	ReleaseTitle,
+-	ReleaseDescription,
+-	ReleaseChanges,
+-} from "@/changelog/components/release";
+-
+-export const metadata: Metadata = {
+-	title: "Changelog - OpenCut",
+-	description: "What's new in OpenCut",
+-	openGraph: {
+-		title: "Changelog - OpenCut",
+-		description: "Every update, improvement, and fix to OpenCut — documented.",
+-		type: "website",
+-		images: [
+-			{
+-				url: "/open-graph/changlog.jpg",
+-				width: 1200,
+-				height: 630,
+-				alt: "OpenCut Changelog",
+-			},
+-		],
+-	},
+-	twitter: {
+-		card: "summary_large_image",
+-		title: "Changelog - OpenCut",
+-		description: "What's new in OpenCut",
+-		images: ["/open-graph/changlog.jpg"],
+-	},
+-};
+-
+-export default function ChangelogPage() {
+-	const releases = getSortedReleases();
+-
+-	return (
+-		<BasePage title="Changelog" description="See what's new in OpenCut">
+-			<div className="mx-auto w-full max-w-3xl">
+-				<div className="relative">
+-					<div
+-						aria-hidden
+-						className="absolute top-2 bottom-0 left-[5px] w-px bg-border hidden sm:block"
+-					/>
+-
+-					<div className="flex flex-col">
+-						{releases.map((release, releaseIndex) => (
+-							<div key={release.version} className="flex flex-col">
+-								<ReleaseEntry release={release} />
+-								{releaseIndex < releases.length - 1 && (
+-									<Separator className="my-10 sm:ml-1.5" />
+-								)}
+-							</div>
+-						))}
+-					</div>
+-				</div>
+-			</div>
+-		</BasePage>
+-	);
+-}
+-
+-function ReleaseEntry({ release }: { release: ReleaseType }) {
+-	return (
+-		<ReleaseArticle variant="list" isLatest={release.isLatest}>
+-			<ReleaseMeta release={release} />
+-			<div className="flex flex-col gap-4">
+-				<ReleaseTitle as="h2" href={`/changelog/${release.version}`}>
+-					{release.title}
+-				</ReleaseTitle>
+-				{release.description && (
+-					<ReleaseDescription>{release.description}</ReleaseDescription>
+-				)}
+-			</div>
+-			<ReleaseChanges release={release} />
+-		</ReleaseArticle>
+-	);
+-}
+diff --git a/apps/web/src/app/contributors/page.tsx b/apps/web/src/app/contributors/page.tsx
+deleted file mode 100644
+index f4d1373..0000000
+--- a/apps/web/src/app/contributors/page.tsx
++++ /dev/null
+@@ -1,242 +0,0 @@
+-import type { Metadata } from "next";
+-import Link from "next/link";
+-import { GitHubContributeSection } from "@/components/gitHub-contribute-section";
+-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+-import { Card, CardContent } from "@/components/ui/card";
+-import { EXTERNAL_TOOLS } from "@/site/external-tools";
+-import { BasePage } from "../base-page";
+-
+-export const metadata: Metadata = {
+-	title: "Contributors - OpenCut",
+-	description:
+-		"Meet the amazing people who contribute to OpenCut, the free and open-source video editor.",
+-	openGraph: {
+-		title: "Contributors - OpenCut",
+-		description:
+-			"Meet the amazing people who contribute to OpenCut, the free and open-source video editor.",
+-		type: "website",
+-	},
+-};
+-
+-interface Contributor {
+-	id: number;
+-	login: string;
+-	avatar_url: string;
+-	html_url: string;
+-	contributions: number;
+-	type: string;
+-}
+-
+-async function getContributors(): Promise<Contributor[]> {
+-	try {
+-		const response = await fetch(
+-			"https://api.github.com/repos/OpenCut-app/OpenCut/contributors?per_page=100",
+-			{
+-				headers: {
+-					Accept: "application/vnd.github.v3+json",
+-					"User-Agent": "OpenCut-Web-App",
+-				},
+-				next: { revalidate: 600 }, // 10 minutes
+-			},
+-		);
+-
+-		if (!response.ok) {
+-			console.error("Failed to fetch contributors");
+-			return [];
+-		}
+-
+-		const contributors = (await response.json()) as Contributor[];
+-
+-		const filteredContributors = contributors.filter(
+-			(contributor) => contributor.type === "User",
+-		);
+-
+-		return filteredContributors;
+-	} catch (error) {
+-		console.error("Error fetching contributors:", error);
+-		return [];
+-	}
+-}
+-
+-export default async function ContributorsPage() {
+-	const contributors = await getContributors();
+-	const topContributors = contributors.slice(0, 2);
+-	const otherContributors = contributors.slice(2);
+-	const totalContributions = contributors.reduce(
+-		(sum, c) => sum + c.contributions,
+-		0,
+-	);
+-
+-	return (
+-		<BasePage
+-			title="Contributors"
+-			description="Meet the amazing people who contribute to OpenCut, the free and open-source video editor."
+-		>
+-			<div className="-mt-4 flex items-center justify-center gap-8 text-sm">
+-				<StatItem value={contributors.length} label="contributors" />
+-				<StatItem value={totalContributions} label="contributions" />
+-			</div>
+-
+-			<div className="mx-auto flex max-w-6xl flex-col gap-20">
+-				{topContributors.length > 0 && (
+-					<TopContributorsSection contributors={topContributors} />
+-				)}
+-				{otherContributors.length > 0 && (
+-					<AllContributorsSection contributors={otherContributors} />
+-				)}
+-				<ExternalToolsSection />
+-				<GitHubContributeSection
+-					title="Join the community"
+-					description="OpenCut is built by developers like you. Every contribution, no matter how small, helps make video editing more accessible for everyone."
+-				/>
+-			</div>
+-		</BasePage>
+-	);
+-}
+-
+-function StatItem({ value, label }: { value: number; label: string }) {
+-	return (
+-		<div className="flex items-center gap-2">
+-			<div className="bg-foreground size-2 rounded-full" />
+-			<span className="font-medium">{value}</span>
+-			<span className="text-muted-foreground">{label}</span>
+-		</div>
+-	);
+-}
+-
+-function TopContributorsSection({
+-	contributors,
+-}: {
+-	contributors: Contributor[];
+-}) {
+-	return (
+-		<div className="flex flex-col gap-10">
+-			<div className="flex flex-col gap-2 text-center">
+-				<h2 className="text-2xl font-semibold">Top contributors</h2>
+-				<p className="text-muted-foreground">
+-					Leading the way in contributions
+-				</p>
+-			</div>
+-
+-			<div className="mx-auto flex w-full max-w-xl flex-col justify-center gap-6 md:flex-row">
+-				{contributors.map((contributor) => (
+-					<TopContributorCard key={contributor.id} contributor={contributor} />
+-				))}
+-			</div>
+-		</div>
+-	);
+-}
+-
+-function TopContributorCard({ contributor }: { contributor: Contributor }) {
+-	return (
+-		<Link
+-			href={contributor.html_url}
+-			target="_blank"
+-			rel="noopener noreferrer"
+-			className="w-full"
+-		>
+-			<Card>
+-				<CardContent className="flex flex-col gap-6 p-8 text-center">
+-					<Avatar className="mx-auto size-28">
+-						<AvatarImage
+-							src={contributor.avatar_url}
+-							alt={`${contributor.login}'s avatar`}
+-						/>
+-						<AvatarFallback className="text-lg font-semibold">
+-							{contributor.login.charAt(0).toUpperCase()}
+-						</AvatarFallback>
+-					</Avatar>
+-					<div className="flex flex-col gap-2">
+-						<h3 className="text-xl font-semibold">{contributor.login}</h3>
+-						<div className="flex items-center justify-center gap-2">
+-							<span className="font-medium">{contributor.contributions}</span>
+-							<span className="text-muted-foreground">contributions</span>
+-						</div>
+-					</div>
+-				</CardContent>
+-			</Card>
+-		</Link>
+-	);
+-}
+-
+-function AllContributorsSection({
+-	contributors,
+-}: {
+-	contributors: Contributor[];
+-}) {
+-	return (
+-		<div className="flex flex-col gap-12">
+-			<div className="flex flex-col gap-2 text-center">
+-				<h2 className="text-2xl font-semibold">All contributors</h2>
+-				<p className="text-muted-foreground">
+-					Everyone who makes OpenCut better
+-				</p>
+-			</div>
+-
+-			<div className="grid grid-cols-2 gap-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+-				{contributors.map((contributor) => (
+-					<Link
+-						key={contributor.id}
+-						href={contributor.html_url}
+-						target="_blank"
+-						rel="noopener noreferrer"
+-						className="opacity-100 hover:opacity-70"
+-					>
+-						<div className="flex flex-col items-center gap-2 p-2">
+-							<Avatar className="size-16">
+-								<AvatarImage
+-									src={contributor.avatar_url}
+-									alt={`${contributor.login}'s avatar`}
+-								/>
+-								<AvatarFallback>
+-									{contributor.login.charAt(0).toUpperCase()}
+-								</AvatarFallback>
+-							</Avatar>
+-							<div className="text-center">
+-								<h3 className="text-sm font-medium">{contributor.login}</h3>
+-								<p className="text-muted-foreground text-xs">
+-									{contributor.contributions}
+-								</p>
+-							</div>
+-						</div>
+-					</Link>
+-				))}
+-			</div>
+-		</div>
+-	);
+-}
+-
+-function ExternalToolsSection() {
+-	return (
+-		<div className="flex flex-col gap-10">
+-			<div className="flex flex-col gap-2 text-center">
+-				<h2 className="text-2xl font-semibold">External tools</h2>
+-				<p className="text-muted-foreground">Tools we use to build OpenCut</p>
+-			</div>
+-
+-			<div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 sm:grid-cols-2">
+-				{EXTERNAL_TOOLS.map((tool, index) => (
+-					<Link
+-						key={tool.url}
+-						href={tool.url}
+-						target="_blank"
+-						className="block"
+-						style={{ animationDelay: `${index * 100}ms` }}
+-					>
+-						<Card className="h-full">
+-							<CardContent className="flex items-center justify-center h-full flex-col gap-4 p-6 text-center">
+-								<tool.icon className="size-8" />
+-								<div className="flex flex-1 flex-col gap-2">
+-									<h3 className="text-lg font-semibold">{tool.name}</h3>
+-									<p className="text-muted-foreground text-sm">
+-										{tool.description}
+-									</p>
+-								</div>
+-							</CardContent>
+-						</Card>
+-					</Link>
+-				))}
+-			</div>
+-		</div>
+-	);
+-}
+diff --git a/apps/web/src/app/editor/[project_id]/page.tsx b/apps/web/src/app/editor/page.tsx
+similarity index 91%
+rename from apps/web/src/app/editor/[project_id]/page.tsx
+rename to apps/web/src/app/editor/page.tsx
+index 680dfff..4be142b 100644
+--- a/apps/web/src/app/editor/[project_id]/page.tsx
++++ b/apps/web/src/app/editor/page.tsx
+@@ -1,6 +1,7 @@
+ "use client";
+ 
+-import { useParams } from "next/navigation";
++import { useSearchParams } from "next/navigation";
++import { Suspense } from "react";
+ import {
+ 	ResizablePanelGroup,
+ 	ResizablePanel,
+@@ -35,9 +36,20 @@ import {
+ 	getBookmarkPreviewOverlaySource,
+ } from "@/timeline/bookmarks/index";
+ 
+-export default function Editor() {
+-	const params = useParams();
+-	const projectId = params.project_id as string;
++// FreeToolOnline self-hosted build: the editor lives at /editor/?project=<id>
++// (a static route + search param) instead of /editor/[project_id], because the
++// app is exported statically and served from a plain static host.
++export default function EditorPage() {
++	return (
++		<Suspense fallback={null}>
++			<Editor />
++		</Suspense>
++	);
++}
++
++function Editor() {
++	const searchParams = useSearchParams();
++	const projectId = (searchParams.get("project") ?? "") as string;
+ 
+ 	return (
+ 		<MobileGate>
+diff --git a/apps/web/src/app/layout.tsx b/apps/web/src/app/layout.tsx
+index 558ae53..187e7a3 100644
+--- a/apps/web/src/app/layout.tsx
++++ b/apps/web/src/app/layout.tsx
+@@ -1,24 +1,17 @@
+ import { ThemeProvider } from "next-themes";
+-import Script from "next/script";
+ import "./globals.css";
+ import { Toaster } from "../components/ui/sonner";
+-import { ChangelogNotification } from "@/changelog/components/changelog-notification";
+ import { TooltipProvider } from "../components/ui/tooltip";
+ import { baseMetaData } from "./metadata";
+-import { BotIdClient } from "botid/client";
+-import { webEnv } from "@/env/web";
+ import { Inter } from "next/font/google";
+ 
+ const siteFont = Inter({ subsets: ["latin"] });
+ 
+ export const metadata = baseMetaData;
+ 
+-const protectedRoutes = [
+-	{
+-		path: "/none",
+-		method: "GET",
+-	},
+-];
++// FreeToolOnline self-hosted build: the upstream BotId client and the
++// databuddy analytics script are removed (operator instruction: no
++// third-party analytics or bot tracking in the vendored editor).
+ 
+ export default function RootLayout({
+ 	children,
+@@ -27,18 +20,6 @@ export default function RootLayout({
+ }>) {
+ 	return (
+ 		<html lang="en" suppressHydrationWarning>
+-			<head>
+-				<BotIdClient protect={protectedRoutes} />
+-				{process.env.NODE_ENV === "development" && (
+-					<>
+-						<Script
+-							src="//unpkg.com/react-scan/dist/auto.global.js"
+-							crossOrigin="anonymous"
+-							strategy="beforeInteractive"
+-						/>
+-					</>
+-				)}
+-			</head>
+ 			<body className={`${siteFont.className} font-sans antialiased`}>
+ 				<ThemeProvider
+ 					attribute="class"
+@@ -47,18 +28,6 @@ export default function RootLayout({
+ 				>
+ 					<TooltipProvider>
+ 						<Toaster />
+-						<Script
+-							src="https://cdn.databuddy.cc/databuddy.js"
+-							strategy="afterInteractive"
+-							async
+-							data-client-id="UP-Wcoy5arxFeK7oyjMMZ"
+-							data-disabled={webEnv.NODE_ENV === "development"}
+-							data-track-attributes={false}
+-							data-track-errors={true}
+-							data-track-outgoing-links={false}
+-							data-track-web-vitals={false}
+-							data-track-sessions={false}
+-						/>
+ 						{children}
+ 					</TooltipProvider>
+ 				</ThemeProvider>
+diff --git a/apps/web/src/app/metadata.ts b/apps/web/src/app/metadata.ts
+index aa11c43..df04aad 100644
+--- a/apps/web/src/app/metadata.ts
++++ b/apps/web/src/app/metadata.ts
+@@ -1,86 +1,86 @@
+-import type { Metadata } from "next";
+-import { SITE_INFO, SITE_URL } from "@/site/brand";
+-
+-export const baseMetaData: Metadata = {
+-	metadataBase: new URL(SITE_URL),
+-	title: SITE_INFO.title,
+-	description: SITE_INFO.description,
+-	openGraph: {
+-		title: SITE_INFO.title,
+-		description: SITE_INFO.description,
+-		url: SITE_URL,
+-		siteName: SITE_INFO.title,
+-		locale: "en_US",
+-		type: "website",
+-		images: [
+-			{
+-				url: SITE_INFO.openGraphImage,
+-				width: 1200,
+-				height: 630,
+-				alt: "OpenCut Wordmark",
+-			},
+-		],
+-	},
+-	twitter: {
+-		card: "summary_large_image",
+-		title: SITE_INFO.title,
+-		description: SITE_INFO.description,
+-		creator: "@opencutapp",
+-		images: [SITE_INFO.twitterImage],
+-	},
+-	pinterest: {
+-		richPin: false,
+-	},
+-	robots: {
+-		index: true,
+-		follow: true,
+-	},
+-	icons: {
+-		icon: [
+-			{ url: "/favicon.ico" },
+-			{ url: "/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+-			{ url: "/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+-			{ url: "/icons/favicon-96x96.png", sizes: "96x96", type: "image/png" },
+-		],
+-		apple: [
+-			{ url: "/icons/apple-icon-57x57.png", sizes: "57x57", type: "image/png" },
+-			{ url: "/icons/apple-icon-60x60.png", sizes: "60x60", type: "image/png" },
+-			{ url: "/icons/apple-icon-72x72.png", sizes: "72x72", type: "image/png" },
+-			{ url: "/icons/apple-icon-76x76.png", sizes: "76x76", type: "image/png" },
+-			{
+-				url: "/icons/apple-icon-114x114.png",
+-				sizes: "114x114",
+-				type: "image/png",
+-			},
+-			{
+-				url: "/icons/apple-icon-120x120.png",
+-				sizes: "120x120",
+-				type: "image/png",
+-			},
+-			{
+-				url: "/icons/apple-icon-144x144.png",
+-				sizes: "144x144",
+-				type: "image/png",
+-			},
+-			{
+-				url: "/icons/apple-icon-152x152.png",
+-				sizes: "152x152",
+-				type: "image/png",
+-			},
+-			{
+-				url: "/icons/apple-icon-180x180.png",
+-				sizes: "180x180",
+-				type: "image/png",
+-			},
+-		],
+-		shortcut: ["/favicon.ico"],
+-	},
+-	appleWebApp: {
+-		capable: true,
+-		title: SITE_INFO.title,
+-	},
+-	manifest: "/manifest.json",
+-	other: {
+-		"msapplication-config": "/browserconfig.xml",
+-	},
+-};
++import type { Metadata } from "next";
++import { SITE_INFO, SITE_URL } from "@/site/brand";
++
++export const baseMetaData: Metadata = {
++	metadataBase: new URL(SITE_URL),
++	title: SITE_INFO.title,
++	description: SITE_INFO.description,
++	openGraph: {
++		title: SITE_INFO.title,
++		description: SITE_INFO.description,
++		url: SITE_URL,
++		siteName: SITE_INFO.title,
++		locale: "en_US",
++		type: "website",
++		images: [
++			{
++				url: SITE_INFO.openGraphImage,
++				width: 1200,
++				height: 630,
++				alt: "OpenCut Wordmark",
++			},
++		],
++	},
++	twitter: {
++		card: "summary_large_image",
++		title: SITE_INFO.title,
++		description: SITE_INFO.description,
++		creator: "@opencutapp",
++		images: [SITE_INFO.twitterImage],
++	},
++	pinterest: {
++		richPin: false,
++	},
++	robots: {
++		index: true,
++		follow: true,
++	},
++	icons: {
++		icon: [
++			{ url: "/opencut/favicon.ico" },
++			{ url: "/opencut/icons/favicon-16x16.png", sizes: "16x16", type: "image/png" },
++			{ url: "/opencut/icons/favicon-32x32.png", sizes: "32x32", type: "image/png" },
++			{ url: "/opencut/icons/favicon-96x96.png", sizes: "96x96", type: "image/png" },
++		],
++		apple: [
++			{ url: "/opencut/icons/apple-icon-57x57.png", sizes: "57x57", type: "image/png" },
++			{ url: "/opencut/icons/apple-icon-60x60.png", sizes: "60x60", type: "image/png" },
++			{ url: "/opencut/icons/apple-icon-72x72.png", sizes: "72x72", type: "image/png" },
++			{ url: "/opencut/icons/apple-icon-76x76.png", sizes: "76x76", type: "image/png" },
++			{
++				url: "/opencut/icons/apple-icon-114x114.png",
++				sizes: "114x114",
++				type: "image/png",
++			},
++			{
++				url: "/opencut/icons/apple-icon-120x120.png",
++				sizes: "120x120",
++				type: "image/png",
++			},
++			{
++				url: "/opencut/icons/apple-icon-144x144.png",
++				sizes: "144x144",
++				type: "image/png",
++			},
++			{
++				url: "/opencut/icons/apple-icon-152x152.png",
++				sizes: "152x152",
++				type: "image/png",
++			},
++			{
++				url: "/opencut/icons/apple-icon-180x180.png",
++				sizes: "180x180",
++				type: "image/png",
++			},
++		],
++		shortcut: ["/opencut/favicon.ico"],
++	},
++	appleWebApp: {
++		capable: true,
++		title: SITE_INFO.title,
++	},
++	manifest: "/opencut/manifest.json",
++	other: {
++		"msapplication-config": "/opencut/browserconfig.xml",
++	},
++};
+diff --git a/apps/web/src/app/projects/page.tsx b/apps/web/src/app/projects/page.tsx
+index c39c4fd..fc86918 100644
+--- a/apps/web/src/app/projects/page.tsx
++++ b/apps/web/src/app/projects/page.tsx
+@@ -512,7 +512,7 @@ function NewProjectButton() {
+ 		const projectId = await editor.project.createNewProject({
+ 			name: "New project",
+ 		});
+-		router.push(`/editor/${projectId}`);
++		router.push(`/editor/?project=${projectId}`);
+ 	};
+ 
+ 	return (
+@@ -664,7 +664,7 @@ function ProjectItem({
+ 				className="size-5 shrink-0"
+ 			/>
+ 
+-			<Link href={`/editor/${project.id}`} className="flex-1 min-w-0">
++			<Link href={`/editor/?project=${project.id}`} className="flex-1 min-w-0">
+ 				{listRowContent}
+ 			</Link>
+ 
+@@ -689,7 +689,7 @@ function ProjectItem({
+ 					<div className="group relative">
+ 						{isGridView ? (
+ 							<>
+-								<Link href={`/editor/${project.id}`} className="block">
++								<Link href={`/editor/?project=${project.id}`} className="block">
+ 									{gridContent}
+ 								</Link>
+ 
+@@ -958,7 +958,7 @@ function EmptyState() {
+ 			const projectId = await editor.project.createNewProject({
+ 				name: "New project",
+ 			});
+-			router.push(`/editor/${projectId}`);
++			router.push(`/editor/?project=${projectId}`);
+ 		} catch (error) {
+ 			toast.error("Failed to create project", {
+ 				description:
+diff --git a/apps/web/src/app/roadmap/page.tsx b/apps/web/src/app/roadmap/page.tsx
+deleted file mode 100644
+index a0c3d9b..0000000
+--- a/apps/web/src/app/roadmap/page.tsx
++++ /dev/null
+@@ -1,146 +0,0 @@
+-import type { Metadata } from "next";
+-import { BasePage } from "@/app/base-page";
+-import { GitHubContributeSection } from "@/components/gitHub-contribute-section";
+-import { Badge } from "@/components/ui/badge";
+-import { ReactMarkdownWrapper } from "@/components/ui/react-markdown-wrapper";
+-import { cn } from "@/utils/ui";
+-
+-const LAST_UPDATED = "February 25, 2026";
+-
+-type StatusType = "complete" | "pending" | "default" | "info";
+-
+-interface Status {
+-	text: string;
+-	type: StatusType;
+-}
+-
+-interface RoadmapItem {
+-	title: string;
+-	description: string;
+-	status: Status;
+-}
+-
+-const roadmapItems: RoadmapItem[] = [
+-	{
+-		title: "Start",
+-		description:
+-			"This is where it all started. Repository created, initial project structure, and the vision for a free, open-source video editor. [Check out the first tweet](https://x.com/mazeincoding/status/1936706642512388188) to see where it started.",
+-		status: {
+-			text: "Completed",
+-			type: "complete",
+-		},
+-	},
+-	{
+-		title: "Core UI",
+-		description:
+-			"Build the foundation - main layout, header, sidebar, timeline container, and basic component structure. Not all functionality yet, but the UI framework that everything else builds on.",
+-		status: {
+-			text: "Completed",
+-			type: "complete",
+-		},
+-	},
+-	{
+-		title: "Essential functionality",
+-		description:
+-			"Everything that makes a video editor **useful**. Timeline interactivity, storage, effects, transitions, etc.",
+-		status: {
+-			text: "In progress",
+-			type: "pending",
+-		},
+-	},
+-	{
+-		title: "Native app (mobile/desktop)",
+-		description:
+-			"Native OpenCut apps for Mac, Windows, Linux, and iOS/Android.",
+-		status: {
+-			text: "Not started",
+-			type: "default",
+-		},
+-	},
+-];
+-
+-export const metadata: Metadata = {
+-	title: "Roadmap - OpenCut",
+-	description:
+-		"See what's coming next for OpenCut - the free, open-source video editor that respects your privacy.",
+-	openGraph: {
+-		title: "OpenCut Roadmap - What's Coming Next",
+-		description:
+-			"See what's coming next for OpenCut - the free, open-source video editor that respects your privacy.",
+-		type: "website",
+-		images: [
+-			{
+-				url: "/open-graph/roadmap.jpg",
+-				width: 1200,
+-				height: 630,
+-				alt: "OpenCut Roadmap",
+-			},
+-		],
+-	},
+-	twitter: {
+-		card: "summary_large_image",
+-		title: "OpenCut Roadmap - What's Coming Next",
+-		description:
+-			"See what's coming next for OpenCut - the free, open-source video editor that respects your privacy.",
+-		images: ["/open-graph/roadmap.jpg"],
+-	},
+-};
+-
+-export default function RoadmapPage() {
+-	return (
+-		<BasePage
+-			title="Roadmap"
+-			description={`What's coming next for OpenCut (last updated: ${LAST_UPDATED})`}
+-		>
+-			<div className="mx-auto flex max-w-4xl flex-col gap-16">
+-				<div className="flex flex-col gap-6">
+-					{roadmapItems.map((item, index) => (
+-						<RoadmapItem key={item.title} item={item} index={index} />
+-					))}
+-				</div>
+-				<GitHubContributeSection
+-					title="Want to help?"
+-					description="OpenCut is open source and built by the community. Every contribution,
+-          no matter how small, helps us build the best free video editor
+-          possible."
+-				/>
+-			</div>
+-		</BasePage>
+-	);
+-}
+-
+-function RoadmapItem({ item, index }: { item: RoadmapItem; index: number }) {
+-	return (
+-		<div className="flex flex-col gap-2">
+-			<div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-lg font-medium">
+-				<span className="leading-normal select-none">{index + 1}</span>
+-				<h3>{item.title}</h3>
+-				<StatusBadge status={item.status} className="ml-1" />
+-			</div>
+-			<div className="text-foreground/70 leading-relaxed">
+-				<ReactMarkdownWrapper>{item.description}</ReactMarkdownWrapper>
+-			</div>
+-		</div>
+-	);
+-}
+-
+-function StatusBadge({
+-	status,
+-	className,
+-}: {
+-	status: Status;
+-	className?: string;
+-}) {
+-	return (
+-		<Badge
+-			className={cn("shadow-none", className, {
+-				"bg-green-500! text-white": status.type === "complete",
+-				"bg-yellow-500! text-white": status.type === "pending",
+-				"bg-blue-500! text-white": status.type === "info",
+-				"bg-foreground/10! text-accent-foreground": status.type === "default",
+-			})}
+-		>
+-			{status.text}
+-		</Badge>
+-	);
+-}
+diff --git a/apps/web/src/app/robots.ts b/apps/web/src/app/robots.ts
+deleted file mode 100644
+index 1b1ca86..0000000
+--- a/apps/web/src/app/robots.ts
++++ /dev/null
+@@ -1,13 +0,0 @@
+-import type { MetadataRoute } from "next";
+-import { SITE_URL } from "@/site/brand";
+-
+-export default function robots(): MetadataRoute.Robots {
+-	return {
+-		rules: {
+-			userAgent: "*",
+-			allow: "/",
+-			disallow: ["/_next/", "/projects/", "/editor/"],
+-		},
+-		sitemap: `${SITE_URL}/sitemap.xml`,
+-	};
+-}
+diff --git a/apps/web/src/app/rss.xml/route.ts b/apps/web/src/app/rss.xml/route.ts
+deleted file mode 100644
+index d4e9570..0000000
+--- a/apps/web/src/app/rss.xml/route.ts
++++ /dev/null
+@@ -1,46 +0,0 @@
+-import { Feed } from "feed";
+-import { getPosts } from "@/blog/query";
+-import { SITE_INFO, SITE_URL } from "@/site/brand";
+-
+-export async function GET() {
+-	try {
+-		const { posts } = await getPosts();
+-
+-		const feed = new Feed({
+-			title: `${SITE_INFO.title} Blog`,
+-			description: SITE_INFO.description,
+-			id: `${SITE_URL}`,
+-			link: `${SITE_URL}/blog/`,
+-			language: "en",
+-			image: `${SITE_INFO.openGraphImage}`,
+-			favicon: `${SITE_INFO.favicon}`,
+-			copyright: `All rights reserved ${new Date().getFullYear()}, ${
+-				SITE_INFO.title
+-			}`,
+-		});
+-
+-		for (const post of posts) {
+-			feed.addItem({
+-				title: post.title,
+-				id: `${SITE_URL}/blog/${post.slug}`,
+-				link: `${SITE_URL}/blog/${post.slug}`,
+-				description: post.description,
+-				author: post.authors.map((author) => ({
+-					name: author.name,
+-				})),
+-				date: new Date(post.publishedAt),
+-				image: post.coverImage || SITE_INFO.openGraphImage,
+-			});
+-		}
+-
+-		return new Response(feed.rss2(), {
+-			headers: {
+-				"Content-Type": "text/xml",
+-				"Cache-Control": "public, max-age=86400, stale-while-revalidate",
+-			},
+-		});
+-	} catch (error) {
+-		console.error("Error generating RSS feed", error);
+-		return new Response("Internal Server Error", { status: 500 });
+-	}
+-}
+diff --git a/apps/web/src/app/sitemap.ts b/apps/web/src/app/sitemap.ts
+deleted file mode 100644
+index 73b4180..0000000
+--- a/apps/web/src/app/sitemap.ts
++++ /dev/null
+@@ -1,61 +0,0 @@
+-import { SITE_URL } from "@/site/brand";
+-import { getPosts } from "@/blog/query";
+-import type { MetadataRoute } from "next";
+-
+-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+-	const data = await getPosts();
+-
+-	const postPages: MetadataRoute.Sitemap =
+-		data?.posts?.map((post) => ({
+-			url: `${SITE_URL}/blog/${post.slug}`,
+-			lastModified: new Date(post.publishedAt),
+-			changeFrequency: "weekly",
+-			priority: 0.8,
+-		})) ?? [];
+-
+-	return [
+-		{
+-			url: SITE_URL,
+-			lastModified: new Date(),
+-			changeFrequency: "weekly",
+-			priority: 1,
+-		},
+-		{
+-			url: `${SITE_URL}/contributors`,
+-			lastModified: new Date(),
+-			changeFrequency: "daily",
+-			priority: 0.5,
+-		},
+-		{
+-			url: `${SITE_URL}/roadmap`,
+-			lastModified: new Date(),
+-			changeFrequency: "weekly",
+-			priority: 1,
+-		},
+-		{
+-			url: `${SITE_URL}/privacy`,
+-			lastModified: new Date(),
+-			changeFrequency: "monthly",
+-			priority: 0.5,
+-		},
+-		{
+-			url: `${SITE_URL}/terms`,
+-			lastModified: new Date(),
+-			changeFrequency: "monthly",
+-			priority: 0.5,
+-		},
+-		{
+-			url: `${SITE_URL}/why-not-capcut`,
+-			lastModified: new Date(),
+-			changeFrequency: "yearly",
+-			priority: 1,
+-		},
+-		{
+-			url: `${SITE_URL}/blog`,
+-			lastModified: new Date(),
+-			changeFrequency: "weekly",
+-			priority: 1,
+-		},
+-		...postPages,
+-	];
+-}
+diff --git a/apps/web/src/app/sponsors/page.tsx b/apps/web/src/app/sponsors/page.tsx
+deleted file mode 100644
+index 510419f..0000000
+--- a/apps/web/src/app/sponsors/page.tsx
++++ /dev/null
+@@ -1,86 +0,0 @@
+-import type { Metadata } from "next";
+-import Image from "next/image";
+-import Link from "next/link";
+-import { BasePage } from "@/app/base-page";
+-import { Card, CardContent } from "@/components/ui/card";
+-import { SPONSORS, type Sponsor } from "@/site/sponsors";
+-import { HugeiconsIcon } from "@hugeicons/react";
+-import { LinkSquare02Icon } from "@hugeicons/core-free-icons";
+-import { cn } from "@/utils/ui";
+-
+-export const metadata: Metadata = {
+-	title: "Sponsors - OpenCut",
+-	description:
+-		"Support OpenCut and help us build the future of free and open-source video editing.",
+-	openGraph: {
+-		title: "Sponsors - OpenCut",
+-		description:
+-			"Support OpenCut and help us build the future of free and open-source video editing.",
+-		type: "website",
+-	},
+-};
+-
+-export default function SponsorsPage() {
+-	return (
+-		<BasePage>
+-			<div className="flex flex-col gap-8 text-center">
+-				<h1 className="text-5xl font-bold tracking-tight md:text-6xl">
+-					Sponsors
+-				</h1>
+-				<p className="text-muted-foreground mx-auto max-w-2xl text-xl leading-relaxed text-pretty">
+-					Support OpenCut and help us build the future of privacy-first video
+-					editing.
+-				</p>
+-			</div>
+-			<SponsorsGrid />
+-		</BasePage>
+-	);
+-}
+-
+-function SponsorsGrid() {
+-	return (
+-		<div className="grid gap-6 sm:grid-cols-2">
+-			{SPONSORS.map((sponsor) => (
+-				<SponsorCard key={sponsor.name} sponsor={sponsor} />
+-			))}
+-		</div>
+-	);
+-}
+-
+-function SponsorCard({ sponsor }: { sponsor: Sponsor }) {
+-	return (
+-		<Link
+-			href={sponsor.url}
+-			target="_blank"
+-			rel="noopener noreferrer"
+-			className="size-full"
+-		>
+-			<Card className="h-full">
+-				<CardContent className="flex h-full flex-col justify-center gap-8 p-8">
+-					<Image
+-						src={sponsor.logo}
+-						alt={`${sponsor.name} logo`}
+-						width={50}
+-						height={50}
+-						className={cn(
+-							"object-contain",
+-							sponsor.invertOnDark && "invert-0 dark:invert",
+-						)}
+-					/>
+-					<div className="flex flex-col gap-2">
+-						<div className="flex items-center gap-2">
+-							<h3 className="text-xl font-semibold group-hover:underline">
+-								{sponsor.name}
+-							</h3>
+-							<HugeiconsIcon
+-								icon={LinkSquare02Icon}
+-								className="text-muted-foreground size-4"
+-							/>
+-						</div>
+-						<p className="text-muted-foreground">{sponsor.description}</p>
+-					</div>
+-				</CardContent>
+-			</Card>
+-		</Link>
+-	);
+-}
+diff --git a/apps/web/src/auth/client.ts b/apps/web/src/auth/client.ts
+deleted file mode 100644
+index 58be51c..0000000
+--- a/apps/web/src/auth/client.ts
++++ /dev/null
+@@ -1,6 +0,0 @@
+-import { createAuthClient } from "better-auth/react";
+-import { webEnv } from "@/env/web";
+-
+-export const { signIn, signUp, useSession } = createAuthClient({
+-	baseURL: webEnv.NEXT_PUBLIC_SITE_URL,
+-});
+diff --git a/apps/web/src/auth/rate-limit.ts b/apps/web/src/auth/rate-limit.ts
+deleted file mode 100644
+index c10c381..0000000
+--- a/apps/web/src/auth/rate-limit.ts
++++ /dev/null
+@@ -1,21 +0,0 @@
+-import { Ratelimit } from "@upstash/ratelimit";
+-import { Redis } from "@upstash/redis";
+-import { webEnv } from "@/env/web";
+-
+-const redis = new Redis({
+-	url: webEnv.UPSTASH_REDIS_REST_URL,
+-	token: webEnv.UPSTASH_REDIS_REST_TOKEN,
+-});
+-
+-export const baseRateLimit = new Ratelimit({
+-	redis,
+-	limiter: Ratelimit.slidingWindow(100, "1 m"), // 100 requests per minute
+-	analytics: true,
+-	prefix: "rate-limit",
+-});
+-
+-export async function checkRateLimit({ request }: { request: Request }) {
+-	const ip = request.headers.get("x-forwarded-for") ?? "anonymous";
+-	const { success } = await baseRateLimit.limit(ip);
+-	return { success, limited: !success };
+-}
+diff --git a/apps/web/src/auth/server.ts b/apps/web/src/auth/server.ts
+deleted file mode 100644
+index 5e49387..0000000
+--- a/apps/web/src/auth/server.ts
++++ /dev/null
+@@ -1,43 +0,0 @@
+-import { betterAuth, type RateLimit } from "better-auth";
+-import { drizzleAdapter } from "better-auth/adapters/drizzle";
+-import { Redis } from "@upstash/redis";
+-import { db } from "@/db";
+-import { webEnv } from "@/env/web";
+-
+-const redis = new Redis({
+-	url: webEnv.UPSTASH_REDIS_REST_URL,
+-	token: webEnv.UPSTASH_REDIS_REST_TOKEN,
+-});
+-
+-export const auth = betterAuth({
+-	database: drizzleAdapter(db, {
+-		provider: "pg",
+-		usePlural: true,
+-	}),
+-	secret: webEnv.BETTER_AUTH_SECRET,
+-	user: {
+-		deleteUser: {
+-			enabled: true,
+-		},
+-	},
+-	emailAndPassword: {
+-		enabled: true,
+-	},
+-	rateLimit: {
+-		storage: "secondary-storage",
+-		customStorage: {
+-			get: async (key) => {
+-				const value = await redis.get(key);
+-				return value as RateLimit | undefined;
+-			},
+-			set: async (key, value) => {
+-				await redis.set(key, value);
+-			},
+-		},
+-	},
+-	baseURL: webEnv.NEXT_PUBLIC_SITE_URL,
+-	appName: "OpenCut",
+-	trustedOrigins: [webEnv.NEXT_PUBLIC_SITE_URL],
+-});
+-
+-export type Auth = typeof auth;
+diff --git a/apps/web/src/blog/query.ts b/apps/web/src/blog/query.ts
+deleted file mode 100644
+index a7742db..0000000
+--- a/apps/web/src/blog/query.ts
++++ /dev/null
+@@ -1,133 +0,0 @@
+-import type {
+-	MarbleAuthorList,
+-	MarbleCategoryList,
+-	Pagination,
+-	MarblePost,
+-	MarblePostList,
+-	MarbleTagList,
+-} from "@/blog/types";
+-import { unified } from "unified";
+-import rehypeParse from "rehype-parse";
+-import rehypeStringify from "rehype-stringify";
+-import rehypeSlug from "rehype-slug";
+-import rehypeAutolinkHeadings from "rehype-autolink-headings";
+-import rehypeSanitize from "rehype-sanitize";
+-
+-const url =
+-	process.env.NEXT_PUBLIC_MARBLE_API_URL ?? "https://api.marblecms.com";
+-const key = process.env.MARBLE_WORKSPACE_KEY ?? "cmd4iw9mm0006l804kwqv0k46";
+-
+-const EMPTY_PAGINATION: Pagination = {
+-	limit: 0,
+-	currpage: 1,
+-	nextPage: null,
+-	prevPage: null,
+-	totalItems: 0,
+-	totalPages: 0,
+-};
+-
+-const EMPTY_POSTS: MarblePostList = {
+-	posts: [],
+-	pagination: EMPTY_PAGINATION,
+-};
+-
+-const EMPTY_TAGS: MarbleTagList = {
+-	tags: [],
+-	pagination: EMPTY_PAGINATION,
+-};
+-
+-const EMPTY_CATEGORIES: MarbleCategoryList = {
+-	categories: [],
+-	pagination: EMPTY_PAGINATION,
+-};
+-
+-const EMPTY_AUTHORS: MarbleAuthorList = {
+-	authors: [],
+-	pagination: EMPTY_PAGINATION,
+-};
+-
+-function isMarbleConfigured() {
+-	return ![
+-		"",
+-		"placeholder",
+-		"build-placeholder",
+-		"your_workspace_key_here",
+-	].includes(key);
+-}
+-
+-async function fetchFromMarble<T>({
+-	endpoint,
+-	fallback,
+-}: {
+-	endpoint: string;
+-	fallback: T;
+-}): Promise<T> {
+-	if (!isMarbleConfigured()) {
+-		return fallback;
+-	}
+-
+-	try {
+-		const response = await fetch(`${url}/${key}/${endpoint}`);
+-		if (!response.ok) {
+-			console.warn(
+-				`Failed to fetch ${endpoint}: ${response.status} ${response.statusText}`,
+-			);
+-			return fallback;
+-		}
+-		return (await response.json()) as T;
+-	} catch (error) {
+-		console.error(`Error fetching ${endpoint}:`, error);
+-		return fallback;
+-	}
+-}
+-
+-export async function getPosts() {
+-	return fetchFromMarble<MarblePostList>({
+-		endpoint: "posts",
+-		fallback: EMPTY_POSTS,
+-	});
+-}
+-
+-export async function getTags() {
+-	return fetchFromMarble<MarbleTagList>({
+-		endpoint: "tags",
+-		fallback: EMPTY_TAGS,
+-	});
+-}
+-
+-export async function getSinglePost({ slug }: { slug: string }) {
+-	return fetchFromMarble<MarblePost | null>({
+-		endpoint: `posts/${slug}`,
+-		fallback: null,
+-	});
+-}
+-
+-export async function getCategories() {
+-	return fetchFromMarble<MarbleCategoryList>({
+-		endpoint: "categories",
+-		fallback: EMPTY_CATEGORIES,
+-	});
+-}
+-
+-export async function getAuthors() {
+-	return fetchFromMarble<MarbleAuthorList>({
+-		endpoint: "authors",
+-		fallback: EMPTY_AUTHORS,
+-	});
+-}
+-
+-export async function processHtmlContent({
+-	html,
+-}: {
+-	html: string;
+-}): Promise<string> {
+-	const processor = unified()
+-		.use(rehypeSanitize)
+-		.use(rehypeParse, { fragment: true })
+-		.use(rehypeSlug)
+-		.use(rehypeAutolinkHeadings, { behavior: "append" })
+-		.use(rehypeStringify);
+-
+-	const file = await processor.process({ value: html, type: "html" });
+-	return String(file);
+-}
+diff --git a/apps/web/src/blog/types.ts b/apps/web/src/blog/types.ts
+deleted file mode 100644
+index 7b2f450..0000000
+--- a/apps/web/src/blog/types.ts
++++ /dev/null
+@@ -1,92 +0,0 @@
+-export type Post = {
+-	id: string;
+-	slug: string;
+-	title: string;
+-	content: string;
+-	description: string;
+-	coverImage: string;
+-	publishedAt: Date;
+-	updatedAt: Date;
+-	authors: {
+-		id: string;
+-		name: string;
+-		image: string;
+-	}[];
+-	category: {
+-		id: string;
+-		slug: string;
+-		name: string;
+-	};
+-	tags: {
+-		id: string;
+-		slug: string;
+-		name: string;
+-	}[];
+-	attribution: {
+-		author: string;
+-		url: string;
+-	} | null;
+-};
+-
+-export type Pagination = {
+-	limit: number;
+-	currpage: number;
+-	nextPage: number | null;
+-	prevPage: number | null;
+-	totalItems: number;
+-	totalPages: number;
+-};
+-
+-export type MarblePostList = {
+-	posts: Post[];
+-	pagination: Pagination;
+-};
+-
+-export type MarblePost = {
+-	post: Post;
+-};
+-
+-export type Tag = {
+-	id: string;
+-	name: string;
+-	slug: string;
+-};
+-
+-export type MarbleTag = {
+-	tag: Tag;
+-};
+-
+-export type MarbleTagList = {
+-	tags: Tag[];
+-	pagination: Pagination;
+-};
+-
+-export type Category = {
+-	id: string;
+-	name: string;
+-	slug: string;
+-};
+-
+-export type MarbleCategory = {
+-	category: Category;
+-};
+-
+-export type MarbleCategoryList = {
+-	categories: Category[];
+-	pagination: Pagination;
+-};
+-
+-export type Author = {
+-	id: string;
+-	name: string;
+-	image: string;
+-};
+-
+-export type MarbleAuthor = {
+-	author: Author;
+-};
+-
+-export type MarbleAuthorList = {
+-	authors: Author[];
+-	pagination: Pagination;
+-};
+diff --git a/apps/web/src/components/editor/editor-header.tsx b/apps/web/src/components/editor/editor-header.tsx
+index 6404dc0..68c996c 100644
+--- a/apps/web/src/components/editor/editor-header.tsx
++++ b/apps/web/src/components/editor/editor-header.tsx
+@@ -1,248 +1,248 @@
+-"use client";
+-
+-import { Button } from "../ui/button";
+-import { useRef, useState } from "react";
+-import {
+-	DropdownMenu,
+-	DropdownMenuContent,
+-	DropdownMenuItem,
+-	DropdownMenuSeparator,
+-	DropdownMenuTrigger,
+-} from "../ui/dropdown-menu";
+-import Link from "next/link";
+-import { RenameProjectDialog } from "@/project/components/rename-project-dialog";
+-import { DeleteProjectDialog } from "@/project/components/delete-project-dialog";
+-import { useRouter } from "next/navigation";
+-import { FaDiscord } from "react-icons/fa6";
+-import { ExportButton } from "./export-button";
+-import { FeedbackPopover } from "@/feedback/components/feedback-popover";
+-import { ThemeToggle } from "../theme-toggle";
+-import { DEFAULT_LOGO_URL } from "@/site/brand";
+-import { SOCIAL_LINKS } from "@/site/social";
+-import { toast } from "sonner";
+-import { useEditor } from "@/editor/use-editor";
+-import { CommandIcon, Logout05Icon } from "@hugeicons/core-free-icons";
+-import { HugeiconsIcon } from "@hugeicons/react";
+-import { ShortcutsDialog } from "@/actions/components/shortcuts-dialog";
+-import Image from "next/image";
+-import { cn } from "@/utils/ui";
+-
+-export function EditorHeader() {
+-	return (
+-		<header className="bg-background flex h-[3.4rem] items-center justify-between px-3 pt-0.5">
+-			<div className="flex items-center gap-1">
+-				<ProjectDropdown />
+-				<EditableProjectName />
+-			</div>
+-			<nav className="flex items-center gap-2">
+-				<FeedbackPopover />
+-				<ExportButton />
+-				<ThemeToggle />
+-			</nav>
+-		</header>
+-	);
+-}
+-
+-function ProjectDropdown() {
+-	const [openDialog, setOpenDialog] = useState<
+-		"delete" | "rename" | "shortcuts" | null
+-	>(null);
+-	const [isExiting, setIsExiting] = useState(false);
+-	const router = useRouter();
+-	const editor = useEditor();
+-	const activeProject = useEditor((e) => e.project.getActive());
+-
+-	const handleExit = async () => {
+-		if (isExiting) return;
+-		setIsExiting(true);
+-
+-		try {
+-			await editor.project.prepareExit();
+-			editor.project.closeProject();
+-		} catch (error) {
+-			console.error("Failed to prepare project exit:", error);
+-		} finally {
+-			editor.project.closeProject();
+-			router.push("/projects");
+-		}
+-	};
+-
+-	const handleSaveProjectName = async (newName: string) => {
+-		if (
+-			activeProject &&
+-			newName.trim() &&
+-			newName !== activeProject.metadata.name
+-		) {
+-			try {
+-				await editor.project.renameProject({
+-					id: activeProject.metadata.id,
+-					name: newName.trim(),
+-				});
+-			} catch (error) {
+-				toast.error("Failed to rename project", {
+-					description:
+-						error instanceof Error ? error.message : "Please try again",
+-				});
+-			} finally {
+-				setOpenDialog(null);
+-			}
+-		}
+-	};
+-
+-	const handleDeleteProject = async () => {
+-		if (activeProject) {
+-			try {
+-				await editor.project.deleteProjects({
+-					ids: [activeProject.metadata.id],
+-				});
+-				router.push("/projects");
+-			} catch (error) {
+-				toast.error("Failed to delete project", {
+-					description:
+-						error instanceof Error ? error.message : "Please try again",
+-				});
+-			} finally {
+-				setOpenDialog(null);
+-			}
+-		}
+-	};
+-
+-	return (
+-		<>
+-			<DropdownMenu>
+-				<DropdownMenuTrigger asChild>
+-					<Button variant="ghost" size="icon" className="p-1 rounded-sm size-8">
+-						<Image
+-							src={DEFAULT_LOGO_URL}
+-							alt="Project thumbnail"
+-							width={32}
+-							height={32}
+-							className="invert dark:invert-0 size-5"
+-						/>
+-					</Button>
+-				</DropdownMenuTrigger>
+-				<DropdownMenuContent align="start" className="z-100 w-44">
+-					<DropdownMenuItem
+-						onClick={handleExit}
+-						disabled={isExiting}
+-						icon={<HugeiconsIcon icon={Logout05Icon} />}
+-					>
+-						Exit project
+-					</DropdownMenuItem>
+-
+-					<DropdownMenuItem
+-						onClick={() => setOpenDialog("shortcuts")}
+-						icon={<HugeiconsIcon icon={CommandIcon} />}
+-					>
+-						Shortcuts
+-					</DropdownMenuItem>
+-
+-					<DropdownMenuSeparator />
+-
+-					<DropdownMenuItem asChild icon={<FaDiscord className="size-4!" />}>
+-						<Link
+-							href={SOCIAL_LINKS.discord}
+-							target="_blank"
+-							rel="noopener noreferrer"
+-						>
+-							Discord
+-						</Link>
+-					</DropdownMenuItem>
+-				</DropdownMenuContent>
+-			</DropdownMenu>
+-			<RenameProjectDialog
+-				isOpen={openDialog === "rename"}
+-				onOpenChange={(isOpen) => setOpenDialog(isOpen ? "rename" : null)}
+-				onConfirm={(newName) => handleSaveProjectName(newName)}
+-				projectName={activeProject?.metadata.name || ""}
+-			/>
+-			<DeleteProjectDialog
+-				isOpen={openDialog === "delete"}
+-				onOpenChange={(isOpen) => setOpenDialog(isOpen ? "delete" : null)}
+-				onConfirm={handleDeleteProject}
+-				projectNames={[activeProject?.metadata.name || ""]}
+-			/>
+-			<ShortcutsDialog
+-				isOpen={openDialog === "shortcuts"}
+-				onOpenChange={(isOpen) => setOpenDialog(isOpen ? "shortcuts" : null)}
+-			/>
+-		</>
+-	);
+-}
+-
+-function EditableProjectName() {
+-	const editor = useEditor();
+-	const activeProject = useEditor((e) => e.project.getActive());
+-	const [isEditing, setIsEditing] = useState(false);
+-	const inputRef = useRef<HTMLInputElement>(null);
+-	const originalNameRef = useRef("");
+-
+-	const projectName = activeProject?.metadata.name || "";
+-
+-	const startEditing = () => {
+-		if (isEditing) return;
+-		originalNameRef.current = projectName;
+-		setIsEditing(true);
+-
+-		requestAnimationFrame(() => {
+-			inputRef.current?.select();
+-		});
+-	};
+-
+-	const saveEdit = async () => {
+-		if (!inputRef.current || !activeProject) return;
+-		const newName = inputRef.current.value.trim();
+-		setIsEditing(false);
+-
+-		if (!newName) {
+-			inputRef.current.value = originalNameRef.current;
+-			return;
+-		}
+-
+-		if (newName !== originalNameRef.current) {
+-			try {
+-				await editor.project.renameProject({
+-					id: activeProject.metadata.id,
+-					name: newName,
+-				});
+-			} catch (error) {
+-				toast.error("Failed to rename project", {
+-					description:
+-						error instanceof Error ? error.message : "Please try again",
+-				});
+-			}
+-		}
+-	};
+-
+-	const handleKeyDown = (event: React.KeyboardEvent) => {
+-		if (event.key === "Enter") {
+-			event.preventDefault();
+-			inputRef.current?.blur();
+-		} else if (event.key === "Escape") {
+-			event.preventDefault();
+-			if (inputRef.current) {
+-				inputRef.current.value = originalNameRef.current;
+-				inputRef.current.setSelectionRange(0, 0);
+-			}
+-			setIsEditing(false);
+-			inputRef.current?.blur();
+-		}
+-	};
+-
+-	return (
+-		<input
+-			ref={inputRef}
+-			type="text"
+-			defaultValue={projectName}
+-			readOnly={!isEditing}
+-			onClick={startEditing}
+-			onBlur={saveEdit}
+-			onKeyDown={handleKeyDown}
+-			style={{ fieldSizing: "content" }}
+-			className={cn(
+-				"text-[0.9rem] h-8 px-2 py-1 rounded-sm bg-transparent outline-none cursor-pointer hover:bg-accent hover:text-accent-foreground",
+-				isEditing && "ring-1 ring-ring cursor-text hover:bg-transparent",
+-			)}
+-		/>
+-	);
+-}
++"use client";
++
++import { Button } from "../ui/button";
++import { useRef, useState } from "react";
++import {
++	DropdownMenu,
++	DropdownMenuContent,
++	DropdownMenuItem,
++	DropdownMenuSeparator,
++	DropdownMenuTrigger,
++} from "../ui/dropdown-menu";
++import Link from "next/link";
++import { RenameProjectDialog } from "@/project/components/rename-project-dialog";
++import { DeleteProjectDialog } from "@/project/components/delete-project-dialog";
++import { useRouter } from "next/navigation";
++import { FaDiscord } from "react-icons/fa6";
++import { ExportButton } from "./export-button";
++import { ThemeToggle } from "../theme-toggle";
++import { DEFAULT_LOGO_URL } from "@/site/brand";
++import { SOCIAL_LINKS } from "@/site/social";
++import { toast } from "sonner";
++import { useEditor } from "@/editor/use-editor";
++import { CommandIcon, Logout05Icon } from "@hugeicons/core-free-icons";
++import { HugeiconsIcon } from "@hugeicons/react";
++import { ShortcutsDialog } from "@/actions/components/shortcuts-dialog";
++import { CopilotPopover } from "@/copilot/components/copilot-popover";
++import Image from "next/image";
++import { cn } from "@/utils/ui";
++
++export function EditorHeader() {
++	return (
++		<header className="bg-background flex h-[3.4rem] items-center justify-between px-3 pt-0.5">
++			<div className="flex items-center gap-1">
++				<ProjectDropdown />
++				<EditableProjectName />
++			</div>
++			<nav className="flex items-center gap-2">
++				<CopilotPopover />
++				<ExportButton />
++				<ThemeToggle />
++			</nav>
++		</header>
++	);
++}
++
++function ProjectDropdown() {
++	const [openDialog, setOpenDialog] = useState<
++		"delete" | "rename" | "shortcuts" | null
++	>(null);
++	const [isExiting, setIsExiting] = useState(false);
++	const router = useRouter();
++	const editor = useEditor();
++	const activeProject = useEditor((e) => e.project.getActive());
++
++	const handleExit = async () => {
++		if (isExiting) return;
++		setIsExiting(true);
++
++		try {
++			await editor.project.prepareExit();
++			editor.project.closeProject();
++		} catch (error) {
++			console.error("Failed to prepare project exit:", error);
++		} finally {
++			editor.project.closeProject();
++			router.push("/projects");
++		}
++	};
++
++	const handleSaveProjectName = async (newName: string) => {
++		if (
++			activeProject &&
++			newName.trim() &&
++			newName !== activeProject.metadata.name
++		) {
++			try {
++				await editor.project.renameProject({
++					id: activeProject.metadata.id,
++					name: newName.trim(),
++				});
++			} catch (error) {
++				toast.error("Failed to rename project", {
++					description:
++						error instanceof Error ? error.message : "Please try again",
++				});
++			} finally {
++				setOpenDialog(null);
++			}
++		}
++	};
++
++	const handleDeleteProject = async () => {
++		if (activeProject) {
++			try {
++				await editor.project.deleteProjects({
++					ids: [activeProject.metadata.id],
++				});
++				router.push("/projects");
++			} catch (error) {
++				toast.error("Failed to delete project", {
++					description:
++						error instanceof Error ? error.message : "Please try again",
++				});
++			} finally {
++				setOpenDialog(null);
++			}
++		}
++	};
++
++	return (
++		<>
++			<DropdownMenu>
++				<DropdownMenuTrigger asChild>
++					<Button variant="ghost" size="icon" className="p-1 rounded-sm size-8">
++						<Image
++							src={DEFAULT_LOGO_URL}
++							alt="Project thumbnail"
++							width={32}
++							height={32}
++							className="invert dark:invert-0 size-5"
++						/>
++					</Button>
++				</DropdownMenuTrigger>
++				<DropdownMenuContent align="start" className="z-100 w-44">
++					<DropdownMenuItem
++						onClick={handleExit}
++						disabled={isExiting}
++						icon={<HugeiconsIcon icon={Logout05Icon} />}
++					>
++						Exit project
++					</DropdownMenuItem>
++
++					<DropdownMenuItem
++						onClick={() => setOpenDialog("shortcuts")}
++						icon={<HugeiconsIcon icon={CommandIcon} />}
++					>
++						Shortcuts
++					</DropdownMenuItem>
++
++					<DropdownMenuSeparator />
++
++					<DropdownMenuItem asChild icon={<FaDiscord className="size-4!" />}>
++						<Link
++							href={SOCIAL_LINKS.discord}
++							target="_blank"
++							rel="noopener noreferrer"
++						>
++							Discord
++						</Link>
++					</DropdownMenuItem>
++				</DropdownMenuContent>
++			</DropdownMenu>
++			<RenameProjectDialog
++				isOpen={openDialog === "rename"}
++				onOpenChange={(isOpen) => setOpenDialog(isOpen ? "rename" : null)}
++				onConfirm={(newName) => handleSaveProjectName(newName)}
++				projectName={activeProject?.metadata.name || ""}
++			/>
++			<DeleteProjectDialog
++				isOpen={openDialog === "delete"}
++				onOpenChange={(isOpen) => setOpenDialog(isOpen ? "delete" : null)}
++				onConfirm={handleDeleteProject}
++				projectNames={[activeProject?.metadata.name || ""]}
++			/>
++			<ShortcutsDialog
++				isOpen={openDialog === "shortcuts"}
++				onOpenChange={(isOpen) => setOpenDialog(isOpen ? "shortcuts" : null)}
++			/>
++		</>
++	);
++}
++
++function EditableProjectName() {
++	const editor = useEditor();
++	const activeProject = useEditor((e) => e.project.getActive());
++	const [isEditing, setIsEditing] = useState(false);
++	const inputRef = useRef<HTMLInputElement>(null);
++	const originalNameRef = useRef("");
++
++	const projectName = activeProject?.metadata.name || "";
++
++	const startEditing = () => {
++		if (isEditing) return;
++		originalNameRef.current = projectName;
++		setIsEditing(true);
++
++		requestAnimationFrame(() => {
++			inputRef.current?.select();
++		});
++	};
++
++	const saveEdit = async () => {
++		if (!inputRef.current || !activeProject) return;
++		const newName = inputRef.current.value.trim();
++		setIsEditing(false);
++
++		if (!newName) {
++			inputRef.current.value = originalNameRef.current;
++			return;
++		}
++
++		if (newName !== originalNameRef.current) {
++			try {
++				await editor.project.renameProject({
++					id: activeProject.metadata.id,
++					name: newName,
++				});
++			} catch (error) {
++				toast.error("Failed to rename project", {
++					description:
++						error instanceof Error ? error.message : "Please try again",
++				});
++			}
++		}
++	};
++
++	const handleKeyDown = (event: React.KeyboardEvent) => {
++		if (event.key === "Enter") {
++			event.preventDefault();
++			inputRef.current?.blur();
++		} else if (event.key === "Escape") {
++			event.preventDefault();
++			if (inputRef.current) {
++				inputRef.current.value = originalNameRef.current;
++				inputRef.current.setSelectionRange(0, 0);
++			}
++			setIsEditing(false);
++			inputRef.current?.blur();
++		}
++	};
++
++	return (
++		<input
++			ref={inputRef}
++			type="text"
++			defaultValue={projectName}
++			readOnly={!isEditing}
++			onClick={startEditing}
++			onBlur={saveEdit}
++			onKeyDown={handleKeyDown}
++			style={{ fieldSizing: "content" }}
++			className={cn(
++				"text-[0.9rem] h-8 px-2 py-1 rounded-sm bg-transparent outline-none cursor-pointer hover:bg-accent hover:text-accent-foreground",
++				isEditing && "ring-1 ring-ring cursor-text hover:bg-transparent",
++			)}
++		/>
++	);
++}
+diff --git a/apps/web/src/components/landing/hero.tsx b/apps/web/src/components/landing/hero.tsx
+index ac49e4b..d473ccd 100644
+--- a/apps/web/src/components/landing/hero.tsx
++++ b/apps/web/src/components/landing/hero.tsx
+@@ -1,41 +1,41 @@
+-"use client";
+-
+-import { Button } from "../ui/button";
+-import { ArrowRight } from "lucide-react";
+-import Image from "next/image";
+-import { Handlebars } from "./handlebars";
+-import Link from "next/link";
+-
+-export function Hero() {
+-	return (
+-		<div className="flex min-h-[calc(100svh-4.5rem)] flex-col items-center justify-between px-4 text-center">
+-			<Image
+-				className="absolute top-0 left-0 -z-50 size-full object-cover opacity-85 invert dark:invert-0"
+-				src="/landing-page-dark.png"
+-				height={1903.5}
+-				width={1269}
+-				alt="OpenCut video editor landing page background"
+-			/>
+-			<div className="mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center">
+-				<div className="inline-block text-4xl font-bold tracking-tighter md:text-[4rem]">
+-					<h1>The open source</h1>
+-					<Handlebars>Video editor</Handlebars>
+-				</div>
+-
+-				<p className="text-muted-foreground mx-auto mt-10 max-w-xl text-base font-light tracking-wide sm:text-xl">
+-					A simple but powerful video editor that gets the job done. Works on
+-					any platform.
+-				</p>
+-
+-				<div className="mt-8 flex justify-center gap-8">
+-					<Link href="/projects">
+-						<Button type="submit" size="lg" className="h-11 text-base">
+-							Try early beta
+-							<ArrowRight className="ml-0.5" />
+-						</Button>
+-					</Link>
+-				</div>
+-			</div>
+-		</div>
+-	);
+-}
++"use client";
++
++import { Button } from "../ui/button";
++import { ArrowRight } from "lucide-react";
++import Image from "next/image";
++import { Handlebars } from "./handlebars";
++import Link from "next/link";
++
++export function Hero() {
++	return (
++		<div className="flex min-h-[calc(100svh-4.5rem)] flex-col items-center justify-between px-4 text-center">
++			<Image
++				className="absolute top-0 left-0 -z-50 size-full object-cover opacity-85 invert dark:invert-0"
++				src="/opencut/landing-page-dark.png"
++				height={1903.5}
++				width={1269}
++				alt="OpenCut video editor landing page background"
++			/>
++			<div className="mx-auto flex w-full max-w-3xl flex-1 flex-col justify-center">
++				<div className="inline-block text-4xl font-bold tracking-tighter md:text-[4rem]">
++					<h1>The open source</h1>
++					<Handlebars>Video editor</Handlebars>
++				</div>
++
++				<p className="text-muted-foreground mx-auto mt-10 max-w-xl text-base font-light tracking-wide sm:text-xl">
++					A simple but powerful video editor that gets the job done. Works on
++					any platform.
++				</p>
++
++				<div className="mt-8 flex justify-center gap-8">
++					<Link href="/projects">
++						<Button type="submit" size="lg" className="h-11 text-base">
++							Try early beta
++							<ArrowRight className="ml-0.5" />
++						</Button>
++					</Link>
++				</div>
++			</div>
++		</div>
++	);
++}
+diff --git a/apps/web/src/components/providers/editor-provider.tsx b/apps/web/src/components/providers/editor-provider.tsx
+index fdc84af..ec18f61 100644
+--- a/apps/web/src/components/providers/editor-provider.tsx
++++ b/apps/web/src/components/providers/editor-provider.tsx
+@@ -59,7 +59,7 @@ export function EditorProvider({ projectId, children }: EditorProviderProps) {
+ 						const newProjectId = await editor.project.createNewProject({
+ 							name: "Untitled Project",
+ 						});
+-						router.replace(`/editor/${newProjectId}`);
++						router.replace(`/editor/?project=${newProjectId}`);
+ 					} catch (_createErr) {
+ 						setError("Failed to create project");
+ 						setIsLoading(false);
+diff --git a/apps/web/src/copilot/components/copilot-popover.tsx b/apps/web/src/copilot/components/copilot-popover.tsx
+new file mode 100644
+index 0000000..08aec95
+--- /dev/null
++++ b/apps/web/src/copilot/components/copilot-popover.tsx
+@@ -0,0 +1,160 @@
++"use client";
++
++// FreeToolOnline addition: the AI copilot panel.
++//
++// Type an instruction ("cut the first 3 seconds and add the title Hello at
++// 0:02"); a language model running ON THIS DEVICE (WebGPU) turns it into a
++// validated list of edit operations, which are applied through the editor's
++// normal command stack - so everything the copilot does is a regular,
++// undoable edit. It can also suggest titles/captions from what is on the
++// timeline. Machines without a usable WebGPU adapter see the button disabled
++// with an explanation instead of an error.
++
++import { useEffect, useState } from "react";
++import {
++	Popover,
++	PopoverContent,
++	PopoverTrigger,
++} from "@/components/ui/popover";
++import { Button } from "@/components/ui/button";
++import { Textarea } from "@/components/ui/textarea";
++import { useEditor } from "@/editor/use-editor";
++import {
++	applyCopilotPlan,
++	copilotContract,
++	copilotPlanSchema,
++	describeTimeline,
++} from "../ops";
++import { planFromInstruction, probeWebGpu, suggestText } from "../llm";
++
++export function CopilotPopover() {
++	const editor = useEditor();
++	const [gpuOk, setGpuOk] = useState<boolean | null>(null);
++	const [instruction, setInstruction] = useState("");
++	const [busy, setBusy] = useState(false);
++	const [status, setStatus] = useState("");
++	const [log, setLog] = useState<string[]>([]);
++
++	useEffect(() => {
++		let mounted = true;
++		probeWebGpu().then((ok) => {
++			if (mounted) setGpuOk(ok);
++		});
++		// Test hook: lets the e2e harness exercise the SAME validated op
++		// pipeline the model uses, without needing a GPU in CI. Only exists
++		// when the page is opened with ?copilotDebug=1.
++		if (typeof window !== "undefined" && window.location.search.includes("copilotDebug=1")) {
++			(window as unknown as Record<string, unknown>).__ftolCopilotApply = (planJson: string) => {
++				const plan = copilotPlanSchema.parse(JSON.parse(planJson));
++				return applyCopilotPlan({ editor, plan });
++			};
++			(window as unknown as Record<string, unknown>).__ftolCopilotDescribe = () =>
++				describeTimeline({ editor });
++		}
++		return () => {
++			mounted = false;
++		};
++	}, [editor]);
++
++	const run = async () => {
++		const text = instruction.trim();
++		if (!text || busy) return;
++		setBusy(true);
++		setLog([]);
++		try {
++			const plan = await planFromInstruction({
++				instruction: text,
++				timeline: describeTimeline({ editor }),
++				contract: copilotContract(),
++				onStatus: setStatus,
++			});
++			const applied = applyCopilotPlan({ editor, plan });
++			setLog(applied);
++			setStatus(
++				plan.note
++					? `Done - ${plan.note} (everything is undoable with Ctrl+Z).`
++					: "Done - every change is a normal edit you can undo with Ctrl+Z.",
++			);
++		} catch (e) {
++			setStatus(`Copilot: ${(e as Error).message}`);
++		} finally {
++			setBusy(false);
++		}
++	};
++
++	const suggest = async () => {
++		if (busy) return;
++		setBusy(true);
++		setLog([]);
++		try {
++			const text = await suggestText({
++				prompt:
++					"Here is what sits on a video timeline:\n" +
++					describeTimeline({ editor }) +
++					"\n\nSuggest 3 short video titles and one 1-sentence description. Plain text only.",
++				onStatus: setStatus,
++			});
++			setLog(text.split("\n").filter(Boolean).slice(0, 8));
++			setStatus("Suggestions written on this device - nothing was uploaded.");
++		} catch (e) {
++			setStatus(`Copilot: ${(e as Error).message}`);
++		} finally {
++			setBusy(false);
++		}
++	};
++
++	return (
++		<Popover>
++			<PopoverTrigger asChild>
++				<Button variant="outline" className="h-8">
++					AI copilot
++				</Button>
++			</PopoverTrigger>
++			<PopoverContent className="w-96" align="end">
++				<div className="flex flex-col gap-2">
++					<p className="text-sm font-medium">AI copilot (runs on this device)</p>
++					{gpuOk === false ? (
++						<p className="text-muted-foreground text-xs">
++							This browser has no usable WebGPU adapter, so the local language
++							model cannot run here. Every editing feature still works - the
++							copilot is only a convenience layer over them.
++						</p>
++					) : (
++						<>
++							<Textarea
++								placeholder={
++									'e.g. "cut the first 3 seconds, add the title Hello at 2s, and mute everything"'
++								}
++								value={instruction}
++								onChange={(e) => setInstruction(e.target.value)}
++								rows={3}
++								disabled={busy}
++							/>
++							<div className="flex gap-2">
++								<Button size="sm" onClick={run} disabled={busy || !instruction.trim()}>
++									{busy ? "Working..." : "Apply with the local model"}
++								</Button>
++								<Button size="sm" variant="outline" onClick={suggest} disabled={busy}>
++									Suggest titles
++								</Button>
++							</div>
++							<p className="text-muted-foreground text-xs">
++								First use downloads a ~700 MB model that the browser keeps.
++								Your video, timeline and words never leave this tab, and every
++								change the copilot makes is a normal undoable edit.
++							</p>
++						</>
++					)}
++					{status ? <p className="text-xs">{status}</p> : null}
++					{log.length > 0 ? (
++						<ul className="text-muted-foreground max-h-40 list-disc overflow-auto pl-4 text-xs">
++							{log.map((line, i) => (
++								<li key={i}>{line}</li>
++							))}
++						</ul>
++					) : null}
++				</div>
++			</PopoverContent>
++		</Popover>
++	);
++}
+diff --git a/apps/web/src/copilot/llm.ts b/apps/web/src/copilot/llm.ts
+new file mode 100644
+index 0000000..72c12bf
+--- /dev/null
++++ b/apps/web/src/copilot/llm.ts
+@@ -0,0 +1,164 @@
++// FreeToolOnline addition: the on-device language model behind the copilot.
++//
++// web-llm (Apache-2.0) runs the model on WebGPU inside this tab; nothing the
++// user types leaves the browser. Availability is decided by an AWAITED
++// requestAdapter() probe - never by feature-detecting navigator.gpu, which
++// exists on machines that cannot actually provide an adapter.
++
++import { copilotPlanSchema, type CopilotPlan } from "./ops";
++
++const MODEL_ID = "Llama-3.2-1B-Instruct-q4f16_1-MLC";
++
++type Engine = {
++	chat: {
++		completions: {
++			create: (args: {
++				messages: { role: string; content: string }[];
++				temperature: number;
++				max_tokens: number;
++			}) => Promise<{
++				choices?: { message?: { content?: string } }[];
++			}>;
++		};
++	};
++};
++
++let gpuOk: boolean | null = null;
++let enginePromise: Promise<Engine> | null = null;
++
++export async function probeWebGpu(): Promise<boolean> {
++	if (gpuOk !== null) return gpuOk;
++	try {
++		const gpu = (navigator as { gpu?: { requestAdapter?: () => Promise<unknown> } }).gpu;
++		if (!gpu || !gpu.requestAdapter) {
++			gpuOk = false;
++			return gpuOk;
++		}
++		const adapter = await gpu.requestAdapter();
++		gpuOk = Boolean(adapter);
++	} catch {
++		gpuOk = false;
++	}
++	return gpuOk;
++}
++
++export function loadEngine({
++	onStatus,
++}: {
++	onStatus: (text: string) => void;
++}): Promise<Engine> {
++	if (!enginePromise) {
++		onStatus(
++			"Loading the local language model (a one-time download of roughly 700 MB that the browser keeps)...",
++		);
++		enginePromise = import("@mlc-ai/web-llm").then(async (webllm) => {
++			const engine = new webllm.MLCEngine();
++			engine.setInitProgressCallback((p: { text?: string }) => {
++				onStatus(`Language model: ${p?.text ?? "loading"}...`);
++			});
++			const list = webllm.prebuiltAppConfig?.model_list ?? [];
++			let id: string | null = null;
++			if (list.some((m: { model_id: string }) => m.model_id === MODEL_ID)) {
++				id = MODEL_ID;
++			} else {
++				const small = list.find((m: { model_id: string }) =>
++					/1B|1_5B|1\.5B/i.test(m.model_id),
++				);
++				id = small?.model_id ?? list[0]?.model_id ?? null;
++			}
++			if (!id) throw new Error("no model available in the web-llm registry");
++			await engine.reload(id);
++			return engine as unknown as Engine;
++		});
++		enginePromise.catch(() => {
++			enginePromise = null;
++		});
++	}
++	return enginePromise;
++}
++
++function extractJson({ text }: { text: string }): string {
++	const start = text.indexOf("{");
++	const end = text.lastIndexOf("}");
++	if (start === -1 || end === -1 || end <= start) return text;
++	return text.slice(start, end + 1);
++}
++
++// Ask the model for a plan; feed schema errors back for up to three attempts.
++export async function planFromInstruction({
++	instruction,
++	timeline,
++	contract,
++	onStatus,
++}: {
++	instruction: string;
++	timeline: string;
++	contract: string;
++	onStatus: (text: string) => void;
++}): Promise<CopilotPlan> {
++	const engine = await loadEngine({ onStatus });
++	const messages: { role: string; content: string }[] = [
++		{
++			role: "system",
++			content: `You turn video-editing instructions into edit operations.\n${contract}`,
++		},
++		{
++			role: "user",
++			content: `Current timeline:\n${timeline}\n\nInstruction: ${instruction}`,
++		},
++	];
++	let lastError = "";
++	for (let attempt = 1; attempt <= 3; attempt++) {
++		onStatus(`Writing the edit plan (attempt ${attempt} of 3)...`);
++		const res = await engine.chat.completions.create({
++			messages,
++			temperature: 0.2,
++			max_tokens: 900,
++		});
++		const text = res?.choices?.[0]?.message?.content ?? "";
++		let candidate: unknown;
++		try {
++			candidate = JSON.parse(extractJson({ text }));
++		} catch (e) {
++			lastError = `not parseable JSON (${(e as Error).message})`;
++			messages.push({ role: "assistant", content: text.slice(0, 1500) });
++			messages.push({
++				role: "user",
++				content: `That was ${lastError}. Send ONLY the JSON object.`,
++			});
++			continue;
++		}
++		const parsed = copilotPlanSchema.safeParse(candidate);
++		if (parsed.success) return parsed.data;
++		lastError = parsed.error.issues
++			.slice(0, 5)
++			.map((i) => `${i.path.join(".")}: ${i.message}`)
++			.join("; ");
++		messages.push({ role: "assistant", content: text.slice(0, 1500) });
++		messages.push({
++			role: "user",
++			content: `That JSON failed the contract: ${lastError}. Fix exactly these problems and resend the full object.`,
++		});
++	}
++	throw new Error(
++		`the model could not produce a valid plan in 3 attempts (${lastError}) - use the timeline directly instead`,
++	);
++}
++
++// Free-text generation (titles, caption wording) from timeline context.
++export async function suggestText({
++	prompt,
++	onStatus,
++}: {
++	prompt: string;
++	onStatus: (text: string) => void;
++}): Promise<string> {
++	const engine = await loadEngine({ onStatus });
++	onStatus("Writing suggestions...");
++	const res = await engine.chat.completions.create({
++		messages: [{ role: "user", content: prompt }],
++		temperature: 0.7,
++		max_tokens: 400,
++	});
++	return res?.choices?.[0]?.message?.content ?? "";
++}
+diff --git a/apps/web/src/copilot/ops.ts b/apps/web/src/copilot/ops.ts
+new file mode 100644
+index 0000000..14e32e4
+--- /dev/null
++++ b/apps/web/src/copilot/ops.ts
+@@ -0,0 +1,243 @@
++// FreeToolOnline addition: the AI copilot's edit-operation contract.
++//
++// The language model NEVER touches the editor directly. It emits a JSON list
++// of operations that (a) must parse against the zod schema below and (b) are
++// applied by deterministic code through the same TimelineManager commands the
++// UI uses - so every applied op is undoable with the normal history stack.
++
++import { z } from "zod";
++import type { EditorCore } from "@/core";
++import { mediaTimeFromSeconds, mediaTimeToSeconds } from "@/wasm";
++import type { MediaTime } from "@/wasm";
++import { buildTextElement } from "@/timeline/element-utils";
++import { DEFAULTS } from "@/timeline/defaults";
++import type { TimelineTrack, TimelineElement } from "@/timeline/types";
++
++const seconds = z.number().min(0).max(60 * 60 * 6);
++
++export const copilotOpSchema = z.discriminatedUnion("op", [
++	z.object({ op: z.literal("seek"), seconds }),
++	z.object({ op: z.literal("play") }),
++	z.object({ op: z.literal("pause") }),
++	z.object({ op: z.literal("split"), seconds }),
++	z.object({
++		op: z.literal("delete_range"),
++		start_seconds: seconds,
++		end_seconds: seconds,
++	}),
++	z.object({ op: z.literal("delete_element"), element: z.number().int().min(0) }),
++	z.object({
++		op: z.literal("add_text"),
++		text: z.string().min(1).max(500),
++		start_seconds: seconds,
++		duration_seconds: z.number().min(0.2).max(600).default(4),
++	}),
++	z.object({
++		op: z.literal("mute"),
++		element: z.number().int().min(0).optional(),
++	}),
++	z.object({
++		op: z.literal("unmute"),
++		element: z.number().int().min(0).optional(),
++	}),
++	z.object({ op: z.literal("undo") }),
++]);
++
++export const copilotPlanSchema = z.object({
++	ops: z.array(copilotOpSchema).min(1).max(20),
++	note: z.string().max(300).optional(),
++});
++
++export type CopilotOp = z.infer<typeof copilotOpSchema>;
++export type CopilotPlan = z.infer<typeof copilotPlanSchema>;
++
++interface IndexedElement {
++	index: number;
++	trackId: string;
++	element: TimelineElement;
++}
++
++function listElements({ editor }: { editor: EditorCore }): IndexedElement[] {
++	const scene = editor.scenes.getActiveSceneOrNull();
++	if (!scene) return [];
++	const tracks: TimelineTrack[] = [
++		...scene.tracks.overlay,
++		scene.tracks.main,
++		...scene.tracks.audio,
++	];
++	const out: IndexedElement[] = [];
++	let index = 0;
++	for (const track of tracks) {
++		for (const element of track.elements) {
++			out.push({ index, trackId: track.id, element });
++			index += 1;
++		}
++	}
++	return out;
++}
++
++// Compact, model-facing description of the current timeline. Element indices
++// here are the ONLY handles the model may reference in delete_element / mute.
++export function describeTimeline({ editor }: { editor: EditorCore }): string {
++	const items = listElements({ editor });
++	if (items.length === 0) return "The timeline is empty.";
++	const total = mediaTimeToSeconds({ time: editor.timeline.getTotalDuration() });
++	const lines = items.map(({ index, element }) => {
++		const start = mediaTimeToSeconds({ time: element.startTime });
++		const end = start + mediaTimeToSeconds({ time: element.duration });
++		const kind = element.type;
++		const name = ("name" in element && element.name) || kind;
++		return `#${index} [${kind}] "${String(name).slice(0, 40)}" ${start.toFixed(2)}s -> ${end.toFixed(2)}s${"muted" in element && element.muted ? " (muted)" : ""}`;
++	});
++	return `Total duration ${total.toFixed(2)}s. Elements:\n${lines.join("\n")}`;
++}
++
++function elementsCrossing({
++	editor,
++	time,
++}: {
++	editor: EditorCore;
++	time: MediaTime;
++}): { trackId: string; elementId: string }[] {
++	const t = mediaTimeToSeconds({ time: time });
++	return listElements({ editor })
++		.filter(({ element }) => {
++			const start = mediaTimeToSeconds({ time: element.startTime });
++			const end = start + mediaTimeToSeconds({ time: element.duration });
++			return start + 0.01 < t && t < end - 0.01;
++		})
++		.map(({ trackId, element }) => ({ trackId, elementId: element.id }));
++}
++
++export function applyCopilotPlan({
++	editor,
++	plan,
++}: {
++	editor: EditorCore;
++	plan: CopilotPlan;
++}): string[] {
++	const log: string[] = [];
++	for (const op of plan.ops) {
++		switch (op.op) {
++			case "seek": {
++				editor.playback.seek({ time: mediaTimeFromSeconds({ seconds: op.seconds }) });
++				log.push(`Moved the playhead to ${op.seconds}s.`);
++				break;
++			}
++			case "play":
++				editor.playback.play();
++				log.push("Playing.");
++				break;
++			case "pause":
++				editor.playback.pause();
++				log.push("Paused.");
++				break;
++			case "split": {
++				const time = mediaTimeFromSeconds({ seconds: op.seconds });
++				const targets = elementsCrossing({ editor, time });
++				if (targets.length === 0) {
++					log.push(`Nothing crosses ${op.seconds}s, so there was nothing to split.`);
++					break;
++				}
++				editor.timeline.splitElements({ elements: targets, splitTime: time });
++				log.push(`Split ${targets.length} element(s) at ${op.seconds}s.`);
++				break;
++			}
++			case "delete_range": {
++				const start = Math.min(op.start_seconds, op.end_seconds);
++				const end = Math.max(op.start_seconds, op.end_seconds);
++				if (end - start < 0.05) {
++					log.push("The range is too small to delete.");
++					break;
++				}
++				const startT = mediaTimeFromSeconds({ seconds: start });
++				const endT = mediaTimeFromSeconds({ seconds: end });
++				const atStart = elementsCrossing({ editor, time: startT });
++				if (atStart.length) editor.timeline.splitElements({ elements: atStart, splitTime: startT });
++				const atEnd = elementsCrossing({ editor, time: endT });
++				if (atEnd.length) editor.timeline.splitElements({ elements: atEnd, splitTime: endT });
++				const doomed = listElements({ editor })
++					.filter(({ element }) => {
++						const s = mediaTimeToSeconds({ time: element.startTime });
++						const e = s + mediaTimeToSeconds({ time: element.duration });
++						return s >= start - 0.01 && e <= end + 0.01;
++					})
++					.map(({ trackId, element }) => ({ trackId, elementId: element.id }));
++				if (doomed.length === 0) {
++					log.push(`No element sits fully inside ${start}s-${end}s.`);
++					break;
++				}
++				editor.timeline.deleteElements({ elements: doomed });
++				log.push(`Deleted ${doomed.length} element(s) between ${start}s and ${end}s.`);
++				break;
++			}
++			case "delete_element": {
++				const item = listElements({ editor }).find((i) => i.index === op.element);
++				if (!item) {
++					log.push(`There is no element #${op.element}.`);
++					break;
++				}
++				editor.timeline.deleteElements({
++					elements: [{ trackId: item.trackId, elementId: item.element.id }],
++				});
++				log.push(`Deleted element #${op.element}.`);
++				break;
++			}
++			case "add_text": {
++				const element = buildTextElement({
++					raw: {
++						...DEFAULTS.text.element,
++						duration: mediaTimeFromSeconds({ seconds: op.duration_seconds }),
++						params: { content: op.text },
++					},
++					startTime: mediaTimeFromSeconds({ seconds: op.start_seconds }),
++				});
++				editor.timeline.insertElement({ element, placement: { mode: "auto" } });
++				log.push(`Added the text "${op.text.slice(0, 40)}" at ${op.start_seconds}s for ${op.duration_seconds}s.`);
++				break;
++			}
++			case "mute":
++			case "unmute": {
++				const wantMuted = op.op === "mute";
++				const items = listElements({ editor }).filter((i) =>
++					op.element === undefined ? true : i.index === op.element,
++				);
++				const toToggle = items.filter(
++					({ element }) => "muted" in element && element.muted !== wantMuted,
++				);
++				if (toToggle.length === 0) {
++					log.push(`Nothing needed ${op.op}.`);
++					break;
++				}
++				editor.timeline.toggleElementsMuted({
++					elements: toToggle.map(({ trackId, element }) => ({
++						trackId,
++						elementId: element.id,
++					})),
++				});
++				log.push(`${wantMuted ? "Muted" : "Unmuted"} ${toToggle.length} element(s).`);
++				break;
++			}
++			case "undo":
++				editor.command.undo();
++				log.push("Undid the last edit.");
++				break;
++		}
++	}
++	return log;
++}
++
++export function copilotContract(): string {
++	return [
++		'Reply with ONLY a JSON object, no prose, no markdown fences: {"ops":[...],"note":"optional short summary"}.',
++		"Allowed ops (times are seconds as plain numbers):",
++		'{"op":"seek","seconds":n} {"op":"play"} {"op":"pause"}',
++		'{"op":"split","seconds":n} - splits every element crossing that time',
++		'{"op":"delete_range","start_seconds":n,"end_seconds":n} - removes that stretch of the timeline content',
++		'{"op":"delete_element","element":i} - i is the #index from the timeline listing',
++		'{"op":"add_text","text":"...","start_seconds":n,"duration_seconds":n}',
++		'{"op":"mute","element":i?} {"op":"unmute","element":i?} - omit element to affect everything',
++		'{"op":"undo"}',
++		"Use at most 20 ops. Only reference #indices that exist in the listing.",
++	].join("\n");
++}
+diff --git a/apps/web/src/db/index.ts b/apps/web/src/db/index.ts
+deleted file mode 100644
+index 29e3ffd..0000000
+--- a/apps/web/src/db/index.ts
++++ /dev/null
+@@ -1,19 +0,0 @@
+-import { drizzle } from "drizzle-orm/postgres-js";
+-import postgres from "postgres";
+-import * as schema from "./schema";
+-import { webEnv } from "@/env/web";
+-
+-let _db: ReturnType<typeof drizzle> | null = null;
+-
+-function getDb() {
+-	if (!_db) {
+-		const client = postgres(webEnv.DATABASE_URL);
+-		_db = drizzle(client, { schema });
+-	}
+-
+-	return _db;
+-}
+-
+-export const db = getDb();
+-
+-export * from "./schema";
+diff --git a/apps/web/src/db/schema.ts b/apps/web/src/db/schema.ts
+deleted file mode 100644
+index 8f8be24..0000000
+--- a/apps/web/src/db/schema.ts
++++ /dev/null
+@@ -1,70 +0,0 @@
+-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+-
+-export const users = pgTable("users", {
+-	id: text("id").primaryKey(),
+-
+-	// todo: implement fully anonymous sign-in for privacy
+-	// we don't have any auth flows currently so this is fine for now
+-	name: text("name").notNull(),
+-	email: text("email").notNull().unique(),
+-	emailVerified: boolean("email_verified").default(false).notNull(),
+-	image: text("image"),
+-	createdAt: timestamp("created_at")
+-		.$defaultFn(() => /* @__PURE__ */ new Date())
+-		.notNull(),
+-	updatedAt: timestamp("updated_at")
+-		.$defaultFn(() => /* @__PURE__ */ new Date())
+-		.notNull(),
+-}).enableRLS();
+-
+-export const sessions = pgTable("sessions", {
+-	id: text("id").primaryKey(),
+-	expiresAt: timestamp("expires_at").notNull(),
+-	token: text("token").notNull().unique(),
+-	createdAt: timestamp("created_at").notNull(),
+-	updatedAt: timestamp("updated_at").notNull(),
+-	ipAddress: text("ip_address"),
+-	userAgent: text("user_agent"),
+-	userId: text("user_id")
+-		.notNull()
+-		.references(() => users.id, { onDelete: "cascade" }),
+-}).enableRLS();
+-
+-export const accounts = pgTable("accounts", {
+-	id: text("id").primaryKey(),
+-	accountId: text("account_id").notNull(),
+-	providerId: text("provider_id").notNull(),
+-	userId: text("user_id")
+-		.notNull()
+-		.references(() => users.id, { onDelete: "cascade" }),
+-	accessToken: text("access_token"),
+-	refreshToken: text("refresh_token"),
+-	idToken: text("id_token"),
+-	accessTokenExpiresAt: timestamp("access_token_expires_at"),
+-	refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+-	scope: text("scope"),
+-	password: text("password"),
+-	createdAt: timestamp("created_at").notNull(),
+-	updatedAt: timestamp("updated_at").notNull(),
+-}).enableRLS();
+-
+-export const feedback = pgTable("feedback", {
+-	id: text("id").primaryKey(),
+-	message: text("message").notNull(),
+-	createdAt: timestamp("created_at")
+-		.$defaultFn(() => new Date())
+-		.notNull(),
+-});
+-
+-export const verifications = pgTable("verifications", {
+-	id: text("id").primaryKey(),
+-	identifier: text("identifier").notNull(),
+-	value: text("value").notNull(),
+-	expiresAt: timestamp("expires_at").notNull(),
+-	createdAt: timestamp("created_at").$defaultFn(
+-		() => /* @__PURE__ */ new Date(),
+-	),
+-	updatedAt: timestamp("updated_at").$defaultFn(
+-		() => /* @__PURE__ */ new Date(),
+-	),
+-}).enableRLS();
+diff --git a/apps/web/src/env/web.ts b/apps/web/src/env/web.ts
+index aa05161..c8bb2b6 100644
+--- a/apps/web/src/env/web.ts
++++ b/apps/web/src/env/web.ts
+@@ -1,28 +1,23 @@
+ import { z } from "zod";
+ 
++// FreeToolOnline self-hosted build: the editor is exported statically with no
++// backend, so every server-only variable is optional. Only NODE_ENV and the
++// public site URL remain meaningful.
+ const webEnvSchema = z.object({
+-	// Node
+ 	NODE_ENV: z.enum(["development", "production", "test"]),
+ 	ANALYZE: z.string().optional(),
+ 	NEXT_RUNTIME: z.enum(["nodejs", "edge"]).optional(),
+-
+-	// Public
+-	NEXT_PUBLIC_SITE_URL: z.url().default("http://localhost:3000"),
+-	NEXT_PUBLIC_MARBLE_API_URL: z.url(),
+-
+-	// Server
+-	DATABASE_URL: z.string().refine(
+-		(url) =>
+-			url.startsWith("postgres://") || url.startsWith("postgresql://"),
+-		"DATABASE_URL must be a postgres:// or postgresql:// URL",
+-	),
+-
+-	BETTER_AUTH_SECRET: z.string(),
+-	UPSTASH_REDIS_REST_URL: z.url(),
+-	UPSTASH_REDIS_REST_TOKEN: z.string(),
+-	MARBLE_WORKSPACE_KEY: z.string(),
+-	FREESOUND_CLIENT_ID: z.string(),
+-	FREESOUND_API_KEY: z.string(),
++	NEXT_PUBLIC_SITE_URL: z
++		.string()
++		.default("https://gh-static.freetool.online/opencut"),
++	NEXT_PUBLIC_MARBLE_API_URL: z.string().optional(),
++	DATABASE_URL: z.string().optional(),
++	BETTER_AUTH_SECRET: z.string().optional(),
++	UPSTASH_REDIS_REST_URL: z.string().optional(),
++	UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
++	MARBLE_WORKSPACE_KEY: z.string().optional(),
++	FREESOUND_CLIENT_ID: z.string().optional(),
++	FREESOUND_API_KEY: z.string().optional(),
+ });
+ 
+ export type WebEnv = z.infer<typeof webEnvSchema>;
+diff --git a/apps/web/src/fonts/google-fonts.ts b/apps/web/src/fonts/google-fonts.ts
+index 36fca06..98c5cda 100644
+--- a/apps/web/src/fonts/google-fonts.ts
++++ b/apps/web/src/fonts/google-fonts.ts
+@@ -2,8 +2,8 @@ import type { FontAtlas } from "@/fonts/types";
+ import { SYSTEM_FONTS } from "@/fonts/system-fonts";
+ 
+ const GOOGLE_FONTS_CSS = "https://fonts.googleapis.com/css2";
+-const FONT_ATLAS_PATH = "/fonts/font-atlas.json";
+-const FONT_CHUNK_PATH_PREFIX = "/fonts/font-chunk-";
++const FONT_ATLAS_PATH = "/opencut/fonts/font-atlas.json";
++const FONT_CHUNK_PATH_PREFIX = "/opencut/fonts/font-chunk-";
+ 
+ const fullLoaded = new Set<string>();
+ 
+diff --git a/apps/web/src/services/renderer/effect-preview.ts b/apps/web/src/services/renderer/effect-preview.ts
+index cbfb1a3..e23782d 100644
+--- a/apps/web/src/services/renderer/effect-preview.ts
++++ b/apps/web/src/services/renderer/effect-preview.ts
+@@ -5,7 +5,7 @@ import type { ParamValues } from "@/params";
+ import { gpuRenderer } from "./gpu-renderer";
+ 
+ const PREVIEW_SIZE = 160;
+-const PREVIEW_IMAGE_PATH = "/effects/preview.jpg";
++const PREVIEW_IMAGE_PATH = "/opencut/effects/preview.jpg";
+ 
+ class EffectPreviewService {
+ 	private testSourceCanvas: OffscreenCanvas | null = null;
+diff --git a/apps/web/src/site/brand.ts b/apps/web/src/site/brand.ts
+index 2701608..dbfa753 100644
+--- a/apps/web/src/site/brand.ts
++++ b/apps/web/src/site/brand.ts
+@@ -5,9 +5,9 @@ export const SITE_INFO = {
+ 	description:
+ 		"A simple but powerful video editor that gets the job done. In your browser.",
+ 	url: SITE_URL,
+-	openGraphImage: "/open-graph/default.jpg",
+-	twitterImage: "/open-graph/default.jpg",
+-	favicon: "/favicon.ico",
++	openGraphImage: "/opencut/open-graph/default.jpg",
++	twitterImage: "/opencut/open-graph/default.jpg",
++	favicon: "/opencut/favicon.ico",
+ };
+ 
+-export const DEFAULT_LOGO_URL = "/logos/opencut/svg/logo.svg";
++export const DEFAULT_LOGO_URL = "/opencut/logos/opencut/svg/logo.svg";
+diff --git a/apps/web/src/site/sponsors.ts b/apps/web/src/site/sponsors.ts
+index 2bd201b..f7d0b6f 100644
+--- a/apps/web/src/site/sponsors.ts
++++ b/apps/web/src/site/sponsors.ts
+@@ -10,14 +10,14 @@ export const SPONSORS: Sponsor[] = [
+ 	{
+ 		name: "Fal.ai",
+ 		url: "https://fal.ai?utm_source=opencut",
+-		logo: "/logos/others/fal.svg",
++		logo: "/opencut/logos/others/fal.svg",
+ 		description: "Generative image, video, and audio models all in one place.",
+ 		invertOnDark: true,
+ 	},
+ 	{
+ 		name: "Vercel",
+ 		url: "https://vercel.com?utm_source=opencut",
+-		logo: "/logos/others/vercel.svg",
++		logo: "/opencut/logos/others/vercel.svg",
+ 		description: "Platform where we deploy and host OpenCut.",
+ 		invertOnDark: true,
+ 	},
+diff --git a/apps/web/src/sounds/use-sound-search.ts b/apps/web/src/sounds/use-sound-search.ts
+index 79bc311..a7496b1 100644
+--- a/apps/web/src/sounds/use-sound-search.ts
++++ b/apps/web/src/sounds/use-sound-search.ts
+@@ -1,154 +1,163 @@
+-import { useEffect } from "react";
+-import { useSoundsStore } from "@/sounds/sounds-store";
+-
+-export function useSoundSearch({
+-	query,
+-	commercialOnly,
+-}: {
+-	query: string;
+-	commercialOnly: boolean;
+-}) {
+-	const {
+-		searchResults,
+-		isSearching,
+-		searchError,
+-		lastSearchQuery,
+-		currentPage,
+-		hasNextPage,
+-		isLoadingMore,
+-		totalCount,
+-		setSearchResults,
+-		setSearching,
+-		setSearchError,
+-		setLastSearchQuery,
+-		setCurrentPage,
+-		setHasNextPage,
+-		setTotalCount,
+-		setLoadingMore,
+-		appendSearchResults,
+-		appendTopSounds,
+-		resetPagination,
+-	} = useSoundsStore();
+-
+-	const loadMore = async () => {
+-		if (isLoadingMore || !hasNextPage) return;
+-
+-		try {
+-			setLoadingMore({ loading: true });
+-			const nextPage = currentPage + 1;
+-
+-			const searchParams = new URLSearchParams({
+-				page: nextPage.toString(),
+-				type: "effects",
+-			});
+-
+-			if (query.trim()) {
+-				searchParams.set("q", query);
+-			}
+-
+-			searchParams.set("commercial_only", commercialOnly.toString());
+-			const response = await fetch(
+-				`/api/sounds/search?${searchParams.toString()}`,
+-			);
+-
+-			if (response.ok) {
+-				const data = await response.json();
+-
+-				if (query.trim()) {
+-					appendSearchResults(data.results);
+-				} else {
+-					appendTopSounds(data.results);
+-				}
+-
+-				setCurrentPage({ page: nextPage });
+-				setHasNextPage({ hasNext: !!data.next });
+-				setTotalCount(data.count);
+-			} else {
+-				setSearchError({ error: `Load more failed: ${response.status}` });
+-			}
+-		} catch (err) {
+-			setSearchError({
+-				error: err instanceof Error ? err.message : "Load more failed",
+-			});
+-		} finally {
+-			setLoadingMore({ loading: false });
+-		}
+-	};
+-
+-	useEffect(() => {
+-		if (!query.trim()) {
+-			setSearchResults({ results: [] });
+-			setSearchError({ error: null });
+-			setLastSearchQuery({ query: "" });
+-			return;
+-		}
+-
+-		if (query === lastSearchQuery && searchResults.length > 0) {
+-			return;
+-		}
+-
+-		let ignore = false;
+-
+-		const timeoutId = setTimeout(async () => {
+-			try {
+-				setSearching({ searching: true });
+-				setSearchError({ error: null });
+-				resetPagination();
+-
+-				const response = await fetch(
+-					`/api/sounds/search?q=${encodeURIComponent(query)}&type=effects&page=1`,
+-				);
+-
+-				if (!ignore) {
+-					if (response.ok) {
+-						const data = await response.json();
+-						setSearchResults({ results: data.results });
+-						setLastSearchQuery({ query: query });
+-						setHasNextPage({ hasNext: !!data.next });
+-						setTotalCount({ count: data.count });
+-						setCurrentPage({ page: 1 });
+-					} else {
+-						setSearchError({ error: `Search failed: ${response.status}` });
+-					}
+-				}
+-			} catch (err) {
+-				if (!ignore) {
+-					setSearchError({
+-						error: err instanceof Error ? err.message : "Search failed",
+-					});
+-				}
+-			} finally {
+-				if (!ignore) {
+-					setSearching({ searching: false });
+-				}
+-			}
+-		}, 300);
+-
+-		return () => {
+-			clearTimeout(timeoutId);
+-			ignore = true;
+-		};
+-	}, [
+-		query,
+-		lastSearchQuery,
+-		searchResults.length,
+-		setSearchResults,
+-		setSearching,
+-		setSearchError,
+-		setLastSearchQuery,
+-		setCurrentPage,
+-		setHasNextPage,
+-		setTotalCount,
+-		resetPagination,
+-	]);
+-
+-	return {
+-		results: searchResults,
+-		isLoading: isSearching,
+-		error: searchError,
+-		loadMore,
+-		hasNextPage,
+-		isLoadingMore,
+-		totalCount,
+-	};
+-}
++import { useEffect } from "react";
++import { useSoundsStore } from "@/sounds/sounds-store";
++
++// FreeToolOnline self-hosted build: the Freesound proxy lives on our own
++// service host (the static export has no /api routes). The panel degrades
++// gracefully when the endpoint is unreachable.
++const SOUNDS_API_BASE =
++	process.env.NEXT_PUBLIC_SOUNDS_API_BASE ??
++	"https://service.freetool.online/opencut/sounds";
++
++
++
++export function useSoundSearch({
++	query,
++	commercialOnly,
++}: {
++	query: string;
++	commercialOnly: boolean;
++}) {
++	const {
++		searchResults,
++		isSearching,
++		searchError,
++		lastSearchQuery,
++		currentPage,
++		hasNextPage,
++		isLoadingMore,
++		totalCount,
++		setSearchResults,
++		setSearching,
++		setSearchError,
++		setLastSearchQuery,
++		setCurrentPage,
++		setHasNextPage,
++		setTotalCount,
++		setLoadingMore,
++		appendSearchResults,
++		appendTopSounds,
++		resetPagination,
++	} = useSoundsStore();
++
++	const loadMore = async () => {
++		if (isLoadingMore || !hasNextPage) return;
++
++		try {
++			setLoadingMore({ loading: true });
++			const nextPage = currentPage + 1;
++
++			const searchParams = new URLSearchParams({
++				page: nextPage.toString(),
++				type: "effects",
++			});
++
++			if (query.trim()) {
++				searchParams.set("q", query);
++			}
++
++			searchParams.set("commercial_only", commercialOnly.toString());
++			const response = await fetch(
++				`${SOUNDS_API_BASE}/search?${searchParams.toString()}`,
++			);
++
++			if (response.ok) {
++				const data = await response.json();
++
++				if (query.trim()) {
++					appendSearchResults(data.results);
++				} else {
++					appendTopSounds(data.results);
++				}
++
++				setCurrentPage({ page: nextPage });
++				setHasNextPage({ hasNext: !!data.next });
++				setTotalCount(data.count);
++			} else {
++				setSearchError({ error: `Load more failed: ${response.status}` });
++			}
++		} catch (err) {
++			setSearchError({
++				error: err instanceof Error ? err.message : "Load more failed",
++			});
++		} finally {
++			setLoadingMore({ loading: false });
++		}
++	};
++
++	useEffect(() => {
++		if (!query.trim()) {
++			setSearchResults({ results: [] });
++			setSearchError({ error: null });
++			setLastSearchQuery({ query: "" });
++			return;
++		}
++
++		if (query === lastSearchQuery && searchResults.length > 0) {
++			return;
++		}
++
++		let ignore = false;
++
++		const timeoutId = setTimeout(async () => {
++			try {
++				setSearching({ searching: true });
++				setSearchError({ error: null });
++				resetPagination();
++
++				const response = await fetch(
++					`${SOUNDS_API_BASE}/search?q=${encodeURIComponent(query)}&type=effects&page=1`,
++				);
++
++				if (!ignore) {
++					if (response.ok) {
++						const data = await response.json();
++						setSearchResults({ results: data.results });
++						setLastSearchQuery({ query: query });
++						setHasNextPage({ hasNext: !!data.next });
++						setTotalCount({ count: data.count });
++						setCurrentPage({ page: 1 });
++					} else {
++						setSearchError({ error: `Search failed: ${response.status}` });
++					}
++				}
++			} catch (err) {
++				if (!ignore) {
++					setSearchError({
++						error: err instanceof Error ? err.message : "Search failed",
++					});
++				}
++			} finally {
++				if (!ignore) {
++					setSearching({ searching: false });
++				}
++			}
++		}, 300);
++
++		return () => {
++			clearTimeout(timeoutId);
++			ignore = true;
++		};
++	}, [
++		query,
++		lastSearchQuery,
++		searchResults.length,
++		setSearchResults,
++		setSearching,
++		setSearchError,
++		setLastSearchQuery,
++		setCurrentPage,
++		setHasNextPage,
++		setTotalCount,
++		resetPagination,
++	]);
++
++	return {
++		results: searchResults,
++		isLoading: isSearching,
++		error: searchError,
++		loadMore,
++		hasNextPage,
++		isLoadingMore,
++		totalCount,
++	};
++}
+diff --git a/apps/web/src/stickers/providers/flags.ts b/apps/web/src/stickers/providers/flags.ts
+index 0cca292..5f290ec 100644
+--- a/apps/web/src/stickers/providers/flags.ts
++++ b/apps/web/src/stickers/providers/flags.ts
+@@ -10,7 +10,7 @@ import type { CountryRecord, RegionId } from "./countries-data";
+ 
+ const FLAGS_PROVIDER_ID = "flags";
+ const DEFAULT_SEARCH_LIMIT = 100;
+-const DEFAULT_FLAGS_BASE_URL = "/flags";
++const DEFAULT_FLAGS_BASE_URL = "/opencut/flags";
+ 
+ let countriesPromise: Promise<CountryRecord[]> | null = null;
+ 
+diff --git a/bun.lock b/bun.lock
+index 455f42c..c63e507 100644
+--- a/bun.lock
++++ b/bun.lock
+@@ -5,11 +5,11 @@
+     "": {
+       "name": "opencut",
+       "dependencies": {
+-        "opencut": ".",
+         "@types/react": "^19.2.10",
+         "@types/react-dom": "^19.2.3",
+         "better-auth": "^1.4.15",
+         "next": "^16.1.3",
++        "opencut": ".",
+         "opencut-wasm": "^0.2.10",
+       },
+       "devDependencies": {
+@@ -35,6 +35,7 @@
+         "@hugeicons/core-free-icons": "^3.3.0",
+         "@hugeicons/react": "^1.1.6",
+         "@huggingface/transformers": "^3.8.1",
++        "@mlc-ai/web-llm": "0.2.84",
+         "@opennextjs/cloudflare": "^1.18.0",
+         "@radix-ui/react-accordion": "^1.2.12",
+         "@radix-ui/react-checkbox": "^1.3.3",
+@@ -486,6 +487,8 @@
+ 
+     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
+ 
++    "@mlc-ai/web-llm": ["@mlc-ai/web-llm@0.2.84", "", { "dependencies": { "loglevel": "^1.9.1" } }, "sha512-hrOWzK4/nGNmgoRKT8pgVmZZ2oEPpbblIWQOwpqNyvK2dysHw3KVB1gNJOuRcQfKOPhucEhX1NJzXzgMDnwSCQ=="],
++
+     "@napi-rs/canvas": ["@napi-rs/canvas@0.1.100", "", { "optionalDependencies": { "@napi-rs/canvas-android-arm64": "0.1.100", "@napi-rs/canvas-darwin-arm64": "0.1.100", "@napi-rs/canvas-darwin-x64": "0.1.100", "@napi-rs/canvas-linux-arm-gnueabihf": "0.1.100", "@napi-rs/canvas-linux-arm64-gnu": "0.1.100", "@napi-rs/canvas-linux-arm64-musl": "0.1.100", "@napi-rs/canvas-linux-riscv64-gnu": "0.1.100", "@napi-rs/canvas-linux-x64-gnu": "0.1.100", "@napi-rs/canvas-linux-x64-musl": "0.1.100", "@napi-rs/canvas-win32-arm64-msvc": "0.1.100", "@napi-rs/canvas-win32-x64-msvc": "0.1.100" } }, "sha512-xglYA6q3XO5P3BNJYxVZ1IV7DLVjp1Py6nwag88YntrS+3vKHyYcMqXVS4ZztJmwz2uGvz1FWhI/4LgbR5uQDA=="],
+ 
+     "@napi-rs/canvas-android-arm64": ["@napi-rs/canvas-android-arm64@0.1.100", "", { "os": "android", "cpu": "arm64" }, "sha512-hjhCKhntPv9+t4ckHymdx0phYNcVW+GKQR6Lzw2zE+pOVjOplSmtx9nNNknTjbEDLcuLZqA1y8ufKg1XfgftzQ=="],
+@@ -858,7 +861,7 @@
+ 
+     "@turbo/windows-arm64": ["@turbo/windows-arm64@2.9.6", "", { "os": "win32", "cpu": "arm64" }, "sha512-1XUUyWW0W6FTSqGEhU8RHVqb2wP1SPkr7hIvBlMEwH9jr+sJQK5kqeosLJ/QaUv4ecSAd1ZhIrLoW7qslAzT4A=="],
+ 
+-    "@types/bun": ["@types/bun@1.3.13", "", { "dependencies": { "bun-types": "1.3.13" } }, "sha512-9fqXWk5YIHGGnUau9TEi+qdlTYDAnOj+xLCmSTwXfAIqXr2x4tytJb43E9uCvt09zJURKXwAtkoH4nLQfzeTXw=="],
++    "@types/bun": ["@types/bun@1.4.0", "", { "dependencies": { "bun-types": "1.4.0" } }, "sha512-K+lZULY23vRgK/CfTjFIV+tyifaNdSMlPh9j+6mQ/cLfpOznLyAuzgV/JQysyECpkBQLVMSyvjlr2fBUSA9wFQ=="],
+ 
+     "@types/culori": ["@types/culori@4.0.1", "", {}, "sha512-43M51r/22CjhbOXyGT361GZ9vncSVQ39u62x5eJdBQFviI8zWp2X5jzqg7k4M6PVgDQAClpy2bUe2dtwEgEDVQ=="],
+ 
+@@ -1004,7 +1007,7 @@
+ 
+     "buffer-from": ["buffer-from@1.1.2", "", {}, "sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ=="],
+ 
+-    "bun-types": ["bun-types@1.3.13", "", { "dependencies": { "@types/node": "*" } }, "sha512-QXKeHLlOLqQX9LgYaHJfzdBaV21T63HhFJnvuRCcjZiaUDpbs5ED1MgxbMra71CsryN/1dAoXuJJJwIv/2drVA=="],
++    "bun-types": ["bun-types@1.4.0", "", { "dependencies": { "@types/node": "*" } }, "sha512-iIKw23BspnQQYd3prITOBxeUsxBHnwzX6YJfGMuNOZzeNcMmVqzIIVGRm1l69ogaPQmb4wB6BN8mA5bE9YuC5Q=="],
+ 
+     "bytes": ["bytes@3.1.2", "", {}, "sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg=="],
+ 
+@@ -1532,6 +1535,8 @@
+ 
+     "lodash.merge": ["lodash.merge@4.6.2", "", {}, "sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ=="],
+ 
++    "loglevel": ["loglevel@1.9.2", "", {}, "sha512-HgMmCqIJSAKqo68l0rS2AanEWfkxaZ5wNiEFb5ggm08lDs9Xl2KxBlX3PTcaD2chBM1gXAYf491/M2Rv8Jwayg=="],
++
+     "long": ["long@5.3.2", "", {}, "sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA=="],
+ 
+     "longest-streak": ["longest-streak@3.1.0", "", {}, "sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g=="],

@@ -216,6 +216,29 @@ jobs:
           path: out/whisper
           key: whisper-${{ hashFiles('whisper/**') }}
 
+      # ---------- OpenCut in-browser video editor (self-hosted static build) ----------
+      # MIT upstream pinned by revision + a reviewed patch (analytics/backend
+      # removed, on-device AI copilot added); build-opencut.sh installs its own
+      # pinned bun. Cached on opencut/** so it rebuilds only when the pin or
+      # the patch changes.
+      - name: Restore opencut cache
+        id: opencut-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: out/opencut
+          key: opencut-${{ hashFiles('opencut/**') }}
+      - name: Build opencut editor
+        if: steps.opencut-cache.outputs.cache-hit != 'true'
+        run: |
+          set -o pipefail
+          bash opencut/build-opencut.sh 2>&1 | tee build-opencut.log
+      - name: Save opencut cache
+        if: steps.opencut-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: out/opencut
+          key: opencut-${{ hashFiles('opencut/**') }}
+
       # ---------- Assemble + publish the combined Pages site ----------
       - name: Assemble site
         run: |
@@ -232,6 +255,8 @@ jobs:
           cp -a out/supertonic/. out/site/supertonic/
           mkdir -p out/site/whisper
           cp -a out/whisper/. out/site/whisper/
+          mkdir -p out/site/opencut
+          cp -a out/opencut/. out/site/opencut/
           # dinosaur-3d/ ships as-is: tiny CC0 glTF models committed to git
           # (same rationale as vendor/ - ~0.3 MB each, license-clean), served
           # with CORS for the /dinosaur-3d viewer pages' optional photoreal layer.

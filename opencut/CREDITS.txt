@@ -1,0 +1,29 @@
+This directory serves the FreeToolOnline self-hosted build of OpenCut, the
+open-source in-browser video editor, for
+https://freetoolonline.com/video-tools/video-editor.html.
+
+Upstream: https://github.com/opencut-app/opencut-classic (MIT License)
+Pinned revision: cf5e79e919144200294fb9fed22a222592a0aeea
+Website: https://opencut.app
+
+Changes relative to upstream (full patch: opencut-freetool.patch):
+- third-party analytics (databuddy) and BotId removed,
+- account/backend surface removed - the editor was already fully client-side
+  (WebCodecs export, IndexedDB + OPFS project storage, in-browser Whisper
+  captions) and now static-exports with no server at all,
+- the editor route moved to /editor/?project=<id> for static hosting,
+- the Freesound sound-library proxy points at service.freetool.online,
+- an AI copilot panel was ADDED: a language model running on the visitor's
+  device (web-llm, Apache-2.0) turns typed instructions into schema-validated
+  edit operations applied through the editor's normal undoable command stack.
+
+Bundled third-party licences of note:
+- mediabunny (WebCodecs mux/demux) - MPL-2.0, files unmodified; source at
+  https://github.com/Vanilagy/mediabunny
+- opencut-wasm - MIT
+- @mlc-ai/web-llm - Apache-2.0
+- onnxruntime-web / transformers.js (Whisper captions) - MIT / Apache-2.0
+
+No visitor media, project data, description or instruction is sent to this
+CDN or to any server: the editor, the export encoder, the caption model and
+the copilot model all run inside the visitor's browser tab.
