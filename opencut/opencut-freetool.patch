@@ -3583,7 +3583,7 @@ index 2bd201b..f7d0b6f 100644
  		invertOnDark: true,
  	},
 diff --git a/apps/web/src/sounds/use-sound-search.ts b/apps/web/src/sounds/use-sound-search.ts
-index 79bc311..a7496b1 100644
+index 79bc311..1761083 100644
 --- a/apps/web/src/sounds/use-sound-search.ts
 +++ b/apps/web/src/sounds/use-sound-search.ts
 @@ -1,154 +1,163 @@
@@ -3749,7 +3749,7 @@ index 79bc311..a7496b1 100644
 +// gracefully when the endpoint is unreachable.
 +const SOUNDS_API_BASE =
 +	process.env.NEXT_PUBLIC_SOUNDS_API_BASE ??
-+	"https://service.freetool.online/opencut/sounds";
++	"https://service.freetool.online/api/opencut/sounds";
 +
 +
 +
