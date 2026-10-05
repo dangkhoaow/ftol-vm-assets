@@ -5,7 +5,7 @@
 #
 # Upstream: https://github.com/opencut-app/opencut-classic (MIT) pinned at
 # OPENCUT_REV. opencut-freetool.patch (generated with `git diff --binary`
-# against that exact revision) does five things, and nothing else:
+# against that exact revision) does six things, and nothing else:
 #   1. removes the databuddy analytics script + BotId (operator instruction),
 #   2. removes the backend surface (better-auth/drizzle/redis API routes, blog
 #      and marketing pages that fetch external CMSes at build time) so the
@@ -16,6 +16,11 @@
 #   5. ADDS src/copilot/ - an on-device WebLLM copilot that turns typed
 #      instructions into schema-validated edit operations applied through the
 #      editor's normal undoable command stack, plus title/caption suggestions.
+#   6. ADDS src/ftol/merger-handoff.ts - /projects/?from=merger receives clips
+#      handed over by freetoolonline.com's Video Merger (postMessage from the
+#      opener tab, origin allowlist; File objects, nothing uploaded), creates a
+#      project and lays them end to end on the main track with their trims,
+#      mute and rotation, plus the music and the merger's frame size.
 #
 # The result keeps upstream's whole editing feature set: multi-track timeline,
 # WebCodecs export (mediabunny, MPL-2.0 - file-level licence preserved,

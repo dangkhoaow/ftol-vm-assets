@@ -1,5 +1,5 @@
 diff --git a/.gitignore b/.gitignore
-index f5d4d26..24b4677 100644
+index f5d4d26e..24b4677e 100644
 --- a/.gitignore
 +++ b/.gitignore
 @@ -25,4 +25,6 @@ target/
@@ -12,7 +12,7 @@ index f5d4d26..24b4677 100644
 +apps/web/out/
 +apps/web/.next/
 diff --git a/apps/web/next.config.ts b/apps/web/next.config.ts
-index 71d96c2..64ae44c 100644
+index 71d96c23..64ae44c3 100644
 --- a/apps/web/next.config.ts
 +++ b/apps/web/next.config.ts
 @@ -1,54 +1,25 @@
@@ -96,7 +96,7 @@ index 71d96c2..64ae44c 100644
 +
 +export default withContentCollections(nextConfig);
 diff --git a/apps/web/package.json b/apps/web/package.json
-index 90cd9fb..bda85e7 100644
+index 90cd9fb5..bda85e7a 100644
 --- a/apps/web/package.json
 +++ b/apps/web/package.json
 @@ -22,6 +22,7 @@
@@ -109,7 +109,7 @@ index 90cd9fb..bda85e7 100644
      "@radix-ui/react-checkbox": "^1.3.3",
 diff --git a/apps/web/src/app/api/auth/[...all]/route.ts b/apps/web/src/app/api/auth/[...all]/route.ts
 deleted file mode 100644
-index edf0d0c..0000000
+index edf0d0c2..00000000
 --- a/apps/web/src/app/api/auth/[...all]/route.ts
 +++ /dev/null
 @@ -1,4 +0,0 @@
@@ -119,7 +119,7 @@ index edf0d0c..0000000
 -export const { POST, GET } = toNextJsHandler(auth);
 diff --git a/apps/web/src/app/api/feedback/route.ts b/apps/web/src/app/api/feedback/route.ts
 deleted file mode 100644
-index cd853ee..0000000
+index cd853eea..00000000
 --- a/apps/web/src/app/api/feedback/route.ts
 +++ /dev/null
 @@ -1,31 +0,0 @@
@@ -156,7 +156,7 @@ index cd853ee..0000000
 -}
 diff --git a/apps/web/src/app/api/health/route.ts b/apps/web/src/app/api/health/route.ts
 deleted file mode 100644
-index dbe6fdb..0000000
+index dbe6fdb1..00000000
 --- a/apps/web/src/app/api/health/route.ts
 +++ /dev/null
 @@ -1,3 +0,0 @@
@@ -165,7 +165,7 @@ index dbe6fdb..0000000
 -}
 diff --git a/apps/web/src/app/api/sounds/search/route.ts b/apps/web/src/app/api/sounds/search/route.ts
 deleted file mode 100644
-index aa7a1b6..0000000
+index aa7a1b60..00000000
 --- a/apps/web/src/app/api/sounds/search/route.ts
 +++ /dev/null
 @@ -1,280 +0,0 @@
@@ -451,7 +451,7 @@ index aa7a1b6..0000000
 -}
 diff --git a/apps/web/src/app/blog/[slug]/page.tsx b/apps/web/src/app/blog/[slug]/page.tsx
 deleted file mode 100644
-index dba9b50..0000000
+index dba9b504..00000000
 --- a/apps/web/src/app/blog/[slug]/page.tsx
 +++ /dev/null
 @@ -1,135 +0,0 @@
@@ -592,7 +592,7 @@ index dba9b50..0000000
 -}
 diff --git a/apps/web/src/app/blog/page.tsx b/apps/web/src/app/blog/page.tsx
 deleted file mode 100644
-index b40bc2f..0000000
+index b40bc2fc..00000000
 --- a/apps/web/src/app/blog/page.tsx
 +++ /dev/null
 @@ -1,52 +0,0 @@
@@ -649,7 +649,7 @@ index b40bc2f..0000000
 -	);
 -}
 diff --git a/apps/web/src/app/brand/page.tsx b/apps/web/src/app/brand/page.tsx
-index 9728cbc..334cfce 100644
+index 9728cbc7..334cfce8 100644
 --- a/apps/web/src/app/brand/page.tsx
 +++ b/apps/web/src/app/brand/page.tsx
 @@ -52,14 +52,14 @@ const ASSET_SECTIONS: AssetSection[] = [
@@ -704,7 +704,7 @@ index 9728cbc..334cfce 100644
  				width: 1760,
 diff --git a/apps/web/src/app/changelog/[version]/page.tsx b/apps/web/src/app/changelog/[version]/page.tsx
 deleted file mode 100644
-index 6c529ce..0000000
+index 6c529ce1..00000000
 --- a/apps/web/src/app/changelog/[version]/page.tsx
 +++ /dev/null
 @@ -1,102 +0,0 @@
@@ -812,7 +812,7 @@ index 6c529ce..0000000
 -}
 diff --git a/apps/web/src/app/changelog/page.tsx b/apps/web/src/app/changelog/page.tsx
 deleted file mode 100644
-index 25ae25d..0000000
+index 25ae25db..00000000
 --- a/apps/web/src/app/changelog/page.tsx
 +++ /dev/null
 @@ -1,83 +0,0 @@
@@ -901,7 +901,7 @@ index 25ae25d..0000000
 -}
 diff --git a/apps/web/src/app/contributors/page.tsx b/apps/web/src/app/contributors/page.tsx
 deleted file mode 100644
-index f4d1373..0000000
+index f4d13732..00000000
 --- a/apps/web/src/app/contributors/page.tsx
 +++ /dev/null
 @@ -1,242 +0,0 @@
@@ -1151,7 +1151,7 @@ diff --git a/apps/web/src/app/editor/[project_id]/page.tsx b/apps/web/src/app/ed
 similarity index 91%
 rename from apps/web/src/app/editor/[project_id]/page.tsx
 rename to apps/web/src/app/editor/page.tsx
-index 680dfff..4be142b 100644
+index 680dfff4..4be142ba 100644
 --- a/apps/web/src/app/editor/[project_id]/page.tsx
 +++ b/apps/web/src/app/editor/page.tsx
 @@ -1,6 +1,7 @@
@@ -1188,7 +1188,7 @@ index 680dfff..4be142b 100644
  	return (
  		<MobileGate>
 diff --git a/apps/web/src/app/layout.tsx b/apps/web/src/app/layout.tsx
-index 558ae53..187e7a3 100644
+index 558ae538..187e7a33 100644
 --- a/apps/web/src/app/layout.tsx
 +++ b/apps/web/src/app/layout.tsx
 @@ -1,24 +1,17 @@
@@ -1258,7 +1258,7 @@ index 558ae53..187e7a3 100644
  					</TooltipProvider>
  				</ThemeProvider>
 diff --git a/apps/web/src/app/metadata.ts b/apps/web/src/app/metadata.ts
-index aa11c43..df04aad 100644
+index aa11c43e..df04aad3 100644
 --- a/apps/web/src/app/metadata.ts
 +++ b/apps/web/src/app/metadata.ts
 @@ -1,86 +1,86 @@
@@ -1435,10 +1435,61 @@ index aa11c43..df04aad 100644
 +	},
 +};
 diff --git a/apps/web/src/app/projects/page.tsx b/apps/web/src/app/projects/page.tsx
-index c39c4fd..fc86918 100644
+index c39c4fd9..98d9c3a9 100644
 --- a/apps/web/src/app/projects/page.tsx
 +++ b/apps/web/src/app/projects/page.tsx
-@@ -512,7 +512,7 @@ function NewProjectButton() {
+@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
+ import { Skeleton } from "@/components/ui/skeleton";
+ import { useEditor } from "@/editor/use-editor";
+ import { useProjectsStore } from "./store";
++import { isMergerHandoff, receiveMergerPayload } from "@/ftol/merger-handoff";
+ import type {
+ 	TProjectMetadata,
+ 	TProjectSortKey,
+@@ -103,6 +104,30 @@ export default function ProjectsPage() {
+ 		}
+ 	}, [editor.project]);
+ 
++	// FreeToolOnline: clips handed over by the Video Merger page (?from=merger).
++	const router = useRouter();
++	const [handoff, setHandoff] = useState<string | null>(null);
++	useEffect(() => {
++		if (!isMergerHandoff()) return;
++		let cancelled = false;
++		setHandoff("Receiving your clips from Video Merger...");
++		receiveMergerPayload()
++			.then(async (payload) => {
++				if (cancelled) return;
++				setHandoff(`Opening ${payload.clips.length} clip${payload.clips.length > 1 ? "s" : ""} in a new project...`);
++				const projectId = await editor.project.createNewProject({ name: "Merged clips" });
++				router.push(`/editor/?project=${projectId}&from=merger`);
++			})
++			.catch((err) => {
++				if (cancelled) return;
++				setHandoff(null);
++				toast.error(err instanceof Error ? err.message : "Could not receive the clips");
++			});
++		return () => {
++			cancelled = true;
++		};
++	}, [editor, router]);
++
+ 	return (
+ 		<div className="bg-background min-h-screen">
+ 			<MigrationDialog />
+@@ -110,6 +135,11 @@ export default function ProjectsPage() {
+ 			<ChangelogNotification />
+ 			<ProjectsHeader />
+ 			<ProjectsToolbar projectIds={projectsToDisplay.map((p) => p.id)} />
++			{handoff ? (
++				<div role="status" className="mx-auto px-8 pt-2 text-sm text-muted-foreground">
++					{handoff}
++				</div>
++			) : null}
+ 			<main className="mx-auto px-4 pt-2 pb-6 flex flex-col gap-4">
+ 				{isLoading || !isInitialized ? (
+ 					<ProjectsSkeleton />
+@@ -512,7 +542,7 @@ function NewProjectButton() {
  		const projectId = await editor.project.createNewProject({
  			name: "New project",
  		});
@@ -1447,7 +1498,7 @@ index c39c4fd..fc86918 100644
  	};
  
  	return (
-@@ -664,7 +664,7 @@ function ProjectItem({
+@@ -664,7 +694,7 @@ function ProjectItem({
  				className="size-5 shrink-0"
  			/>
  
@@ -1456,7 +1507,7 @@ index c39c4fd..fc86918 100644
  				{listRowContent}
  			</Link>
  
-@@ -689,7 +689,7 @@ function ProjectItem({
+@@ -689,7 +719,7 @@ function ProjectItem({
  					<div className="group relative">
  						{isGridView ? (
  							<>
@@ -1465,7 +1516,7 @@ index c39c4fd..fc86918 100644
  									{gridContent}
  								</Link>
  
-@@ -958,7 +958,7 @@ function EmptyState() {
+@@ -958,7 +988,7 @@ function EmptyState() {
  			const projectId = await editor.project.createNewProject({
  				name: "New project",
  			});
@@ -1476,7 +1527,7 @@ index c39c4fd..fc86918 100644
  				description:
 diff --git a/apps/web/src/app/roadmap/page.tsx b/apps/web/src/app/roadmap/page.tsx
 deleted file mode 100644
-index a0c3d9b..0000000
+index a0c3d9be..00000000
 --- a/apps/web/src/app/roadmap/page.tsx
 +++ /dev/null
 @@ -1,146 +0,0 @@
@@ -1628,7 +1679,7 @@ index a0c3d9b..0000000
 -}
 diff --git a/apps/web/src/app/robots.ts b/apps/web/src/app/robots.ts
 deleted file mode 100644
-index 1b1ca86..0000000
+index 1b1ca865..00000000
 --- a/apps/web/src/app/robots.ts
 +++ /dev/null
 @@ -1,13 +0,0 @@
@@ -1647,7 +1698,7 @@ index 1b1ca86..0000000
 -}
 diff --git a/apps/web/src/app/rss.xml/route.ts b/apps/web/src/app/rss.xml/route.ts
 deleted file mode 100644
-index d4e9570..0000000
+index d4e9570a..00000000
 --- a/apps/web/src/app/rss.xml/route.ts
 +++ /dev/null
 @@ -1,46 +0,0 @@
@@ -1699,7 +1750,7 @@ index d4e9570..0000000
 -}
 diff --git a/apps/web/src/app/sitemap.ts b/apps/web/src/app/sitemap.ts
 deleted file mode 100644
-index 73b4180..0000000
+index 73b4180f..00000000
 --- a/apps/web/src/app/sitemap.ts
 +++ /dev/null
 @@ -1,61 +0,0 @@
@@ -1766,7 +1817,7 @@ index 73b4180..0000000
 -}
 diff --git a/apps/web/src/app/sponsors/page.tsx b/apps/web/src/app/sponsors/page.tsx
 deleted file mode 100644
-index 510419f..0000000
+index 510419f0..00000000
 --- a/apps/web/src/app/sponsors/page.tsx
 +++ /dev/null
 @@ -1,86 +0,0 @@
@@ -1858,7 +1909,7 @@ index 510419f..0000000
 -}
 diff --git a/apps/web/src/auth/client.ts b/apps/web/src/auth/client.ts
 deleted file mode 100644
-index 58be51c..0000000
+index 58be51c3..00000000
 --- a/apps/web/src/auth/client.ts
 +++ /dev/null
 @@ -1,6 +0,0 @@
@@ -1870,7 +1921,7 @@ index 58be51c..0000000
 -});
 diff --git a/apps/web/src/auth/rate-limit.ts b/apps/web/src/auth/rate-limit.ts
 deleted file mode 100644
-index c10c381..0000000
+index c10c3819..00000000
 --- a/apps/web/src/auth/rate-limit.ts
 +++ /dev/null
 @@ -1,21 +0,0 @@
@@ -1897,7 +1948,7 @@ index c10c381..0000000
 -}
 diff --git a/apps/web/src/auth/server.ts b/apps/web/src/auth/server.ts
 deleted file mode 100644
-index 5e49387..0000000
+index 5e49387a..00000000
 --- a/apps/web/src/auth/server.ts
 +++ /dev/null
 @@ -1,43 +0,0 @@
@@ -1946,7 +1997,7 @@ index 5e49387..0000000
 -export type Auth = typeof auth;
 diff --git a/apps/web/src/blog/query.ts b/apps/web/src/blog/query.ts
 deleted file mode 100644
-index a7742db..0000000
+index a7742db2..00000000
 --- a/apps/web/src/blog/query.ts
 +++ /dev/null
 @@ -1,133 +0,0 @@
@@ -2085,7 +2136,7 @@ index a7742db..0000000
 -}
 diff --git a/apps/web/src/blog/types.ts b/apps/web/src/blog/types.ts
 deleted file mode 100644
-index 7b2f450..0000000
+index 7b2f450a..00000000
 --- a/apps/web/src/blog/types.ts
 +++ /dev/null
 @@ -1,92 +0,0 @@
@@ -2182,7 +2233,7 @@ index 7b2f450..0000000
 -	pagination: Pagination;
 -};
 diff --git a/apps/web/src/components/editor/editor-header.tsx b/apps/web/src/components/editor/editor-header.tsx
-index 6404dc0..68c996c 100644
+index 6404dc01..68c996c8 100644
 --- a/apps/web/src/components/editor/editor-header.tsx
 +++ b/apps/web/src/components/editor/editor-header.tsx
 @@ -1,248 +1,248 @@
@@ -2683,7 +2734,7 @@ index 6404dc0..68c996c 100644
 +	);
 +}
 diff --git a/apps/web/src/components/landing/hero.tsx b/apps/web/src/components/landing/hero.tsx
-index ac49e4b..d473ccd 100644
+index ac49e4be..d473ccd7 100644
 --- a/apps/web/src/components/landing/hero.tsx
 +++ b/apps/web/src/components/landing/hero.tsx
 @@ -1,41 +1,41 @@
@@ -2770,10 +2821,39 @@ index ac49e4b..d473ccd 100644
 +	);
 +}
 diff --git a/apps/web/src/components/providers/editor-provider.tsx b/apps/web/src/components/providers/editor-provider.tsx
-index fdc84af..ec18f61 100644
+index fdc84af0..914dd05c 100644
 --- a/apps/web/src/components/providers/editor-provider.tsx
 +++ b/apps/web/src/components/providers/editor-provider.tsx
-@@ -59,7 +59,7 @@ export function EditorProvider({ projectId, children }: EditorProviderProps) {
+@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
+ import { useRouter } from "next/navigation";
+ import { Loader2 } from "lucide-react";
+ import { EditorCore } from "@/core";
++import { toast } from "sonner";
++import { applyMergerPayload, isMergerHandoff, takePendingMergerPayload } from "@/ftol/merger-handoff";
+ import { useEditor } from "@/editor/use-editor";
+ import { useKeybindingsListener } from "@/actions/use-keybindings";
+ import { useKeybindingsStore } from "@/actions/keybindings-store";
+@@ -46,6 +48,19 @@ export function EditorProvider({ projectId, children }: EditorProviderProps) {
+ 
+ 				setIsLoading(false);
+ 				loadFontAtlas();
++
++				// FreeToolOnline: lay out clips handed over by the Video Merger page.
++				const handoff = isMergerHandoff() ? takePendingMergerPayload() : null;
++				if (handoff) {
++					router.replace(`/editor/?project=${projectId}`);
++					toast.promise(applyMergerPayload({ editor, projectId, payload: handoff }), {
++						loading: "Adding your clips to the timeline...",
++						success: ({ placed, skipped }) =>
++							`Added ${placed} clip${placed === 1 ? "" : "s"} from Video Merger` +
++							(skipped.length ? ` - skipped: ${skipped.join(", ")}` : ""),
++						error: "Could not add the clips from Video Merger",
++					});
++				}
+ 			} catch (err) {
+ 				if (cancelled) return;
+ 
+@@ -59,7 +74,7 @@ export function EditorProvider({ projectId, children }: EditorProviderProps) {
  						const newProjectId = await editor.project.createNewProject({
  							name: "Untitled Project",
  						});
@@ -2784,7 +2864,7 @@ index fdc84af..ec18f61 100644
  						setIsLoading(false);
 diff --git a/apps/web/src/copilot/components/copilot-popover.tsx b/apps/web/src/copilot/components/copilot-popover.tsx
 new file mode 100644
-index 0000000..08aec95
+index 00000000..08aec950
 --- /dev/null
 +++ b/apps/web/src/copilot/components/copilot-popover.tsx
 @@ -0,0 +1,160 @@
@@ -2950,7 +3030,7 @@ index 0000000..08aec95
 +}
 diff --git a/apps/web/src/copilot/llm.ts b/apps/web/src/copilot/llm.ts
 new file mode 100644
-index 0000000..72c12bf
+index 00000000..72c12bfb
 --- /dev/null
 +++ b/apps/web/src/copilot/llm.ts
 @@ -0,0 +1,164 @@
@@ -3120,7 +3200,7 @@ index 0000000..72c12bf
 +}
 diff --git a/apps/web/src/copilot/ops.ts b/apps/web/src/copilot/ops.ts
 new file mode 100644
-index 0000000..14e32e4
+index 00000000..14e32e4f
 --- /dev/null
 +++ b/apps/web/src/copilot/ops.ts
 @@ -0,0 +1,243 @@
@@ -3369,7 +3449,7 @@ index 0000000..14e32e4
 +}
 diff --git a/apps/web/src/db/index.ts b/apps/web/src/db/index.ts
 deleted file mode 100644
-index 29e3ffd..0000000
+index 29e3ffda..00000000
 --- a/apps/web/src/db/index.ts
 +++ /dev/null
 @@ -1,19 +0,0 @@
@@ -3394,7 +3474,7 @@ index 29e3ffd..0000000
 -export * from "./schema";
 diff --git a/apps/web/src/db/schema.ts b/apps/web/src/db/schema.ts
 deleted file mode 100644
-index 8f8be24..0000000
+index 8f8be248..00000000
 --- a/apps/web/src/db/schema.ts
 +++ /dev/null
 @@ -1,70 +0,0 @@
@@ -3469,7 +3549,7 @@ index 8f8be24..0000000
 -	),
 -}).enableRLS();
 diff --git a/apps/web/src/env/web.ts b/apps/web/src/env/web.ts
-index aa05161..c8bb2b6 100644
+index aa051615..c8bb2b6e 100644
 --- a/apps/web/src/env/web.ts
 +++ b/apps/web/src/env/web.ts
 @@ -1,28 +1,23 @@
@@ -3516,7 +3596,7 @@ index aa05161..c8bb2b6 100644
  
  export type WebEnv = z.infer<typeof webEnvSchema>;
 diff --git a/apps/web/src/fonts/google-fonts.ts b/apps/web/src/fonts/google-fonts.ts
-index 36fca06..98c5cda 100644
+index 36fca068..98c5cda8 100644
 --- a/apps/web/src/fonts/google-fonts.ts
 +++ b/apps/web/src/fonts/google-fonts.ts
 @@ -2,8 +2,8 @@ import type { FontAtlas } from "@/fonts/types";
@@ -3530,8 +3610,261 @@ index 36fca06..98c5cda 100644
  
  const fullLoaded = new Set<string>();
  
+diff --git a/apps/web/src/ftol/merger-handoff.ts b/apps/web/src/ftol/merger-handoff.ts
+new file mode 100644
+index 00000000..131d7f1d
+--- /dev/null
++++ b/apps/web/src/ftol/merger-handoff.ts
+@@ -0,0 +1,247 @@
++// FreeToolOnline: receive clips handed over by the Video Merger page
++// (https://freetoolonline.com/video-tools/video-merger.html).
++//
++// The merger opens /projects/?from=merger in a new tab and keeps a reference to it.
++// This tab asks its opener for the clips with a data-free "ready" ping; the merger
++// answers with File objects (structured clone shares the underlying data, nothing is
++// copied or uploaded) plus each clip's trim, mute and rotation, the background music and
++// the output frame size. Messages are accepted only from the opener tab and only from
++// our own origins. The files are imported into a new project and laid end to end on the
++// main track through the editor's normal (undoable) commands.
++
++import type { EditorCore } from "@/core";
++import { processMediaAssets } from "@/media/processing";
++import { buildElementFromMedia } from "@/timeline/element-utils";
++import { addMediaTime, mediaTimeFromSeconds, mediaTimeToSeconds, ZERO_MEDIA_TIME } from "@/wasm";
++import type { MediaTime } from "@/wasm";
++import { VOLUME_DB_MAX, VOLUME_DB_MIN } from "@/timeline/audio-constants";
++
++const MERGER_ORIGINS = [
++	"https://freetoolonline.com",
++	"https://www.freetoolonline.com",
++	"https://dangkhoaow.github.io",
++];
++
++function isAllowedOrigin(origin: string): boolean {
++	return (
++		MERGER_ORIGINS.includes(origin) ||
++		/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
++	);
++}
++
++export interface MergerClip {
++	file: File;
++	name: string;
++	trimStart: number;
++	trimEnd: number;
++	muted: boolean;
++	rotate: number;
++}
++
++export interface MergerPayload {
++	clips: MergerClip[];
++	music: { file: File; volume: number } | null;
++	canvas: { width: number; height: number } | null;
++}
++
++let pending: MergerPayload | null = null;
++
++export function isMergerHandoff(): boolean {
++	if (typeof window === "undefined") return false;
++	return new URLSearchParams(window.location.search).get("from") === "merger";
++}
++
++export function takePendingMergerPayload(): MergerPayload | null {
++	const p = pending;
++	pending = null;
++	return p;
++}
++
++const num = (v: unknown, d = 0) =>
++	typeof v === "number" && Number.isFinite(v) ? v : d;
++
++function validate(data: unknown): MergerPayload | null {
++	const d = data as {
++		type?: string;
++		clips?: unknown[];
++		music?: { file?: unknown; volume?: unknown } | null;
++		canvas?: { width?: unknown; height?: unknown } | null;
++	};
++	if (!d || d.type !== "ftol-merger-clips" || !Array.isArray(d.clips)) return null;
++	const clips: MergerClip[] = [];
++	for (const raw of d.clips.slice(0, 200)) {
++		const c = raw as Record<string, unknown>;
++		if (!(c && c.file instanceof Blob)) continue;
++		const file =
++			c.file instanceof File
++				? c.file
++				: new File([c.file], String(c.name || "clip"), { type: c.file.type });
++		const rotate = num(c.rotate);
++		clips.push({
++			file,
++			name: String(c.name || file.name || "clip").slice(0, 200),
++			trimStart: Math.max(0, num(c.trimStart)),
++			trimEnd: Math.max(0, num(c.trimEnd)),
++			muted: c.muted === true,
++			rotate: [0, 90, 180, 270].includes(rotate) ? rotate : 0,
++		});
++	}
++	if (!clips.length) return null;
++	const music =
++		d.music && d.music.file instanceof Blob
++			? {
++					file:
++						d.music.file instanceof File
++							? d.music.file
++							: new File([d.music.file], "music"),
++					volume: Math.min(1, Math.max(0, num(d.music.volume, 0.8))),
++				}
++			: null;
++	const w = Math.round(num(d.canvas?.width));
++	const h = Math.round(num(d.canvas?.height));
++	const canvas =
++		w >= 16 && h >= 16 && w <= 7680 && h <= 7680 ? { width: w, height: h } : null;
++	return { clips, music, canvas };
++}
++
++/** Asks the opener (the merger tab) for the clips; keeps them for the editor page. */
++export function receiveMergerPayload({
++	timeoutMs = 30000,
++}: { timeoutMs?: number } = {}): Promise<MergerPayload> {
++	return new Promise((resolve, reject) => {
++		const opener = window.opener as Window | null;
++		if (!opener) {
++			reject(new Error("The Video Merger tab is no longer open."));
++			return;
++		}
++		let done = false;
++		const finish = (fn: () => void) => {
++			if (done) return;
++			done = true;
++			window.removeEventListener("message", onMessage);
++			clearInterval(pinger);
++			clearTimeout(timer);
++			fn();
++		};
++		const onMessage = (e: MessageEvent) => {
++			if (e.source !== opener || !isAllowedOrigin(e.origin)) return;
++			const payload = validate(e.data);
++			if (!payload) return;
++			finish(() => {
++				pending = payload;
++				resolve(payload);
++			});
++		};
++		const ping = () => {
++			try {
++				// Carries no data, so any target origin is fine; the reply is origin-checked.
++				opener.postMessage({ type: "ftol-editor-ready", v: 1 }, "*");
++			} catch {
++				/* opener navigated away */
++			}
++		};
++		window.addEventListener("message", onMessage);
++		const pinger = setInterval(ping, 500);
++		const timer = setTimeout(
++			() => finish(() => reject(new Error("No clips arrived from the Video Merger."))),
++			timeoutMs,
++		);
++		ping();
++	});
++}
++
++/** Imports the clips into the active project and lays them out on the main track. */
++export async function applyMergerPayload({
++	editor,
++	projectId,
++	payload,
++}: {
++	editor: EditorCore;
++	projectId: string;
++	payload: MergerPayload;
++}): Promise<{ placed: number; skipped: string[] }> {
++	if (payload.canvas) {
++		await editor.project.updateSettings({
++			settings: {
++				canvasSize: payload.canvas,
++				canvasSizeMode: "custom",
++				lastCustomCanvasSize: payload.canvas,
++			},
++			pushHistory: false,
++		});
++	}
++	const skipped: string[] = [];
++	let placed = 0;
++	let start: MediaTime = ZERO_MEDIA_TIME;
++	for (const clip of payload.clips) {
++		// One file at a time so a skipped file cannot shift the clip/asset pairing.
++		const [asset] = await processMediaAssets({ files: [clip.file] });
++		const created = asset
++			? await editor.media.addMediaAsset({ projectId, asset })
++			: null;
++		if (!created || created.type !== "video") {
++			skipped.push(clip.name);
++			continue;
++		}
++		const src = created.duration ?? 0;
++		if (!(src > 0)) {
++			skipped.push(clip.name);
++			continue;
++		}
++		const ts = Math.min(clip.trimStart, Math.max(0, src - 0.1));
++		const te = clip.trimEnd > ts ? Math.min(clip.trimEnd, src) : src;
++		const duration = mediaTimeFromSeconds({ seconds: te - ts });
++		const element = buildElementFromMedia({
++			mediaId: created.id,
++			mediaType: created.type,
++			name: created.name,
++			duration: mediaTimeFromSeconds({ seconds: src }),
++			startTime: start,
++		});
++		element.trimStart = mediaTimeFromSeconds({ seconds: ts });
++		element.trimEnd = mediaTimeFromSeconds({ seconds: Math.max(0, src - te) });
++		element.duration = duration;
++		element.params = {
++			...element.params,
++			...(clip.muted ? { muted: true } : {}),
++			...(clip.rotate ? { "transform.rotate": clip.rotate } : {}),
++		};
++		const mainTrackId = editor.scenes.getActiveScene().tracks.main.id;
++		editor.timeline.insertElement({
++			element,
++			placement: { mode: "explicit", trackId: mainTrackId },
++		});
++		start = addMediaTime({ a: start, b: duration });
++		placed++;
++	}
++	if (payload.music && placed) {
++		const [asset] = await processMediaAssets({ files: [payload.music.file] });
++		const created = asset
++			? await editor.media.addMediaAsset({ projectId, asset })
++			: null;
++		if (created && created.type === "audio") {
++			const src = created.duration ?? 0;
++			const total = start;
++			const element = buildElementFromMedia({
++				mediaId: created.id,
++				mediaType: "audio",
++				name: created.name,
++				duration: mediaTimeFromSeconds({ seconds: src > 0 ? src : 1 }),
++				startTime: ZERO_MEDIA_TIME,
++			});
++			const totalS = mediaTimeToSeconds({ time: total });
++			if (src > totalS) {
++				// Music longer than the clips: keep only the part under the video.
++				element.duration = total;
++				element.trimEnd = mediaTimeFromSeconds({ seconds: src - totalS });
++			}
++			const v = payload.music.volume;
++			const db = v <= 0 ? VOLUME_DB_MIN : Math.max(VOLUME_DB_MIN, Math.min(VOLUME_DB_MAX, 20 * Math.log10(v)));
++			element.params = { ...element.params, volume: db };
++			editor.timeline.insertElement({ element, placement: { mode: "auto" } });
++		} else {
++			skipped.push(payload.music.file.name || "music");
++		}
++	}
++	return { placed, skipped };
++}
 diff --git a/apps/web/src/services/renderer/effect-preview.ts b/apps/web/src/services/renderer/effect-preview.ts
-index cbfb1a3..e23782d 100644
+index cbfb1a31..e23782d7 100644
 --- a/apps/web/src/services/renderer/effect-preview.ts
 +++ b/apps/web/src/services/renderer/effect-preview.ts
 @@ -5,7 +5,7 @@ import type { ParamValues } from "@/params";
@@ -3544,7 +3877,7 @@ index cbfb1a3..e23782d 100644
  class EffectPreviewService {
  	private testSourceCanvas: OffscreenCanvas | null = null;
 diff --git a/apps/web/src/site/brand.ts b/apps/web/src/site/brand.ts
-index 2701608..dbfa753 100644
+index 2701608c..dbfa7530 100644
 --- a/apps/web/src/site/brand.ts
 +++ b/apps/web/src/site/brand.ts
 @@ -5,9 +5,9 @@ export const SITE_INFO = {
@@ -3562,7 +3895,7 @@ index 2701608..dbfa753 100644
 -export const DEFAULT_LOGO_URL = "/logos/opencut/svg/logo.svg";
 +export const DEFAULT_LOGO_URL = "/opencut/logos/opencut/svg/logo.svg";
 diff --git a/apps/web/src/site/sponsors.ts b/apps/web/src/site/sponsors.ts
-index 2bd201b..f7d0b6f 100644
+index 2bd201b7..f7d0b6f2 100644
 --- a/apps/web/src/site/sponsors.ts
 +++ b/apps/web/src/site/sponsors.ts
 @@ -10,14 +10,14 @@ export const SPONSORS: Sponsor[] = [
@@ -3583,7 +3916,7 @@ index 2bd201b..f7d0b6f 100644
  		invertOnDark: true,
  	},
 diff --git a/apps/web/src/sounds/use-sound-search.ts b/apps/web/src/sounds/use-sound-search.ts
-index 79bc311..1761083 100644
+index 79bc3110..1761083d 100644
 --- a/apps/web/src/sounds/use-sound-search.ts
 +++ b/apps/web/src/sounds/use-sound-search.ts
 @@ -1,154 +1,163 @@
@@ -3905,7 +4238,7 @@ index 79bc311..1761083 100644
 +	};
 +}
 diff --git a/apps/web/src/stickers/providers/flags.ts b/apps/web/src/stickers/providers/flags.ts
-index 0cca292..5f290ec 100644
+index 0cca292f..5f290ecd 100644
 --- a/apps/web/src/stickers/providers/flags.ts
 +++ b/apps/web/src/stickers/providers/flags.ts
 @@ -10,7 +10,7 @@ import type { CountryRecord, RegionId } from "./countries-data";
@@ -3918,7 +4251,7 @@ index 0cca292..5f290ec 100644
  let countriesPromise: Promise<CountryRecord[]> | null = null;
  
 diff --git a/bun.lock b/bun.lock
-index 455f42c..c63e507 100644
+index 455f42ca..c63e5074 100644
 --- a/bun.lock
 +++ b/bun.lock
 @@ -5,11 +5,11 @@
